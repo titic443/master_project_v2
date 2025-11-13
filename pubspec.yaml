@@ -1,0 +1,30 @@
+name: master_project
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bloc: ^8.0.2
+  flutter_bloc: ^8.0.1
+  provider: ^6.1.5
+  faker: ^2.1.0
+  pattern_formatter: 4.0.1
+  http: ^1.2.1
+  equatable: ^2.0.7
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  analyzer: ^6.7.0
+  path: ^1.9.0
+
+flutter:
+  uses-material-design: true

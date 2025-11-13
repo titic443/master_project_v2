@@ -1,0 +1,13 @@
+Checkbox	Radio1	Dropdown	TEXT	TEXT2	TEXT3	Checkbox2	Checkbox3
+checked	age_10_20_radio	"Mrs."	valid	valid	valid	unchecked	checked
+unchecked	age_30_40_radio	"Mr."	valid	valid	valid	checked	unchecked
+checked	age_30_40_radio	"Dr."	valid	valid	valid	checked	checked
+unchecked	age_40_50_radio	"Dr."	valid	valid	valid	unchecked	unchecked
+unchecked	age_10_20_radio	"Ms."	valid	valid	valid	checked	unchecked
+checked	age_40_50_radio	"Ms."	valid	valid	valid	checked	checked
+checked	age_40_50_radio	"Mr."	valid	valid	valid	unchecked	checked
+checked	age_10_20_radio	"Dr."	valid	valid	valid	unchecked	unchecked
+unchecked	age_10_20_radio	"Mr."	valid	valid	valid	unchecked	checked
+unchecked	age_30_40_radio	"Mrs."	valid	valid	valid	checked	unchecked
+unchecked	age_40_50_radio	"Mrs."	valid	valid	valid	checked	checked
+unchecked	age_30_40_radio	"Ms."	valid	valid	valid	unchecked	checked

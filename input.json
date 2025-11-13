@@ -1,0 +1,59 @@
+{
+  "file": "lib/demos/example_page.dart",
+  "fields": [
+    {
+      "key": "firstname_textfield",
+      "meta": {
+        "maxLength": 50,
+        "inputFormatters": [
+          {
+            "type": "allow",
+            "pattern": "[a-zA-Z]"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 50
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "First name is required"
+          },
+          {
+            "condition": "!RegExp(r'^[a-zA-Z]{2,}$').hasMatch(value)",
+            "message": "Min 2 letters"
+          }
+        ]
+      }
+    },
+    {
+      "key": "phone_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 10
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Phone is required"
+          },
+          {
+            "condition": "!RegExp(r'^\\d{10}$').hasMatch(value)",
+            "message": "Must be 10 digits"
+          },
+          {
+            "condition": "!value.startsWith('0')",
+            "message": "Must start with 0"
+          }
+        ]
+      }
+    }
+  ]
+}

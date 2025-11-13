@@ -1,0 +1,8 @@
+Checkbox: checked, unchecked
+Radio1: age_10_20_radio, age_30_40_radio, age_40_50_radio
+Dropdown: "Mr.", "Mrs.", "Ms.", "Dr."
+TEXT: valid
+TEXT2: valid
+TEXT3: valid
+Checkbox2: checked, unchecked
+Checkbox3: checked, unchecked

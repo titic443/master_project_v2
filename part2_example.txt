@@ -1,0 +1,118 @@
+=====================================
+PART 2: INPUT DATA (2 TextFormField)
+=====================================
+
+Input Data (JSON):
+{
+  "file": "lib/demos/example_page.dart",
+  "fields": [
+    {
+      "key": "firstname_textfield",
+      "meta": {
+        "maxLength": 50,
+        "inputFormatters": [
+          {
+            "type": "allow",
+            "pattern": "[a-zA-Z]"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 50
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "First name is required"
+          },
+          {
+            "condition": "!RegExp(r'^[a-zA-Z]{2,}$').hasMatch(value)",
+            "message": "Min 2 letters"
+          }
+        ]
+      }
+    },
+    {
+      "key": "phone_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 10
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Phone is required"
+          },
+          {
+            "condition": "!RegExp(r'^\\d{10}$').hasMatch(value)",
+            "message": "Must be 10 digits"
+          },
+          {
+            "condition": "!value.startsWith('0')",
+            "message": "Must start with 0"
+          }
+        ]
+      }
+    }
+  ]
+}
+
+=====================================
+วิเคราะห์:
+=====================================
+
+✓ ส่ง REQUEST เดียว (ไม่แยก)
+✓ fields เป็น array ที่มี 2 objects:
+  - [0] firstname_textfield
+  - [1] phone_textfield
+
+✓ AI จะประมวลผล fields ทั้งหมดพร้อมกัน
+✓ AI return output เดียวที่มี byKey ครบทั้ง 2 fields
+
+=====================================
+Expected AI Output:
+=====================================
+
+{
+  "file": "lib/demos/example_page.dart",
+  "datasets": {
+    "byKey": {
+      "firstname_textfield": [
+        {
+          "valid": "Alice",
+          "invalid": "J",
+          "invalidRuleMessages": "Min 2 letters"
+        }
+      ],
+      "phone_textfield": [
+        {
+          "valid": "0812345678",
+          "invalid": "081234567",
+          "invalidRuleMessages": "Must be 10 digits"
+        },
+        {
+          "valid": "0987654321",
+          "invalid": "1234567890",
+          "invalidRuleMessages": "Must start with 0"
+        }
+      ]
+    }
+  }
+}
+
+=====================================
+สรุป:
+=====================================
+
+1. ส่ง REQUEST เดียว (1 API call)
+2. PART 2 มี "fields": [...] ที่รวม TextFormField ทั้ง 2 อัน
+3. AI ประมวลผลพร้อมกัน และ return datasets.byKey
+   ที่มี key ทั้ง 2 อัน:
+   - "firstname_textfield": [...]
+   - "phone_textfield": [...]

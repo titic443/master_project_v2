@@ -1,0 +1,1179 @@
+// dart run tools/script_v2/generate_test_data.dart [manifest.json]
+//
+// Generate pairwise test plans from UI manifest using combinatorial testing.
+// Creates comprehensive test cases that cover all widget interactions efficiently.
+//
+// Usage:
+//   1. Process specific manifest file:
+//      dart run tools/script_v2/generate_test_data.dart manifest/login/login_page.manifest.json
+//
+//   2. Process all manifest files in manifest/ folder:
+//      dart run tools/script_v2/generate_test_data.dart
+//
+// Output: test_data/<page>.testdata.json
+
+import 'dart:convert';
+import 'dart:io';
+
+import 'generator_pict.dart' as pict;
+
+void main(List<String> args) async {
+  // Default settings
+  const bool pairwiseMerge = true;  // Always use pairwise mode
+  const bool planSummary = false;   // Never show plan summary
+  const bool pairwiseUsePict = true; // Always use PICT for pairwise
+  const String pictBin = './pict';   // Fixed PICT binary path
+
+  final inputs = <String>[];
+
+  // Parse command line arguments - only accept manifest file paths
+  for (final arg in args) {
+    if (arg.endsWith('.manifest.json')) {
+      inputs.add(arg);
+    } else {
+      stderr.writeln('Warning: Ignoring unrecognized argument: $arg');
+    }
+  }
+
+  // If no inputs provided, scan entire output/manifest/ folder
+  if (inputs.isEmpty) {
+    final manifestDir = Directory('output/manifest');
+    if (!manifestDir.existsSync()) {
+      stderr.writeln('Error: No manifest directory found: output/manifest/');
+      stderr.writeln('Please create manifest files first using extract_ui_manifest.dart');
+      exit(1);
+    }
+
+    // Recursively find all .manifest.json files
+    for (final f in manifestDir.listSync(recursive: true).whereType<File>()) {
+      if (f.path.endsWith('.manifest.json')) {
+        inputs.add(f.path);
+      }
+    }
+
+    if (inputs.isEmpty) {
+      stderr.writeln('Error: No manifest files found in output/manifest/');
+      stderr.writeln('Expected: *.manifest.json files');
+      exit(1);
+    }
+
+    stdout.writeln('Found ${inputs.length} manifest file(s) to process');
+  }
+
+  // Process each manifest file
+  int successCount = 0;
+  int errorCount = 0;
+
+  for (final path in inputs) {
+    try {
+      await _processOne(
+        path,
+        pairwiseMerge: pairwiseMerge,
+        planSummary: planSummary,
+        pairwiseUsePict: pairwiseUsePict,
+        pictBin: pictBin,
+      );
+      successCount++;
+    } catch (e, st) {
+      stderr.writeln('✗ Failed to process $path: $e');
+      if (args.contains('--verbose')) {
+        stderr.writeln(st);
+      }
+      errorCount++;
+    }
+  }
+
+  // Print summary if processing multiple files
+  if (inputs.length > 1) {
+    stdout.writeln('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    stdout.writeln('Summary: $successCount succeeded, $errorCount failed');
+    stdout.writeln('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  }
+
+  if (errorCount > 0) {
+    exit(1);
+  }
+}
+
+// Helper functions for dynamic key generation
+String _extractPagePrefix(String? pageClass, String? filePath) {
+  if (pageClass != null) {
+    // ButtonsDemo -> buttons, LoginPage -> login, ProfileDemo -> profile, DemoPage -> demo
+    String prefix = pageClass.toLowerCase()
+      .replaceAll('demo', '')
+      .replaceAll('page', '')
+      .replaceAll('screen', '');
+    
+    // If empty after removing suffixes, use original class name without suffixes
+    if (prefix.isEmpty) {
+      prefix = pageClass.toLowerCase()
+        .replaceAll('page', '')
+        .replaceAll('screen', '');
+      if (prefix.isEmpty) {
+        prefix = pageClass.toLowerCase();
+      }
+    }
+    return prefix;
+  }
+  if (filePath != null) {
+    // lib/demos/buttons_page.dart -> buttons
+    final fileName = filePath.split('/').last;
+    return fileName.replaceAll('_page.dart', '')
+                .replaceAll('_demo.dart', '')
+                .replaceAll('_screen.dart', '')
+                .replaceAll('.dart', '');
+  }
+  return 'page'; // fallback
+}
+
+
+Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSummary = false, bool pairwiseUsePict = false, String pictBin = './pict'}) async {
+  final raw = File(path).readAsStringSync();
+  final j = jsonDecode(raw) as Map<String, dynamic>;
+  final source = (j['source'] as Map<String, dynamic>? ) ?? const {};
+  final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
+  final pageClass = (source['pageClass'] as String?) ?? _basenameWithoutExtension(uiFile);
+  // Try to emit a PICT model from manifest first for verification
+  try {
+    await _tryWritePictModelFromManifestForUi(uiFile, pictBin: pictBin);
+  } catch (e) {
+    stderr.writeln('! Failed to write PICT model from manifest: $e');
+  }
+  final widgets = (j['widgets'] as List? ?? const []).cast<Map<String, dynamic>>();
+
+  // Extract page prefix for expected keys
+  final pagePrefix = _extractPagePrefix(pageClass, uiFile);
+
+  // Providers detection removed - no longer included in output structure
+
+  // Helper function to preserve datasets format (no conversion needed)
+  // Keep the new format: {"key": [{"valid": "value1", "invalid": "value2", "invalidRuleMessages": "msg"}]}
+  Map<String, dynamic> _convertDatasetsToOldFormat(Map<String, dynamic> byKey) {
+    // Simply return as-is to preserve the array of objects format
+    return Map<String, dynamic>.from(byKey);
+  }
+
+  // Attempt to load external datasets produced by datasets_from_ai/datasets_from_ir
+  final datasets = {
+    'defaults': <String, dynamic>{},
+    'byKey': <String, dynamic>{},
+  };
+  bool hasExternalDatasets = false;
+  try {
+    final extPath = 'output/test_data/${_basenameWithoutExtension(uiFile)}.datasets.json';
+    final f = File(extPath);
+    if (f.existsSync()) {
+      final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+      final extDatasets = (ext['datasets'] as Map?)?.cast<String, dynamic>();
+      final extByKey = (extDatasets?['byKey'] as Map?)?.cast<String, dynamic>();
+      if (extByKey != null) {
+        // Convert new format (array of pairs) to old format ({valid: [], invalid: []})
+        final converted = _convertDatasetsToOldFormat(extByKey);
+        (datasets['byKey'] as Map<String, dynamic>).addAll(converted);
+        hasExternalDatasets = (converted.isNotEmpty);
+      }
+    }
+  } catch (_) {}
+
+  // Helper function to extract sequence number from key
+  // Pattern: <page_prefix>_<sequence>_<description>_<widget_type>
+  // Example: customer_07_end_button → 07
+  int _extractSequence(String key) {
+    if (key.isEmpty) return -1;
+    final parts = key.split('_');
+    if (parts.length < 2) return -1;
+
+    // Try second part first (most common pattern)
+    final secondPart = parts[1];
+    final seq = int.tryParse(secondPart);
+    if (seq != null) return seq;
+
+    // Fallback: scan all parts for a number
+    for (final part in parts) {
+      final num = int.tryParse(part);
+      if (num != null) return num;
+    }
+    return -1;
+  }
+
+  // Find Button widget with highest sequence number
+  // This will be used as the end/submit button
+  String? _findHighestSequenceButton(List<Map<String, dynamic>> widgets) {
+    String? highestKey;
+    int highestSeq = -1;
+
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      final k = (w['key'] ?? '').toString();
+
+      // Only consider Button types
+      if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty) {
+        final seq = _extractSequence(k);
+        if (seq > highestSeq) {
+          highestSeq = seq;
+          highestKey = k;
+        }
+      }
+    }
+
+    return highestKey;
+  }
+
+  // Discover end key by finding button with highest sequence
+  String? endKey = _findHighestSequenceButton(widgets);
+
+  // Collect expected keys (_expected_success and _expected_fail)
+  // Use Set to ensure unique keys (SnackBar can appear multiple times in manifest)
+  final expectedSuccessKeys = <String>{};
+  final expectedFailKeys = <String>{};
+
+  // Identify keys
+  final textKeys = <String>[];
+  final radioKeys = <String>[];
+  final checkboxKeys = <String>[];
+  final primaryButtons = <String>[];
+
+  for (final w in widgets) {
+    final k = (w['key'] ?? '').toString();
+
+    if (k.contains('_expected_success')) {
+      expectedSuccessKeys.add(k);
+    }
+    if (k.contains('_expected_fail')) {
+      expectedFailKeys.add(k);
+    }
+  }
+
+  // Check if we have end button (determines if this is an API flow)
+  final hasEndButton = endKey != null;
+  // Build a single full-page steps sequence (previous version behavior)
+  for (final w in widgets) {
+    final t = (w['widgetType'] ?? '').toString();
+    final k = (w['key'] ?? '').toString();
+    if ((t.startsWith('TextField') || t.startsWith('TextFormField')) && k.isNotEmpty) {
+      textKeys.add(k);
+    } else if (t.startsWith('Radio') && k.isNotEmpty) {
+      radioKeys.add(k);
+    } else if ((t.startsWith('Checkbox') || t == 'CheckboxListTile' || t.startsWith('FormField<bool>')) && k.isNotEmpty) {
+      checkboxKeys.add(k);
+    } else if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty && k != endKey) {
+      // Exclude the end button (highest sequence button) from primary buttons
+      primaryButtons.add(k);
+    }
+  }
+  // Fallback: include only concrete radio options, ignore FormField group keys
+  for (final w in widgets) {
+    final k = (w['key'] ?? '').toString();
+    final isOption = (k.endsWith('_radio') || k.contains('_yes_radio') || k.contains('_no_radio')) && !k.contains('_radio_group');
+    if (isOption && !radioKeys.contains(k)) radioKeys.add(k);
+  }
+
+  // Detect dropdowns and their display items (support multiple dropdowns)
+  String? dropdownKey; // keep first for backward compatibility
+  final dropdownValues = <String>[]; // items of the first dropdown
+  final dropdownKeys = <String>[];
+  final dropdownValuesList = <List<String>>[];
+  final dropdownValueToTextMaps = <Map<String, String>>[]; // Map value -> text for each dropdown
+
+  for (final w in widgets) {
+    final t = (w['widgetType'] ?? '').toString();
+    if (t.contains('DropdownButton')) {
+      final k = (w['key'] ?? '').toString();
+      if (k.isNotEmpty) {
+        dropdownKeys.add(k);
+        if (dropdownKey == null) dropdownKey = k;
+      }
+      try {
+        final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+        final list = _optionsFromMeta(meta['options']);
+        dropdownValuesList.add(list);
+        if (dropdownValues.isEmpty) {
+          dropdownValues.addAll(list);
+        }
+
+        // Build value -> text mapping for this dropdown
+        final valueToText = <String, String>{};
+        final options = meta['options'];
+        if (options is List) {
+          for (final opt in options) {
+            if (opt is Map) {
+              final value = opt['value']?.toString();
+              final text = opt['text']?.toString();
+              if (value != null && value.isNotEmpty && text != null && text.isNotEmpty) {
+                valueToText[value] = text;
+              }
+            }
+          }
+        }
+        dropdownValueToTextMaps.add(valueToText);
+      } catch (_) {
+        dropdownValueToTextMaps.add(<String, String>{});
+      }
+    }
+  }
+
+List<Map<String,dynamic>> buildSteps({String? radioPick, String? dropdownPick}){
+    final st = <Map<String, dynamic>>[];
+    // enter text (always use valid[0]) for each text field
+    final byKey = (datasets['byKey'] as Map).cast<String, dynamic>();
+    for (final k in textKeys) {
+      st.add({'enterText': {'byKey': k, 'dataset': 'byKey.' + k + '.valid[0]'}});
+      st.add({'pump': true});
+    }
+    // dropdown selection if requested
+    if (dropdownKey != null && dropdownPick != null && dropdownPick.isNotEmpty) {
+      st.add({'tap': {'byKey': dropdownKey}});
+      st.add({'pump': true});
+
+      // Map value -> text for tapText (use first dropdown mapping)
+      String textToTap = dropdownPick;
+      if (dropdownValueToTextMaps.isNotEmpty) {
+        final mapping = dropdownValueToTextMaps[0];
+        final cleanPick = dropdownPick.replaceAll('"', '');
+        textToTap = mapping[cleanPick] ?? dropdownPick;
+      }
+
+      st.add({'tapText': textToTap});
+      st.add({'pump': true});
+    }
+    // radio options
+    if (hasEndButton) {
+      String? _pickFirstContaining(List<String> keys, List<String> prefs){
+        for (final p in prefs) {
+          final found = keys.firstWhere((k)=> k.contains('_'+p+'_') || k.endsWith('_'+p), orElse: ()=> '');
+          if (found.isNotEmpty) return found;
+        }
+        return keys.isNotEmpty ? keys.first : null;
+      }
+      String? g2;
+      if (radioPick != null && radioPick.isNotEmpty && radioKeys.contains(radioPick)) {
+        g2 = radioPick;
+      } else {
+        g2 = _pickFirstContaining(radioKeys, ['approve','reject','pending']);
+      }
+      if (g2 != null) { st.add({'tap': {'byKey': g2}}); st.add({'pump': true}); }
+      final g3 = _pickFirstContaining(radioKeys, ['manu','che']);
+      if (g3 != null) { st.add({'tap': {'byKey': g3}}); st.add({'pump': true}); }
+      final g4 = _pickFirstContaining(radioKeys, ['android','window','ios']);
+      if (g4 != null) { st.add({'tap': {'byKey': g4}}); st.add({'pump': true}); }
+    } else if (radioPick != null && radioPick.isNotEmpty) {
+      st.add({'tap': {'byKey': radioPick}});
+      st.add({'pump': true});
+    } else if (!hasEndButton && radioKeys.isNotEmpty) {
+      // non-API flow fallback: tap all radios in order
+      for (final rk in radioKeys) { st.add({'tap': {'byKey': rk}}); st.add({'pump': true}); }
+    }
+    // tap all primary (non-end) buttons
+    for (final bk in primaryButtons) { st.add({'tap': {'byKey': bk}}); st.add({'pump': true}); }
+    // final end action
+    if (endKey != null) { st.add({'tap': {'byKey': endKey}}); st.add({'pumpAndSettle': true}); }
+    return st;
+}
+
+// Build test cases
+  final cases = <Map<String, dynamic>>[];
+  // Do not include stubbed setup/response; integration tests use real backend/providers
+  final successSetup = <String, dynamic>{};
+
+  // Helper functions (moved up for early declaration)
+  String _shortKey(String k){
+    final i = k.indexOf('_');
+    return (i>0 && i+1<k.length) ? k.substring(i+1) : k;
+  }
+  
+Map<String,dynamic> _widgetMetaByKey(String key){
+  for (final w in widgets) {
+    if ((w['key'] ?? '') == key) {
+      return (w['meta'] as Map?)?.cast<String,dynamic>() ?? const {};
+    }
+  }
+  return const {};
+}
+
+int? _maxLenFromMeta(Map<String,dynamic> meta){
+  // Check inputFormatter first (LengthLimitingTextInputFormatter takes priority)
+  final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
+  final lenFmt = fmts.firstWhere((f) => (f['type'] ?? '') == 'lengthLimit', orElse: ()=>{});
+  if (lenFmt is Map && lenFmt['max'] is int) return lenFmt['max'] as int;
+  
+  // Fallback to maxLength property
+  if (meta['maxLength'] is int) return meta['maxLength'] as int;
+  return null;
+}
+
+
+
+  // Validation test cases removed - no longer generating individual field validation tests
+  // API Response cases removed - no longer needed with new naming convention
+
+  // Functions already declared above
+
+  // Full flow mode removed - only pairwise testing supported
+
+  // --- Pairwise generation (always enabled for API endpoints) ---
+  if (hasEndButton) {
+    // Load page-specific PICT results
+    final pageBase = _basenameWithoutExtension(uiFile);
+    final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';
+    final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt';
+    List<Map<String,String>>? extCombos;
+    List<Map<String,String>>? extValidCombos;
+    if (File(pageResultPath).existsSync()) {
+      extCombos = pict.parsePictResult(File(pageResultPath).readAsStringSync());
+    }
+
+    // Load valid-only combinations
+    if (File(pageValidResultPath).existsSync()) {
+      extValidCombos = pict.parsePictResult(File(pageValidResultPath).readAsStringSync());
+    }
+
+    // Helper to map Radio suffix to full Radio key
+    // Example: age_10_20_radio -> customer_04_age_10_20_radio
+    String? _radioKeyForSuffix(List<String> keys, String suffix){
+      if (suffix.isEmpty) return null;
+      // Find key that ends with the suffix
+      String hit = keys.firstWhere(
+        (k) => k.endsWith('_$suffix') || k.endsWith(suffix),
+        orElse: () => ''
+      );
+      return hit.isEmpty ? null : hit;
+    }
+
+    // If we have external combos from PICT result, use them directly
+    List<Map<String,String>> combos;
+    bool usingExternalCombos = false;
+    if (extCombos != null && extCombos.isNotEmpty) {
+      combos = extCombos;
+      usingExternalCombos = true;
+    } else {
+      // Build factors (excluding API outcome as per requirement)
+      final factors = <String,List<String>>{};
+      // TextFormField factors: only 'valid' and 'invalid' per requirement
+      for (int i = 0; i < textKeys.length; i++) {
+        final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${i + 1}';
+        factors[factorName] = ['valid', 'invalid'];
+      }
+
+      // Auto-detect Radio groups from widgets metadata
+      // Method 1: Group by groupValueBinding (most reliable)
+      final radioGroups = <String, List<String>>{};
+      for (final w in widgets) {
+        final t = (w['widgetType'] ?? '').toString();
+        final k = (w['key'] ?? '').toString();
+        if (t.startsWith('Radio') && k.isNotEmpty && radioKeys.contains(k)) {
+          try {
+            final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+            final groupBinding = (meta['groupValueBinding'] ?? '').toString();
+            if (groupBinding.isNotEmpty) {
+              radioGroups.putIfAbsent(groupBinding, () => []);
+              radioGroups[groupBinding]!.add(k);
+            }
+          } catch (_) {}
+        }
+      }
+
+      // Method 2: Fallback to FormField<int> options (if no groupValueBinding found)
+      if (radioGroups.isEmpty) {
+        for (final w in widgets) {
+          final t = (w['widgetType'] ?? '').toString();
+          if (t == 'FormField<int>') {
+            try {
+              final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+              final options = meta['options'];
+              if (options is List) {
+                final radioGroup = <String>[];
+                for (final opt in options) {
+                  if (opt is Map) {
+                    final optValue = opt['value']?.toString();
+                    if (optValue != null) {
+                      // Find Radio with matching valueExpr
+                      for (final rw in widgets) {
+                        final rt = (rw['widgetType'] ?? '').toString();
+                        final rk = (rw['key'] ?? '').toString();
+                        if (rt.startsWith('Radio') && rk.isNotEmpty) {
+                          final rmeta = (rw['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+                          final valueExpr = (rmeta['valueExpr'] ?? '').toString();
+                          if (valueExpr == optValue) {
+                            radioGroup.add(rk);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                if (radioGroup.length > 1) {
+                  final groupKey = (w['key'] ?? 'unknown').toString();
+                  radioGroups[groupKey] = radioGroup;
+                }
+              }
+            } catch (_) {}
+          }
+        }
+      }
+
+      // Add radio groups to factors
+      int radioIndex = 1;
+      for (final entry in radioGroups.entries) {
+        if (entry.value.length > 1) {
+          factors['Radio$radioIndex'] = entry.value;
+          radioIndex++;
+        }
+      }
+
+      if (dropdownValues.isNotEmpty) factors['Dropdown'] = List<String>.from(dropdownValues);
+
+      // Checkbox factors: Checkbox, Checkbox2, Checkbox3, ...
+      for (int i = 0; i < checkboxKeys.length; i++) {
+        final factorName = (checkboxKeys.length == 1 || i == 0) ? 'Checkbox' : 'Checkbox${i + 1}';
+        factors[factorName] = ['checked', 'unchecked'];
+      }
+
+      // Generate optimal pairwise combinations (prefer PICT if requested)
+      if (pairwiseUsePict) {
+        try {
+          combos = await pict.executePict(factors, pictBin: pictBin);
+        } catch (e) {
+          stderr.writeln('! PICT failed ($e). Falling back to internal pairwise.');
+          combos = pict.generatePairwiseInternal(factors);
+        }
+      } else {
+        combos = pict.generatePairwiseInternal(factors);
+      }
+    }
+    
+    String textForBucket(String tfKey, String bucket){
+      // Legacy buckets fallback if encountered
+      final maxLen = _maxLenFromMeta(_widgetMetaByKey(tfKey));
+      if (bucket=='min') return '';
+      if (bucket=='min+1') return 'A';
+      if (bucket=='nominal') {
+        final n = (maxLen != null && maxLen > 2) ? (maxLen~/2) : 5;
+        return 'A' * n;
+      }
+      if (bucket=='max-1') {
+        if (maxLen != null && maxLen > 1) return 'A' * (maxLen-1);
+        return 'A';
+      }
+      if (bucket=='max') {
+        final m = maxLen ?? 10;
+        return 'A' * m;
+      }
+      return 'A' * 5;
+    }
+    String? datasetPathForKeyBucket(String tfKey, String bucket){
+      final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+      if (!ds.containsKey(tfKey)) return null;
+      if (bucket != 'valid' && bucket != 'invalid') return null;
+
+      // New format: byKey.<key> is an array of objects
+      final dataArray = ds[tfKey];
+      if (dataArray is List && dataArray.isNotEmpty) {
+        // Return path: byKey.<key>[0].valid or byKey.<key>[0].invalid
+        return 'byKey.$tfKey[0].$bucket';
+      }
+
+      // Fallback for old format (if exists)
+      final sub = (ds[tfKey] as Map?)?.cast<String, dynamic>() ?? const {};
+      final list = (sub[bucket] as List?) ?? const [];
+      if (list.isEmpty) return null;
+      return 'byKey.$tfKey.$bucket[0]';
+    }
+
+    for (int i = 0; i < combos.length; i++) {
+      final c = combos[i];
+      final r1Pick = (c['Radio1'] ?? '').toString();
+      final r2Pick = (c['Radio2'] ?? '').toString();
+      final r3Pick = (c['Radio3'] ?? '').toString();
+      final r4Pick = (c['Radio4'] ?? '').toString();
+      final ddPick = (c['Dropdown'] ?? '').toString();
+
+      final st = <Map<String,dynamic>>[];
+
+      // Track if any field uses invalid data to determine test case kind
+      bool hasInvalidData = false;
+      final invalidFields = <String>[]; // Track which fields have invalid data
+
+      // Process factors in PICT header order (if using external combos)
+      if (usingExternalCombos) {
+        // Get the header order from the first PICT result to follow factor sequence
+        List<String> headerOrder = [];
+        if (File(pageResultPath).existsSync()) {
+          final content = File(pageResultPath).readAsStringSync();
+          final lines = content.trim().split(RegExp(r'\r?\n')).where((l) => l.trim().isNotEmpty).toList();
+          if (lines.isNotEmpty) {
+            headerOrder = lines.first.split('\t').map((s) => s.trim()).toList();
+          }
+        }
+
+        // Build a map of all steps keyed by widget key to maintain manifest order
+        final stepsByKey = <String, List<Map<String, dynamic>>>{};
+
+        // Process text fields and collect their steps
+        for (int idx = 0; idx < textKeys.length; idx++) {
+          // Find the factor name for this text field index
+          // PICT naming: TEXT, TEXT2, TEXT3, TEXT4 (not TEXT1!)
+          final factorName = (textKeys.length == 1 || idx == 0) ? 'TEXT' : 'TEXT${idx + 1}';
+          final pick = (c[factorName] ?? '').toString();
+          if (pick.isNotEmpty) {
+            final bucket = (pick == 'invalid') ? 'invalid' : 'valid';
+            if (bucket == 'invalid') {
+              hasInvalidData = true;
+              invalidFields.add(textKeys[idx]); // Track this field as invalid
+            }
+            stepsByKey[textKeys[idx]] = [
+              {'enterText': {'byKey': textKeys[idx], 'dataset': 'byKey.${textKeys[idx]}[0].$bucket'}},
+              {'pump': true}
+            ];
+          }
+        }
+
+        // Process radio buttons and collect their steps
+        // Match Radio suffix from PICT with full Radio key
+        for (final factorName in c.keys) {
+          if (factorName.startsWith('Radio')) {
+            final pick = (c[factorName] ?? '').toString();
+            if (pick.isNotEmpty) {
+              // pick is Radio suffix like "age_10_20_radio"
+              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
+              if (matchedKey != null) {
+                stepsByKey[matchedKey] = [
+                  {'tap': {'byKey': matchedKey}},
+                  {'pump': true}
+                ];
+              }
+            }
+          }
+        }
+
+        // Process dropdowns and collect their steps
+        for (int idx = 0; idx < dropdownKeys.length; idx++) {
+          // PICT naming: Dropdown, Dropdown2, Dropdown3 (not Dropdown1!)
+          final factorName = (dropdownKeys.length == 1 || idx == 0) ? 'Dropdown' : 'Dropdown${idx + 1}';
+          final pick = (c[factorName] ?? '').toString();
+          if (pick.isEmpty) continue;
+
+          final key = dropdownKeys[idx];
+          if (key.isNotEmpty) {
+            // Map value -> text for tapText
+            String textToTap = pick;
+            if (idx < dropdownValueToTextMaps.length) {
+              final mapping = dropdownValueToTextMaps[idx];
+              final cleanPick = pick.replaceAll('"', '');
+              textToTap = mapping[cleanPick] ?? pick;
+            }
+
+            stepsByKey[key] = [
+              {'tap': {'byKey': key}},
+              {'pump': true},
+              {'tapText': textToTap},
+              {'pump': true}
+            ];
+          }
+        }
+
+        // Process checkboxes and collect their steps
+        for (int idx = 0; idx < checkboxKeys.length; idx++) {
+          // PICT naming: Checkbox, Checkbox2, Checkbox3 (not Checkbox1!)
+          final factorName = (checkboxKeys.length == 1 || idx == 0) ? 'Checkbox' : 'Checkbox${idx + 1}';
+          final pick = (c[factorName] ?? '').toString();
+          if (pick.isEmpty) continue;
+
+          final key = checkboxKeys[idx];
+          if (key.isNotEmpty && pick == 'checked') {
+            // Only add tap step if checkbox should be checked (default is unchecked)
+            stepsByKey[key] = [
+              {'tap': {'byKey': key}},
+              {'pump': true}
+            ];
+          }
+        }
+
+        // Add steps in key sequence order (sort widgets by key before iterating)
+        final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
+        sortedWidgets.sort((a, b) {
+          final keyA = (a['key'] ?? '').toString();
+          final keyB = (b['key'] ?? '').toString();
+          return keyA.compareTo(keyB);
+        });
+
+        for (final w in sortedWidgets) {
+          final key = (w['key'] ?? '').toString();
+          if (stepsByKey.containsKey(key)) {
+            st.addAll(stepsByKey[key]!);
+          }
+        }
+      } else {
+        // Fallback to original logic for non-external combos
+        // Build a map of all steps keyed by widget key to maintain manifest order
+        final stepsByKey = <String, List<Map<String, dynamic>>>{};
+
+        // Process text fields and collect their steps
+        for (int j = 0; j < textKeys.length; j++) {
+          final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
+          final tfBucket = c[factorName];
+          if (tfBucket != null) {
+            if (tfBucket.toString() == 'invalid') {
+              hasInvalidData = true;
+              invalidFields.add(textKeys[j]); // Track this field as invalid
+            }
+            final dsPath = datasetPathForKeyBucket(textKeys[j], tfBucket.toString());
+            if (dsPath != null) {
+              stepsByKey[textKeys[j]] = [
+                {'enterText': {'byKey': textKeys[j], 'dataset': dsPath}},
+                {'pump': true}
+              ];
+            } else {
+              stepsByKey[textKeys[j]] = [
+                {'enterText': {'byKey': textKeys[j], 'text': textForBucket(textKeys[j], tfBucket)}},
+                {'pump': true}
+              ];
+            }
+          }
+        }
+
+        // Process dropdown and collect steps
+        if (dropdownKey != null && c['Dropdown'] != null) {
+          final ddPick = (c['Dropdown'] ?? '').toString();
+          if (ddPick.isNotEmpty) {
+            stepsByKey[dropdownKey] = [
+              {'tap': {'byKey': dropdownKey}},
+              {'pump': true},
+              {'tapText': ddPick},
+              {'pump': true}
+            ];
+          }
+        }
+
+        // Process radios and collect their steps
+        // Match Radio suffix from PICT with full Radio key
+        for (final factorName in c.keys) {
+          if (factorName.startsWith('Radio')) {
+            final pick = (c[factorName] ?? '').toString();
+            if (pick.isNotEmpty) {
+              // pick is Radio suffix like "age_10_20_radio"
+              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
+              if (matchedKey != null) {
+                stepsByKey[matchedKey] = [
+                  {'tap': {'byKey': matchedKey}},
+                  {'pump': true}
+                ];
+              }
+            }
+          }
+        }
+
+        // Process checkboxes and collect their steps
+        for (int idx = 0; idx < checkboxKeys.length; idx++) {
+          final factorName = (checkboxKeys.length == 1 || idx == 0) ? 'Checkbox' : 'Checkbox${idx + 1}';
+          final pick = (c[factorName] ?? '').toString();
+          if (pick == 'checked') {
+            final key = checkboxKeys[idx];
+            if (key.isNotEmpty) {
+              stepsByKey[key] = [
+                {'tap': {'byKey': key}},
+                {'pump': true}
+              ];
+            }
+          }
+        }
+
+        // Add steps in key sequence order (sort widgets by key before iterating)
+        final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
+        sortedWidgets.sort((a, b) {
+          final keyA = (a['key'] ?? '').toString();
+          final keyB = (b['key'] ?? '').toString();
+          return keyA.compareTo(keyB);
+        });
+
+        for (final w in sortedWidgets) {
+          final key = (w['key'] ?? '').toString();
+          if (stepsByKey.containsKey(key)) {
+            st.addAll(stepsByKey[key]!);
+          }
+        }
+      }
+
+      // Final API call
+      st.add({'tap': {'byKey': endKey!}});
+      st.add({'pumpAndSettle': true});
+
+      // Determine test case kind based on whether invalid data is used
+      final caseKind = hasInvalidData ? 'failed' : 'success';
+      final id = 'pairwise_valid_invalid_cases_${i + 1}';
+
+      // Build assertions - include validation error messages for invalid fields
+      final asserts = <Map<String, dynamic>>[];
+
+      if (hasInvalidData) {
+        // For cases with invalid data, expect invalidRuleMessages from datasets (not empty/required messages)
+        final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+
+        for (final fieldKey in invalidFields) {
+          // Get invalidRuleMessages from datasets for this field
+          final dataArray = ds[fieldKey];
+          if (dataArray is List && dataArray.isNotEmpty) {
+            // Use index [0] since dataset path uses [0]
+            final firstPair = dataArray[0];
+            if (firstPair is Map) {
+              final invalidRuleMsg = firstPair['invalidRuleMessages']?.toString();
+              // Only include non-empty validation messages (exclude "Required"/"กรุณา" messages)
+              if (invalidRuleMsg != null &&
+                  invalidRuleMsg.isNotEmpty &&
+                  !invalidRuleMsg.toLowerCase().contains('required') &&
+                  !invalidRuleMsg.toLowerCase().contains('กรุณา')) {
+                asserts.add({'text': invalidRuleMsg, 'exists': true});
+              }
+            }
+          }
+        }
+
+        // Assert that expected fail keys exist (if any)
+        for (final failKey in expectedFailKeys) {
+          asserts.add({'byKey': failKey, 'exists': true});
+        }
+      } else {
+        // For valid data cases, expect success keys
+        for (final successKey in expectedSuccessKeys) {
+          asserts.add({'byKey': successKey, 'exists': true});
+        }
+      }
+
+      cases.add({
+        'tc': id,
+        'kind': caseKind,
+        'group': 'pairwise_valid_invalid_cases',
+        'steps': st,
+        'asserts': asserts,
+      });
+    }
+
+    // --- Generate pairwise valid-only cases ---
+    // Generate additional valid-only test cases if we have valid combinations
+    if (extValidCombos != null && extValidCombos.isNotEmpty) {
+      for (int i = 0; i < extValidCombos.length; i++) {
+        final c = extValidCombos[i];
+        final st = <Map<String,dynamic>>[];
+
+        // Get the header order for valid combos (similar to regular pairwise)
+        List<String> headerOrder = [];
+        if (File(pageValidResultPath).existsSync()) {
+          final content = File(pageValidResultPath).readAsStringSync();
+          final lines = content.trim().split(RegExp(r'\r?\n')).where((l) => l.trim().isNotEmpty).toList();
+          if (lines.isNotEmpty) {
+            headerOrder = lines.first.split('\t').map((s) => s.trim()).toList();
+          }
+        }
+
+        // If no header order found, fall back to default order
+        if (headerOrder.isEmpty) {
+          headerOrder = ['TEXT', 'TEXT2', 'TEXT3', 'Radio2', 'Radio3', 'Radio4', 'Dropdown'];
+        }
+
+        // Build a map of all steps keyed by widget key to maintain manifest order
+        final stepsByKey = <String, List<Map<String, dynamic>>>{};
+
+        // Process each factor and collect steps
+        for (final factorName in headerOrder) {
+          final pick = (c[factorName] ?? '').toString();
+          if (pick.isEmpty) continue;
+
+          // Handle text factors (all should be valid in valid-only model)
+          if (factorName.startsWith('TEXT')) {
+            int textIndex = 0;
+            if (factorName == 'TEXT') {
+              textIndex = 0;
+            } else {
+              final numMatch = RegExp(r'TEXT(\d+)').firstMatch(factorName);
+              if (numMatch != null) {
+                textIndex = int.parse(numMatch.group(1)!) - 1;
+              }
+            }
+
+            if (textIndex < textKeys.length) {
+              final key = textKeys[textIndex];
+              // Always use valid bucket for valid-only cases
+              stepsByKey[key] = [
+                {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].valid'}},
+                {'pump': true}
+              ];
+            }
+          }
+          // Handle radio factors
+          else if (factorName.startsWith('Radio')) {
+            if (pick.isNotEmpty) {
+              // pick is Radio suffix like "age_10_20_radio"
+              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
+              if (matchedKey != null) {
+                stepsByKey[matchedKey] = [
+                  {'tap': {'byKey': matchedKey}},
+                  {'pump': true}
+                ];
+              }
+            }
+          }
+          // Handle dropdown factors
+          else if (factorName.startsWith('Dropdown')) {
+            int dropdownIndex = 0;
+            if (factorName != 'Dropdown') {
+              final numMatch = RegExp(r'Dropdown(\d+)').firstMatch(factorName);
+              if (numMatch != null) {
+                dropdownIndex = int.parse(numMatch.group(1)!) - 1;
+              }
+            }
+
+            if (dropdownIndex < dropdownKeys.length) {
+              final key = dropdownKeys[dropdownIndex];
+              if (key.isNotEmpty && pick.isNotEmpty) {
+                // Map value -> text for tapText
+                String textToTap = pick;
+                if (dropdownIndex < dropdownValueToTextMaps.length) {
+                  final mapping = dropdownValueToTextMaps[dropdownIndex];
+                  // Remove quotes from pick if present
+                  final cleanPick = pick.replaceAll('"', '');
+                  textToTap = mapping[cleanPick] ?? pick;
+                }
+
+                stepsByKey[key] = [
+                  {'tap': {'byKey': key}},
+                  {'pump': true},
+                  {'tapText': textToTap},
+                  {'pump': true}
+                ];
+              }
+            }
+          }
+          // Handle checkbox factors
+          else if (factorName.startsWith('Checkbox')) {
+            int checkboxIndex = 0;
+            if (factorName != 'Checkbox') {
+              final numMatch = RegExp(r'Checkbox(\d+)').firstMatch(factorName);
+              if (numMatch != null) {
+                checkboxIndex = int.parse(numMatch.group(1)!) - 1;
+              }
+            }
+
+            if (checkboxIndex < checkboxKeys.length && pick == 'checked') {
+              final key = checkboxKeys[checkboxIndex];
+              if (key.isNotEmpty) {
+                // Only add tap step if checkbox should be checked
+                stepsByKey[key] = [
+                  {'tap': {'byKey': key}},
+                  {'pump': true}
+                ];
+              }
+            }
+          }
+        }
+
+        // Add steps in key sequence order (sort widgets by key before iterating)
+        final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
+        sortedWidgets.sort((a, b) {
+          final keyA = (a['key'] ?? '').toString();
+          final keyB = (b['key'] ?? '').toString();
+          return keyA.compareTo(keyB);
+        });
+
+        for (final w in sortedWidgets) {
+          final key = (w['key'] ?? '').toString();
+          if (stepsByKey.containsKey(key)) {
+            st.addAll(stepsByKey[key]!);
+          }
+        }
+
+        // Final API call
+        st.add({'tap': {'byKey': endKey!}});
+        st.add({'pumpAndSettle': true});
+
+        // Valid-only cases should always expect success
+        final id = 'pairwise_valid_cases_${i + 1}';
+        final asserts = <Map<String, dynamic>>[];
+        // Expect success keys for valid cases
+        for (final successKey in expectedSuccessKeys) {
+          asserts.add({'byKey': successKey, 'exists': true});
+        }
+
+        cases.add({
+          'tc': id,
+          'kind': 'success',
+          'group': 'pairwise_valid_cases',
+          'steps': st,
+          'asserts': asserts,
+        });
+      }
+    }
+  }
+
+  // --- Radio-only state cases removed as per latest requirement ---
+
+  // --- Single empty-all-fields case (no API) ---
+  // No typing steps; if there is *_validate_button, tap it to trigger validate.
+  // Ifไม่มี validate button แยก แต่มี *_endapi_* หรือ *_end_* ให้กดปุ่มนั้นแทนเพื่อ trigger validate
+  // For empty fields test, detect required fields by checking validator conditions (not just message text)
+  final expectedMsgsCount = <String, int>{};
+
+  // Helper to check if a condition indicates empty/null validation
+  bool _isEmptyCheckCondition(String condition) {
+    final normalized = condition.toLowerCase().replaceAll(' ', '');
+    return normalized.contains('value==null') ||
+           normalized.contains('value.isempty') ||
+           normalized.contains('valuenull') ||
+           normalized.contains('valueisempty');
+  }
+
+  for (final w in widgets) {
+    try {
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+
+      // Check validatorRules (more reliable - uses condition logic)
+      final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+      for (final rule in rules) {
+        if (rule is Map) {
+          final condition = rule['condition']?.toString() ?? '';
+          final msg = rule['message']?.toString() ?? '';
+
+          // Check if this rule validates empty/null values by analyzing the condition
+          if (msg.isNotEmpty && _isEmptyCheckCondition(condition)) {
+            expectedMsgsCount[msg] = (expectedMsgsCount[msg] ?? 0) + 1;
+          }
+        }
+      }
+
+      // Fallback: Check validatorMessages (for TextFormField without explicit rules)
+      // Use pattern matching for common empty-field messages
+      if (rules.isEmpty) {
+        final v = (meta['validatorMessages'] as List?)?.cast<dynamic>() ?? const [];
+        for (final m in v) {
+          final s = m?.toString() ?? '';
+          // Match common patterns for empty field validation (multilingual support)
+          if (s.isNotEmpty && (
+              s.toLowerCase().contains('required') ||
+              s.contains('กรุณา') ||
+              s.contains('โปรด') ||
+              s.contains('ต้อง') ||
+              s.toLowerCase().contains('please') ||
+              s.toLowerCase().contains('cannot be empty') ||
+              s.toLowerCase().contains('is required'))) {
+            expectedMsgsCount[s] = (expectedMsgsCount[s] ?? 0) + 1;
+            break; // Only take the first empty-validation message
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
+  // If no specific "Required" messages found, add default "Required" for each TextFormField
+  if (expectedMsgsCount.isEmpty && textKeys.isNotEmpty) {
+    for (final tfKey in textKeys) {
+      expectedMsgsCount['Required'] = (expectedMsgsCount['Required'] ?? 0) + 1;
+    }
+  }
+
+  final emptyAsserts = [
+    for (final entry in expectedMsgsCount.entries)
+      {'text': entry.key, 'exists': true, 'count': entry.value}
+  ];
+  final emptySteps = <Map<String,dynamic>>[];
+  // Use endKey (end button) to trigger validation
+  if (endKey != null) {
+    emptySteps.add({'tap': {'byKey': endKey}});
+    emptySteps.add({'pumpAndSettle': true});
+  }
+  cases.add({
+    'tc': 'edge_cases_empty_all_fields',
+    'kind': 'failed',
+    'group': 'edge_cases',
+    'steps': emptySteps,
+    'asserts': emptyAsserts,
+  });
+
+  // Output structure: only 3 main sections (source, datasets, cases)
+  final plan = <String, dynamic>{
+    'source': source,
+    'datasets': datasets,
+    'cases': cases,
+  };
+
+  final outPath = 'output/test_data/${_basenameWithoutExtension(uiFile)}.testdata.json';
+  File(outPath).createSync(recursive: true);
+  File(outPath).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(plan) + '\n');
+  stdout.writeln('✓ fullpage plan: $outPath');
+}
+
+
+String _basename(String path) {
+  final p = path.replaceAll('\\\\', '/');
+  final i = p.lastIndexOf('/');
+  return i >= 0 ? p.substring(i + 1) : p;
+}
+
+String _basenameWithoutExtension(String path) {
+  final b = _basename(path);
+  final i = b.lastIndexOf('.');
+  return i > 0 ? b.substring(0, i) : b;
+}
+
+// Attempt to read output/manifest/**/<page>.manifest.json and emit a PICT model
+Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin = './pict'}) async {
+  final base = _basenameWithoutExtension(uiFile);
+
+  // Extract subfolder structure from uiFile (e.g., lib/demos/register_page.dart → demos)
+  final normalizedPath = uiFile.replaceAll('\\', '/');
+  String subfolderPath = '';
+  if (normalizedPath.startsWith('lib/')) {
+    final pathAfterLib = normalizedPath.substring(4);
+    final lastSlash = pathAfterLib.lastIndexOf('/');
+    if (lastSlash > 0) {
+      subfolderPath = pathAfterLib.substring(0, lastSlash);
+    }
+  }
+
+  final manifestPath = subfolderPath.isNotEmpty
+      ? 'output/manifest/$subfolderPath/$base.manifest.json'
+      : 'output/manifest/$base.manifest.json';
+  final f = File(manifestPath);
+  if (!f.existsSync()) return; // silently skip when no manifest
+
+  final j = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+  final widgets = (j['widgets'] as List? ?? const []).cast<Map<String, dynamic>>();
+
+  // Extract factors using pict_generator module
+  final factors = pict.extractFactorsFromManifest(widgets);
+  if (factors.isEmpty) return; // nothing to write
+
+  // Generate and write PICT model files using pict_generator module
+  await pict.writePictModelFiles(
+    factors: factors,
+    pageBaseName: base,
+    pictBin: pictBin,
+  );
+}
+
+// Helper functions for dropdown options
+List<String> _optionsFromMeta(dynamic raw) {
+  final out = <String>[];
+  if (raw is List) {
+    for (final entry in raw) {
+      if (entry is Map) {
+        // Use value field for PICT compatibility (ASCII only, no Thai characters)
+        final value = entry['value']?.toString();
+        final text = entry['text']?.toString();
+        final label = entry['label']?.toString();
+        final chosen = (value != null && value.isNotEmpty) ? value
+                     : (text != null && text.isNotEmpty) ? text
+                     : label;
+        if (chosen != null && chosen.isNotEmpty) {
+          // Replace spaces with underscores for PICT compatibility
+          final cleaned = chosen.replaceAll(' ', '_');
+          out.add(cleaned);
+        }
+      } else if (entry != null) {
+        final s = entry.toString();
+        if (s.isNotEmpty) {
+          final cleaned = s.replaceAll(' ', '_');
+          out.add(cleaned);
+        }
+      }
+    }
+  }
+  return out;
+}
