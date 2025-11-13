@@ -7,6 +7,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'utils.dart' as utils;
+
 void main(List<String> args) {
   final inputs = <String>[];
   if (args.isEmpty) {
@@ -42,7 +44,7 @@ void _processOne(String planPath) {
   // Read from source section (new structure)
   final source = (j['source'] as Map<String, dynamic>? ) ?? const {};
   final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
-  final pageClass = (source['pageClass'] as String?) ?? _basenameWithoutExtension(uiFile);
+  final pageClass = (source['pageClass'] as String?) ?? utils.basenameWithoutExtension(uiFile);
   final cubitClass = (source['cubitClass'] as String?);
   final stateClass = (source['stateClass'] as String?);
 
@@ -106,7 +108,7 @@ void _processOne(String planPath) {
   // Prefer external datasets file when present; fallback to embedded
   Map<String, dynamic> _maybeLoadExternalDatasets(String uiFile) {
     try {
-      final base = _basenameWithoutExtension(uiFile);
+      final base = utils.basenameWithoutExtension(uiFile);
       final f = File('output/test_data/' + base + '.datasets.json');
       if (f.existsSync()) {
         final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
@@ -128,8 +130,8 @@ void _processOne(String planPath) {
     datasets = (j['datasets'] as Map? ?? const {}).cast<String, dynamic>();
   }
 
-  final pkg = _readPackageName() ?? 'master_project';
-  final uiImport = _pkgImport(pkg, uiFile);
+  final pkg = utils.readPackageName() ?? 'master_project';
+  final uiImport = utils.pkgImport(pkg, uiFile);
 
   // Find provider type files to import
   final providerTypes = <String>[];
@@ -139,7 +141,7 @@ void _processOne(String planPath) {
   }
   final providerFiles = <String>[];
   for (final t in providerTypes) {
-    final f = _findDeclFile(RegExp(r'class\s+' + RegExp.escape(t) + r'\b'), endsWith: '_cubit.dart');
+    final f = utils.findDeclFile(RegExp(r'class\s+' + RegExp.escape(t) + r'\b'), endsWith: '_cubit.dart');
     if (f != null) providerFiles.add(f);
   }
 
@@ -183,12 +185,12 @@ void _processOne(String planPath) {
     b.writeln("import 'package:flutter_bloc/flutter_bloc.dart';");
   }
   for (final f in providerFiles) {
-    b.writeln("import '${_pkgImport(pkg, f)}';");
+    b.writeln("import '${utils.pkgImport(pkg, f)}';");
   }
   // For primary cubit success stub that emits ApiResponse, import state model
   if (primaryCubitType != null) {
     final stateFilePath = _getStateFilePathFromCubit(primaryCubitType);
-    b.writeln("import '${_pkgImport(pkg, stateFilePath)}';");
+    b.writeln("import '${utils.pkgImport(pkg, stateFilePath)}';");
   }
   b.writeln("import '$uiImport';");
 
@@ -265,7 +267,7 @@ void _processOne(String planPath) {
   // Emit tests grouped by category
   b.writeln('');
   b.writeln('void main() {' );
-  b.writeln("  group('${_basename(uiFile)} flow', () {");
+  b.writeln("  group('${utils.basename(uiFile)} flow', () {");
 
   for (final entry in orderedGroups) {
     final groupName = entry.$1;
@@ -356,7 +358,7 @@ void _processOne(String planPath) {
         if (ds is String) {
           b.writeln("      // dataset: ${ds.trim()}");
         }
-        final escText = _dartEscape(text);
+        final escText = utils.dartEscape(text);
         b.writeln("      await tester.enterText(find.byKey(const Key('$k')), '$escText');");
         if (!nextIsPump) b.writeln('      await tester.pump();');
 
@@ -370,7 +372,7 @@ void _processOne(String planPath) {
 
       } else if (s.containsKey('tapText')) {
         final txt = (s['tapText']).toString();
-        b.writeln("      await tester.tap(find.text('${_dartEscape(txt)}'));");
+        b.writeln("      await tester.tap(find.text('${utils.dartEscape(txt)}'));");
         if (!nextIsPump) b.writeln('      await tester.pump();');
 
       } else if (s.containsKey('pumpAndSettle')) {
@@ -394,19 +396,19 @@ void _processOne(String planPath) {
         continue;
       }
       if (byKey != null && textEquals is String) {
-        final esc = _dartEscape(textEquals);
+        final esc = utils.dartEscape(textEquals);
         b.writeln("      final _tw = tester.widget<Text>(find.byKey(const Key('$byKey')));");
         b.writeln("      expect(_tw.data ?? '', '$esc');");
         continue;
       }
       if (byKey != null && textContains is String) {
-        final esc = _dartEscape(textContains);
+        final esc = utils.dartEscape(textContains);
         b.writeln("      final _tw = tester.widget<Text>(find.byKey(const Key('$byKey')));");
         b.writeln("      expect((_tw.data ?? '').contains('$esc'), true);");
         continue;
       }
       if (textGlobal is String && exists is bool) {
-        final esc = _dartEscape(textGlobal);
+        final esc = utils.dartEscape(textGlobal);
         // Check if this assert has explicit count field
         final explicitCount = a['count'];
         final finderExpr = () {
@@ -460,12 +462,12 @@ void _processOne(String planPath) {
         if (codeVal is num) {
           b.writeln("      expect(_cubit.state.response?.code, ${codeVal.toInt()});");
         } else {
-          final esc = _dartEscape((codeVal?.toString() ?? ''));
+          final esc = utils.dartEscape((codeVal?.toString() ?? ''));
           b.writeln("      expect(_cubit.state.response?.code.toString(), '$esc');");
         }
       }
       if (hasMessage) {
-        final msg = _dartEscape((respJson['message']?.toString() ?? ''));
+        final msg = utils.dartEscape((respJson['message']?.toString() ?? ''));
         b.writeln("      expect(_cubit.state.response?.message, '$msg');");
       }
     }
@@ -500,11 +502,11 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
     ib.writeln("import 'package:flutter_bloc/flutter_bloc.dart';");
   }
   for (final f in providerFiles) {
-    ib.writeln("import '${_pkgImport(pkg, f)}';");
+    ib.writeln("import '${utils.pkgImport(pkg, f)}';");
   }
   if (primaryCubitType != null) {
     final stateFilePath = _getStateFilePathFromCubit(primaryCubitType);
-    ib.writeln("import '${_pkgImport(pkg, stateFilePath)}';");
+    ib.writeln("import '${utils.pkgImport(pkg, stateFilePath)}';");
   }
   ib.writeln("import '$uiImport';");
 
@@ -512,7 +514,7 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
     ..writeln('')
     ..writeln('void main() {')
     ..writeln('  IntegrationTestWidgetsFlutterBinding.ensureInitialized();')
-    ..writeln("  group('${_basename(uiFile)} flow (integration)', () {");
+    ..writeln("  group('${utils.basename(uiFile)} flow (integration)', () {");
 
   for (final entry in orderedGroups) {
     final groupName = entry.$1;
@@ -555,7 +557,7 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
             }
           }
           if (ds is String) ib.writeln("        // dataset: ${ds.trim()}");
-          final escText = _dartEscape(text);
+          final escText = utils.dartEscape(text);
           ib.writeln("        await tester.enterText(find.byKey(const Key('$k')), '$escText');");
           if (!nextIsPump) ib.writeln('        await tester.pump();');
         } else if (s.containsKey('tap')) {
@@ -567,7 +569,7 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
           if (!nextIsPump) ib.writeln('        await tester.pump();');
         } else if (s.containsKey('tapText')) {
           final txt = (s['tapText']).toString();
-          ib.writeln("        await tester.tap(find.text('${_dartEscape(txt)}'));");
+          ib.writeln("        await tester.tap(find.text('${utils.dartEscape(txt)}'));");
           if (!nextIsPump) ib.writeln('        await tester.pump();');
         } else if (s.containsKey('pumpAndSettle')) {
           ib.writeln('        await tester.pumpAndSettle();');
@@ -606,7 +608,7 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
           if (byKey != null && exists is bool) {
             finders.add("find.byKey(const Key('$byKey'))");
           } else if (textGlobal is String && exists is bool) {
-            final esc = _dartEscape(textGlobal);
+            final esc = utils.dartEscape(textGlobal);
             finders.add("find.text('$esc')");
           }
         }
@@ -634,18 +636,10 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
     ..writeln('  });')
     ..writeln('}');
 
-  final integPath = 'integration_test/${_basenameWithoutExtension(uiFile)}_flow_test.dart';
+  final integPath = 'integration_test/${utils.basenameWithoutExtension(uiFile)}_flow_test.dart';
   File(integPath).createSync(recursive: true);
   File(integPath).writeAsStringSync(ib.toString());
   stdout.writeln('✓ integration full flow tests: $integPath');
-}
-
-// Escape a Dart single-quoted string literal: backslash, dollar, and single-quote
-String _dartEscape(String s) {
-  return s
-      .replaceAll('\\\\', r'\\')
-      .replaceAll(r'$', r'\$')
-      .replaceAll("'", r"\'");
 }
 
 // Helper functions to make cubit handling dynamic
@@ -674,46 +668,8 @@ String _getStateFilePathFromCubit(String cubitType) {
   return 'lib/cubit/${parts.join('')}_state.dart';
 }
 
-String? _readPackageName() {
-  try {
-    final y = File('pubspec.yaml').readAsStringSync();
-    final m = RegExp(r'^name:\s*(.+)\s*$', multiLine: true).firstMatch(y);
-    return m?.group(1)?.trim();
-  } catch (_) {
-    return null;
-  }
-}
-
-String _pkgImport(String package, String libPath) {
-  final rel = libPath.replaceAll('\\\\', '/');
-  final p = rel.startsWith('lib/') ? rel.substring(4) : rel;
-  return 'package:$package/$p';
-}
-
-String? _findDeclFile(RegExp classRx, {String? endsWith}) {
-  final dir = Directory('lib');
-  if (!dir.existsSync()) return null;
-  for (final e in dir.listSync(recursive: true)) {
-    if (e is! File) continue;
-    final path = e.path.replaceAll('\\\\', '/');
-    if (endsWith != null && !path.endsWith(endsWith)) continue;
-    final s = e.readAsStringSync();
-    if (classRx.hasMatch(s)) return path;
-  }
-  return null;
-}
-
-String _basename(String path) {
-  final p = path.replaceAll('\\\\', '/');
-  final i = p.lastIndexOf('/');
-  return i >= 0 ? p.substring(i + 1) : p;
-}
-
-String _basenameWithoutExtension(String path) {
-  final b = _basename(path);
-  final i = b.lastIndexOf('.');
-  return i > 0 ? b.substring(0, i) : b;
-}
+// Removed: _readPackageName, _pkgImport, _findDeclFile, utils.basename, utils.basenameWithoutExtension
+// Now using utils.dart module instead
 
 // Extract validation counts from test plan asserts (with 'count' field)
 Map<String, int> _extractValidationCountsFromPlan(List<Map<String, dynamic>> cases) {
