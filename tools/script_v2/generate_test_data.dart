@@ -16,6 +16,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'generator_pict.dart' as pict;
+import 'utils.dart' as utils;
 
 void main(List<String> args) async {
   // Default settings
@@ -132,7 +133,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
   final j = jsonDecode(raw) as Map<String, dynamic>;
   final source = (j['source'] as Map<String, dynamic>? ) ?? const {};
   final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
-  final pageClass = (source['pageClass'] as String?) ?? _basenameWithoutExtension(uiFile);
+  final pageClass = (source['pageClass'] as String?) ?? utils.basenameWithoutExtension(uiFile);
   // Try to emit a PICT model from manifest first for verification
   try {
     await _tryWritePictModelFromManifestForUi(uiFile, pictBin: pictBin);
@@ -160,7 +161,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
   };
   bool hasExternalDatasets = false;
   try {
-    final extPath = 'output/test_data/${_basenameWithoutExtension(uiFile)}.datasets.json';
+    final extPath = 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.datasets.json';
     final f = File(extPath);
     if (f.existsSync()) {
       final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
@@ -413,7 +414,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
   // --- Pairwise generation (always enabled for API endpoints) ---
   if (hasEndButton) {
     // Load page-specific PICT results
-    final pageBase = _basenameWithoutExtension(uiFile);
+    final pageBase = utils.basenameWithoutExtension(uiFile);
     final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';
     final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt';
     List<Map<String,String>>? extCombos;
@@ -1093,28 +1094,18 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
     'cases': cases,
   };
 
-  final outPath = 'output/test_data/${_basenameWithoutExtension(uiFile)}.testdata.json';
+  final outPath = 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
   File(outPath).createSync(recursive: true);
   File(outPath).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(plan) + '\n');
   stdout.writeln('✓ fullpage plan: $outPath');
 }
 
 
-String _basename(String path) {
-  final p = path.replaceAll('\\\\', '/');
-  final i = p.lastIndexOf('/');
-  return i >= 0 ? p.substring(i + 1) : p;
-}
-
-String _basenameWithoutExtension(String path) {
-  final b = _basename(path);
-  final i = b.lastIndexOf('.');
-  return i > 0 ? b.substring(0, i) : b;
-}
+// Removed: _basename, _basenameWithoutExtension - now using utils.dart
 
 // Attempt to read output/manifest/**/<page>.manifest.json and emit a PICT model
 Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin = './pict'}) async {
-  final base = _basenameWithoutExtension(uiFile);
+  final base = utils.basenameWithoutExtension(uiFile);
 
   // Extract subfolder structure from uiFile (e.g., lib/demos/register_page.dart → demos)
   final normalizedPath = uiFile.replaceAll('\\', '/');
