@@ -13,6 +13,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'utils.dart' as utils;
+
 // ============================================================================
 // PICT Model Generation
 // ============================================================================
@@ -484,7 +486,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
   }
 
   // Generate PICT model files
-  final pageBase = _basenameWithoutExtension(uiFilePath);
+  final pageBase = utils.basenameWithoutExtension(uiFilePath);
   await writePictModelFiles(
     factors: factors,
     pageBaseName: pageBase,
@@ -531,11 +533,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
   );
 }
 
-String _basenameWithoutExtension(String path) {
-  final basename = path.split('/').last.split('\\').last;
-  final dotIndex = basename.lastIndexOf('.');
-  return dotIndex > 0 ? basename.substring(0, dotIndex) : basename;
-}
+// Removed: _basenameWithoutExtension - now using utils.basenameWithoutExtension
 
 /// Result of pairwise generation
 class PairwiseResult {
