@@ -19,11 +19,16 @@ import 'dart:io';
 import 'dart:math';
 
 // ========================================
-// 🔑 HARDCODED API KEY (ใส่ API key ตรงนี้)
+// 🔑 API KEY CONFIGURATION
 // ========================================
-const String hardcodedApiKey = 'AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg';
+// SECURITY: Never hardcode API keys in source code
+// Use one of these methods instead:
+// 1. Create .env file with: GEMINI_API_KEY=your_key
+// 2. Export environment variable: export GEMINI_API_KEY=your_key
+// 3. Use --api-key flag: --api-key=your_key
 // Get your API key from: https://aistudio.google.com/app/apikey
 // ========================================
+const String hardcodedApiKey = ''; // Removed for security
 
 void main(List<String> args) async {
   String manifestPath = '';
