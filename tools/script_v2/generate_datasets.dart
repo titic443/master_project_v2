@@ -18,6 +18,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'utils.dart' as utils;
+
 // ========================================
 // 🔑 API KEY CONFIGURATION
 // ========================================
@@ -146,7 +148,7 @@ Future<void> _processManifest(
   }
 
   // Priority: --api-key flag > .env file > environment variable > hardcoded constant
-  apiKey ??= _readApiKeyFromEnv();
+  apiKey ??= utils.readApiKeyFromEnv();
   apiKey ??= Platform.environment['GEMINI_API_KEY'];
   if (apiKey == null || apiKey.isEmpty) {
     apiKey = hardcodedApiKey != 'YOUR_API_KEY_HERE' ? hardcodedApiKey : null;
@@ -283,7 +285,7 @@ Future<void> _processManifest(
   };
 
   final outPath =
-      'output/test_data/${_basenameWithoutExtension(uiFile)}.datasets.json';
+      'output/test_data/${utils.basenameWithoutExtension(uiFile)}.datasets.json';
   File(outPath).createSync(recursive: true);
   File(outPath).writeAsStringSync(
       '${const JsonEncoder.withIndent('  ').convert(result)}\n');
@@ -706,43 +708,5 @@ String _minimalValidForConstraints(String key, FieldConstraints c) {
 
 String _repeatCharFor(int n) => n <= 0 ? '' : List.filled(n, 'A').join();
 
-String _basename(String path) {
-  final p = path.replaceAll('\\\\', '/');
-  final i = p.lastIndexOf('/');
-  return i >= 0 ? p.substring(i + 1) : p;
-}
-
-String _basenameWithoutExtension(String path) {
-  final b = _basename(path);
-  final i = b.lastIndexOf('.');
-  return i > 0 ? b.substring(0, i) : b;
-}
-
-String? _readApiKeyFromEnv() {
-  try {
-    final envFile = File('.env');
-    if (!envFile.existsSync()) return null;
-
-    final lines = envFile.readAsLinesSync();
-    for (final line in lines) {
-      final trimmed = line.trim();
-      // Skip comments and empty lines
-      if (trimmed.isEmpty || trimmed.startsWith('#')) continue;
-
-      // Parse KEY=value format
-      final parts = trimmed.split('=');
-      if (parts.length >= 2 && parts[0].trim() == 'GEMINI_API_KEY') {
-        final value = parts.sublist(1).join('=').trim();
-        // Remove quotes if present
-        if ((value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith("'") && value.endsWith("'"))) {
-          return value.substring(1, value.length - 1);
-        }
-        return value;
-      }
-    }
-  } catch (e) {
-    // Silently ignore errors reading .env file
-  }
-  return null;
-}
+// Removed: _basename, _basenameWithoutExtension, _readApiKeyFromEnv
+// Now using utils.dart module instead
