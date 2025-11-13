@@ -8,10 +8,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'utils.dart' as utils;
+
 void main(List<String> args) {
   if (args.isEmpty) {
     // Scan all pages under lib/**
-    final pages = _listFiles('lib', (p) => p.endsWith('_page.dart') || p.endsWith('.page.dart')).toList();
+    final pages = utils.listFiles('lib', (p) => p.endsWith('_page.dart') || p.endsWith('.page.dart')).toList();
     if (pages.isEmpty) {
       stderr.writeln('No page files found under lib/**');
       exit(1);
@@ -36,7 +38,7 @@ void _processOne(String path) {
   final src = _stripComments(rawSrc);
   final consts = _collectStringConsts(src);
 
-  final pageClass = _findPageClass(src) ?? _basenameWithoutExtension(path);
+  final pageClass = _findPageClass(src) ?? utils.basenameWithoutExtension(path);
   final cubitType = _findCubitType(src);
   final stateType = _findStateType(src);
   final cubitFilePath = _findCubitFilePath(src, cubitType);
@@ -116,7 +118,7 @@ void _processOne(String path) {
       : Directory('output/manifest');
   outDir.createSync(recursive: true);
 
-  final outPath = '${outDir.path}/${_basenameWithoutExtension(path)}.manifest.json';
+  final outPath = '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
   File(outPath).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(ir) + '\n');
   stdout.writeln('✓ Manifest written: $outPath');
 }
@@ -734,16 +736,7 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
   return meta;
 }
 
-String _basename(String path) {
-  final p = path.replaceAll('\\\\', '/');
-  final i = p.lastIndexOf('/');
-  return i >= 0 ? p.substring(i + 1) : p;
-}
-String _basenameWithoutExtension(String path) {
-  final b = _basename(path);
-  final i = b.lastIndexOf('.');
-  return i > 0 ? b.substring(0, i) : b;
-}
+// Removed: _basename, _basenameWithoutExtension - now using utils.dart
 
 // Collect simple RegExp variable declarations: final rx = RegExp(r'...');
 Map<String,String> _collectRegexVars(String src){
@@ -770,16 +763,7 @@ Map<String, String> _collectStringConsts(String src) {
   return out;
 }
 
-Iterable<String> _listFiles(String root, bool Function(String) pred) sync* {
-  final dir = Directory(root);
-  if (!dir.existsSync()) return;
-  for (final e in dir.listSync(recursive: true)) {
-    if (e is File) {
-      final p = e.path.replaceAll('\\\\', '/');
-      if (pred(p)) yield p;
-    }
-  }
-}
+// Removed: _listFiles - now using utils.listFiles
 
 String? _findCubitType(String src) {
   for (final rx in [
@@ -885,7 +869,7 @@ String? _findCubitFilePath(String src, String? cubitType) {
 
   // Convert CubitClass name to snake_case file name
   // e.g., CustomerCubit -> customer_cubit
-  final fileName = _camelToSnake(cubitType);
+  final fileName = utils.camelToSnake(cubitType);
 
   // Look for import statements with the cubit file
   // Pattern: import 'package:PROJECT_NAME/path/to/cubit_file.dart';
@@ -907,7 +891,7 @@ String? _findStateFilePath(String src, String? stateType) {
 
   // Convert StateClass name to snake_case file name
   // e.g., CustomerState -> customer_state
-  final fileName = _camelToSnake(stateType);
+  final fileName = utils.camelToSnake(stateType);
 
   // Look for import statements with the state file
   // Pattern: import 'package:PROJECT_NAME/path/to/state_file.dart';
@@ -921,13 +905,4 @@ String? _findStateFilePath(String src, String? stateType) {
   return 'lib/cubit/$fileName.dart';
 }
 
-/// Convert CamelCase to snake_case
-/// Examples:
-///   CustomerCubit -> customer_cubit
-///   ButtonsState -> buttons_state
-String _camelToSnake(String input) {
-  return input
-      .replaceAllMapped(RegExp(r'([a-z0-9])([A-Z])'), (m) => '${m.group(1)}_${m.group(2)}')
-      .replaceAllMapped(RegExp(r'([A-Z])([A-Z][a-z])'), (m) => '${m.group(1)}_${m.group(2)}')
-      .toLowerCase();
-}
+// Removed: _camelToSnake - now using utils.camelToSnake
