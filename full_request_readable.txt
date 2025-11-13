@@ -1,0 +1,194 @@
+=====================================
+GEMINI API REQUEST (Full Payload)
+=====================================
+
+Endpoint: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=YOUR_API_KEY
+
+Content-Type: application/json
+
+Body:
+{
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "text": "<PART 1: INSTRUCTIONS>"
+        },
+        {
+          "text": "<PART 2: INPUT DATA>"
+        }
+      ]
+    }
+  ]
+}
+
+=====================================
+<PART 1: INSTRUCTIONS>
+=====================================
+
+=== (CONTEXT) ===
+Test data generator for Flutter form validation.
+
+=== (TARGET) ===
+QA engineers need realistic test data for happy path and errors.
+
+=== (OBJECTIVE) ===
+1. Analyze constraints (maxLength, inputFormatters, validatorRules)
+2. FILTER OUT isEmpty/null rules (tested separately)
+3. Generate valid/invalid pairs ONLY for non-empty rules
+4. CRITICAL: Invalid values MUST pass inputFormatters but FAIL validators
+5. Output valid JSON
+
+=== (EXECUTION) ===
+1. For each field, count ALL non-empty rules (SKIP ONLY "isEmpty"/"== null")
+2. Count EVERY rule even if duplicate → Let N = total non-empty rule count
+3. For each non-empty rule, generate 1 valid + 1 invalid pair
+4. CRITICAL: Create N pairs (total N valid + N invalid)
+5. Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}
+6. Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"rule message"}
+
+Example 1 (N=1):
+Input: {"file":"lib/page.dart","fields":[{"key":"firstname","validatorRules":[
+  {"condition":"value == null || value.isEmpty","message":"Required"},
+  {"condition":"!RegExp(r'^[a-zA-Z]{2,}$').hasMatch(value)","message":"Min 2"}]}]}
+Non-empty rules: 1 (SKIP isEmpty) → N=1 pair
+Output: {"file":"lib/page.dart","datasets":{"byKey":{"firstname":[
+  {"valid":"Alice","invalid":"J","invalidRuleMessages":"Min 2"}
+]}}}
+
+Example 2 (N=3 with duplicate):
+Input: {"file":"lib/page.dart","fields":[{"key":"phone","validatorRules":[
+  {"condition":"value == null || value.isEmpty","message":"Required"},
+  {"condition":"!RegExp(r'^\\d{10}$').hasMatch(value)","message":"10 digits"},
+  {"condition":"!value.startsWith('0')","message":"Starts with 0"},
+  {"condition":"!RegExp(r'^\\d{10}$').hasMatch(value)","message":"Duplicate"}]}]}
+Non-empty rules: 3 (SKIP isEmpty, COUNT all) → N=3 pairs
+Output: {"file":"lib/page.dart","datasets":{"byKey":{"phone":[
+  {"valid":"0123456789","invalid":"012345678","invalidRuleMessages":"10 digits"},
+  {"valid":"0987654321","invalid":"1234567890","invalidRuleMessages":"Starts with 0"},
+  {"valid":"0555123456","invalid":"012","invalidRuleMessages":"Duplicate"}
+]}}}
+
+=== (STYLE) ===
+- JSON only (no markdown, no comments)
+- Realistic values (not "value1")
+- String arrays only
+- Remember: invalid data MUST be typeable (respect inputFormatters)
+
+=====================================
+<PART 2: INPUT DATA>
+=====================================
+
+Input Data (JSON):
+{
+  "file": "lib/demos/example_page.dart",
+  "fields": [
+    {
+      "key": "firstname_textfield",
+      "meta": {
+        "maxLength": 50,
+        "inputFormatters": [
+          {
+            "type": "allow",
+            "pattern": "[a-zA-Z]"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 50
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "First name is required"
+          },
+          {
+            "condition": "!RegExp(r'^[a-zA-Z]{2,}$').hasMatch(value)",
+            "message": "Min 2 letters"
+          }
+        ]
+      }
+    },
+    {
+      "key": "phone_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 10
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Phone is required"
+          },
+          {
+            "condition": "!RegExp(r'^\\d{10}$').hasMatch(value)",
+            "message": "Must be 10 digits"
+          },
+          {
+            "condition": "!value.startsWith('0')",
+            "message": "Must start with 0"
+          }
+        ]
+      }
+    }
+  ]
+}
+
+=====================================
+EXPECTED AI RESPONSE
+=====================================
+
+{
+  "file": "lib/demos/example_page.dart",
+  "datasets": {
+    "byKey": {
+      "firstname_textfield": [
+        {
+          "valid": "Alice",
+          "invalid": "J",
+          "invalidRuleMessages": "Min 2 letters"
+        }
+      ],
+      "phone_textfield": [
+        {
+          "valid": "0812345678",
+          "invalid": "081234567",
+          "invalidRuleMessages": "Must be 10 digits"
+        },
+        {
+          "valid": "0987654321",
+          "invalid": "1234567890",
+          "invalidRuleMessages": "Must start with 0"
+        }
+      ]
+    }
+  }
+}
+
+=====================================
+SUMMARY
+=====================================
+
+1. Request Structure:
+   - Gemini API uses "contents" array with "role" and "parts"
+   - Each "part" contains a "text" field
+   - Part 1: Instructions (fixed template)
+   - Part 2: Input Data (extracted from manifest)
+
+2. Processing:
+   - Field 1 (firstname): 1 non-empty rule → 1 pair
+   - Field 2 (phone): 2 non-empty rules → 2 pairs
+   - Total: 3 valid/invalid pairs generated
+
+3. Key Rules:
+   - SKIP "isEmpty"/"== null" rules
+   - COUNT all non-empty rules (even duplicates)
+   - Invalid values MUST pass inputFormatters
+   - Invalid values MUST fail validators

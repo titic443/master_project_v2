@@ -1,0 +1,3 @@
+Dropdown: "work", "personal", "shopping", "health"
+Dropdown2: "low", "medium", "high"
+Dropdown3: "todo", "in_progress", "completed", "cancelled"

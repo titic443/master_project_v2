@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dart analyze:*)",
+      "Bash(dart run:*)",
+      "Bash(git add:*)",
+      "Bash(chmod:*)",
+      "Bash(dot:*)",
+      "Bash(cat:*)",
+      "Bash(git init:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

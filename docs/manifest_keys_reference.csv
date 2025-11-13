@@ -1,0 +1,50 @@
+Level,Key,Source (Dart Code),Meaning,Usage,Example Value,Used In Files
+Root,source,object,ข้อมูลต้นทางของ UI file,ระบุที่มาของ manifest,{...},N/A
+Root,widgets,array,รายการ widgets ทั้งหมดที่สแกนได้,ใช้สร้าง test cases/datasets/event sequences,[...],All scripts
+
+source.*,file,path argument,ที่อยู่ไฟล์ Dart,ระบุ source file สำหรับ reference,lib/register/register_page.dart,Not used yet
+source.*,pageClass,"class XxxPage extends StatefulWidget",ชื่อ class ของ page,ใช้ในการ generate test class name,RegisterPage,Not used yet
+source.*,route,"static const route = '/xxx'",route path ของหน้า,ใช้ในการ navigate ใน integration test,/register,Not used yet
+
+widgets[i].*,widgetType,Constructor name,ประเภท widget (รวม generics),กำหนด event type และ test actions,"TextFormField, Radio<int>, DropdownButtonFormField<String>","extract_event_sequence, generate_datasets, generate_test_data, visualize_event_graph"
+widgets[i].*,key,"key: const Key('xxx')",Widget key สำหรับ testing,find.byKey() ใน test และ index ใน datasets,register_01_username_textfield,"extract_event_sequence, generate_datasets, generate_test_data, generate_test_script, visualize_event_graph"
+widgets[i].*,actions,"onPressed:, onChanged:, etc.",Callbacks ที่ widget มี,กำหนด event type (tap/enterText) และวิเคราะห์ business logic,[{event:onChanged...}],"extract_event_sequence, visualize_event_graph"
+widgets[i].*,meta,Widget properties,Metadata เพิ่มเติมเฉพาะ widget type,สร้าง test data และ validate constraints,{maxLength:10...},"generate_datasets, generate_test_data"
+widgets[i].*,textLiteral,"Text('xxx')",ข้อความที่แสดง,ใช้ใน UI assertions และ documentation,หน้าสมัครสมาชิก,Not used yet
+
+actions[j].*,event,Callback name,ชื่อ event handler,กำหนด test action type,"onPressed, onChanged, onTap",extract_event_sequence
+actions[j].*,argType,Type inference,ประเภท argument ของ callback,Type safety ใน code generation,"String, void, int",Not used yet
+actions[j].*,calls,Method calls inside callback,Methods ที่ถูกเรียกใน callback,วิเคราะห์ business logic flow,[{target:RegisterCubit...}],Not used yet
+
+meta.* (TextField),maxLength,"maxLength: 10",ความยาวสูงสุด,เช็คว่า valid data ไม่เกิน และ truncate ถ้าเกิน,"10, 25","generate_datasets, generate_test_data"
+meta.* (TextField),obscureText,"obscureText: true",ซ่อนข้อความ (password field),ใช้ในการ generate password data,"true, false",generate_datasets
+meta.* (TextField),keyboardType,"keyboardType: TextInputType.emailAddress",ประเภท keyboard,กำหนด input type hint,"emailAddress, number, phone",Not used yet
+meta.* (TextField),inputFormatters,"inputFormatters: [FilteringTextInputFormatter.allow(...)]",Format constraints,ใช้สร้าง pattern สำหรับ generate data,[{type:allow...}],"generate_datasets, generate_test_data"
+meta.* (TextField),validator,"validator: (value) {...}",มี validator หรือไม่,บอกว่า field นี้ต้อง validate,true,"generate_datasets, generate_test_data"
+meta.* (TextField),required,จาก validator logic,Field บังคับกรอก,กำหนดว่าต้องมี valid data,true,"generate_datasets, generate_test_data"
+meta.* (TextField),validatorRules,"if (value.isEmpty) return 'Required'",Validation rules ทั้งหมด,สร้าง valid/invalid data แบบ 1:1 mapping,[{condition:...}],"generate_datasets, generate_test_data"
+
+validatorRules[i].*,condition,"if (value.isEmpty)",เงื่อนไขที่ต้องเป็นจริงเพื่อแสดง error,สร้าง invalid data ที่ละเมิด condition นี้,value == null || value.isEmpty,generate_datasets
+validatorRules[i].*,message,"return 'Required'",Error message ที่แสดง,ใช้เป็น documentation และอาจใช้ใน UI test assertions,"Required, Please enter a valid username",generate_datasets
+
+inputFormatters[i].*,type,Formatter class name,ประเภท formatter,กำหนดวิธีสร้าง data,"allow, deny, digitsOnly, lengthLimit",generate_datasets
+inputFormatters[i].*,pattern,"RegExp(r'[a-zA-Z0-9]')",Regex pattern,สร้าง data ที่ match/not match pattern,"[a-zA-Z0-9], [0-9]",generate_datasets
+inputFormatters[i].*,replacement,"replacementString: 'x'",ตัวแทนเมื่อละเมิด pattern,ไม่ค่อยใช้ใน test generation,x,Not used
+inputFormatters[i].*,max,"LengthLimitingTextInputFormatter(25)",ความยาวสูงสุด (เหมือน maxLength),เช็ค constraint,25,generate_datasets
+
+meta.* (Radio/FormField),options,Radio widgets ใน FormField builder,ตัวเลือกทั้งหมดของ RadioGroup,สร้าง event sequence และ test steps,[{key:...}],"extract_event_sequence, generate_test_data"
+meta.* (Radio),valueExpr,"value: 0",ค่าของ radio button นี้,ใช้ในการ compare กับ groupValue,"0, 1, male",Not used yet
+meta.* (Radio),groupValueBinding,"groupValue: field.value",ตัวแปรที่เก็บค่าปัจจุบันของ group,วิเคราะห์ state binding,field.value,Not used yet
+
+options[i].* (Radio),key,"key: const Key('xxx_radio')",Key ของ Radio widget,ใช้ใน test find.byKey(),register_05_gender_male_radio,"extract_event_sequence, generate_test_script"
+options[i].* (Radio),value,"value: 0",ค่าที่ส่งไปยัง callback,วิเคราะห์ logic และ assert value,"0, 1, male",extract_event_sequence
+options[i].* (Radio),label,Text widget ข้างๆ Radio,Label ที่แสดงผล,ใช้เป็น documentation,"ชาย, หญิง",extract_event_sequence
+
+meta.* (Dropdown),itemsCount,จำนวน DropdownMenuItem,จำนวนตัวเลือก,ไม่ค่อยใช้,4,Not used
+meta.* (Dropdown),hasValue,"value: ...",มี value property,บอกว่า dropdown มี initial value,true,Not used
+meta.* (Dropdown),options,"DropdownMenuItem(value:'x', child:Text('y'))",ตัวเลือกทั้งหมด,สร้าง PICT factors และ test steps,[{value:18-25...}],"generate_test_data, generate_test_script"
+
+options[i].* (Dropdown),value,"DropdownMenuItem(value: 'xxx')",ค่าที่ส่งไปยัง callback,ใช้ใน PICT model และ assert value,"18-25, 26-35","generate_test_data, generate_test_script"
+options[i].* (Dropdown),text,"child: Text('xxx')",ข้อความที่แสดง,ใช้ใน test find.text(),"18 - 25 ปี, 26 - 35 ปี",generate_test_script
+
+meta.* (Text),displayBinding,"Text(state.fieldName)",Binding กับ state,วิเคราะห์ state dependencies,{key:status_text...},Not used yet

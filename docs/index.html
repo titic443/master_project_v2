@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manifest Keys Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        thead {
+            background: #3498db;
+            color: white;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #e74c3c;
+        }
+
+        .level {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .level-root { background: #3498db; }
+        .level-source { background: #9b59b6; }
+        .level-widget { background: #27ae60; }
+        .level-action { background: #f39c12; }
+        .level-meta { background: #16a085; }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Manifest Keys Reference</h1>
+        <p style="margin-bottom: 30px;">
+            คู่มืออธิบายความหมายของแต่ละ key ใน <code>&lt;page&gt;.manifest.json</code>
+        </p>
+
+        <h2>📁 Root Level</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>source</code></td>
+                    <td>-</td>
+                    <td>object เก็บข้อมูลต้นทางของ UI file</td>
+                    <td>ใช้ระบุที่มาของ manifest และข้อมูลพื้นฐานของหน้า</td>
+                </tr>
+                <tr>
+                    <td><code>widgets</code></td>
+                    <td>-</td>
+                    <td>array เก็บรายการ widgets ทั้งหมดที่สแกนได้จาก UI</td>
+                    <td>ใช้เป็น input สำหรับสร้าง test cases, datasets, event sequences</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📄 source.*</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>file</code></td>
+                    <td>path argument ที่ส่งเข้า script</td>
+                    <td>ที่อยู่ไฟล์ Dart (เช่น <code>lib/register/register_page.dart</code>)</td>
+                    <td>ใช้ระบุ source file สำหรับ reference และ debugging</td>
+                </tr>
+                <tr>
+                    <td><code>pageClass</code></td>
+                    <td>จาก <code>class XxxPage extends StatefulWidget</code></td>
+                    <td>ชื่อ class ของ page (เช่น <code>RegisterPage</code>)</td>
+                    <td>ใช้ในการ generate test class name (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+                <tr>
+                    <td><code>route</code></td>
+                    <td>จาก <code>static const route = '/xxx';</code></td>
+                    <td>route path ของหน้า (เช่น <code>/register</code>)</td>
+                    <td>ใช้ในการ navigate ใน integration test (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🎨 widgets[i].* - Common Fields</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>widgetType</code></td>
+                    <td>จาก Constructor name (เช่น <code>TextFormField(...)</code>, <code>Radio&lt;int&gt;(...)</code>)</td>
+                    <td>ประเภทของ widget รวม generics (เช่น <code>TextFormField</code>, <code>Radio&lt;int&gt;</code>)</td>
+                    <td>ใช้กำหนด event type (enterText/tap/selectRadioGroup) และ filter widgets ตามประเภท<br>
+                        - <code>extract_event_sequence.dart</code>: กำหนด event type<br>
+                        - <code>generate_datasets.dart</code>: filter TextFormField<br>
+                        - <code>generate_test_data.dart</code>: สร้าง PICT factors</td>
+                </tr>
+                <tr>
+                    <td><code>key</code></td>
+                    <td>จาก <code>key: const Key('xxx')</code> หรือ <code>key: ValueKey('xxx')</code></td>
+                    <td>Widget key สำหรับระบุ widget เฉพาะเจาะจง (เช่น <code>register_01_username_textfield</code>)</td>
+                    <td>ใช้เป็น unique identifier ใน:<br>
+                        - Flutter test: <code>find.byKey(Key('xxx'))</code><br>
+                        - Datasets: index สำหรับเก็บ valid/invalid data<br>
+                        - Event sequence: ระบุ widget ที่ต้อง interact<br>
+                        - Test steps: ระบุ widget target</td>
+                </tr>
+                <tr>
+                    <td><code>actions</code></td>
+                    <td>จาก callbacks เช่น <code>onPressed: (...)</code>, <code>onChanged: (...)</code>, <code>onTap: (...)</code></td>
+                    <td>array เก็บ event handlers ทั้งหมดของ widget</td>
+                    <td>ใช้วิเคราะห์ behavior ของ widget:<br>
+                        - กำหนด event type (onChanged→enterText, onPressed→tap)<br>
+                        - วิเคราะห์ business logic (method calls)<br>
+                        - สร้าง event sequence graph</td>
+                </tr>
+                <tr>
+                    <td><code>meta</code></td>
+                    <td>จาก properties ต่างๆ ของ widget (maxLength, validator, inputFormatters, etc.)</td>
+                    <td>object เก็บ metadata เพิ่มเติมเฉพาะแต่ละ widget type</td>
+                    <td>ใช้ใน:<br>
+                        - สร้าง test data ที่ถูก constraints<br>
+                        - validate ความถูกต้องของ data<br>
+                        - สร้าง PICT factors</td>
+                </tr>
+                <tr>
+                    <td><code>textLiteral</code></td>
+                    <td>จาก <code>Text('xxx')</code></td>
+                    <td>ข้อความที่แสดงใน Text widget (เช่น <code>หน้าสมัครสมาชิก</code>)</td>
+                    <td>ใช้เป็น documentation และอาจใช้ใน UI test assertions (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🎭 actions[j].*</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>event</code></td>
+                    <td>จากชื่อ callback (เช่น <code>onPressed</code>, <code>onChanged</code>)</td>
+                    <td>ชื่อของ event handler (เช่น <code>onPressed</code>, <code>onChanged</code>, <code>onTap</code>)</td>
+                    <td>ใช้กำหนด test action type:<br>
+                        - <code>onChanged</code> → <code>enterText</code><br>
+                        - <code>onPressed</code> → <code>tap</code><br>
+                        - <code>onTap</code> → <code>tap</code></td>
+                </tr>
+                <tr>
+                    <td><code>argType</code></td>
+                    <td>จาก type inference (TextField→String, Button→void, Radio→T)</td>
+                    <td>ประเภทของ argument ที่ callback รับ (เช่น <code>String</code>, <code>void</code>, <code>int</code>)</td>
+                    <td>ใช้สำหรับ type safety ใน code generation (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+                <tr>
+                    <td><code>calls</code></td>
+                    <td>จาก method calls ใน callback body (เช่น <code>_cubit.onUsernameChanged(value)</code>)</td>
+                    <td>array เก็บ methods ที่ถูกเรียกใน callback (เช่น <code>[{target:"RegisterCubit", method:"onUsernameChanged"}]</code>)</td>
+                    <td>ใช้วิเคราะห์ business logic flow และ state changes (ยังไม่ได้ใช้งานเต็มที่)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📝 meta.* (TextField/TextFormField)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>maxLength</code></td>
+                    <td>จาก property <code>maxLength: 10</code></td>
+                    <td>ความยาวสูงสุดของข้อความ (เช่น <code>10</code>, <code>25</code>)</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code>:<br>
+                        - เช็คว่า valid data ไม่เกิน maxLength<br>
+                        - truncate ถ้า AI generate ยาวเกิน<br>
+                        - สร้าง boundary test data</td>
+                </tr>
+                <tr>
+                    <td><code>obscureText</code></td>
+                    <td>จาก property <code>obscureText: true</code></td>
+                    <td>บอกว่าเป็น password field หรือไม่ (<code>true</code>/<code>false</code>)</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code> เพื่อสร้าง password data ที่มี special characters</td>
+                </tr>
+                <tr>
+                    <td><code>keyboardType</code></td>
+                    <td>จาก property <code>keyboardType: TextInputType.emailAddress</code></td>
+                    <td>ประเภทของ keyboard (<code>emailAddress</code>, <code>number</code>, <code>phone</code>, <code>text</code>)</td>
+                    <td>ใช้เป็น hint สำหรับ input type (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+                <tr>
+                    <td><code>validator</code></td>
+                    <td>จาก property <code>validator: (value) {...}</code></td>
+                    <td>บอกว่า field มี validator หรือไม่ (ค่าเป็น <code>true</code>)</td>
+                    <td>ใช้ระบุว่า field นี้ต้อง validate และต้องสร้าง invalid data ด้วย</td>
+                </tr>
+                <tr>
+                    <td><code>required</code></td>
+                    <td>จาก validator logic (ถ้ามี isEmpty check)</td>
+                    <td>บอกว่า field บังคับกรอกหรือไม่ (ค่าเป็น <code>true</code>)</td>
+                    <td>ใช้ระบุว่าต้องมี valid data และ empty string เป็น invalid</td>
+                </tr>
+                <tr>
+                    <td><code>validatorRules</code></td>
+                    <td>จาก validator body: <code>if (condition) return 'message';</code></td>
+                    <td>array เก็บ validation rules ทั้งหมด (แต่ละ rule มี condition + message)</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code>:<br>
+                        - นับจำนวน rules → สร้าง valid/invalid แบบ 1:1<br>
+                        - แต่ละ rule[i] → invalid[i] ละเมิด rule นั้น<br>
+                        - ตัวอย่าง: 2 rules → 2 valid + 2 invalid</td>
+                </tr>
+                <tr>
+                    <td><code>inputFormatters</code></td>
+                    <td>จาก property <code>inputFormatters: [FilteringTextInputFormatter.allow(...), ...]</code></td>
+                    <td>array เก็บ formatters ที่จำกัดรูปแบบการพิมพ์</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code>:<br>
+                        - ดึง pattern จาก allow/deny formatters<br>
+                        - สร้าง data ที่ match/not match pattern<br>
+                        - เช็ค digitsOnly → สร้างแต่ตัวเลข</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📋 validatorRules[i].*</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>condition</code></td>
+                    <td>จาก if condition ใน validator: <code>if (value.isEmpty)</code></td>
+                    <td>เงื่อนไขที่ต้องเป็นจริงเพื่อแสดง error message (เช่น <code>value == null || value.isEmpty</code>)</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code>:<br>
+                        - parse condition เพื่อสร้าง invalid data ที่ละเมิดเงื่อนไขนี้<br>
+                        - ตัวอย่าง: isEmpty → invalid="" , !RegExp → invalid="user!"</td>
+                </tr>
+                <tr>
+                    <td><code>message</code></td>
+                    <td>จาก return statement: <code>return 'Required';</code></td>
+                    <td>ข้อความ error ที่แสดงเมื่อ condition เป็นจริง (เช่น <code>Required</code>, <code>Invalid username</code>)</td>
+                    <td>ใช้เป็น documentation และอาจใช้ใน UI test assertions</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🎛️ inputFormatters[i].*</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>type</code></td>
+                    <td>จาก formatter class name</td>
+                    <td>ประเภทของ formatter (<code>allow</code>, <code>deny</code>, <code>digitsOnly</code>, <code>lengthLimit</code>)</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code> เพื่อเลือกวิธีสร้าง data:<br>
+                        - <code>allow</code> → สร้าง data จาก pattern<br>
+                        - <code>digitsOnly</code> → สร้างแต่ตัวเลข<br>
+                        - <code>lengthLimit</code> → เหมือน maxLength</td>
+                </tr>
+                <tr>
+                    <td><code>pattern</code></td>
+                    <td>จาก RegExp argument: <code>FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]'))</code></td>
+                    <td>regex pattern ที่อนุญาต/ไม่อนุญาต (เช่น <code>[a-zA-Z0-9]</code>, <code>[0-9]</code>)</td>
+                    <td>ใช้ใน <code>generate_datasets.dart</code>:<br>
+                        - สร้าง valid data ที่ match pattern<br>
+                        - สร้าง invalid data ที่ violate pattern</td>
+                </tr>
+                <tr>
+                    <td><code>replacement</code></td>
+                    <td>จาก parameter <code>replacementString: 'x'</code></td>
+                    <td>ตัวอักษรแทนที่เมื่อละเมิด pattern (เช่น <code>x</code>)</td>
+                    <td>ไม่ค่อยใช้ใน test generation</td>
+                </tr>
+                <tr>
+                    <td><code>max</code></td>
+                    <td>จาก <code>LengthLimitingTextInputFormatter(25)</code></td>
+                    <td>ความยาวสูงสุด (เหมือน maxLength)</td>
+                    <td>ใช้เช็ค constraint เหมือน maxLength</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔘 meta.* (Radio/FormField)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>options</code></td>
+                    <td>จาก Radio widgets ใน FormField builder</td>
+                    <td>array เก็บตัวเลือกทั้งหมดของ RadioGroup (แต่ละ option มี key, value, label)</td>
+                    <td>ใช้ใน:<br>
+                        - <code>extract_event_sequence.dart</code>: สร้าง selectRadioGroup event<br>
+                        - <code>generate_test_data.dart</code>: สร้าง Radio factors สำหรับ PICT</td>
+                </tr>
+                <tr>
+                    <td><code>valueExpr</code></td>
+                    <td>จาก property <code>value: 0</code> ของ Radio widget</td>
+                    <td>ค่าของ radio button นี้ (เช่น <code>0</code>, <code>1</code>, <code>male</code>)</td>
+                    <td>ใช้ในการ compare กับ groupValue (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+                <tr>
+                    <td><code>groupValueBinding</code></td>
+                    <td>จาก property <code>groupValue: field.value</code></td>
+                    <td>ตัวแปรที่เก็บค่าปัจจุบันของ radio group (เช่น <code>field.value</code>)</td>
+                    <td>ใช้วิเคราะห์ state binding (ยังไม่ได้ใช้งาน)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔘 options[i].* (Radio)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>key</code></td>
+                    <td>จาก <code>key: const Key('xxx_radio')</code> ของ Radio widget</td>
+                    <td>Widget key ของ Radio button (เช่น <code>register_05_gender_male_radio</code>)</td>
+                    <td>ใช้ใน test: <code>find.byKey(Key('xxx_radio'))</code> เพื่อ tap radio button</td>
+                </tr>
+                <tr>
+                    <td><code>value</code></td>
+                    <td>จาก property <code>value: 0</code> ของ Radio widget</td>
+                    <td>ค่าที่ส่งไปยัง callback เมื่อเลือก (เช่น <code>0</code>, <code>1</code>, <code>male</code>)</td>
+                    <td>ใช้วิเคราะห์ logic และ assert value ใน test</td>
+                </tr>
+                <tr>
+                    <td><code>label</code></td>
+                    <td>จาก Text widget ที่อยู่ข้างๆ Radio</td>
+                    <td>ข้อความที่แสดงข้างๆ radio button (เช่น <code>ชาย</code>, <code>หญิง</code>)</td>
+                    <td>ใช้เป็น documentation และอาจใช้ใน UI assertions</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔽 meta.* (Dropdown)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>itemsCount</code></td>
+                    <td>นับจำนวน DropdownMenuItem</td>
+                    <td>จำนวนตัวเลือกใน dropdown (เช่น <code>4</code>)</td>
+                    <td>ไม่ค่อยใช้งาน</td>
+                </tr>
+                <tr>
+                    <td><code>hasValue</code></td>
+                    <td>เช็คว่ามี property <code>value: ...</code> หรือไม่</td>
+                    <td>บอกว่า dropdown มี initial value หรือไม่ (<code>true</code>/<code>false</code>)</td>
+                    <td>ไม่ค่อยใช้งาน</td>
+                </tr>
+                <tr>
+                    <td><code>options</code></td>
+                    <td>จาก DropdownMenuItem widgets</td>
+                    <td>array เก็บตัวเลือกทั้งหมด (แต่ละ option มี value + text)</td>
+                    <td>ใช้ใน:<br>
+                        - <code>generate_test_data.dart</code>: สร้าง Dropdown factors สำหรับ PICT<br>
+                        - <code>generate_test_script.dart</code>: สร้าง tapText step</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔽 options[i].* (Dropdown)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>ดึงข้อมูลจาก</th>
+                    <th>ความหมาย</th>
+                    <th>การใช้งาน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>value</code></td>
+                    <td>จาก <code>DropdownMenuItem(value: 'xxx')</code></td>
+                    <td>ค่าที่ส่งไปยัง callback (เช่น <code>18-25</code>, <code>26-35</code>)</td>
+                    <td>ใช้ใน:<br>
+                        - PICT model: <code>Dropdown: "18-25", "26-35", ...</code><br>
+                        - Assert value ใน test</td>
+                </tr>
+                <tr>
+                    <td><code>text</code></td>
+                    <td>จาก <code>child: Text('xxx')</code> ใน DropdownMenuItem</td>
+                    <td>ข้อความที่แสดงใน dropdown (เช่น <code>18 - 25 ปี</code>, <code>26 - 35 ปี</code>)</td>
+                    <td>ใช้ใน test: <code>find.text('18 - 25 ปี')</code> เพื่อเลือก dropdown option</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer>
+            <p><strong>Manifest Keys Reference</strong> | Last Updated: 2025-01-12</p>
+            <p>Generated from <code>extract_ui_manifest.dart</code></p>
+        </footer>
+    </div>
+</body>
+</html>

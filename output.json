@@ -1,0 +1,26 @@
+{
+  "file": "lib/demos/example_page.dart",
+  "datasets": {
+    "byKey": {
+      "firstname_textfield": [
+        {
+          "valid": "Alice",
+          "invalid": "J",
+          "invalidRuleMessages": "Min 2 letters"
+        }
+      ],
+      "phone_textfield": [
+        {
+          "valid": "0812345678",
+          "invalid": "081234567",
+          "invalidRuleMessages": "Must be 10 digits"
+        },
+        {
+          "valid": "0987654321",
+          "invalid": "1234567890",
+          "invalidRuleMessages": "Must start with 0"
+        }
+      ]
+    }
+  }
+}

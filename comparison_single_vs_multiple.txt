@@ -1,0 +1,125 @@
+=====================================
+เปรียบเทียบ: REQUEST เดียว vs แยกส่ง
+=====================================
+
+❌ ถ้าแยกส่ง (ไม่ใช่วิธีที่ script ทำ):
+-----------------------------------------
+
+Request #1:
+{
+  "file": "lib/demos/example_page.dart",
+  "fields": [
+    {
+      "key": "firstname_textfield",
+      "meta": { ... }
+    }
+  ]
+}
+
+Request #2:
+{
+  "file": "lib/demos/example_page.dart",
+  "fields": [
+    {
+      "key": "phone_textfield",
+      "meta": { ... }
+    }
+  ]
+}
+
+⚠️ ข้อเสีย:
+- เสีย API call 2 ครั้ง
+- เสียเวลา (2x latency)
+- ต้อง merge results เอง
+
+
+✅ วิธีที่ script ใช้ (REQUEST เดียว):
+-----------------------------------------
+
+Request (1 ครั้งเดียว):
+{
+  "file": "lib/demos/example_page.dart",
+  "fields": [
+    {
+      "key": "firstname_textfield",
+      "meta": { ... }
+    },
+    {
+      "key": "phone_textfield",
+      "meta": { ... }
+    }
+  ]
+}
+
+✓ ข้อดี:
+- API call แค่ครั้งเดียว
+- ประหยัดเวลา
+- AI return ครบทั้งหมดใน response เดียว
+
+
+=====================================
+การทำงานจริงใน Code:
+=====================================
+
+ไฟล์: tools/script_v2/generate_datasets.dart
+
+1. บรรทัด 292:
+   List<Map<String, dynamic>> fields
+   ↓
+   รับ list ของ fields ทั้งหมด (ไม่ได้รับทีละ 1)
+
+2. บรรทัด 300-306:
+   'fields': [
+     for (final f in fields)  // วน loop ใส่ทั้งหมด
+       { 'key': f['key'], 'meta': ... }
+   ]
+   ↓
+   สร้าง array ที่มี fields ทั้งหมด
+
+3. บรรทัด 367:
+   {'text': 'Input Data (JSON):\n${jsonEncode(context)}'}
+   ↓
+   ส่ง context ที่มี fields ทั้งหมดไปพร้อมกัน
+
+4. บรรทัด 218-219:
+   aiResult = await _callGeminiForDatasets(
+       apiKey, model, uiFile, fieldsWithRules);
+   ↓
+   เรียก API แค่ครั้งเดียว
+
+
+=====================================
+ตัวอย่าง PART 2 ที่ส่งไป:
+=====================================
+
+Input Data (JSON):
+{"file":"lib/demos/example_page.dart","fields":[{"key":"firstname_textfield","meta":{"maxLength":50,"inputFormatters":[{"type":"allow","pattern":"[a-zA-Z]"},{"type":"lengthLimit","max":50}],"validatorRules":[{"condition":"value == null || value.isEmpty","message":"First name is required"},{"condition":"!RegExp(r'^[a-zA-Z]{2,}$').hasMatch(value)","message":"Min 2 letters"}]}},{"key":"phone_textfield","meta":{"inputFormatters":[{"type":"digitsOnly"},{"type":"lengthLimit","max":10}],"validatorRules":[{"condition":"value == null || value.isEmpty","message":"Phone is required"},{"condition":"!RegExp(r'^\\d{10}$').hasMatch(value)","message":"Must be 10 digits"},{"condition":"!value.startsWith('0')","message":"Must start with 0"}]}}]}
+
+^ ดูตรง "fields": [...] จะเห็นว่ามี 2 objects รวมกัน
+
+
+=====================================
+คำตอบสรุป:
+=====================================
+
+Q: มี TextFormField 2 อัน จะส่ง request เดียว หรือแยกส่ง?
+A: ส่ง REQUEST เดียว
+
+Q: PART 2 จะหน้าตาเป็นยังไง?
+A: เป็น JSON object ที่มี:
+   - "file": "<path>"
+   - "fields": [ {...field1...}, {...field2...} ]
+
+   โดย fields เป็น array ที่รวม TextFormField ทั้ง 2 อัน
+
+Q: AI จะ return อะไร?
+A: JSON object เดียวที่มี:
+   {
+     "file": "...",
+     "datasets": {
+       "byKey": {
+         "firstname_textfield": [...],
+         "phone_textfield": [...]
+       }
+     }
+   }
