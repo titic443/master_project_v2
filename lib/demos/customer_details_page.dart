@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:master_project/cubit/customer_cubit.dart';
 import 'package:master_project/cubit/customer_state.dart';
+import 'package:provider/provider.dart';
 
 class CustomerDetailsPage extends StatelessWidget {
   const CustomerDetailsPage({super.key});
@@ -84,7 +86,8 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                 key: const Key('customer_01_expected_fail'),
                 content: Text(
                   state.errorMessage ?? 'Unknown error',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -113,24 +116,33 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                       ),
                       decoration: const InputDecoration(
                         labelText: 'Title',
-                        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        labelStyle: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       items: const [
                         DropdownMenuItem(
                           value: 'Mr.',
-                          child: Text('Mr.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                          child: Text('Mr.',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
                         ),
                         DropdownMenuItem(
                           value: 'Mrs.',
-                          child: Text('Mrs.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                          child: Text('Mrs.',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
                         ),
                         DropdownMenuItem(
                           value: 'Ms.',
-                          child: Text('Ms.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                          child: Text('Ms.',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
                         ),
                         DropdownMenuItem(
                           value: 'Dr.',
-                          child: Text('Dr.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                          child: Text('Dr.',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500)),
                         ),
                       ],
                       onChanged: (value) {
@@ -153,7 +165,8 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                       ),
                       decoration: const InputDecoration(
                         labelText: 'First Name',
-                        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        labelStyle: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')),
@@ -182,9 +195,11 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                       ),
                       decoration: const InputDecoration(
                         labelText: 'Phone Number',
-                        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        labelStyle: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
                         hintText: '0812345678',
-                        hintStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                        hintStyle: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w400),
                       ),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -218,7 +233,8 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                       ),
                       decoration: const InputDecoration(
                         labelText: 'Last Name',
-                        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        labelStyle: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       maxLength: 10,
                       inputFormatters: [
@@ -255,7 +271,8 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                           children: [
                             const Text(
                               'Age Range',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                             Row(
                               children: [
@@ -274,7 +291,9 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                                 ),
                                 const Text(
                                   '10-20',
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -295,7 +314,9 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                                 ),
                                 const Text(
                                   '30-40',
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -316,7 +337,9 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                                 ),
                                 const Text(
                                   '50-60',
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -360,7 +383,9 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                                 ),
                                 const Text(
                                   'Agree to terms',
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ],
                             ),
@@ -389,7 +414,8 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                         ),
                         const Text(
                           'Subscribe to newsletter',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -406,7 +432,8 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                             )
                           : const Text(
                               'Submit',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                     ),
                   ],
