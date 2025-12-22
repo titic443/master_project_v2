@@ -23,13 +23,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -43,6 +43,9 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Phone number must be exactly 10 digits'),
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -61,13 +64,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -102,13 +105,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -122,6 +125,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -140,13 +145,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -163,6 +168,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -181,13 +187,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -207,6 +213,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('Phone number must be exactly 10 digits'),
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -225,13 +233,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -242,6 +250,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -260,13 +269,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -301,13 +310,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -321,6 +330,9 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Phone number must be exactly 10 digits'),
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -339,13 +351,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -362,6 +374,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -380,13 +394,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -403,6 +417,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('Phone number must be exactly 10 digits'),
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -421,13 +437,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -441,6 +457,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('Phone number must be exactly 10 digits'),
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -459,13 +477,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -476,6 +494,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -496,13 +516,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -534,13 +554,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -575,13 +595,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -613,13 +633,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -654,13 +674,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -698,13 +718,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -733,13 +753,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -774,13 +794,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -812,13 +832,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -853,13 +873,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -894,13 +914,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -932,13 +952,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
