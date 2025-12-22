@@ -68,56 +68,6 @@ void _processOne(String planPath) {
   // Extract validation counts from test data asserts instead of parsing UI file
   final validationCounts = _extractValidationCountsFromPlan(cases);
 
-  // Helper function to convert new dataset format to old format
-  Map<String, dynamic> _convertDatasetsToOldFormat(Map<String, dynamic> datasets) {
-    final result = <String, dynamic>{};
-
-    // Process byKey section if it exists
-    if (datasets.containsKey('byKey') && datasets['byKey'] is Map) {
-      final byKey = (datasets['byKey'] as Map).cast<String, dynamic>();
-      final convertedByKey = <String, dynamic>{};
-
-      for (final entry in byKey.entries) {
-        final key = entry.key;
-        final value = entry.value;
-
-        // Check if it's new format (array of pairs)
-        if (value is List) {
-          final validList = <String>[];
-          final invalidList = <String>[];
-
-          for (final pair in value) {
-            if (pair is Map) {
-              final validVal = pair['valid']?.toString();
-              final invalidVal = pair['invalid']?.toString();
-              if (validVal != null) validList.add(validVal);
-              if (invalidVal != null) invalidList.add(invalidVal);
-            }
-          }
-
-          convertedByKey[key] = {
-            'valid': validList,
-            'invalid': invalidList,
-          };
-        } else if (value is Map) {
-          // Already old format, keep as-is
-          convertedByKey[key] = value;
-        }
-      }
-
-      result['byKey'] = convertedByKey;
-    }
-
-    // Copy other sections as-is
-    for (final entry in datasets.entries) {
-      if (entry.key != 'byKey') {
-        result[entry.key] = entry.value;
-      }
-    }
-
-    return result;
-  }
-
   // Prefer external datasets file when present; fallback to embedded
   Map<String, dynamic> _maybeLoadExternalDatasets(String uiFile) {
     try {
@@ -127,8 +77,8 @@ void _processOne(String planPath) {
         final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
         final extDs = (ext['datasets'] as Map?)?.cast<String, dynamic>();
         if (extDs != null && extDs.isNotEmpty) {
-          // Convert new format to old format before returning
-          return _convertDatasetsToOldFormat(extDs);
+          // Keep new array-based format for proper path resolution (byKey.field[0].invalid)
+          return extDs;
         }
       }
     } catch (_) {}
