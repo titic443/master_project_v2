@@ -9,6 +9,19 @@ import 'dart:io';
 
 import 'utils.dart' as utils;
 
+/// Public API for flutter_test_generator.dart
+/// Generates Flutter test script from a test data file
+/// Returns the path to the generated integration test file
+String generateTestScriptFromTestData(String testDataPath) {
+  _processOne(testDataPath);
+
+  // Calculate output path (integration test)
+  final base = testDataPath
+      .replaceAll('output/test_data/', '')
+      .replaceAll(RegExp(r'\.testdata\.json$'), '');
+  return 'integration_test/${base}_flow_test.dart';
+}
+
 void main(List<String> args) {
   final inputs = <String>[];
   if (args.isEmpty) {

@@ -18,6 +18,31 @@ import 'dart:io';
 import 'generator_pict.dart' as pict;
 import 'utils.dart' as utils;
 
+/// Public API for flutter_test_generator.dart
+/// Generates test data from a manifest file using pairwise testing
+/// Returns the path to the generated testdata.json file
+Future<String> generateTestDataFromManifest(
+  String manifestPath, {
+  String pictBin = './pict',
+}) async {
+  // Read manifest to get UI file path (same logic as _processOne)
+  final raw = File(manifestPath).readAsStringSync();
+  final j = jsonDecode(raw) as Map<String, dynamic>;
+  final source = (j['source'] as Map<String, dynamic>?) ?? const {};
+  final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
+
+  await _processOne(
+    manifestPath,
+    pairwiseMerge: true,
+    planSummary: false,
+    pairwiseUsePict: true,
+    pictBin: pictBin,
+  );
+
+  // Return output path (same logic as _processOne line 1093)
+  return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+}
+
 void main(List<String> args) async {
   // Default settings
   const bool pairwiseMerge = true;  // Always use pairwise mode
