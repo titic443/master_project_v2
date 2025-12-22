@@ -578,21 +578,6 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
         }
       }
 
-      // Add print statements for pairwise tests to aid debugging
-      if (primaryCubitType != null && (groupName == 'pairwise_valid_invalid_cases' || groupName == 'pairwise_valid_cases')) {
-        ib
-          ..writeln('        // Print actual backend response for debugging')
-          ..writeln('        final element = find.byType($pageClass).evaluate().first;')
-          ..writeln('        final cubit = BlocProvider.of<$primaryCubitType>(element);')
-          ..writeln('        if (cubit.state.response != null) {')
-          ..writeln("          print('✓ [$id] Backend Response: \${cubit.state.response!.code} - \${cubit.state.response!.message}');")
-          ..writeln('        } else if (cubit.state.exception != null) {')
-          ..writeln("          print('✗ [$id] Backend Error: \${cubit.state.exception!.code} - \${cubit.state.exception!.message}');")
-          ..writeln('        } else {')
-          ..writeln("          print('? [$id] No response or exception from backend');")
-          ..writeln('        }');
-      }
-
       // Group assertions into a single expectAny check
       if (asserts.isNotEmpty) {
         final finders = <String>[];
