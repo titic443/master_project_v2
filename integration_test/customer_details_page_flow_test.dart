@@ -23,13 +23,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -41,21 +41,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_1] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_1] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_1] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -74,13 +61,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -95,16 +82,6 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_2] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_2] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_2] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -125,13 +102,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -143,20 +120,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_3] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_3] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_3] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -175,13 +140,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -196,19 +161,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_4] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_4] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_4] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -227,13 +181,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -251,20 +205,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_5] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_5] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_5] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Phone number must be exactly 10 digits'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -283,13 +225,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
@@ -298,19 +240,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_6] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_6] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_6] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -329,13 +260,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -350,16 +281,6 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_7] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_7] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_7] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -380,13 +301,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -398,21 +319,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_8] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_8] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_8] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -431,13 +339,13 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -452,20 +360,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_9] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_9] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_9] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -484,13 +380,13 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -505,20 +401,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_10] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_10] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_10] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Phone number must be exactly 10 digits'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -537,13 +421,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -555,20 +439,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_11] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_11] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_11] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Phone number must be exactly 10 digits'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -587,13 +459,13 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -602,20 +474,8 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_invalid_cases_12] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_invalid_cases_12] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_invalid_cases_12] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -633,40 +493,27 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mrs.'));
+        await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_1] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_1] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_1] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -684,37 +531,30 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mr.'));
+        await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_2] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_2] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_2] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -735,40 +575,24 @@ void main() {
         await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_3] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_3] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_3] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -786,34 +610,30 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Dr.'));
+        await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_4] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_4] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_4] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -831,37 +651,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Ms.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_5] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_5] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_5] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -882,40 +698,21 @@ void main() {
         await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_6] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_6] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_6] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -936,19 +733,19 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
@@ -957,16 +754,6 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_7] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_7] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_7] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -984,16 +771,16 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Dr.'));
+        await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -1005,16 +792,6 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_8] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_8] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_8] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -1035,16 +812,19 @@ void main() {
         await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
@@ -1053,16 +833,6 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_9] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_9] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_9] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -1080,19 +850,22 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mrs.'));
+        await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
@@ -1101,16 +874,6 @@ void main() {
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_10] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_10] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_10] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -1131,13 +894,13 @@ void main() {
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
@@ -1145,23 +908,10 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_11] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_11] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_11] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
@@ -1179,37 +929,24 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Ms.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), '');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Print actual backend response for debugging
-        final element = find.byType(CustomerDetailsPage).evaluate().first;
-        final cubit = BlocProvider.of<CustomerCubit>(element);
-        if (cubit.state.response != null) {
-          print('✓ [pairwise_valid_cases_12] Backend Response: ${cubit.state.response!.code} - ${cubit.state.response!.message}');
-        } else if (cubit.state.exception != null) {
-          print('✗ [pairwise_valid_cases_12] Backend Error: ${cubit.state.exception!.code} - ${cubit.state.exception!.message}');
-        } else {
-          print('? [pairwise_valid_cases_12] No response or exception from backend');
-        }
         // Check if any expected element exists (OR logic)
         final expected = [
           find.byKey(const Key('customer_01_expected_success')),
