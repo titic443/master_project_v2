@@ -172,20 +172,6 @@
             "condition": "value == null",
             "message": "Please select an age range"
           }
-        ],
-        "options": [
-          {
-            "value": "1",
-            "text": "10-20"
-          },
-          {
-            "value": "2",
-            "text": "30-40"
-          },
-          {
-            "value": "3",
-            "text": "50-60"
-          }
         ]
       }
     },
