@@ -156,6 +156,66 @@ List<Map<String, String>> parsePictResult(String content) {
   return combos;
 }
 
+/// Parse PICT model file to extract factor names and their values
+///
+/// Example input:
+/// ```
+/// customer_01_firstname_textfield: valid, invalid
+/// age_radio_group: age_10_20_radio, age_30_40_radio
+/// customer_07_title_dropdown: "Mr.", "Mrs.", "Ms."
+/// ```
+///
+/// Returns: Map of factor names to their possible values
+Map<String, List<String>> parsePictModel(String content) {
+  final factors = <String, List<String>>{};
+  final lines = content.trim().split(RegExp(r'\r?\n')).where((l) => l.trim().isNotEmpty).toList();
+
+  for (final line in lines) {
+    // Skip comments and empty lines
+    if (line.trim().isEmpty || line.trim().startsWith('#')) continue;
+
+    // Parse factor line: "FactorName: value1, value2, value3"
+    final colonIdx = line.indexOf(':');
+    if (colonIdx == -1) continue;
+
+    final factorName = line.substring(0, colonIdx).trim();
+    final valuesStr = line.substring(colonIdx + 1).trim();
+
+    // Parse values (handle quoted strings for dropdowns)
+    final values = <String>[];
+    final parts = valuesStr.split(',');
+
+    for (final part in parts) {
+      var value = part.trim();
+      // Remove quotes if present
+      if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.substring(1, value.length - 1);
+      }
+      if (value.isNotEmpty) {
+        values.add(value);
+      }
+    }
+
+    if (factorName.isNotEmpty && values.isNotEmpty) {
+      factors[factorName] = values;
+    }
+  }
+
+  return factors;
+}
+
+/// Read factor names from .full.model.txt file
+///
+/// Returns: List of factor names in order they appear in the model
+List<String> readFactorNamesFromModel(String modelFilePath) {
+  final file = File(modelFilePath);
+  if (!file.existsSync()) return [];
+
+  final content = file.readAsStringSync();
+  final factors = parsePictModel(content);
+  return factors.keys.toList();
+}
+
 // ============================================================================
 // Manifest-based PICT Model Generation
 // ============================================================================
@@ -163,29 +223,25 @@ List<Map<String, String>> parsePictResult(String content) {
 /// Extract factors from UI manifest widgets
 ///
 /// Detects:
-/// - TextFormField/TextField → TEXT factors (valid/invalid)
-/// - Radio groups → Radio1, Radio2, etc.
-/// - DropdownButtonFormField → Dropdown factors
+/// - TextFormField/TextField → Uses actual widget key as factor name
+/// - Radio groups → Uses groupValueBinding or extracted group name
+/// - DropdownButtonFormField → Uses actual widget key as factor name
+/// - Checkbox → Uses actual widget key as factor name
 Map<String, List<String>> extractFactorsFromManifest(List<Map<String, dynamic>> widgets) {
   final factors = <String, List<String>>{};
 
   // Track radio groups by groupValueBinding
   final radioGroups = <String, String>{}; // groupValueBinding -> factorName
-  int radioGroupOrdinal = 0;
-  int dropdownOrdinal = 0;
-  int textOrdinal = 0;
-  int checkboxOrdinal = 0;
 
   for (final w in widgets) {
     final widgetType = (w['widgetType'] ?? '').toString();
     final key = (w['key'] ?? '').toString();
 
-    // Text inputs as factors: include all TextFields with keys
+    // Text inputs as factors: use actual widget key as factor name
     final isTextField = widgetType.startsWith('TextFormField') || widgetType.startsWith('TextField');
     if (isTextField && key.isNotEmpty) {
-      textOrdinal += 1;
-      final factorName = textOrdinal == 1 ? 'TEXT' : 'TEXT$textOrdinal';
-      factors[factorName] = ['valid', 'invalid'];
+      // Use the actual widget key as factor name
+      factors[key] = ['valid', 'invalid'];
     }
 
     // Individual Radio button - extract suffix and group by groupValueBinding
@@ -198,8 +254,9 @@ Map<String, List<String>> extractFactorsFromManifest(List<Map<String, dynamic>> 
       if (radioGroups.containsKey(groupValue)) {
         factorName = radioGroups[groupValue]!;
       } else {
-        radioGroupOrdinal += 1;
-        factorName = radioGroupOrdinal == 1 ? 'Radio1' : 'Radio$radioGroupOrdinal';
+        // Extract group name from groupValueBinding or use a descriptive name
+        // Example: groupValue='age_radio_group' or use extracted description from first radio key
+        factorName = groupValue.isNotEmpty ? groupValue : _extractRadioGroupName(key);
         radioGroups[groupValue] = factorName;
         factors[factorName] = <String>[];
       }
@@ -214,27 +271,56 @@ Map<String, List<String>> extractFactorsFromManifest(List<Map<String, dynamic>> 
       continue;
     }
 
-    // Dropdown - check both actions and meta.options
+    // Dropdown - use actual widget key as factor name
     if (widgetType.startsWith('DropdownButtonFormField') && key.isNotEmpty) {
-      dropdownOrdinal += 1;
-      final factorName = dropdownOrdinal == 1 ? 'Dropdown' : 'Dropdown$dropdownOrdinal';
       final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
       final items = _extractOptionsFromMeta(meta['options']);
-      if (items.isNotEmpty) factors[factorName] = items;
+      if (items.isNotEmpty) {
+        // Use actual widget key as factor name
+        factors[key] = items;
+      }
       continue;
     }
 
-    // Checkbox - both standalone Checkbox and FormField<bool>
+    // Checkbox - use actual widget key as factor name
     // Include all checkboxes in PICT model (both required and optional)
     if ((widgetType == 'Checkbox' || widgetType.startsWith('FormField<bool>')) && key.isNotEmpty) {
-      checkboxOrdinal += 1;
-      final factorName = checkboxOrdinal == 1 ? 'Checkbox' : 'Checkbox$checkboxOrdinal';
-      factors[factorName] = ['checked', 'unchecked'];
+      // Use actual widget key as factor name
+      factors[key] = ['checked', 'unchecked'];
       continue;
     }
   }
 
   return factors;
+}
+
+/// Extract radio group name from radio key
+/// Example: customer_05_age_10_20_radio -> age_radio_group
+String _extractRadioGroupName(String radioKey) {
+  // Pattern: {page_prefix}_{sequence}_{description}_{value}_radio
+  // Extract description part
+  final parts = radioKey.split('_');
+  if (parts.length > 2) {
+    // Find where the description starts (after sequence number)
+    int descStartIdx = 2;
+    // Skip sequence number if present
+    if (parts.length > 1 && int.tryParse(parts[1]) != null) {
+      descStartIdx = 2;
+    }
+
+    // Find where value starts (usually before last _radio or second-to-last part)
+    int descEndIdx = parts.length - 2;
+    if (parts.last == 'radio' && parts.length > 3) {
+      descEndIdx = parts.length - 2;
+    }
+
+    if (descStartIdx < descEndIdx) {
+      // Extract description (e.g., "age" from customer_05_age_10_20_radio)
+      final description = parts[descStartIdx];
+      return '${description}_radio_group';
+    }
+  }
+  return 'radio_group'; // fallback
 }
 
 String _factorNameForRadioGroupKey(String key) {
