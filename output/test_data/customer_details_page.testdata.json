@@ -9,39 +9,7 @@
   },
   "datasets": {
     "defaults": {},
-    "byKey": {
-      "customer_02_firstname_textfield": [
-        {
-          "valid": "Alice",
-          "invalid": "J",
-          "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)"
-        }
-      ],
-      "customer_03_phone_textfield": [
-        {
-          "valid": "0123456789",
-          "invalid": "123456789",
-          "invalidRuleMessages": "Phone number must be exactly 10 digits"
-        },
-        {
-          "valid": "0123456789",
-          "invalid": "1234567890",
-          "invalidRuleMessages": "Phone number must start with 0"
-        },
-        {
-          "valid": "0123456789",
-          "invalid": "123456789",
-          "invalidRuleMessages": "0"
-        }
-      ],
-      "customer_04_lastname_textfield": [
-        {
-          "valid": "Smith",
-          "invalid": "S",
-          "invalidRuleMessages": "Last name must contain only letters (minimum 2 characters)"
-        }
-      ]
-    }
+    "byKey": {}
   },
   "cases": [
     {
@@ -79,22 +47,43 @@
           }
         },
         {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
           "pumpAndSettle": true
         }
       ],
       "asserts": [
-        {
-          "text": "First name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -260,14 +249,6 @@
       ],
       "asserts": [
         {
-          "text": "First name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
-        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -353,10 +334,6 @@
         }
       ],
       "asserts": [
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -452,14 +429,6 @@
       ],
       "asserts": [
         {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -529,10 +498,6 @@
         }
       ],
       "asserts": [
-        {
-          "text": "First name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -698,18 +663,6 @@
       ],
       "asserts": [
         {
-          "text": "First name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -795,14 +748,6 @@
         }
       ],
       "asserts": [
-        {
-          "text": "First name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -890,14 +835,6 @@
       ],
       "asserts": [
         {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -976,14 +913,6 @@
       ],
       "asserts": [
         {
-          "text": "Phone number must be exactly 10 digits",
-          "exists": true
-        },
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -1054,14 +983,6 @@
       ],
       "asserts": [
         {
-          "text": "First name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
-          "text": "Last name must contain only letters (minimum 2 characters)",
-          "exists": true
-        },
-        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -1069,92 +990,6 @@
     },
     {
       "tc": "pairwise_valid_cases_1",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "tap": {
-            "byKey": "customer_01_title_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Mrs."
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_02_firstname_textfield",
-            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_03_phone_textfield",
-            "dataset": "byKey.customer_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_04_lastname_textfield",
-            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_05_age_10_20_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_06_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_07_subscribe_newsletter_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_08_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "customer_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
       "steps": [
@@ -1232,7 +1067,257 @@
       ]
     },
     {
+      "tc": "pairwise_valid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
       "tc": "pairwise_valid_cases_3",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_4",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
       "steps": [
@@ -1326,154 +1411,6 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_4",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "tap": {
-            "byKey": "customer_01_title_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Dr."
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_02_firstname_textfield",
-            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_03_phone_textfield",
-            "dataset": "byKey.customer_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_04_lastname_textfield",
-            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_05_age_40_50_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_08_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "customer_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_5",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "tap": {
-            "byKey": "customer_01_title_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Ms."
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_02_firstname_textfield",
-            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_03_phone_textfield",
-            "dataset": "byKey.customer_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "customer_04_lastname_textfield",
-            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_05_age_10_20_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_06_agree_terms_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_08_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "customer_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
@@ -1521,31 +1458,7 @@
         },
         {
           "tap": {
-            "byKey": "customer_05_age_40_50_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_06_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_06_agree_terms_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_07_subscribe_newsletter_checkbox"
+            "byKey": "customer_05_age_30_40_radio"
           }
         },
         {
@@ -1623,7 +1536,7 @@
         },
         {
           "tap": {
-            "byKey": "customer_06_agree_terms_checkbox"
+            "byKey": "customer_06_agree_terms_formfield"
           }
         },
         {
@@ -1667,7 +1580,7 @@
           "pump": true
         },
         {
-          "tapText": "Dr."
+          "tapText": "Mrs."
         },
         {
           "pump": true
@@ -1787,6 +1700,14 @@
         },
         {
           "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
             "byKey": "customer_07_subscribe_newsletter_checkbox"
           }
         },
@@ -1823,7 +1744,7 @@
           "pump": true
         },
         {
-          "tapText": "Mrs."
+          "tapText": "Ms."
         },
         {
           "pump": true
@@ -1857,7 +1778,15 @@
         },
         {
           "tap": {
-            "byKey": "customer_05_age_30_40_radio"
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
           }
         },
         {
@@ -1951,14 +1880,6 @@
         },
         {
           "tap": {
-            "byKey": "customer_07_subscribe_newsletter_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "customer_08_end_button"
           }
         },
@@ -1987,7 +1908,7 @@
           "pump": true
         },
         {
-          "tapText": "Ms."
+          "tapText": "Dr."
         },
         {
           "pump": true
@@ -2021,15 +1942,7 @@
         },
         {
           "tap": {
-            "byKey": "customer_05_age_30_40_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "customer_07_subscribe_newsletter_checkbox"
+            "byKey": "customer_05_age_10_20_radio"
           }
         },
         {

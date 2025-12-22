@@ -417,8 +417,51 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
     final pageBase = utils.basenameWithoutExtension(uiFile);
     final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';
     final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt';
+    final pageModelPath = 'output/model_pairwise/$pageBase.full.model.txt';
+
     List<Map<String,String>>? extCombos;
     List<Map<String,String>>? extValidCombos;
+    Map<String, List<String>>? modelFactors; // Factors from model file
+
+    // Load PICT model to get actual factor names and widget mappings
+    if (File(pageModelPath).existsSync()) {
+      modelFactors = pict.parsePictModel(File(pageModelPath).readAsStringSync());
+    }
+
+    // Build factor type mapping from model factors
+    // Categorize factors as: text, radio, dropdown, checkbox based on their values
+    final factorTypes = <String, String>{}; // factorName -> type (text/radio/dropdown/checkbox)
+    final textFieldFactors = <String>[]; // List of textfield widget keys
+    final radioGroupFactors = <String>[]; // List of radio group names
+    final dropdownFactors = <String>[]; // List of dropdown widget keys
+    final checkboxFactors = <String>[]; // List of checkbox widget keys
+
+    if (modelFactors != null) {
+      for (final entry in modelFactors.entries) {
+        final factorName = entry.key;
+        final values = entry.value;
+
+        // Determine factor type based on values
+        if (values.contains('valid') && values.contains('invalid')) {
+          // Text field
+          factorTypes[factorName] = 'text';
+          textFieldFactors.add(factorName);
+        } else if (values.contains('checked') && values.contains('unchecked')) {
+          // Checkbox
+          factorTypes[factorName] = 'checkbox';
+          checkboxFactors.add(factorName);
+        } else if (values.any((v) => v.endsWith('_radio'))) {
+          // Radio group
+          factorTypes[factorName] = 'radio';
+          radioGroupFactors.add(factorName);
+        } else {
+          // Dropdown (default for other cases)
+          factorTypes[factorName] = 'dropdown';
+          dropdownFactors.add(factorName);
+        }
+      }
+    }
+
     if (File(pageResultPath).existsSync()) {
       extCombos = pict.parsePictResult(File(pageResultPath).readAsStringSync());
     }
@@ -609,83 +652,57 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         // Build a map of all steps keyed by widget key to maintain manifest order
         final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
-        // Process text fields and collect their steps
-        for (int idx = 0; idx < textKeys.length; idx++) {
-          // Find the factor name for this text field index
-          // PICT naming: TEXT, TEXT2, TEXT3, TEXT4 (not TEXT1!)
-          final factorName = (textKeys.length == 1 || idx == 0) ? 'TEXT' : 'TEXT${idx + 1}';
-          final pick = (c[factorName] ?? '').toString();
-          if (pick.isNotEmpty) {
-            final bucket = (pick == 'invalid') ? 'invalid' : 'valid';
-            if (bucket == 'invalid') {
-              hasInvalidData = true;
-              invalidFields.add(textKeys[idx]); // Track this field as invalid
-            }
-            stepsByKey[textKeys[idx]] = [
-              {'enterText': {'byKey': textKeys[idx], 'dataset': 'byKey.${textKeys[idx]}[0].$bucket'}},
-              {'pump': true}
-            ];
-          }
-        }
-
-        // Process radio buttons and collect their steps
-        // Match Radio suffix from PICT with full Radio key
+        // Process factors using actual factor names from model
         for (final factorName in c.keys) {
-          if (factorName.startsWith('Radio')) {
-            final pick = (c[factorName] ?? '').toString();
-            if (pick.isNotEmpty) {
-              // pick is Radio suffix like "age_10_20_radio"
-              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
-              if (matchedKey != null) {
-                stepsByKey[matchedKey] = [
-                  {'tap': {'byKey': matchedKey}},
-                  {'pump': true}
-                ];
-              }
-            }
-          }
-        }
-
-        // Process dropdowns and collect their steps
-        for (int idx = 0; idx < dropdownKeys.length; idx++) {
-          // PICT naming: Dropdown, Dropdown2, Dropdown3 (not Dropdown1!)
-          final factorName = (dropdownKeys.length == 1 || idx == 0) ? 'Dropdown' : 'Dropdown${idx + 1}';
+          final factorType = factorTypes[factorName];
           final pick = (c[factorName] ?? '').toString();
           if (pick.isEmpty) continue;
 
-          final key = dropdownKeys[idx];
-          if (key.isNotEmpty) {
+          if (factorType == 'text') {
+            // Text field - use factor name as widget key directly
+            final bucket = (pick == 'invalid') ? 'invalid' : 'valid';
+            if (bucket == 'invalid') {
+              hasInvalidData = true;
+              invalidFields.add(factorName); // Track this field as invalid
+            }
+            stepsByKey[factorName] = [
+              {'enterText': {'byKey': factorName, 'dataset': 'byKey.$factorName[0].$bucket'}},
+              {'pump': true}
+            ];
+          } else if (factorType == 'radio') {
+            // Radio group - pick is the radio option suffix
+            final matchedKey = _radioKeyForSuffix(radioKeys, pick);
+            if (matchedKey != null) {
+              stepsByKey[matchedKey] = [
+                {'tap': {'byKey': matchedKey}},
+                {'pump': true}
+              ];
+            }
+          } else if (factorType == 'dropdown') {
+            // Dropdown - use factor name as widget key directly
             // Map value -> text for tapText
             String textToTap = pick;
-            if (idx < dropdownValueToTextMaps.length) {
-              final mapping = dropdownValueToTextMaps[idx];
+            final dropdownIdx = dropdownKeys.indexOf(factorName);
+            if (dropdownIdx >= 0 && dropdownIdx < dropdownValueToTextMaps.length) {
+              final mapping = dropdownValueToTextMaps[dropdownIdx];
               final cleanPick = pick.replaceAll('"', '');
               textToTap = mapping[cleanPick] ?? pick;
             }
 
-            stepsByKey[key] = [
-              {'tap': {'byKey': key}},
+            stepsByKey[factorName] = [
+              {'tap': {'byKey': factorName}},
               {'pump': true},
               {'tapText': textToTap},
               {'pump': true}
             ];
-          }
-        }
-
-        // Process checkboxes and collect their steps
-        for (int idx = 0; idx < checkboxKeys.length; idx++) {
-          // PICT naming: Checkbox, Checkbox2, Checkbox3 (not Checkbox1!)
-          final factorName = (checkboxKeys.length == 1 || idx == 0) ? 'Checkbox' : 'Checkbox${idx + 1}';
-          final pick = (c[factorName] ?? '').toString();
-          if (pick.isEmpty) continue;
-
-          final key = checkboxKeys[idx];
-          if (key.isNotEmpty && pick == 'checked') {
-            // Only add tap step if checkbox should be checked (default is unchecked)
-            stepsByKey[key] = [
-              {'tap': {'byKey': key}},
-              {'pump': true}
-            ];
+          } else if (factorType == 'checkbox') {
+            // Checkbox - use factor name as widget key directly
+            if (pick == 'checked') {
+              stepsByKey[factorName] = [
+                {'tap': {'byKey': factorName}},
+                {'pump': true}
+              ];
+            }
           }
         }
 
@@ -873,95 +890,52 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         // Build a map of all steps keyed by widget key to maintain manifest order
         final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
-        // Process each factor and collect steps
+        // Process each factor and collect steps using actual factor names
         for (final factorName in headerOrder) {
           final pick = (c[factorName] ?? '').toString();
           if (pick.isEmpty) continue;
 
-          // Handle text factors (all should be valid in valid-only model)
-          if (factorName.startsWith('TEXT')) {
-            int textIndex = 0;
-            if (factorName == 'TEXT') {
-              textIndex = 0;
-            } else {
-              final numMatch = RegExp(r'TEXT(\d+)').firstMatch(factorName);
-              if (numMatch != null) {
-                textIndex = int.parse(numMatch.group(1)!) - 1;
-              }
-            }
+          final factorType = factorTypes[factorName];
 
-            if (textIndex < textKeys.length) {
-              final key = textKeys[textIndex];
-              // Always use valid bucket for valid-only cases
-              stepsByKey[key] = [
-                {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].valid'}},
+          if (factorType == 'text') {
+            // Text field - always use valid for valid-only cases
+            stepsByKey[factorName] = [
+              {'enterText': {'byKey': factorName, 'dataset': 'byKey.$factorName[0].valid'}},
+              {'pump': true}
+            ];
+          } else if (factorType == 'radio') {
+            // Radio group - pick is the radio option suffix
+            final matchedKey = _radioKeyForSuffix(radioKeys, pick);
+            if (matchedKey != null) {
+              stepsByKey[matchedKey] = [
+                {'tap': {'byKey': matchedKey}},
                 {'pump': true}
               ];
             }
-          }
-          // Handle radio factors
-          else if (factorName.startsWith('Radio')) {
-            if (pick.isNotEmpty) {
-              // pick is Radio suffix like "age_10_20_radio"
-              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
-              if (matchedKey != null) {
-                stepsByKey[matchedKey] = [
-                  {'tap': {'byKey': matchedKey}},
-                  {'pump': true}
-                ];
-              }
-            }
-          }
-          // Handle dropdown factors
-          else if (factorName.startsWith('Dropdown')) {
-            int dropdownIndex = 0;
-            if (factorName != 'Dropdown') {
-              final numMatch = RegExp(r'Dropdown(\d+)').firstMatch(factorName);
-              if (numMatch != null) {
-                dropdownIndex = int.parse(numMatch.group(1)!) - 1;
-              }
+          } else if (factorType == 'dropdown') {
+            // Dropdown - use factor name as widget key directly
+            // Map value -> text for tapText
+            String textToTap = pick;
+            final dropdownIdx = dropdownKeys.indexOf(factorName);
+            if (dropdownIdx >= 0 && dropdownIdx < dropdownValueToTextMaps.length) {
+              final mapping = dropdownValueToTextMaps[dropdownIdx];
+              final cleanPick = pick.replaceAll('"', '');
+              textToTap = mapping[cleanPick] ?? pick;
             }
 
-            if (dropdownIndex < dropdownKeys.length) {
-              final key = dropdownKeys[dropdownIndex];
-              if (key.isNotEmpty && pick.isNotEmpty) {
-                // Map value -> text for tapText
-                String textToTap = pick;
-                if (dropdownIndex < dropdownValueToTextMaps.length) {
-                  final mapping = dropdownValueToTextMaps[dropdownIndex];
-                  // Remove quotes from pick if present
-                  final cleanPick = pick.replaceAll('"', '');
-                  textToTap = mapping[cleanPick] ?? pick;
-                }
-
-                stepsByKey[key] = [
-                  {'tap': {'byKey': key}},
-                  {'pump': true},
-                  {'tapText': textToTap},
-                  {'pump': true}
-                ];
-              }
-            }
-          }
-          // Handle checkbox factors
-          else if (factorName.startsWith('Checkbox')) {
-            int checkboxIndex = 0;
-            if (factorName != 'Checkbox') {
-              final numMatch = RegExp(r'Checkbox(\d+)').firstMatch(factorName);
-              if (numMatch != null) {
-                checkboxIndex = int.parse(numMatch.group(1)!) - 1;
-              }
-            }
-
-            if (checkboxIndex < checkboxKeys.length && pick == 'checked') {
-              final key = checkboxKeys[checkboxIndex];
-              if (key.isNotEmpty) {
-                // Only add tap step if checkbox should be checked
-                stepsByKey[key] = [
-                  {'tap': {'byKey': key}},
-                  {'pump': true}
-                ];
-              }
+            stepsByKey[factorName] = [
+              {'tap': {'byKey': factorName}},
+              {'pump': true},
+              {'tapText': textToTap},
+              {'pump': true}
+            ];
+          } else if (factorType == 'checkbox') {
+            // Checkbox - use factor name as widget key directly
+            if (pick == 'checked') {
+              stepsByKey[factorName] = [
+                {'tap': {'byKey': factorName}},
+                {'pump': true}
+              ];
             }
           }
         }
