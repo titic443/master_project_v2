@@ -32,6 +32,32 @@ import 'utils.dart' as utils;
 // ========================================
 const String hardcodedApiKey = ''; // Removed for security
 
+/// Public API for flutter_test_generator.dart
+/// Generates datasets from a manifest file and returns the output path
+/// Returns null if no text fields are found (not an error)
+/// Throws exception on actual errors (API issues, file not found, etc.)
+Future<String?> generateDatasetsFromManifest(
+  String manifestPath, {
+  String model = 'gemini-2.5-flash',
+  String? apiKey,
+  bool localOnly = false,
+}) async {
+  try {
+    await _processManifest(manifestPath, model, apiKey, localOnly);
+
+    // Calculate output path
+    final base = manifestPath
+        .replaceAll('output/manifest/', '')
+        .replaceAll(RegExp(r'\.manifest\.json$'), '');
+    return 'output/test_data/$base.datasets.json';
+  } on Exception catch (e) {
+    if (e.toString().contains('No TextField/TextFormField widgets found')) {
+      return null; // Skip without error
+    }
+    rethrow;
+  }
+}
+
 void main(List<String> args) async {
   String manifestPath = '';
   String model = 'gemini-2.5-flash';

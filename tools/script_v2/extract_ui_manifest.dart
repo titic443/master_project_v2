@@ -10,6 +10,34 @@ import 'dart:io';
 
 import 'utils.dart' as utils;
 
+/// Public API for flutter_test_generator.dart
+/// Processes a single UI file and generates manifest JSON
+/// Returns the path to the generated manifest file
+String processUiFile(String path) {
+  if (!File(path).existsSync()) {
+    throw Exception('File not found: $path');
+  }
+
+  _processOne(path);
+
+  // Calculate and return output path (same logic as _processOne)
+  final normalizedPath = path.replaceAll('\\', '/');
+  String subfolderPath = '';
+
+  if (normalizedPath.startsWith('lib/')) {
+    final pathAfterLib = normalizedPath.substring(4);
+    final lastSlash = pathAfterLib.lastIndexOf('/');
+    if (lastSlash > 0) {
+      subfolderPath = pathAfterLib.substring(0, lastSlash);
+    }
+  }
+
+  final outDir = subfolderPath.isNotEmpty
+      ? Directory('output/manifest/$subfolderPath')
+      : Directory('output/manifest');
+  return '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
+}
+
 void main(List<String> args) {
   if (args.isEmpty) {
     // Scan all pages under lib/**
