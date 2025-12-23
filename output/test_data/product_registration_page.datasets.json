@@ -1,0 +1,28 @@
+{
+  "file": "lib/demos/product_registration_page.dart",
+  "datasets": {
+    "byKey": {
+      "product_02_name_textfield": [
+        {
+          "valid": "Awesome Widget",
+          "invalid": "AB",
+          "invalidRuleMessages": "Product name must be at least 3 characters"
+        }
+      ],
+      "product_04_sku_textfield": [
+        {
+          "valid": "PROD-ABC12",
+          "invalid": "P-A1",
+          "invalidRuleMessages": "SKU must be uppercase alphanumeric with dash (min 5 chars)"
+        }
+      ],
+      "product_05_quantity_textfield": [
+        {
+          "valid": "5",
+          "invalid": "0",
+          "invalidRuleMessages": "Quantity must be at least 1"
+        }
+      ]
+    }
+  }
+}
