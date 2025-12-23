@@ -30,7 +30,7 @@ import 'utils.dart' as utils;
 // 3. Use --api-key flag: --api-key=your_key
 // Get your API key from: https://aistudio.google.com/app/apikey
 // ========================================
-const String hardcodedApiKey = ''; // Removed for security
+const String hardcodedApiKey = 'AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg'; // Removed for security
 
 /// Public API for flutter_test_generator.dart
 /// Generates datasets from a manifest file and returns the output path
