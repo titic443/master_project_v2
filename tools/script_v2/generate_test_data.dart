@@ -1126,14 +1126,17 @@ Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin 
   final j = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
   final widgets = (j['widgets'] as List? ?? const []).cast<Map<String, dynamic>>();
 
-  // Extract factors using pict_generator module
-  final factors = pict.extractFactorsFromManifest(widgets);
+  // Extract factors and required checkboxes using pict_generator module
+  final extractionResult = pict.extractFactorsFromManifest(widgets);
+  final factors = extractionResult.factors;
+  final requiredCheckboxes = extractionResult.requiredCheckboxes;
   if (factors.isEmpty) return; // nothing to write
 
   // Generate and write PICT model files using pict_generator module
   await pict.writePictModelFiles(
     factors: factors,
     pageBaseName: base,
+    requiredCheckboxes: requiredCheckboxes,
     pictBin: pictBin,
   );
 }

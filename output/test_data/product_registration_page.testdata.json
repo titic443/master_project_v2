@@ -12,23 +12,28 @@
     "byKey": {
       "product_02_name_textfield": [
         {
-          "valid": "Awesome Widget",
+          "valid": "Premium Widget",
           "invalid": "AB",
           "invalidRuleMessages": "Product name must be at least 3 characters"
         }
       ],
       "product_04_sku_textfield": [
         {
-          "valid": "PROD-ABC12",
-          "invalid": "P-A1",
+          "valid": "PROD-ABC-123",
+          "invalid": "ABCD",
           "invalidRuleMessages": "SKU must be uppercase alphanumeric with dash (min 5 chars)"
         }
       ],
       "product_05_quantity_textfield": [
         {
-          "valid": "5",
+          "valid": "10",
           "invalid": "0",
           "invalidRuleMessages": "Quantity must be at least 1"
+        },
+        {
+          "valid": "999999",
+          "invalid": "999999",
+          "invalidRuleMessages": "Quantity cannot exceed 999999"
         }
       ]
     }
@@ -57,7 +62,7 @@
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Clothing"
         },
         {
           "pump": true
@@ -82,7 +87,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "product_06_price_500_plus_radio"
           }
         },
         {
@@ -143,7 +148,7 @@
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Clothing"
         },
         {
           "pump": true
@@ -168,7 +173,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "product_06_price_100_500_radio"
           }
         },
         {
@@ -176,7 +181,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_formfield"
+            "byKey": "product_07_instock_checkbox"
           }
         },
         {
@@ -210,6 +215,100 @@
         {
           "enterText": {
             "byKey": "product_02_name_textfield",
+            "dataset": "byKey.product_02_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_03_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Electronics"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "product_04_sku_textfield",
+            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "product_05_quantity_textfield",
+            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_06_price_500_plus_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_07_instock_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_08_featured_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_09_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "exists": true
+        },
+        {
+          "text": "Quantity must be at least 1",
+          "exists": true
+        },
+        {
+          "byKey": "product_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "product_02_name_textfield",
             "dataset": "byKey.product_02_name_textfield[0].invalid"
           }
         },
@@ -225,7 +324,7 @@
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "Books"
         },
         {
           "pump": true
@@ -266,22 +365,6 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "product_09_end_button"
           }
         },
@@ -292,92 +375,6 @@
       "asserts": [
         {
           "text": "Product name must be at least 3 characters",
-          "exists": true
-        },
-        {
-          "byKey": "product_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_4",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Clothing"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_500_plus_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
-          "exists": true
-        },
-        {
-          "text": "Quantity must be at least 1",
           "exists": true
         },
         {
@@ -409,7 +406,7 @@
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Food"
         },
         {
           "pump": true
@@ -417,7 +414,7 @@
         {
           "enterText": {
             "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "dataset": "byKey.product_04_sku_textfield[0].valid"
           }
         },
         {
@@ -434,7 +431,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "product_06_price_100_500_radio"
           }
         },
         {
@@ -442,15 +439,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
+            "byKey": "product_08_featured_checkbox"
           }
         },
         {
@@ -468,10 +457,6 @@
       "asserts": [
         {
           "text": "Product name must be at least 3 characters",
-          "exists": true
-        },
-        {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
           "exists": true
         },
         {
@@ -507,7 +492,7 @@
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "Electronics"
         },
         {
           "pump": true
@@ -515,7 +500,81 @@
         {
           "enterText": {
             "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "product_05_quantity_textfield",
+            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_06_price_100_500_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_09_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "exists": true
+        },
+        {
+          "byKey": "product_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_7",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "product_02_name_textfield",
+            "dataset": "byKey.product_02_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_03_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Books"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "product_04_sku_textfield",
+            "dataset": "byKey.product_04_sku_textfield[0].invalid"
           }
         },
         {
@@ -540,7 +599,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "product_08_featured_checkbox"
           }
         },
         {
@@ -557,6 +616,10 @@
       ],
       "asserts": [
         {
+          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "exists": true
+        },
+        {
           "text": "Quantity must be at least 1",
           "exists": true
         },
@@ -567,7 +630,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_7",
+      "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -614,7 +677,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "product_06_price_500_plus_radio"
           }
         },
         {
@@ -622,7 +685,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "product_07_instock_checkbox"
           }
         },
         {
@@ -649,7 +712,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_8",
+      "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -672,100 +735,6 @@
         },
         {
           "tapText": "Electronics"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_0_100_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Product name must be at least 3 characters",
-          "exists": true
-        },
-        {
-          "text": "Quantity must be at least 1",
-          "exists": true
-        },
-        {
-          "byKey": "product_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_9",
-      "kind": "success",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Books"
         },
         {
           "pump": true
@@ -798,93 +767,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "product_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_10",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Clothing"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_0_100_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "product_07_instock_checkbox"
           }
         },
         {
@@ -902,198 +785,6 @@
       "asserts": [
         {
           "text": "Product name must be at least 3 characters",
-          "exists": true
-        },
-        {
-          "byKey": "product_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_11",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Clothing"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_100_500_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
-          "exists": true
-        },
-        {
-          "text": "Quantity must be at least 1",
-          "exists": true
-        },
-        {
-          "byKey": "product_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_12",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Electronics"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_100_500_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
           "exists": true
         },
         {
@@ -1125,7 +816,7 @@
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Electronics"
         },
         {
           "pump": true
@@ -1151,6 +842,14 @@
         {
           "tap": {
             "byKey": "product_06_price_100_500_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_07_instock_checkbox"
           }
         },
         {
@@ -1236,7 +935,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_formfield"
+            "byKey": "product_07_instock_checkbox"
           }
         },
         {
@@ -1306,7 +1005,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "product_06_price_100_500_radio"
           }
         },
         {
@@ -1315,22 +1014,6 @@
         {
           "tap": {
             "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
           }
         },
         {
@@ -1375,7 +1058,7 @@
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Books"
         },
         {
           "pump": true
@@ -1409,6 +1092,14 @@
         {
           "tap": {
             "byKey": "product_07_instock_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_08_featured_checkbox"
           }
         },
         {
@@ -1453,7 +1144,7 @@
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Food"
         },
         {
           "pump": true
@@ -1478,7 +1169,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "product_06_price_500_plus_radio"
           }
         },
         {
@@ -1494,7 +1185,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_formfield"
+            "byKey": "product_08_featured_checkbox"
           }
         },
         {
@@ -1539,7 +1230,7 @@
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "Clothing"
         },
         {
           "pump": true
@@ -1573,6 +1264,14 @@
         {
           "tap": {
             "byKey": "product_07_instock_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "product_08_featured_checkbox"
           }
         },
         {
@@ -1617,7 +1316,7 @@
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "Clothing"
         },
         {
           "pump": true
@@ -1642,7 +1341,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "product_06_price_500_plus_radio"
           }
         },
         {
@@ -1650,7 +1349,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "product_07_instock_checkbox"
           }
         },
         {
@@ -1674,92 +1373,6 @@
     },
     {
       "tc": "pairwise_valid_cases_8",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Electronics"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_0_100_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "product_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
       "steps": [
@@ -1806,256 +1419,6 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "product_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_10",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Clothing"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_0_100_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "product_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_11",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Clothing"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_06_price_100_500_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "product_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_12",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_03_category_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Electronics"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "product_06_price_100_500_radio"
           }
         },
@@ -2065,22 +1428,6 @@
         {
           "tap": {
             "byKey": "product_07_instock_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_07_instock_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "product_08_featured_checkbox"
           }
         },
         {

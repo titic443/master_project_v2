@@ -13,26 +13,21 @@
       "employee_02_id_textfield": [
         {
           "valid": "EMP-12345",
-          "invalid": "EMP-ABCDE",
+          "invalid": "EMP-1234",
           "invalidRuleMessages": "Employee ID must match format: EMP-12345"
         }
       ],
       "employee_04_email_textfield": [
         {
-          "valid": "alice.smith@example.com",
-          "invalid": "alice.smith@example",
+          "valid": "john.doe@example.com",
+          "invalid": "john.doe@example",
           "invalidRuleMessages": "Please enter a valid email address"
         }
       ],
       "employee_05_years_textfield": [
         {
           "valid": "25",
-          "invalid": "-5",
-          "invalidRuleMessages": "Years must be 0 or greater"
-        },
-        {
-          "valid": "25",
-          "invalid": "60",
+          "invalid": "51",
           "invalidRuleMessages": "Years cannot exceed 50"
         }
       ]
@@ -62,7 +57,7 @@
           "pump": true
         },
         {
-          "tapText": "Marketing"
+          "tapText": "Sales"
         },
         {
           "pump": true
@@ -87,7 +82,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_fair_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -148,7 +143,7 @@
           "pump": true
         },
         {
-          "tapText": "Engineering"
+          "tapText": "Sales"
         },
         {
           "pump": true
@@ -173,89 +168,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_excellent_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Years must be 0 or greater",
-          "exists": true
-        },
-        {
-          "byKey": "employee_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_3",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "HR"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_excellent_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -271,22 +184,6 @@
         },
         {
           "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "employee_09_end_button"
           }
         },
@@ -296,7 +193,7 @@
       ],
       "asserts": [
         {
-          "text": "Employee ID must match format: EMP-12345",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
@@ -306,7 +203,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_4",
+      "tc": "pairwise_valid_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -328,7 +225,7 @@
           "pump": true
         },
         {
-          "tapText": "Sales"
+          "tapText": "Engineering"
         },
         {
           "pump": true
@@ -369,6 +266,14 @@
         },
         {
           "tap": {
+            "byKey": "employee_08_training_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
             "byKey": "employee_09_end_button"
           }
         },
@@ -382,7 +287,89 @@
           "exists": true
         },
         {
-          "text": "Years must be 0 or greater",
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "byKey": "employee_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_03_department_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Marketing"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_06_rating_excellent_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_07_recommend_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_09_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
@@ -414,104 +401,6 @@
           "pump": true
         },
         {
-          "tapText": "Marketing"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_poor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Employee ID must match format: EMP-12345",
-          "exists": true
-        },
-        {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
-          "text": "Years must be 0 or greater",
-          "exists": true
-        },
-        {
-          "byKey": "employee_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_6",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
           "tapText": "HR"
         },
         {
@@ -545,7 +434,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_07_recommend_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -562,7 +451,85 @@
       ],
       "asserts": [
         {
-          "text": "Years must be 0 or greater",
+          "text": "Employee ID must match format: EMP-12345",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "byKey": "employee_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_6",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_03_department_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Engineering"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_06_rating_fair_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_09_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
@@ -573,6 +540,92 @@
     },
     {
       "tc": "pairwise_valid_invalid_cases_7",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_03_department_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Marketing"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_06_rating_fair_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_08_training_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_09_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "byKey": "employee_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -619,7 +672,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_poor_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -627,7 +680,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_08_training_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -654,7 +707,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_8",
+      "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -677,100 +730,6 @@
         },
         {
           "tapText": "Engineering"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_poor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Employee ID must match format: EMP-12345",
-          "exists": true
-        },
-        {
-          "text": "Years must be 0 or greater",
-          "exists": true
-        },
-        {
-          "byKey": "employee_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_9",
-      "kind": "success",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Marketing"
         },
         {
           "pump": true
@@ -803,93 +762,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "employee_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_10",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Sales"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_poor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -907,198 +780,6 @@
       "asserts": [
         {
           "text": "Employee ID must match format: EMP-12345",
-          "exists": true
-        },
-        {
-          "byKey": "employee_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_11",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Sales"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_fair_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
-          "text": "Years must be 0 or greater",
-          "exists": true
-        },
-        {
-          "byKey": "employee_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_12",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Engineering"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_fair_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Please enter a valid email address",
           "exists": true
         },
         {
@@ -1130,7 +811,7 @@
           "pump": true
         },
         {
-          "tapText": "Marketing"
+          "tapText": "Engineering"
         },
         {
           "pump": true
@@ -1156,6 +837,14 @@
         {
           "tap": {
             "byKey": "employee_06_rating_fair_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1241,7 +930,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_07_recommend_formfield"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1311,7 +1000,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_excellent_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -1320,22 +1009,6 @@
         {
           "tap": {
             "byKey": "employee_07_recommend_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1380,7 +1053,7 @@
           "pump": true
         },
         {
-          "tapText": "Sales"
+          "tapText": "Marketing"
         },
         {
           "pump": true
@@ -1414,6 +1087,14 @@
         {
           "tap": {
             "byKey": "employee_07_recommend_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1458,7 +1139,7 @@
           "pump": true
         },
         {
-          "tapText": "Marketing"
+          "tapText": "HR"
         },
         {
           "pump": true
@@ -1483,7 +1164,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_poor_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -1499,7 +1180,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_07_recommend_formfield"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1544,7 +1225,7 @@
           "pump": true
         },
         {
-          "tapText": "HR"
+          "tapText": "Sales"
         },
         {
           "pump": true
@@ -1578,6 +1259,14 @@
         {
           "tap": {
             "byKey": "employee_07_recommend_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1622,7 +1311,7 @@
           "pump": true
         },
         {
-          "tapText": "HR"
+          "tapText": "Sales"
         },
         {
           "pump": true
@@ -1647,7 +1336,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_poor_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -1655,7 +1344,7 @@
         },
         {
           "tap": {
-            "byKey": "employee_08_training_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1679,92 +1368,6 @@
     },
     {
       "tc": "pairwise_valid_cases_8",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Engineering"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_poor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "employee_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
       "steps": [
@@ -1811,256 +1414,6 @@
         },
         {
           "tap": {
-            "byKey": "employee_06_rating_excellent_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "employee_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_10",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Sales"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_poor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "employee_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_11",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Sales"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_06_rating_fair_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_09_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "employee_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_12",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "employee_02_id_textfield",
-            "dataset": "byKey.employee_02_id_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_03_department_dropdown"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tapText": "Engineering"
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_04_email_textfield",
-            "dataset": "byKey.employee_04_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "employee_05_years_textfield",
-            "dataset": "byKey.employee_05_years_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "employee_06_rating_fair_radio"
           }
         },
@@ -2070,22 +1423,6 @@
         {
           "tap": {
             "byKey": "employee_07_recommend_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_07_recommend_formfield"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "employee_08_training_checkbox"
           }
         },
         {

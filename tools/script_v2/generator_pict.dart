@@ -44,18 +44,30 @@ String generatePictModel(Map<String, List<String>> factors) {
   return buffer.toString();
 }
 
-/// Generate valid-only PICT model (excludes 'invalid' from TEXT factors)
-String generateValidOnlyPictModel(Map<String, List<String>> factors) {
+/// Generate valid-only PICT model (excludes 'invalid' from TEXT factors and 'unchecked' from required checkboxes)
+String generateValidOnlyPictModel(
+  Map<String, List<String>> factors, {
+  Set<String> requiredCheckboxes = const {},
+}) {
   final buffer = StringBuffer();
   for (final entry in factors.entries) {
-    if (entry.key.startsWith('TEXT')) {
+    // Check if this is a text field factor (contains 'valid' and 'invalid')
+    final isTextField = entry.value.contains('valid') && entry.value.contains('invalid');
+
+    if (isTextField) {
       // For TEXT factors, only use 'valid' values
       final validValues = entry.value.where((v) => v != 'invalid').toList();
       if (validValues.isNotEmpty) {
         buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
       }
+    } else if (requiredCheckboxes.contains(entry.key)) {
+      // For required checkboxes, only use 'checked' value
+      final validValues = entry.value.where((v) => v != 'unchecked').toList();
+      if (validValues.isNotEmpty) {
+        buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
+      }
     } else {
-      // For non-TEXT factors (Radio, Dropdown), keep all values
+      // For non-TEXT factors (Radio, Dropdown, optional Checkbox), keep all values
       buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
     }
   }
@@ -227,8 +239,11 @@ List<String> readFactorNamesFromModel(String modelFilePath) {
 /// - Radio groups → Uses groupValueBinding or extracted group name
 /// - DropdownButtonFormField → Uses actual widget key as factor name
 /// - Checkbox → Uses actual widget key as factor name
-Map<String, List<String>> extractFactorsFromManifest(List<Map<String, dynamic>> widgets) {
+///
+/// Returns: FactorExtractionResult containing factors and required checkboxes
+FactorExtractionResult extractFactorsFromManifest(List<Map<String, dynamic>> widgets) {
   final factors = <String, List<String>>{};
+  final requiredCheckboxes = <String>{}; // Track which checkboxes are required
 
   // Track radio groups by groupValueBinding
   final radioGroups = <String, String>{}; // groupValueBinding -> factorName
@@ -287,11 +302,35 @@ Map<String, List<String>> extractFactorsFromManifest(List<Map<String, dynamic>> 
     if ((widgetType == 'Checkbox' || widgetType.startsWith('FormField<bool>')) && key.isNotEmpty) {
       // Use actual widget key as factor name
       factors[key] = ['checked', 'unchecked'];
+
+      // Detect if this checkbox is required by checking validatorRules
+      if (widgetType.startsWith('FormField<bool>')) {
+        final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+        final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+
+        for (final rule in rules) {
+          if (rule is Map) {
+            final condition = rule['condition']?.toString() ?? '';
+            // Check if condition requires value to be true
+            // Pattern: "value == null || !value" means checkbox must be checked
+            final normalized = condition.toLowerCase().replaceAll(' ', '');
+            if (normalized.contains('!value') ||
+                normalized.contains('value==false') ||
+                (normalized.contains('value==null') && normalized.contains('||!value'))) {
+              requiredCheckboxes.add(key);
+              break;
+            }
+          }
+        }
+      }
       continue;
     }
   }
 
-  return factors;
+  return FactorExtractionResult(
+    factors: factors,
+    requiredCheckboxes: requiredCheckboxes,
+  );
 }
 
 /// Extract radio group name from radio key
@@ -390,12 +429,16 @@ List<String> _extractOptionsFromMeta(dynamic raw) {
 Future<void> writePictModelFiles({
   required Map<String, List<String>> factors,
   required String pageBaseName,
+  Set<String> requiredCheckboxes = const {},
   String pictBin = './pict',
 }) async {
   if (factors.isEmpty) return;
 
   final modelContent = generatePictModel(factors);
-  final validModelContent = generateValidOnlyPictModel(factors);
+  final validModelContent = generateValidOnlyPictModel(
+    factors,
+    requiredCheckboxes: requiredCheckboxes,
+  );
 
   // Create output/model_pairwise directory
   final outputDir = Directory('output/model_pairwise');
@@ -560,8 +603,11 @@ Future<PairwiseResult> generatePairwiseFromManifest({
   final manifestJson = jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
   final widgets = (manifestJson['widgets'] as List? ?? const []).cast<Map<String, dynamic>>();
 
-  // Extract factors
-  final factors = extractFactorsFromManifest(widgets);
+  // Extract factors and required checkboxes
+  final extractionResult = extractFactorsFromManifest(widgets);
+  final factors = extractionResult.factors;
+  final requiredCheckboxes = extractionResult.requiredCheckboxes;
+
   if (factors.isEmpty) {
     return PairwiseResult(
       combinations: [],
@@ -576,6 +622,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
   await writePictModelFiles(
     factors: factors,
     pageBaseName: pageBase,
+    requiredCheckboxes: requiredCheckboxes,
     pictBin: pictBin,
   );
 
@@ -620,6 +667,17 @@ Future<PairwiseResult> generatePairwiseFromManifest({
 }
 
 // Removed: _basenameWithoutExtension - now using utils.basenameWithoutExtension
+
+/// Result of factor extraction from manifest
+class FactorExtractionResult {
+  final Map<String, List<String>> factors;
+  final Set<String> requiredCheckboxes;
+
+  FactorExtractionResult({
+    required this.factors,
+    required this.requiredCheckboxes,
+  });
+}
 
 /// Result of pairwise generation
 class PairwiseResult {
