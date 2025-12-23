@@ -23,16 +23,16 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Books'));
+        await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'P-A1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABCD');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
@@ -58,24 +58,24 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Electronics'));
+        await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -96,28 +96,25 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'AB');
+        // dataset: byKey.product_02_name_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Food'));
+        await tester.tap(find.text('Electronics'));
         await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        // dataset: byKey.product_04_sku_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABCD');
         await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        // dataset: byKey.product_05_quantity_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
@@ -128,7 +125,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Product name must be at least 3 characters'),
+          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
+          find.text('Quantity must be at least 1'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -141,19 +139,19 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        // dataset: byKey.product_02_name_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'AB');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Clothing'));
+        await tester.tap(find.text('Books'));
         await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'P-A1');
+        // dataset: byKey.product_04_sku_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
+        // dataset: byKey.product_05_quantity_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
@@ -167,8 +165,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
-          find.text('Quantity must be at least 1'),
+          find.text('Product name must be at least 3 characters'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -187,22 +184,19 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Books'));
+        await tester.tap(find.text('Food'));
         await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'P-A1');
+        // dataset: byKey.product_04_sku_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
+        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -211,7 +205,6 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Product name must be at least 3 characters'),
-          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
           find.text('Quantity must be at least 1'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
@@ -226,24 +219,21 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Food'));
+        await tester.tap(find.text('Electronics'));
         await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        // dataset: byKey.product_04_sku_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABCD');
         await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
+        // dataset: byKey.product_05_quantity_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -251,7 +241,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Quantity must be at least 1'),
+          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -265,21 +255,21 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Food'));
+        await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'P-A1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABCD');
         await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        // dataset: byKey.product_05_quantity_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
@@ -291,6 +281,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
+          find.text('Quantity must be at least 1'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -303,28 +294,25 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'AB');
+        // dataset: byKey.product_02_name_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Electronics'));
+        await tester.tap(find.text('Food'));
         await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        // dataset: byKey.product_04_sku_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABCD');
         await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
+        // dataset: byKey.product_05_quantity_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -332,8 +320,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Product name must be at least 3 characters'),
-          find.text('Quantity must be at least 1'),
+          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -346,66 +333,25 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Books'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('product_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_10', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'AB');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Clothing'));
+        await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -414,94 +360,6 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Product name must be at least 3 characters'),
-          find.byKey(const Key('product_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_11', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Clothing'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'P-A1');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
-          find.text('Quantity must be at least 1'),
-          find.byKey(const Key('product_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_12', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Electronics'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'P-A1');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('SKU must be uppercase alphanumeric with dash (min 5 chars)'),
           find.byKey(const Key('product_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -517,21 +375,24 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Books'));
+        await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
@@ -555,7 +416,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -563,16 +424,16 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -593,7 +454,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -601,22 +462,16 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -637,24 +492,27 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Clothing'));
+        await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
+        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -675,27 +533,27 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Books'));
+        await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
+        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -716,24 +574,27 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Food'));
+        await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
+        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -754,24 +615,24 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Food'));
+        await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
+        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
+        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
+        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
@@ -792,48 +653,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Electronics'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('product_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_cases_9', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Premium Widget');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -841,142 +661,16 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-123');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('product_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_cases_10', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Clothing'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('product_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_cases_11', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Clothing'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
-        await tester.tap(find.byKey(const Key('product_09_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('product_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_cases_12', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ProductCubit>(create: (_)=> ProductCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Awesome Widget');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Electronics'));
-        await tester.pump();
-        // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC12');
-        await tester.pump();
-        // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '5');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_07_instock_checkbox')));
         await tester.tap(find.byKey(const Key('product_07_instock_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.tap(find.byKey(const Key('product_07_instock_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('product_08_featured_checkbox')));
-        await tester.tap(find.byKey(const Key('product_08_featured_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_09_end_button')));
         await tester.tap(find.byKey(const Key('product_09_end_button')));
