@@ -1,6 +1,6 @@
 {
   "source": {
-    "file": "lib/demos/employee_survey_page.dart",
+    "file": "./lib/demos/employee_survey_page.dart",
     "pageClass": "EmployeeSurveyPage",
     "cubitClass": "EmployeeCubit",
     "stateClass": "EmployeeState",
