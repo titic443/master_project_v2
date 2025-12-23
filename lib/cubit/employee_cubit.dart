@@ -1,12 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'employee_state.dart';
 
 class EmployeeCubit extends Cubit<EmployeeState> {
   final bool shouldSucceed;
+  final String? baseUrl;
 
-  EmployeeCubit({this.shouldSucceed = false}) : super(const EmployeeState());
+  EmployeeCubit({this.shouldSucceed = false, this.baseUrl})
+      : super(const EmployeeState());
+
+  String get _baseUrl {
+    if (baseUrl != null) return baseUrl!;
+
+    // For Android emulator, use 10.0.2.2 to reach host machine
+    // For iOS simulator and desktop, use localhost
+    if (Platform.isAndroid) {
+      return 'http://10.0.2.2:8000';
+    }
+    return 'http://localhost:8000';
+  }
 
   void onEmployeeIdChanged(String value) {
     emit(state.copyWith(employeeId: value));
@@ -41,8 +55,11 @@ class EmployeeCubit extends Cubit<EmployeeState> {
     emit(state.copyWith(status: EmployeeStatus.loading));
 
     try {
+      final url = '$_baseUrl/api/demo/employee';
+      print('🌐 Submitting to: $url');
+
       final response = await http.post(
-        Uri.parse('http://localhost:8000/api/demo/employee'),
+        Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'employeeId': state.employeeId,
@@ -54,6 +71,9 @@ class EmployeeCubit extends Cubit<EmployeeState> {
           'attendTraining': state.attendTraining,
         }),
       );
+
+      print('📡 Response status: ${response.statusCode}');
+      print('📡 Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -70,6 +90,7 @@ class EmployeeCubit extends Cubit<EmployeeState> {
         ));
       }
     } catch (e) {
+      print('❌ Error: $e');
       emit(state.copyWith(
         status: EmployeeStatus.error,
         errorMessage: 'Failed to submit: $e',

@@ -60,11 +60,16 @@ class CustomerCubit extends Cubit<CustomerState> {
     };
 
     try {
+      print('🌐 Submitting to: $uri');
+
       final resp = await http.post(
         uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(payload),
       );
+
+      print('📡 Response status: ${resp.statusCode}');
+      print('📡 Response body: ${resp.body}');
 
       // Check HTTP status code and handle accordingly
       if (resp.statusCode >= 200 && resp.statusCode < 300) {
@@ -79,14 +84,14 @@ class CustomerCubit extends Cubit<CustomerState> {
         // Error: HTTP 4xx/5xx
         final body = jsonDecode(resp.body) as Map<String, dynamic>;
         final errorMessage = body['detail']?['message'] as String? ?? 'Unknown error';
-        print('HTTP Error ${resp.statusCode}: $errorMessage');
+        print('❌ HTTP Error ${resp.statusCode}: $errorMessage');
         emit(state.copyWith(
           status: CustomerStatus.error,
           errorMessage: errorMessage,
         ));
       }
     } catch (e) {
-      print('Network exception >>> ${e.toString()}');
+      print('❌ Network exception: ${e.toString()}');
       emit(state.copyWith(
         status: CustomerStatus.error,
         errorMessage: 'Network error occurred',
