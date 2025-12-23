@@ -2,13 +2,13 @@
 
 ## 📖 Overview
 
-`generate_datasets.dart` เป็น script ที่ใช้ **Google Gemini AI** สร้าง test datasets จาก UI manifest โดยอัตโนมัติ
+`generate_datasets.dart` เป็น script ที่ใช้ __Google Gemini AI__ สร้าง test datasets จาก UI manifest โดยอัตโนมัติ
 
 ---
 
 ## 🔄 Workflow: Script ทำงานยังไง
 
-```
+```ini
 ┌─────────────────────────────────────────────────────────────────┐
 │                   GENERATE DATASETS WORKFLOW                    │
 └─────────────────────────────────────────────────────────────────┘
@@ -73,6 +73,7 @@ for (final widget in widgets) {
 ```
 
 **Example Field Extracted:**
+
 ```json
 {
   "key": "register_username_textfield",
@@ -98,7 +99,8 @@ for (final widget in widgets) {
 Script สร้าง prompt ส่งให้ Gemini โดยมี 2 ส่วน:
 
 **Part 1: Instructions**
-```
+
+```yaml
 Generate test datasets for the given Flutter form fields.
 Output strictly valid JSON, no code fences, no comments.
 Format:
@@ -115,6 +117,7 @@ Critical Rules:
 ```
 
 **Part 2: Context (JSON)**
+
 ```json
 {
   "file": "lib/register/register_page.dart",
@@ -164,6 +167,7 @@ final response = await http.post(endpoint, body: jsonEncode(payload));
 ```
 
 **AI Response Example:**
+
 ```json
 {
   "candidates": [
@@ -201,6 +205,7 @@ final parsed = jsonDecode(cleaned);
 ### Step 5: Validate & Merge Data
 
 **Validation Rules:**
+
 1. ✅ Check `maxLength` constraints
 2. ✅ Filter valid values that exceed limits
 3. ✅ Keep invalid values (for testing violations)
@@ -256,19 +261,21 @@ File(outPath).writeAsStringSync(
 );
 ```
 
-**Final Output:** `test_data/register_page.datasets.json`
+__Final Output:__ `test_data/register_page.datasets.json`
 
 ---
 
 ## 🤖 AI vs Local Generation
 
 ### AI Mode (Default - Required)
+
 - ✅ **Realistic data** based on field semantics
 - ✅ **Context-aware** (email field → valid emails)
 - ✅ **Diverse values** for better coverage
 - ✅ Respects constraints (maxLength, patterns)
 
 **Example AI Output:**
+
 ```json
 "register_username_textfield": {
   "valid": ["alice", "bob123", "charlie"],
@@ -277,11 +284,13 @@ File(outPath).writeAsStringSync(
 ```
 
 ### Local Mode (Fallback - `--local-only`)
+
 - ⚠️ **Generic data** without context
 - ⚠️ Pattern-based generation only
 - ⚠️ Less realistic
 
 **Example Local Output:**
+
 ```json
 "register_username_textfield": {
   "valid": ["abc123xy"],
@@ -294,13 +303,16 @@ File(outPath).writeAsStringSync(
 ## 🔑 Key Features
 
 ### 1. **Constraint Awareness**
+
 Script respects all metadata constraints:
+
 - `maxLength` → Never generate valid values exceeding limit
 - `inputFormatters.pattern` → Follow character rules
 - `validatorRules` → Generate data for each validation rule
 - `keyboardType` → Infer field type (email, number)
 
 ### 2. **Per-Rule Dataset Generation**
+
 For fields with multiple validation rules, generates **1:1 mapping**:
 
 ```json
@@ -315,10 +327,12 @@ For fields with multiple validation rules, generates **1:1 mapping**:
   }
 }
 ```
+
 - Index 0: Tests "Required" rule
 - Index 1: Tests "Must have number" rule
 
 ### 3. **Smart Field Type Detection**
+
 ```dart
 // Detect from key name
 if (key.contains('email')) → generate emails
@@ -335,6 +349,7 @@ if (keyboardType == 'emailAddress') → generate emails
 ## 📊 Example: Complete Flow
 
 **Input Manifest:**
+
 ```json
 {
   "source": {"file": "lib/login/login_page.dart"},
@@ -358,7 +373,8 @@ if (keyboardType == 'emailAddress') → generate emails
 ```
 
 **AI Prompt Sent:**
-```
+
+```dart
 Generate test datasets for the given Flutter form fields.
 [... instructions ...]
 
@@ -375,6 +391,7 @@ Context (JSON):
 ```
 
 **AI Response:**
+
 ```json
 {
   "file": "lib/login/login_page.dart",
@@ -389,7 +406,8 @@ Context (JSON):
 }
 ```
 
-**Output File:** `test_data/login_page.datasets.json`
+__Output File:__ `test_data/login_page.datasets.json`
+
 ```json
 {
   "file": "lib/login/login_page.dart",
@@ -409,29 +427,34 @@ Context (JSON):
 ## 🔑 API Key Configuration
 
 ### Recommended: .env File (Easiest)
+
 Create a `.env` file in project root:
 
 ```bash
 # .env
-GEMINI_API_KEY=your_actual_api_key_here
+GEMINI_API_KEY=AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg
 ```
 
 **Priority Order:**
+
 1. `--api-key` flag (highest priority)
 2. `.env` file
 3. `GEMINI_API_KEY` environment variable (lowest priority)
 
 **Benefits:**
+
 - ✅ No need to export environment variables
 - ✅ Safe from accidental commits (`.env` is in `.gitignore`)
 - ✅ Easy to share template via `.env.example`
 
 ### Alternative: Environment Variable
+
 ```bash
 export GEMINI_API_KEY=your_actual_api_key_here
 ```
 
 ### Get Your API Key
+
 Visit: https://aistudio.google.com/app/apikey
 
 ---
@@ -439,13 +462,15 @@ Visit: https://aistudio.google.com/app/apikey
 ## 🛠️ Command Usage
 
 ### Batch Mode (Process All Manifests) ⚡
+
 ```bash
 # Automatically scan and process all *.manifest.json files in manifest/ folder
 dart run tools/script_v2/generate_datasets.dart
 ```
 
 **Output Example:**
-```
+
+```ini
 📁 Found 3 manifest file(s)
 🚀 Starting batch dataset generation...
 
@@ -463,12 +488,14 @@ dart run tools/script_v2/generate_datasets.dart
 ```
 
 ### Single File Mode
+
 ```bash
 dart run tools/script_v2/generate_datasets.dart \
   manifest/demos/register_page.manifest.json
 ```
 
 ### With Custom Model
+
 ```bash
 dart run tools/script_v2/generate_datasets.dart \
   manifest/demos/register_page.manifest.json \
@@ -476,6 +503,7 @@ dart run tools/script_v2/generate_datasets.dart \
 ```
 
 ### With Inline API Key (overrides .env)
+
 ```bash
 dart run tools/script_v2/generate_datasets.dart \
   manifest/demos/register_page.manifest.json \
@@ -483,6 +511,7 @@ dart run tools/script_v2/generate_datasets.dart \
 ```
 
 ### Local-Only Mode (No AI)
+
 ```bash
 dart run tools/script_v2/generate_datasets.dart \
   manifest/demos/register_page.manifest.json \
@@ -495,7 +524,7 @@ dart run tools/script_v2/generate_datasets.dart \
 
 Script prints detailed logs:
 
-```
+```ini
 === datasets_from_ai: PROMPT (model=gemini-1.5-flash) ===
 Generate test datasets for the given Flutter form fields...
 --- Context (JSON) ---
@@ -514,29 +543,37 @@ Generate test datasets for the given Flutter form fields...
 ## 🚨 Error Handling
 
 ### API Key Missing
-```
+
+```html
 Error: GEMINI_API_KEY not set in .env file, environment variable, or --api-key flag. AI is required.
 Tip: Create a .env file in project root with: GEMINI_API_KEY=your_key_here
 ```
+
 **Fix:** Create `.env` file, set environment variable, or use `--api-key` flag
 
 ### AI Call Failed
-```
+
+```sh
 ! Gemini call failed: HttpException: HTTP 400: ...
 ! AI call failed and fallback is disabled. Aborting.
 ```
+
 **Fix:** Check API key validity, network connection, model name
 
 ### Insufficient AI Data
-```
+
+```ini
 ! AI did not provide sufficient data for field: login_username_textfield
 ```
+
 **Fix:** Retry or use `--local-only` mode
 
 ### MaxLength Violation
-```
+
+```sh
 Warning: Valid value "verylongusername123" exceeds maxLength=10, using fallback
 ```
+
 **Fix:** Automatic - script generates fallback value
 
 ---
@@ -546,7 +583,7 @@ Warning: Valid value "verylongusername123" exceeds maxLength=10, using fallback
 1. **Use .env file** for API key management (avoid repeated export commands)
 2. **Use batch mode** when generating datasets for multiple pages (faster workflow)
 3. **Always use AI mode** for production tests (more realistic data)
-4. **Verify output** after generation (check `test_data/*.datasets.json`)
+4. __Verify output__ after generation (check `test_data/*.datasets.json`)
 5. **Use specific models** for better results (`gemini-2.0-flash-exp`)
 6. **Keep manifests clean** (remove unused widgets to reduce AI cost)
 7. **Review AI suggestions** (may need manual adjustments for edge cases)
@@ -560,6 +597,7 @@ Warning: Valid value "verylongusername123" exceeds maxLength=10, using fallback
 ---
 
 **Related Scripts:**
+
 - [extract_ui_manifest.dart](../tools/script_v2/extract_ui_manifest.dart) - Generate manifests
 - [generate_test_data.dart](../tools/script_v2/generate_test_data.dart) - Generate test plans
 - [generate_test_script.dart](../tools/script_v2/generate_test_script.dart) - Generate tests
