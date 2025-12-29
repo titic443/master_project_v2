@@ -1,0 +1,10 @@
+datepicker_01_birthdate_tile	datepicker_02_appointment_date_tile	datepicker_03_appointment_time_tile
+null	future_date	future_date
+today	future_date	today
+null	null	null
+today	today	null
+today	null	future_date
+past_date	future_date	null
+null	today	today
+past_date	today	future_date
+past_date	null	today

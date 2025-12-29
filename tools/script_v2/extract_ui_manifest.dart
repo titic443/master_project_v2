@@ -232,7 +232,7 @@ String? _findPageClass(String src) {
 List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts = const {}, String? cubitType}) {
   final targets = <String>{
     'TextField', 'TextFormField', 'FormField', 'Radio', 'ElevatedButton', 'TextButton', 'OutlinedButton', 'IconButton', 'Text',
-    'DropdownButton', 'DropdownButtonFormField', 'Checkbox', 'Switch', 'Visibility', 'SnackBar',
+    'DropdownButton', 'DropdownButtonFormField', 'Checkbox', 'Switch', 'SwitchListTile', 'Slider', 'ListTile', 'Visibility', 'SnackBar',
   };
   final out = <Map<String, dynamic>>[];
   final regexVars = _collectRegexVars(src);

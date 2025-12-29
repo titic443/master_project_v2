@@ -1,0 +1,23 @@
+{
+  "source": {
+    "file": "lib/widgets/date_picker_demo_page.dart",
+    "pageClass": "DatePickerDemoPage",
+    "cubitClass": "DatePickerDemoCubit",
+    "stateClass": "DatePickerDemoState",
+    "fileCubit": "lib/cubit/widgets/date_picker_demo_cubit.dart",
+    "fileState": "lib/cubit/date_picker_demo_state.dart"
+  },
+  "datasets": {
+    "defaults": {},
+    "byKey": {}
+  },
+  "cases": [
+    {
+      "tc": "edge_cases_empty_all_fields",
+      "kind": "failed",
+      "group": "edge_cases",
+      "steps": [],
+      "asserts": []
+    }
+  ]
+}

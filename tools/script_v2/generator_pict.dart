@@ -321,6 +321,52 @@ FactorExtractionResult extractFactorsFromManifest(List<Map<String, dynamic>> wid
     if ((widgetType == 'Checkbox' || widgetType.startsWith('FormField<bool>')) && key.isNotEmpty) {
       // Use actual widget key as factor name
       factors[key] = ['checked', 'unchecked'];
+    }
+
+    // Switch/SwitchListTile - same as Checkbox
+    if ((widgetType == 'Switch' || widgetType == 'SwitchListTile') && key.isNotEmpty) {
+      factors[key] = ['on', 'off'];
+    }
+
+    // Slider - extract min/mid/max values
+    if (widgetType == 'Slider' && key.isNotEmpty) {
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final min = (meta['min'] as num?)?.toDouble() ?? 0.0;
+      final max = (meta['max'] as num?)?.toDouble() ?? 100.0;
+      final mid = (min + max) / 2;
+
+      factors[key] = [
+        min.round().toString(),
+        mid.round().toString(),
+        max.round().toString(),
+      ];
+    }
+
+    // ListTile for DatePicker/TimePicker (detect by key pattern)
+    if (widgetType == 'ListTile' && key.isNotEmpty) {
+      final keyLower = key.toLowerCase();
+
+      // DatePicker detection
+      if (keyLower.contains('date') || keyLower.contains('birth')) {
+        // Use semantic categories instead of actual dates
+        if (keyLower.contains('birth')) {
+          factors[key] = ['past_date', 'today', 'null'];
+        } else if (keyLower.contains('appointment') || keyLower.contains('future')) {
+          factors[key] = ['today', 'future_date', 'null'];
+        } else {
+          factors[key] = ['past_date', 'today', 'future_date', 'null'];
+        }
+      }
+
+      // TimePicker detection
+      else if (keyLower.contains('time')) {
+        factors[key] = ['morning', 'afternoon', 'evening', 'null'];
+      }
+    }
+
+    // Continue with original Checkbox logic for required detection
+    if ((widgetType == 'Checkbox' || widgetType.startsWith('FormField<bool>')) && key.isNotEmpty) {
+      // (Duplicate assignment to factors[key] removed above, keeping detection logic)
 
       // Detect if this checkbox is required by checking validatorRules
       if (widgetType.startsWith('FormField<bool>')) {

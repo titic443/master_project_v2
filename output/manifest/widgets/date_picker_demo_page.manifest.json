@@ -1,0 +1,33 @@
+{
+  "source": {
+    "file": "lib/widgets/date_picker_demo_page.dart",
+    "pageClass": "DatePickerDemoPage",
+    "cubitClass": "DatePickerDemoCubit",
+    "stateClass": "DatePickerDemoState",
+    "fileCubit": "lib/cubit/widgets/date_picker_demo_cubit.dart",
+    "fileState": "lib/cubit/date_picker_demo_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "ListTile",
+      "key": "datepicker_01_birthdate_tile"
+    },
+    {
+      "widgetType": "ListTile",
+      "key": "datepicker_02_appointment_date_tile"
+    },
+    {
+      "widgetType": "ListTile",
+      "key": "datepicker_03_appointment_time_tile"
+    },
+    {
+      "widgetType": "Text",
+      "key": "datepicker_04_status_text",
+      "displayBinding": {
+        "key": "datepicker_04_status_text",
+        "stateField": "birthDate"
+      },
+      "textLiteral": "datepicker_04_status_text"
+    }
+  ]
+}
