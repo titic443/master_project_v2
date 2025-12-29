@@ -8,7 +8,7 @@ class SwitchDemoState {
   SwitchDemoState({
     this.enableNotifications = false,
     this.darkMode = false,
-    this.autoSave = true,
+    this.autoSave = false,
   });
 
   SwitchDemoState copyWith({
