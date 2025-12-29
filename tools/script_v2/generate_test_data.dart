@@ -438,13 +438,17 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
 
   // Full flow mode removed - only pairwise testing supported
 
-  // --- Pairwise generation (always enabled for API endpoints) ---
-  if (hasEndButton) {
+  // --- Pairwise generation (enabled when PICT model exists) ---
+  // Check if PICT model exists (supports both API forms and widget demos)
+  final pageBase = utils.basenameWithoutExtension(uiFile);
+  final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';
+  final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt';
+  final pageModelPath = 'output/model_pairwise/$pageBase.full.model.txt';
+
+  final hasPictModel = File(pageModelPath).existsSync();
+
+  if (hasPictModel) {
     // Load page-specific PICT results
-    final pageBase = utils.basenameWithoutExtension(uiFile);
-    final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';
-    final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt';
-    final pageModelPath = 'output/model_pairwise/$pageBase.full.model.txt';
 
     List<Map<String,String>>? extCombos;
     List<Map<String,String>>? extValidCombos;
@@ -456,12 +460,13 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
     }
 
     // Build factor type mapping from model factors
-    // Categorize factors as: text, radio, dropdown, checkbox based on their values
-    final factorTypes = <String, String>{}; // factorName -> type (text/radio/dropdown/checkbox)
+    // Categorize factors as: text, radio, dropdown, checkbox, switch based on their values
+    final factorTypes = <String, String>{}; // factorName -> type (text/radio/dropdown/checkbox/switch)
     final textFieldFactors = <String>[]; // List of textfield widget keys
     final radioGroupFactors = <String>[]; // List of radio group names
     final dropdownFactors = <String>[]; // List of dropdown widget keys
     final checkboxFactors = <String>[]; // List of checkbox widget keys
+    final switchFactors = <String>[]; // List of switch widget keys
 
     if (modelFactors != null) {
       for (final entry in modelFactors.entries) {
@@ -477,6 +482,10 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           // Checkbox
           factorTypes[factorName] = 'checkbox';
           checkboxFactors.add(factorName);
+        } else if (values.contains('on') && values.contains('off')) {
+          // Switch widget
+          factorTypes[factorName] = 'switch';
+          switchFactors.add(factorName);
         } else if (values.any((v) => v.endsWith('_radio'))) {
           // Radio group
           factorTypes[factorName] = 'radio';
@@ -730,6 +739,14 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
+          } else if (factorType == 'switch') {
+            // Switch widget - tap only if 'on', skip if 'off' (default state)
+            if (pick == 'on') {
+              stepsByKey[factorName] = [
+                {'tap': {'byKey': factorName}},
+                {'pump': true}
+              ];
+            }
           }
         }
 
@@ -838,9 +855,14 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         }
       }
 
-      // Final API call
-      st.add({'tap': {'byKey': endKey!}});
-      st.add({'pumpAndSettle': true});
+      // Final API call (if end button exists)
+      if (hasEndButton && endKey != null) {
+        st.add({'tap': {'byKey': endKey}});
+        st.add({'pumpAndSettle': true});
+      } else {
+        // For widget demos without submit button, just pump
+        st.add({'pump': true});
+      }
 
       // Determine test case kind based on whether invalid data is used
       final caseKind = hasInvalidData ? 'failed' : 'success';
@@ -964,6 +986,14 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
+          } else if (factorType == 'switch') {
+            // Switch widget - tap only if 'on', skip if 'off' (default state)
+            if (pick == 'on') {
+              stepsByKey[factorName] = [
+                {'tap': {'byKey': factorName}},
+                {'pump': true}
+              ];
+            }
           }
         }
 
@@ -982,9 +1012,14 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Final API call
-        st.add({'tap': {'byKey': endKey!}});
-        st.add({'pumpAndSettle': true});
+        // Final API call (if end button exists)
+        if (hasEndButton && endKey != null) {
+          st.add({'tap': {'byKey': endKey}});
+          st.add({'pumpAndSettle': true});
+        } else {
+          // For widget demos without submit button, just pump
+          st.add({'pump': true});
+        }
 
         // Valid-only cases should always expect success
         final id = 'pairwise_valid_cases_${i + 1}';
