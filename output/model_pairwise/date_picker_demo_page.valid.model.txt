@@ -1,0 +1,3 @@
+datepicker_01_birthdate_tile: past_date, today, null
+datepicker_02_appointment_date_tile: today, future_date, null
+datepicker_03_appointment_time_tile: today, future_date, null
