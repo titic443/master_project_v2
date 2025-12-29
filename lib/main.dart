@@ -7,6 +7,11 @@ import 'cubit/employee_cubit.dart';
 import 'demos/customer_details_page.dart';
 import 'demos/product_registration_page.dart';
 import 'demos/employee_survey_page.dart';
+import 'widgets/switch_demo_page.dart';
+import 'widgets/slider_demo_page.dart';
+import 'widgets/segmented_button_demo_page.dart';
+import 'widgets/chip_demo_page.dart';
+import 'widgets/date_picker_demo_page.dart';
 
 void main() => runApp(const DemoApp());
 
@@ -39,15 +44,16 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: 20),
               const Text(
-                'Select a Form to Test',
+                'Select a Demo to Explore',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -98,6 +104,63 @@ class HomePage extends StatelessWidget {
                     child: const EmployeeSurveyPage(),
                   ),
                 ),
+              ),
+              const SizedBox(height: 40),
+              const Divider(thickness: 2),
+              const SizedBox(height: 20),
+              const Text(
+                'Widget Demos',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFormCard(
+                context,
+                title: 'Switch Demo',
+                description: 'Toggle switches for settings (on/off)',
+                icon: Icons.toggle_on,
+                color: Colors.teal,
+                onTap: () => _navigateToPage(context, const SwitchDemoPage()),
+              ),
+              const SizedBox(height: 12),
+              _buildFormCard(
+                context,
+                title: 'Slider Demo',
+                description: 'Adjustable sliders for numeric values',
+                icon: Icons.tune,
+                color: Colors.deepPurple,
+                onTap: () => _navigateToPage(context, const SliderDemoPage()),
+              ),
+              const SizedBox(height: 12),
+              _buildFormCard(
+                context,
+                title: 'SegmentedButton Demo',
+                description: 'Material 3 segmented button selections',
+                icon: Icons.view_agenda,
+                color: Colors.indigo,
+                onTap: () => _navigateToPage(context, const SegmentedButtonDemoPage()),
+              ),
+              const SizedBox(height: 12),
+              _buildFormCard(
+                context,
+                title: 'Chip Demo',
+                description: 'Choice, Filter, and Input chips',
+                icon: Icons.label,
+                color: Colors.pink,
+                onTap: () => _navigateToPage(context, const ChipDemoPage()),
+              ),
+              const SizedBox(height: 12),
+              _buildFormCard(
+                context,
+                title: 'DatePicker Demo',
+                description: 'Date and time picker dialogs',
+                icon: Icons.calendar_today,
+                color: Colors.red,
+                onTap: () => _navigateToPage(context, const DatePickerDemoPage()),
               ),
             ],
           ),
