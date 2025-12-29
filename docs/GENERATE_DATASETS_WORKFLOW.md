@@ -432,7 +432,7 @@ Create a `.env` file in project root:
 
 ```bash
 # .env
-GEMINI_API_KEY=AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg
+GEMINI_API_KEY=
 ```
 
 **Priority Order:**

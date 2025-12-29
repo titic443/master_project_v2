@@ -88,7 +88,7 @@ dart run tools/script_v2/extract_ui_manifest.dart
 **⚠️ Required**: ตั้งค่า API Key ใน `.env` file ก่อน
 
 ```sh
-echo "GEMINI_API_KEY=AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg" > .env
+echo "GEMINI_API_KEY=" > .env
 ```
 
 #### Run Specific File
