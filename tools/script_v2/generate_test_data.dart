@@ -24,6 +24,7 @@ import 'utils.dart' as utils;
 Future<String> generateTestDataFromManifest(
   String manifestPath, {
   String pictBin = './pict',
+  String? constraints,
 }) async {
   // Read manifest to get UI file path (same logic as _processOne)
   final raw = File(manifestPath).readAsStringSync();
@@ -37,6 +38,7 @@ Future<String> generateTestDataFromManifest(
     planSummary: false,
     pairwiseUsePict: true,
     pictBin: pictBin,
+    constraints: constraints,
   );
 
   // Return output path (same logic as _processOne line 1093)
@@ -153,7 +155,7 @@ String _extractPagePrefix(String? pageClass, String? filePath) {
 }
 
 
-Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSummary = false, bool pairwiseUsePict = false, String pictBin = './pict'}) async {
+Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSummary = false, bool pairwiseUsePict = false, String pictBin = './pict', String? constraints}) async {
   final raw = File(path).readAsStringSync();
   final j = jsonDecode(raw) as Map<String, dynamic>;
   final source = (j['source'] as Map<String, dynamic>? ) ?? const {};
@@ -161,7 +163,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
   final pageClass = (source['pageClass'] as String?) ?? utils.basenameWithoutExtension(uiFile);
   // Try to emit a PICT model from manifest first for verification
   try {
-    await _tryWritePictModelFromManifestForUi(uiFile, pictBin: pictBin);
+    await _tryWritePictModelFromManifestForUi(uiFile, pictBin: pictBin, constraints: constraints);
   } catch (e) {
     stderr.writeln('! Failed to write PICT model from manifest: $e');
   }
@@ -1103,7 +1105,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
 // Removed: _basename, _basenameWithoutExtension - now using utils.dart
 
 // Attempt to read output/manifest/**/<page>.manifest.json and emit a PICT model
-Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin = './pict'}) async {
+Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin = './pict', String? constraints}) async {
   final base = utils.basenameWithoutExtension(uiFile);
 
   // Extract subfolder structure from uiFile (e.g., lib/demos/register_page.dart → demos)
@@ -1138,6 +1140,7 @@ Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin 
     pageBaseName: base,
     requiredCheckboxes: requiredCheckboxes,
     pictBin: pictBin,
+    constraints: constraints,
   );
 }
 

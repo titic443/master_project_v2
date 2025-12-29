@@ -19,7 +19,7 @@ import 'utils.dart' as utils;
 // PICT Model Generation
 // ============================================================================
 
-/// Generate PICT model from factors map
+/// Generate PICT model from factors map with optional constraints
 ///
 /// Example input:
 /// ```dart
@@ -35,12 +35,21 @@ import 'utils.dart' as utils;
 /// TEXT: valid, invalid
 /// Radio1: yes, no
 /// Dropdown: "option1", "option2", "option3"
+///
+/// IF [Type] = "RAID-5" THEN [Compression] = "Off";
 /// ```
-String generatePictModel(Map<String, List<String>> factors) {
+String generatePictModel(Map<String, List<String>> factors, {String? constraints}) {
   final buffer = StringBuffer();
   for (final entry in factors.entries) {
     buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
   }
+
+  // Add constraints if provided
+  if (constraints != null && constraints.trim().isNotEmpty) {
+    buffer.writeln('');
+    buffer.writeln(constraints.trim());
+  }
+
   return buffer.toString();
 }
 
@@ -48,6 +57,7 @@ String generatePictModel(Map<String, List<String>> factors) {
 String generateValidOnlyPictModel(
   Map<String, List<String>> factors, {
   Set<String> requiredCheckboxes = const {},
+  String? constraints,
 }) {
   final buffer = StringBuffer();
   for (final entry in factors.entries) {
@@ -71,6 +81,13 @@ String generateValidOnlyPictModel(
       buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
     }
   }
+
+  // Add constraints if provided
+  if (constraints != null && constraints.trim().isNotEmpty) {
+    buffer.writeln('');
+    buffer.writeln(constraints.trim());
+  }
+
   return buffer.toString();
 }
 
@@ -96,6 +113,7 @@ String _formatValuesForModel(String factorName, List<String> values) {
 /// Parameters:
 /// - factors: Map of factor names to their possible values
 /// - pictBin: Path to PICT binary (default: './pict')
+/// - constraints: Optional PICT constraints
 ///
 /// Returns: List of test case combinations as Maps
 ///
@@ -104,17 +122,18 @@ String _formatValuesForModel(String factorName, List<String> values) {
 /// final combos = await executePict({
 ///   'TEXT': ['valid', 'invalid'],
 ///   'Radio1': ['yes', 'no']
-/// });
+/// }, constraints: 'IF [TEXT] = "invalid" THEN [Radio1] = "no";');
 /// // Result: [{'TEXT': 'valid', 'Radio1': 'yes'}, {'TEXT': 'invalid', 'Radio1': 'no'}]
 /// ```
 Future<List<Map<String, String>>> executePict(
   Map<String, List<String>> factors, {
   String pictBin = './pict',
+  String? constraints,
 }) async {
   if (factors.isEmpty) return const [];
 
-  // Generate PICT model content
-  final modelContent = generatePictModel(factors);
+  // Generate PICT model content with constraints
+  final modelContent = generatePictModel(factors, constraints: constraints);
 
   // Write temp model file under .dart_tool
   final tmpDir = Directory('.dart_tool');
@@ -431,13 +450,15 @@ Future<void> writePictModelFiles({
   required String pageBaseName,
   Set<String> requiredCheckboxes = const {},
   String pictBin = './pict',
+  String? constraints,
 }) async {
   if (factors.isEmpty) return;
 
-  final modelContent = generatePictModel(factors);
+  final modelContent = generatePictModel(factors, constraints: constraints);
   final validModelContent = generateValidOnlyPictModel(
     factors,
     requiredCheckboxes: requiredCheckboxes,
+    constraints: constraints,
   );
 
   // Create output/model_pairwise directory
@@ -593,6 +614,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
   required String uiFilePath,
   String pictBin = './pict',
   bool usePict = true,
+  String? constraints,
 }) async {
   // Read manifest
   final manifestFile = File(manifestPath);
@@ -624,6 +646,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
     pageBaseName: pageBase,
     requiredCheckboxes: requiredCheckboxes,
     pictBin: pictBin,
+    constraints: constraints,
   );
 
   // Generate combinations
@@ -633,7 +656,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
 
   if (usePict) {
     try {
-      combinations = await executePict(factors, pictBin: pictBin);
+      combinations = await executePict(factors, pictBin: pictBin, constraints: constraints);
 
       // Generate valid-only combinations
       final validFactors = <String, List<String>>{};
@@ -644,7 +667,7 @@ Future<PairwiseResult> generatePairwiseFromManifest({
           validFactors[entry.key] = entry.value;
         }
       }
-      validCombinations = await executePict(validFactors, pictBin: pictBin);
+      validCombinations = await executePict(validFactors, pictBin: pictBin, constraints: constraints);
       method = 'pict';
     } catch (e) {
       stderr.writeln('! PICT failed: $e. Using internal algorithm.');
