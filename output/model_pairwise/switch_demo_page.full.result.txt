@@ -1,5 +1,0 @@
-switch_01_notifications_switch	switch_02_darkmode_switch	switch_03_autosave_switch
-off	off	off
-off	on	on
-on	on	off
-on	off	on
