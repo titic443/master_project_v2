@@ -338,6 +338,38 @@ void _processOne(String planPath) {
         b.writeln("      await tester.tap(find.text('${utils.dartEscape(txt)}'));");
         if (!nextIsPump) b.writeln('      await tester.pump();');
 
+      } else if (s.containsKey('selectDate')) {
+        final action = (s['selectDate']).toString();
+        if (action == 'null' || action == 'cancel') {
+          // Cancel the DatePicker dialog
+          b.writeln("      await tester.tap(find.text('CANCEL'));");
+        } else if (action == 'today') {
+          // Select today's date (usually pre-selected, just confirm)
+          b.writeln("      await tester.tap(find.text('OK'));");
+        } else if (action == 'past_date') {
+          // Select a past date (day 1 of current month)
+          b.writeln("      await tester.tap(find.text('1').first);");
+          b.writeln("      await tester.pump();");
+          b.writeln("      await tester.tap(find.text('OK'));");
+        } else if (action == 'future_date') {
+          // Select a future date (day 28 to avoid month-end issues)
+          b.writeln("      await tester.tap(find.text('28').first);");
+          b.writeln("      await tester.pump();");
+          b.writeln("      await tester.tap(find.text('OK'));");
+        }
+        if (!nextIsPump) b.writeln('      await tester.pump();');
+
+      } else if (s.containsKey('selectTime')) {
+        final action = (s['selectTime']).toString();
+        if (action == 'null' || action == 'cancel') {
+          // Cancel the TimePicker dialog
+          b.writeln("      await tester.tap(find.text('CANCEL'));");
+        } else {
+          // For any other action, just confirm the time picker (OK button)
+          b.writeln("      await tester.tap(find.text('OK'));");
+        }
+        if (!nextIsPump) b.writeln('      await tester.pump();');
+
       } else if (s.containsKey('pumpAndSettle')) {
         b.writeln('      await tester.pumpAndSettle();');
 
