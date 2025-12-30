@@ -94,7 +94,13 @@ void _processOne(String planPath) {
   }
 
   final pkg = utils.readPackageName() ?? 'master_project';
-  final uiImport = utils.pkgImport(pkg, uiFile);
+  // Normalize uiFile to relative path if it's absolute
+  String normalizedUiFile = uiFile;
+  if (uiFile.contains('/lib/')) {
+    // Extract path from absolute path: /path/to/project/lib/widgets/file.dart -> lib/widgets/file.dart
+    normalizedUiFile = 'lib/' + uiFile.split('/lib/').last;
+  }
+  final uiImport = utils.pkgImport(pkg, normalizedUiFile);
 
   // Find provider type files to import
   final providerTypes = <String>[];
@@ -342,20 +348,57 @@ void _processOne(String planPath) {
         final action = (s['selectDate']).toString();
         if (action == 'null' || action == 'cancel') {
           // Cancel the DatePicker dialog
-          b.writeln("      await tester.tap(find.text('CANCEL'));");
-        } else if (action == 'today') {
-          // Select today's date (usually pre-selected, just confirm)
-          b.writeln("      await tester.tap(find.text('OK'));");
-        } else if (action == 'past_date') {
-          // Select a past date (day 1 of current month)
-          b.writeln("      await tester.tap(find.text('1').first);");
-          b.writeln("      await tester.pump();");
-          b.writeln("      await tester.tap(find.text('OK'));");
-        } else if (action == 'future_date') {
-          // Select a future date (day 28 to avoid month-end issues)
-          b.writeln("      await tester.tap(find.text('28').first);");
-          b.writeln("      await tester.pump();");
-          b.writeln("      await tester.tap(find.text('OK'));");
+          b.writeln("      // Cancel DatePicker - try multiple button texts");
+          b.writeln("      if (tester.any(find.text('CANCEL'))) {");
+          b.writeln("        await tester.tap(find.text('CANCEL'));");
+          b.writeln("      } else if (tester.any(find.text('Cancel'))) {");
+          b.writeln("        await tester.tap(find.text('Cancel'));");
+          b.writeln("      } else if (tester.any(find.text('ยกเลิก'))) {");
+          b.writeln("        await tester.tap(find.text('ยกเลิก'));");
+          b.writeln("      } else {");
+          b.writeln("        await tester.tapAt(const Offset(10, 10));");
+          b.writeln("      }");
+        } else {
+          // Parse date in DD/MM/YYYY format
+          final parts = action.split('/');
+          if (parts.length == 3) {
+            final day = parts[0];
+            final month = parts[1];
+            final year = parts[2];
+
+            b.writeln("      // Select date: $action");
+
+            // 1. Open year picker by tapping year in header
+            b.writeln("      await tester.tap(find.textContaining('$year').first);");
+            b.writeln("      await tester.pumpAndSettle();");
+
+            // 2. Select the year
+            b.writeln("      await tester.tap(find.text('$year'));");
+            b.writeln("      await tester.pumpAndSettle();");
+
+            // 3. Navigate to correct month if needed
+            final monthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            if (int.tryParse(month) != null) {
+              final monthIdx = int.parse(month);
+              if (monthIdx >= 1 && monthIdx <= 12) {
+                b.writeln("      // Navigate to ${monthNames[monthIdx]}");
+                b.writeln("      while (!tester.any(find.textContaining('${monthNames[monthIdx]}'))) {");
+                b.writeln("        await tester.tap(find.byIcon(Icons.chevron_right));");
+                b.writeln("        await tester.pumpAndSettle();");
+                b.writeln("      }");
+              }
+            }
+
+            // 4. Select the day
+            b.writeln("      await tester.tap(find.text('$day').first);");
+            b.writeln("      await tester.pumpAndSettle();");
+
+            // 5. Confirm selection
+            b.writeln("      await tester.tap(find.text('OK'));");
+          } else {
+            // Fallback for unexpected format
+            b.writeln("      await tester.tap(find.text('OK'));");
+          }
         }
         if (!nextIsPump) b.writeln('      await tester.pump();');
 
@@ -363,10 +406,39 @@ void _processOne(String planPath) {
         final action = (s['selectTime']).toString();
         if (action == 'null' || action == 'cancel') {
           // Cancel the TimePicker dialog
-          b.writeln("      await tester.tap(find.text('CANCEL'));");
+          b.writeln("      // Cancel TimePicker - try multiple button texts");
+          b.writeln("      if (tester.any(find.text('CANCEL'))) {");
+          b.writeln("        await tester.tap(find.text('CANCEL'));");
+          b.writeln("      } else if (tester.any(find.text('Cancel'))) {");
+          b.writeln("        await tester.tap(find.text('Cancel'));");
+          b.writeln("      } else if (tester.any(find.text('ยกเลิก'))) {");
+          b.writeln("        await tester.tap(find.text('ยกเลิก'));");
+          b.writeln("      } else {");
+          b.writeln("        await tester.tapAt(const Offset(10, 10));");
+          b.writeln("      }");
         } else {
-          // For any other action, just confirm the time picker (OK button)
-          b.writeln("      await tester.tap(find.text('OK'));");
+          // Parse time in HH:MM format
+          final parts = action.split(':');
+          if (parts.length == 2) {
+            final hour = parts[0];
+            final minute = parts[1];
+
+            b.writeln("      // Select time: $action");
+
+            // 1. Enter hour
+            b.writeln("      await tester.tap(find.text('$hour').first);");
+            b.writeln("      await tester.pumpAndSettle();");
+
+            // 2. Enter minute
+            b.writeln("      await tester.tap(find.text('$minute').first);");
+            b.writeln("      await tester.pumpAndSettle();");
+
+            // 3. Confirm selection
+            b.writeln("      await tester.tap(find.text('OK'));");
+          } else {
+            // Fallback for unexpected format
+            b.writeln("      await tester.tap(find.text('OK'));");
+          }
         }
         if (!nextIsPump) b.writeln('      await tester.pump();');
 
@@ -501,7 +573,10 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
   }
   if (primaryCubitType != null) {
     final stateFilePath = _getStateFilePathFromCubit(primaryCubitType);
-    ib.writeln("import '${utils.pkgImport(pkg, stateFilePath)}';");
+    // Only import state file if it exists (some cubits have state in the same file)
+    if (File(stateFilePath).existsSync()) {
+      ib.writeln("import '${utils.pkgImport(pkg, stateFilePath)}';");
+    }
   }
   ib.writeln("import '$uiImport';");
 
@@ -535,6 +610,30 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
       for (var i = 0; i < steps.length; i++) {
         final s = steps[i];
         final nextIsPump = (i + 1 < steps.length) && (steps[i + 1].containsKey('pump'));
+
+        // Check if next step is selectDate/selectTime with null value (skip pump/pumpAndSettle)
+        bool skipTapForNullSelection = false;
+        if (s.containsKey('tap')) {
+          // Look ahead to find the next non-pump step
+          for (var j = i + 1; j < steps.length; j++) {
+            final nextStep = steps[j];
+            if (nextStep.containsKey('pump') || nextStep.containsKey('pumpAndSettle')) {
+              continue; // Skip pump steps
+            }
+            if (nextStep.containsKey('selectDate')) {
+              final action = nextStep['selectDate'].toString();
+              if (action == 'null' || action == 'cancel') {
+                skipTapForNullSelection = true;
+              }
+            } else if (nextStep.containsKey('selectTime')) {
+              final action = nextStep['selectTime'].toString();
+              if (action == 'null' || action == 'cancel') {
+                skipTapForNullSelection = true;
+              }
+            }
+            break; // Found a non-pump step, stop looking
+          }
+        }
         if (s.containsKey('enterText')) {
           final m = (s['enterText'] as Map).cast<String, dynamic>();
           final k = m['byKey'];
@@ -556,15 +655,140 @@ void _generateIntegrationTests(String uiFile, String pageClass, List<String> pro
           ib.writeln("        await tester.enterText(find.byKey(const Key('$k')), '$escText');");
           if (!nextIsPump) ib.writeln('        await tester.pump();');
         } else if (s.containsKey('tap')) {
-          final m = (s['tap'] as Map).cast<String, dynamic>();
-          final k = m['byKey'];
-          ib
-            ..writeln("        await tester.ensureVisible(find.byKey(const Key('$k')));")
-            ..writeln("        await tester.tap(find.byKey(const Key('$k')));");
-          if (!nextIsPump) ib.writeln('        await tester.pump();');
+          if (skipTapForNullSelection) {
+            final m = (s['tap'] as Map).cast<String, dynamic>();
+            final k = m['byKey'];
+            ib.writeln("        // Skip tap for '$k' (next action is null/cancel)");
+            // Mark to skip next pumpAndSettle if it exists
+            if (i + 1 < steps.length && (steps[i + 1].containsKey('pumpAndSettle') || steps[i + 1].containsKey('pump'))) {
+              i++; // Skip the next pump/pumpAndSettle step
+            }
+          } else {
+            final m = (s['tap'] as Map).cast<String, dynamic>();
+            final k = m['byKey'];
+            ib
+              ..writeln("        await tester.ensureVisible(find.byKey(const Key('$k')));")
+              ..writeln("        await tester.tap(find.byKey(const Key('$k')));");
+            if (!nextIsPump) ib.writeln('        await tester.pump();');
+          }
         } else if (s.containsKey('tapText')) {
           final txt = (s['tapText']).toString();
           ib.writeln("        await tester.tap(find.text('${utils.dartEscape(txt)}'));");
+          if (!nextIsPump) ib.writeln('        await tester.pump();');
+        } else if (s.containsKey('selectDate')) {
+          final action = (s['selectDate']).toString();
+          if (action == 'null' || action == 'cancel') {
+            ib.writeln("        // Skip date selection (null/cancel)");
+            // Skip next pumpAndSettle/pump if it exists
+            if (i + 1 < steps.length && (steps[i + 1].containsKey('pumpAndSettle') || steps[i + 1].containsKey('pump'))) {
+              i++; // Skip the next pump/pumpAndSettle step
+            }
+          } else {
+            final parts = action.split('/');
+            if (parts.length == 3) {
+              final day = parts[0];
+              final month = parts[1];
+              final year = parts[2];
+
+              ib.writeln("        // Select date: $action");
+              ib.writeln("        {"); // Start scope to avoid variable name conflicts
+              ib.writeln("          // Wait for DatePicker to appear");
+              ib.writeln("          await tester.pumpAndSettle(const Duration(milliseconds: 500));");
+              ib.writeln("          // Find and tap the year in header (e.g., '202x') to open year picker");
+              ib.writeln("          final yearInHeader = find.byWidgetPredicate(");
+              ib.writeln("            (widget) => widget is Text && (widget.data ?? '').contains('202'),");
+              ib.writeln("          );");
+              ib.writeln("          if (tester.any(yearInHeader)) {");
+              ib.writeln("            await tester.tap(yearInHeader.first);");
+              ib.writeln("            await tester.pumpAndSettle();");
+              ib.writeln("          }");
+              ib.writeln("          // Wait until year picker is fully loaded (check for year items)");
+              ib.writeln("          int waitAttempts = 0;");
+              ib.writeln("          while (waitAttempts < 50) {");
+              ib.writeln("            await tester.pump(const Duration(milliseconds: 50));");
+              ib.writeln("            // Check if year picker has loaded by finding any 4-digit year");
+              ib.writeln("            final yearItems = find.byWidgetPredicate(");
+              ib.writeln("              (w) => w is Text && RegExp(r'^\\d{4}\$').hasMatch(w.data ?? ''),");
+              ib.writeln("            );");
+              ib.writeln("            if (tester.any(yearItems)) {");
+              ib.writeln("              // Found year items, picker is ready");
+              ib.writeln("              await tester.pumpAndSettle();");
+              ib.writeln("              break;");
+              ib.writeln("            }");
+              ib.writeln("            waitAttempts++;");
+              ib.writeln("          }");
+              ib.writeln("          // Scroll to find year $year");
+              ib.writeln("          int scrollAttempts = 0;");
+              ib.writeln("          bool scrollingUp = true; // Start by scrolling up");
+              ib.writeln("          while (!tester.any(find.text('$year')) && scrollAttempts < 30) {");
+              ib.writeln("            final scrollable = find.byType(Scrollable);");
+              ib.writeln("            if (tester.any(scrollable)) {");
+              ib.writeln("              // Try scrolling up first (for older years), then down");
+              ib.writeln("              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);");
+              ib.writeln("              await tester.drag(scrollable.first, offset);");
+              ib.writeln("              await tester.pumpAndSettle();");
+              ib.writeln("              // After 15 attempts scrolling up, try scrolling down");
+              ib.writeln("              if (scrollAttempts == 15) scrollingUp = false;");
+              ib.writeln("            }");
+              ib.writeln("            scrollAttempts++;");
+              ib.writeln("          }");
+              ib.writeln("          // Tap the year");
+              ib.writeln("          if (tester.any(find.text('$year'))) {");
+              ib.writeln("            await tester.tap(find.text('$year'), warnIfMissed: false);");
+              ib.writeln("            await tester.pumpAndSettle();");
+              ib.writeln("          }");
+              ib.writeln("        }"); // End scope
+
+              final monthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+              if (int.tryParse(month) != null) {
+                final monthIdx = int.parse(month);
+                if (monthIdx >= 1 && monthIdx <= 12) {
+                  ib.writeln("        // Navigate to ${monthNames[monthIdx]}");
+                  ib.writeln("        {");
+                  ib.writeln("          int monthNavAttempts = 0;");
+                  ib.writeln("          while (!tester.any(find.textContaining('${monthNames[monthIdx]}')) && monthNavAttempts < 12) {");
+                  ib.writeln("            if (tester.any(find.byIcon(Icons.chevron_right))) {");
+                  ib.writeln("              await tester.tap(find.byIcon(Icons.chevron_right));");
+                  ib.writeln("              await tester.pumpAndSettle();");
+                  ib.writeln("            }");
+                  ib.writeln("            monthNavAttempts++;");
+                  ib.writeln("          }");
+                  ib.writeln("        }");
+                }
+              }
+
+              ib.writeln("        await tester.tap(find.text('$day').first);");
+              ib.writeln("        await tester.pumpAndSettle();");
+              ib.writeln("        await tester.tap(find.text('OK'));");
+            } else {
+              ib.writeln("        await tester.tap(find.text('OK'));");
+            }
+          }
+          if (!nextIsPump) ib.writeln('        await tester.pump();');
+        } else if (s.containsKey('selectTime')) {
+          final action = (s['selectTime']).toString();
+          if (action == 'null' || action == 'cancel') {
+            ib.writeln("        // Skip time selection (null/cancel)");
+            // Skip next pumpAndSettle/pump if it exists
+            if (i + 1 < steps.length && (steps[i + 1].containsKey('pumpAndSettle') || steps[i + 1].containsKey('pump'))) {
+              i++; // Skip the next pump/pumpAndSettle step
+            }
+          } else {
+            final parts = action.split(':');
+            if (parts.length == 2) {
+              final hour = parts[0];
+              final minute = parts[1];
+
+              ib.writeln("        // Select time: $action");
+              ib.writeln("        await tester.tap(find.text('$hour').first);");
+              ib.writeln("        await tester.pumpAndSettle();");
+              ib.writeln("        await tester.tap(find.text('$minute').first);");
+              ib.writeln("        await tester.pumpAndSettle();");
+              ib.writeln("        await tester.tap(find.text('OK'));");
+            } else {
+              ib.writeln("        await tester.tap(find.text('OK'));");
+            }
+          }
           if (!nextIsPump) ib.writeln('        await tester.pump();');
         } else if (s.containsKey('pumpAndSettle')) {
           ib.writeln('        await tester.pumpAndSettle();');
