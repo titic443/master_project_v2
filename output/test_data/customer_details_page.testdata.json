@@ -1,0 +1,2071 @@
+{
+  "source": {
+    "file": "lib/demos/customer_details_page.dart",
+    "pageClass": "CustomerDetailsPage",
+    "cubitClass": "CustomerCubit",
+    "stateClass": "CustomerState",
+    "fileCubit": "lib/cubit/customer_cubit.dart",
+    "fileState": "lib/cubit/customer_state.dart"
+  },
+  "datasets": {
+    "defaults": {},
+    "byKey": {}
+  },
+  "cases": [
+    {
+      "tc": "pairwise_valid_invalid_cases_1",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_3",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_5",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_6",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_8",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_9",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_10",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_11",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_12",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_1",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_3",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_4",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_5",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Ms."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_9",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_10_20_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_10",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mrs."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_40_50_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_11",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Dr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_12",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_01_title_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Mr."
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_02_firstname_textfield",
+            "dataset": "byKey.customer_02_firstname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_03_phone_textfield",
+            "dataset": "byKey.customer_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "customer_04_lastname_textfield",
+            "dataset": "byKey.customer_04_lastname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_05_age_30_40_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_06_agree_terms_formfield"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_07_subscribe_newsletter_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "customer_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_empty_all_fields",
+      "kind": "failed",
+      "group": "edge_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "customer_08_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Please select a title",
+          "exists": true,
+          "count": 1
+        },
+        {
+          "text": "First name is required",
+          "exists": true,
+          "count": 1
+        },
+        {
+          "text": "Phone number is required",
+          "exists": true,
+          "count": 1
+        },
+        {
+          "text": "Last name is required",
+          "exists": true,
+          "count": 1
+        },
+        {
+          "text": "Please select an age range",
+          "exists": true,
+          "count": 1
+        },
+        {
+          "text": "You must agree to terms",
+          "exists": true,
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+employee_07_recommend_checkbox: checked, unchecked
+state.satisfactionRating: rating_poor_radio, rating_fair_radio, rating_excellent_radio
+employee_02_id_textfield: valid
+employee_03_department_dropdown: Engineering, Sales, HR, Marketing
+employee_04_email_textfield: valid
+employee_05_years_textfield: valid
+employee_07_recommend_formfield: checked
+employee_08_training_checkbox: checked, unchecked

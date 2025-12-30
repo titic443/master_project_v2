@@ -18,7 +18,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-ABCDE');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -26,10 +26,10 @@ void main() {
         await tester.tap(find.text('Marketing'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'invalid-email');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -43,8 +43,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Employee ID must match format: EMP-12345'),
-          find.text('Please enter a valid email address'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -58,7 +56,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -66,10 +64,10 @@ void main() {
         await tester.tap(find.text('Engineering'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -83,7 +81,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Years must be 0 or greater'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -97,7 +94,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-ABCDE');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -105,10 +102,10 @@ void main() {
         await tester.tap(find.text('HR'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -128,7 +125,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Employee ID must match format: EMP-12345'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -142,7 +138,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -150,10 +146,10 @@ void main() {
         await tester.tap(find.text('Sales'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'invalid-email');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -167,8 +163,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Please enter a valid email address'),
-          find.text('Years must be 0 or greater'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -182,7 +176,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-ABCDE');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -190,10 +184,10 @@ void main() {
         await tester.tap(find.text('Marketing'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'invalid-email');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -210,9 +204,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Employee ID must match format: EMP-12345'),
-          find.text('Please enter a valid email address'),
-          find.text('Years must be 0 or greater'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -226,7 +217,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -234,10 +225,10 @@ void main() {
         await tester.tap(find.text('HR'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -251,7 +242,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Years must be 0 or greater'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -265,7 +255,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -273,10 +263,10 @@ void main() {
         await tester.tap(find.text('HR'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'invalid-email');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -290,7 +280,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Please enter a valid email address'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -304,7 +293,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-ABCDE');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -312,10 +301,10 @@ void main() {
         await tester.tap(find.text('Engineering'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -332,8 +321,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Employee ID must match format: EMP-12345'),
-          find.text('Years must be 0 or greater'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -347,7 +334,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -355,10 +342,10 @@ void main() {
         await tester.tap(find.text('Marketing'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -385,7 +372,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-ABCDE');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -393,10 +380,10 @@ void main() {
         await tester.tap(find.text('Sales'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -413,7 +400,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Employee ID must match format: EMP-12345'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -427,7 +413,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -435,10 +421,10 @@ void main() {
         await tester.tap(find.text('Sales'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'invalid-email');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -455,8 +441,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Please enter a valid email address'),
-          find.text('Years must be 0 or greater'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -470,7 +454,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -478,10 +462,10 @@ void main() {
         await tester.tap(find.text('Engineering'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'invalid-email');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -501,7 +485,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Please enter a valid email address'),
           find.byKey(const Key('employee_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -517,7 +500,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -525,10 +508,10 @@ void main() {
         await tester.tap(find.text('Marketing'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -558,7 +541,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -566,10 +549,10 @@ void main() {
         await tester.tap(find.text('Engineering'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -599,7 +582,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -607,10 +590,10 @@ void main() {
         await tester.tap(find.text('Sales'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -640,7 +623,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -648,10 +631,10 @@ void main() {
         await tester.tap(find.text('Engineering'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -678,7 +661,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -686,10 +669,10 @@ void main() {
         await tester.tap(find.text('Engineering'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -722,7 +705,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -730,10 +713,10 @@ void main() {
         await tester.tap(find.text('Marketing'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -763,7 +746,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -771,10 +754,10 @@ void main() {
         await tester.tap(find.text('HR'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_excellent_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_excellent_radio')));
@@ -804,7 +787,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -812,10 +795,10 @@ void main() {
         await tester.tap(find.text('Marketing'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -845,7 +828,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -853,10 +836,10 @@ void main() {
         await tester.tap(find.text('Sales'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -886,7 +869,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -894,10 +877,10 @@ void main() {
         await tester.tap(find.text('HR'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
@@ -927,7 +910,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -935,10 +918,10 @@ void main() {
         await tester.tap(find.text('HR'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_poor_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_poor_radio')));
@@ -968,7 +951,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: EmployeeSurveyPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.employee_02_id_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), 'EMP-12345');
+        await tester.enterText(find.byKey(const Key('employee_02_id_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_03_department_dropdown')));
         await tester.tap(find.byKey(const Key('employee_03_department_dropdown')));
@@ -976,10 +959,10 @@ void main() {
         await tester.tap(find.text('Sales'));
         await tester.pump();
         // dataset: byKey.employee_04_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), 'test.user@example.com');
+        await tester.enterText(find.byKey(const Key('employee_04_email_textfield')), '');
         await tester.pump();
         // dataset: byKey.employee_05_years_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('employee_05_years_textfield')), '');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('employee_06_rating_fair_radio')));
         await tester.tap(find.byKey(const Key('employee_06_rating_fair_radio')));
