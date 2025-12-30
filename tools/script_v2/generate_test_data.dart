@@ -260,6 +260,8 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
   final radioKeys = <String>[];
   final checkboxKeys = <String>[];
   final primaryButtons = <String>[];
+  final datePickerKeys = <String>[];
+  final timePickerKeys = <String>[];
 
   for (final w in widgets) {
     final k = (w['key'] ?? '').toString();
@@ -278,6 +280,8 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
   for (final w in widgets) {
     final t = (w['widgetType'] ?? '').toString();
     final k = (w['key'] ?? '').toString();
+    final pickerMeta = w['pickerMetadata'] as Map?;
+
     if ((t.startsWith('TextField') || t.startsWith('TextFormField')) && k.isNotEmpty) {
       textKeys.add(k);
     } else if (t.startsWith('Radio') && k.isNotEmpty) {
@@ -287,6 +291,14 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
     } else if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty && k != endKey) {
       // Exclude the end button (highest sequence button) from primary buttons
       primaryButtons.add(k);
+    } else if (pickerMeta != null && k.isNotEmpty) {
+      // Detect DatePicker and TimePicker widgets
+      final pickerType = (pickerMeta['type'] ?? '').toString();
+      if (pickerType == 'DatePicker') {
+        datePickerKeys.add(k);
+      } else if (pickerType == 'TimePicker') {
+        timePickerKeys.add(k);
+      }
     }
   }
   // Fallback: include only concrete radio options, ignore FormField group keys
@@ -390,6 +402,20 @@ List<Map<String,dynamic>> buildSteps({String? radioPick, String? dropdownPick}){
     } else if (!hasEndButton && radioKeys.isNotEmpty) {
       // non-API flow fallback: tap all radios in order
       for (final rk in radioKeys) { st.add({'tap': {'byKey': rk}}); st.add({'pump': true}); }
+    }
+    // DatePicker widgets (non-API flow): select 'today' for all date pickers
+    for (final dpk in datePickerKeys) {
+      st.add({'tap': {'byKey': dpk}});
+      st.add({'pumpAndSettle': true});
+      st.add({'selectDate': 'today'});
+      st.add({'pumpAndSettle': true});
+    }
+    // TimePicker widgets (non-API flow): select 'today' (current time) for all time pickers
+    for (final tpk in timePickerKeys) {
+      st.add({'tap': {'byKey': tpk}});
+      st.add({'pumpAndSettle': true});
+      st.add({'selectTime': 'today'});
+      st.add({'pumpAndSettle': true});
     }
     // tap all primary (non-end) buttons
     for (final bk in primaryButtons) { st.add({'tap': {'byKey': bk}}); st.add({'pump': true}); }
@@ -606,6 +632,20 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
       for (int i = 0; i < checkboxKeys.length; i++) {
         final factorName = (checkboxKeys.length == 1 || i == 0) ? 'Checkbox' : 'Checkbox${i + 1}';
         factors[factorName] = ['checked', 'unchecked'];
+      }
+
+      // DatePicker factors: DatePicker, DatePicker2, ...
+      // Values: today, past_date, future_date, null (cancel)
+      for (int i = 0; i < datePickerKeys.length; i++) {
+        final factorName = datePickerKeys.length == 1 ? datePickerKeys[0] : datePickerKeys[i];
+        factors[factorName] = ['today', 'past_date', 'future_date', 'null'];
+      }
+
+      // TimePicker factors: TimePicker, TimePicker2, ...
+      // Values: now, morning, afternoon, evening, null (cancel)
+      for (int i = 0; i < timePickerKeys.length; i++) {
+        final factorName = timePickerKeys.length == 1 ? timePickerKeys[0] : timePickerKeys[i];
+        factors[factorName] = ['today', 'future_date', 'null'];
       }
 
       // Generate optimal pairwise combinations (prefer PICT if requested)
@@ -836,6 +876,36 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
+          }
+        }
+
+        // Process DatePicker widgets
+        for (int idx = 0; idx < datePickerKeys.length; idx++) {
+          final key = datePickerKeys[idx];
+          final factorName = datePickerKeys.length == 1 ? key : key;
+          final pick = (c[factorName] ?? '').toString();
+          if (pick.isNotEmpty && key.isNotEmpty) {
+            stepsByKey[key] = [
+              {'tap': {'byKey': key}},
+              {'pumpAndSettle': true},  // Wait for dialog to appear
+              {'selectDate': pick},      // Select date: today, past_date, future_date, null
+              {'pumpAndSettle': true}    // Wait for dialog to close
+            ];
+          }
+        }
+
+        // Process TimePicker widgets
+        for (int idx = 0; idx < timePickerKeys.length; idx++) {
+          final key = timePickerKeys[idx];
+          final factorName = timePickerKeys.length == 1 ? key : key;
+          final pick = (c[factorName] ?? '').toString();
+          if (pick.isNotEmpty && key.isNotEmpty) {
+            stepsByKey[key] = [
+              {'tap': {'byKey': key}},
+              {'pumpAndSettle': true},  // Wait for dialog to appear
+              {'selectTime': pick},      // Select time: today, future_date, null
+              {'pumpAndSettle': true}    // Wait for dialog to close
+            ];
           }
         }
 
