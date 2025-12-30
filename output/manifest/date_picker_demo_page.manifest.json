@@ -10,15 +10,34 @@
   "widgets": [
     {
       "widgetType": "ListTile",
-      "key": "datepicker_01_birthdate_tile"
+      "key": "datepicker_01_birthdate_tile",
+      "onTap": "_selectBirthDate",
+      "pickerMetadata": {
+        "type": "DatePicker",
+        "firstDate": "DateTime(1900)",
+        "lastDate": "DateTime.now()",
+        "initialDate": "cubit.state.birthDate ?? DateTime.now()"
+      }
     },
     {
       "widgetType": "ListTile",
-      "key": "datepicker_02_appointment_date_tile"
+      "key": "datepicker_02_appointment_date_tile",
+      "onTap": "_selectAppointmentDate",
+      "pickerMetadata": {
+        "type": "DatePicker",
+        "firstDate": "DateTime.now()",
+        "lastDate": "DateTime.now().add(Duration(days: 365))",
+        "initialDate": "cubit.state.appointmentDate ?? DateTime.now()"
+      }
     },
     {
       "widgetType": "ListTile",
-      "key": "datepicker_03_appointment_time_tile"
+      "key": "datepicker_03_appointment_time_tile",
+      "onTap": "_selectAppointmentTime",
+      "pickerMetadata": {
+        "type": "TimePicker",
+        "initialTime": "cubit.state.appointmentTime ?? TimeOfDay.now()"
+      }
     },
     {
       "widgetType": "Text",
