@@ -1,0 +1,8 @@
+customer_06_agree_terms_checkbox: checked, unchecked
+state.ageRange: age_10_20_radio, age_30_40_radio, age_40_50_radio
+customer_01_title_dropdown: Mr., Mrs., Ms., Dr.
+customer_02_firstname_textfield: valid
+customer_03_phone_textfield: valid
+customer_04_lastname_textfield: valid
+customer_06_agree_terms_formfield: checked
+customer_07_subscribe_newsletter_checkbox: checked, unchecked
