@@ -1,0 +1,977 @@
+{
+  "source": {
+    "file": "/Users/70009215/Desktop/101/master_project_v2/lib/widgets/date_picker_demo_page.dart",
+    "pageClass": "DatePickerDemoPage",
+    "cubitClass": "DatePickerDemoCubit",
+    "stateClass": "DatePickerDemoState",
+    "fileCubit": "lib/cubit/widgets/date_picker_demo_cubit.dart",
+    "fileState": "lib/cubit/date_picker_demo_state.dart"
+  },
+  "datasets": {
+    "defaults": {},
+    "byKey": {}
+  },
+  "cases": [
+    {
+      "tc": "pairwise_valid_invalid_cases_1",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_3",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_4",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_5",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "past_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "past_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_9",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "past_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_1",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_3",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_4",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_5",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "past_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "past_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "future_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "pairwise_valid_cases_9",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "datepicker_01_birthdate_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "past_date"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_02_appointment_date_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "datepicker_03_appointment_time_tile"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "today"
+        },
+        {
+          "pump": true
+        },
+        {
+          "pump": true
+        }
+      ],
+      "asserts": []
+    },
+    {
+      "tc": "edge_cases_empty_all_fields",
+      "kind": "failed",
+      "group": "edge_cases",
+      "steps": [],
+      "asserts": []
+    }
+  ]
+}
