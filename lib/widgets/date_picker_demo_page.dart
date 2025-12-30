@@ -46,17 +46,6 @@ class _DatePickerDemoForm extends StatelessWidget {
     }
   }
 
-  Future<void> _selectAppointmentTime(BuildContext context) async {
-    final cubit = context.read<DatePickerDemoCubit>();
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: cubit.state.appointmentTime ?? TimeOfDay.now(),
-    );
-    if (picked != null) {
-      cubit.onAppointmentTimeChanged(picked);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,35 +103,12 @@ class _DatePickerDemoForm extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Appointment Time Picker
-                const Text(
-                  'Appointment Time',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                ListTile(
-                  key: const Key('datepicker_03_appointment_time_tile'),
-                  title: Text(
-                    state.appointmentTime != null
-                        ? state.appointmentTime!.format(context)
-                        : 'Select Appointment Time',
-                  ),
-                  trailing: const Icon(Icons.access_time),
-                  onTap: () => _selectAppointmentTime(context),
-                  tileColor: Colors.grey[100],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                const SizedBox(height: 24),
-
                 // Display current state
                 Text(
                   key: const Key('datepicker_04_status_text'),
                   'Current Selection:\n'
                   'Birth Date: ${state.birthDate != null ? DateFormat('yyyy-MM-dd').format(state.birthDate!) : "Not selected"}\n'
-                  'Appointment: ${state.appointmentDate != null ? DateFormat('yyyy-MM-dd').format(state.appointmentDate!) : "Not selected"}\n'
-                  'Time: ${state.appointmentTime != null ? state.appointmentTime!.format(context) : "Not selected"}',
+                  'Appointment: ${state.appointmentDate != null ? DateFormat('yyyy-MM-dd').format(state.appointmentDate!) : "Not selected"}',
                   style: const TextStyle(fontSize: 14),
                 ),
               ],
