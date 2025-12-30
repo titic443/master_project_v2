@@ -31,15 +31,6 @@
       }
     },
     {
-      "widgetType": "ListTile",
-      "key": "datepicker_03_appointment_time_tile",
-      "onTap": "_selectAppointmentTime",
-      "pickerMetadata": {
-        "type": "TimePicker",
-        "initialTime": "cubit.state.appointmentTime ?? TimeOfDay.now()"
-      }
-    },
-    {
       "widgetType": "Text",
       "key": "datepicker_04_status_text",
       "displayBinding": {
