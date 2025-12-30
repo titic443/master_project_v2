@@ -73,6 +73,9 @@ void _processOne(String path) {
   final stateFilePath = _findStateFilePath(src, stateType);
   final widgets = _scanWidgets(src, consts: consts, cubitType: cubitType);
 
+  // Scan for date/time pickers
+  final pickers = _scanDateTimePickers(rawSrc);
+
   // Filter out widgets without keys and deduplicate by key
   final seen = <String>{};
   final widgetsWithKeys = <Map<String, dynamic>>[];
@@ -81,6 +84,11 @@ void _processOne(String path) {
     if (key != null && key is String && key.isNotEmpty) {
       // Only add if we haven't seen this key before
       if (seen.add(key)) {
+        // Link picker metadata if widget has onTap that calls a picker method
+        final onTap = w['onTap'];
+        if (onTap != null && onTap is String && pickers.containsKey(onTap)) {
+          w['pickerMetadata'] = pickers[onTap];
+        }
         widgetsWithKeys.add(w);
       }
     }
@@ -259,6 +267,7 @@ List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts 
     final argsSrc = src.substring(startArgs + 1, endIdx);
     final key = _extractKey(argsSrc, consts: consts);
     final binding = type == 'Text' ? _extractTextBinding(argsSrc, consts: consts) : null;
+    final onTapMethod = _extractOnTapMethod(argsSrc);
     Map<String, dynamic> meta = {};
     if (type == 'TextField' || type == 'TextFormField') {
       meta.addAll(_extractTextFieldMeta(argsSrc, regexVars: regexVars));
@@ -275,6 +284,7 @@ List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts 
       if (binding != null) 'displayBinding': binding,
       if (type == 'Text') ..._maybeTextLiteral(argsSrc),
       if (meta.isNotEmpty) 'meta': meta,
+      if (onTapMethod != null) 'onTap': onTapMethod,
       'sourceOrder': sourceOrder++, // Track source order for sorting
     });
 
@@ -360,6 +370,36 @@ String? _extractKey(String args, {Map<String, String> consts = const {}}) {
     final ms = RegExp(r"'([^']+)'").firstMatch(inside) ?? RegExp(r'"([^\"]+)"').firstMatch(inside);
     if (ms != null) return resolve(ms.group(1)!);
   }
+  return null;
+}
+
+/// Extract method name from onTap callback
+/// Patterns:
+///   onTap: () => methodName(context)
+///   onTap: () { methodName(context); }
+///   onTap: methodName
+String? _extractOnTapMethod(String args) {
+  // Pattern 1: onTap: () => _methodName(...)
+  final arrowPattern = RegExp(r'onTap\s*:\s*\(\s*\)\s*=>\s*([A-Za-z_]\w*)\s*\(');
+  final arrowMatch = arrowPattern.firstMatch(args);
+  if (arrowMatch != null) {
+    return arrowMatch.group(1);
+  }
+
+  // Pattern 2: onTap: () { _methodName(...); }
+  final blockPattern = RegExp(r'onTap\s*:\s*\(\s*\)\s*\{\s*([A-Za-z_]\w*)\s*\(');
+  final blockMatch = blockPattern.firstMatch(args);
+  if (blockMatch != null) {
+    return blockMatch.group(1);
+  }
+
+  // Pattern 3: onTap: _methodName
+  final directPattern = RegExp(r'onTap\s*:\s*([A-Za-z_]\w*)(?:\s*[,\)]|$)');
+  final directMatch = directPattern.firstMatch(args);
+  if (directMatch != null) {
+    return directMatch.group(1);
+  }
+
   return null;
 }
 
@@ -934,3 +974,185 @@ String? _findStateFilePath(String src, String? stateType) {
 }
 
 // Removed: _camelToSnake - now using utils.camelToSnake
+
+/// Scan for showDatePicker and showTimePicker calls
+/// Returns map of method name -> picker metadata
+Map<String, Map<String, dynamic>> _scanDateTimePickers(String src) {
+  final pickers = <String, Map<String, dynamic>>{};
+
+  // Scan for showDatePicker calls using proper parenthesis matching
+  int i = 0;
+  while (i < src.length) {
+    final match = RegExp(r'showDatePicker\s*\(').matchAsPrefix(src, i);
+    if (match != null) {
+      final openParen = match.end - 1;
+      final closeParen = _matchParen(src, openParen);
+      if (closeParen > openParen) {
+        final args = src.substring(openParen + 1, closeParen);
+        final params = _extractDatePickerParams(args);
+        final methodName = _findContainingMethod(src, match.start);
+        if (methodName != null && params.isNotEmpty) {
+          pickers[methodName] = {
+            'type': 'DatePicker',
+            ...params,
+          };
+        }
+      }
+      i = match.end;
+    } else {
+      i++;
+    }
+  }
+
+  // Scan for showTimePicker calls using proper parenthesis matching
+  i = 0;
+  while (i < src.length) {
+    final match = RegExp(r'showTimePicker\s*\(').matchAsPrefix(src, i);
+    if (match != null) {
+      final openParen = match.end - 1;
+      final closeParen = _matchParen(src, openParen);
+      if (closeParen > openParen) {
+        final args = src.substring(openParen + 1, closeParen);
+        final params = _extractTimePickerParams(args);
+        final methodName = _findContainingMethod(src, match.start);
+        if (methodName != null && params.isNotEmpty) {
+          pickers[methodName] = {
+            'type': 'TimePicker',
+            ...params,
+          };
+        }
+      }
+      i = match.end;
+    } else {
+      i++;
+    }
+  }
+
+  return pickers;
+}
+
+/// Find the method name that contains a given position in source
+String? _findContainingMethod(String src, int pos) {
+  // Look backwards from pos to find the method declaration
+  final beforePos = src.substring(0, pos);
+
+  // Pattern: Future<void> methodName(...) async {
+  // or: void methodName(...) {
+  final methodPattern = RegExp(r'(?:Future<[^>]+>|void|[A-Z]\w*)\s+([A-Za-z_]\w*)\s*\([^)]*\)\s*(?:async\s*)?\{[^}]*$');
+  final match = methodPattern.firstMatch(beforePos);
+  if (match != null) {
+    return match.group(1);
+  }
+
+  return null;
+}
+
+/// Extract parameters from showDatePicker arguments
+Map<String, dynamic> _extractDatePickerParams(String args) {
+  final params = <String, dynamic>{};
+
+  // Extract firstDate - handle both DateTime(year) and DateTime.now()
+  final firstDateNow = RegExp(r'firstDate\s*:\s*DateTime\.now\(\)').firstMatch(args);
+  if (firstDateNow != null) {
+    params['firstDate'] = 'DateTime.now()';
+  } else {
+    final firstDateMatch = RegExp(r'firstDate\s*:\s*DateTime\(([^)]+)\)').firstMatch(args);
+    if (firstDateMatch != null) {
+      final dateArgs = firstDateMatch.group(1)!.trim();
+      params['firstDate'] = _parseDateTimeArgs(dateArgs);
+    }
+  }
+
+  // Extract lastDate - handle DateTime.now(), DateTime.now().add(...), and DateTime(...)
+  final lastDateNow = RegExp(r'lastDate\s*:\s*DateTime\.now\(\)(?!\.)').firstMatch(args);
+  if (lastDateNow != null) {
+    params['lastDate'] = 'DateTime.now()';
+  } else {
+    final lastDateExpr = RegExp(r'lastDate\s*:\s*DateTime\.now\(\)\.add\(const Duration\(days:\s*(\d+)\)\)').firstMatch(args);
+    if (lastDateExpr != null) {
+      params['lastDate'] = 'DateTime.now().add(Duration(days: ${lastDateExpr.group(1)}))';
+    } else {
+      final lastDateLiteral = RegExp(r'lastDate\s*:\s*DateTime\(([^)]+)\)').firstMatch(args);
+      if (lastDateLiteral != null) {
+        final dateArgs = lastDateLiteral.group(1)!.trim();
+        params['lastDate'] = _parseDateTimeArgs(dateArgs);
+      }
+    }
+  }
+
+  // Extract initialDate - handle expressions with proper parenthesis matching
+  final initialDateStart = RegExp(r'initialDate\s*:\s*').firstMatch(args);
+  if (initialDateStart != null) {
+    final startPos = initialDateStart.end;
+    // Find the end of the expression (either comma or end of args)
+    int endPos = startPos;
+    int parenDepth = 0;
+    bool inString = false;
+
+    while (endPos < args.length) {
+      final char = args[endPos];
+
+      if (char == "'" || char == '"') {
+        inString = !inString;
+      } else if (!inString) {
+        if (char == '(') parenDepth++;
+        else if (char == ')') parenDepth--;
+        else if (char == ',' && parenDepth == 0) break;
+      }
+
+      endPos++;
+    }
+
+    params['initialDate'] = args.substring(startPos, endPos).trim();
+  }
+
+  return params;
+}
+
+/// Extract parameters from showTimePicker arguments
+Map<String, dynamic> _extractTimePickerParams(String args) {
+  final params = <String, dynamic>{};
+
+  // Extract initialTime - handle expressions with proper parenthesis matching
+  final initialTimeStart = RegExp(r'initialTime\s*:\s*').firstMatch(args);
+  if (initialTimeStart != null) {
+    final startPos = initialTimeStart.end;
+    int endPos = startPos;
+    int parenDepth = 0;
+    bool inString = false;
+
+    while (endPos < args.length) {
+      final char = args[endPos];
+
+      if (char == "'" || char == '"') {
+        inString = !inString;
+      } else if (!inString) {
+        if (char == '(') parenDepth++;
+        else if (char == ')') parenDepth--;
+        else if (char == ',' && parenDepth == 0) break;
+      }
+
+      endPos++;
+    }
+
+    params['initialTime'] = args.substring(startPos, endPos).trim();
+  }
+
+  return params;
+}
+
+/// Parse DateTime constructor arguments to readable format
+String _parseDateTimeArgs(String args) {
+  final parts = args.split(',').map((e) => e.trim()).toList();
+  if (parts.length == 1) {
+    // DateTime(1900) -> year only
+    return 'DateTime(${parts[0]})';
+  } else if (parts.length == 2) {
+    // DateTime(2024, 1) -> year, month
+    return 'DateTime(${parts[0]}, ${parts[1]})';
+  } else if (parts.length >= 3) {
+    // DateTime(2024, 1, 15) -> year, month, day
+    return 'DateTime(${parts[0]}, ${parts[1]}, ${parts[2]})';
+  }
+  return 'DateTime($args)';
+}
