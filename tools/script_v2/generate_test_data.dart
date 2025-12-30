@@ -276,6 +276,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
 
   // Check if we have end button (determines if this is an API flow)
   final hasEndButton = endKey != null;
+
   // Build a single full-page steps sequence (previous version behavior)
   for (final w in widgets) {
     final t = (w['widgetType'] ?? '').toString();
@@ -301,6 +302,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
       }
     }
   }
+
   // Fallback: include only concrete radio options, ignore FormField group keys
   for (final w in widgets) {
     final k = (w['key'] ?? '').toString();
@@ -444,6 +446,91 @@ Map<String,dynamic> _widgetMetaByKey(String key){
   return const {};
 }
 
+/// Generate date values for DatePicker based on firstDate/lastDate constraints
+List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
+  final values = <String>[];
+
+  // Parse firstDate and lastDate from metadata
+  final firstDateStr = (pickerMeta['firstDate'] ?? '').toString();
+  final lastDateStr = (pickerMeta['lastDate'] ?? '').toString();
+
+  DateTime? firstDate;
+  DateTime? lastDate;
+  final now = DateTime.now();
+
+  // Parse firstDate
+  if (firstDateStr.contains('DateTime(1900)')) {
+    firstDate = DateTime(1900);
+  } else if (firstDateStr.contains('DateTime.now()')) {
+    firstDate = now;
+  } else {
+    // Try to extract year from DateTime(year)
+    final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
+    if (yearMatch != null) {
+      firstDate = DateTime(int.parse(yearMatch.group(1)!));
+    }
+  }
+
+  // Parse lastDate
+  if (lastDateStr.contains('DateTime.now()')) {
+    if (lastDateStr.contains('add') && lastDateStr.contains('365')) {
+      lastDate = now.add(const Duration(days: 365));
+    } else {
+      lastDate = now;
+    }
+  } else {
+    final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
+    if (yearMatch != null) {
+      lastDate = DateTime(int.parse(yearMatch.group(1)!));
+    }
+  }
+
+  // Generate test dates within constraints
+  firstDate ??= DateTime(2000);
+  lastDate ??= DateTime(2030);
+
+  // null (cancel) - always include
+  values.add('null');
+
+  // past_date - close to firstDate
+  final pastDate = DateTime(
+    firstDate.year + 1,
+    firstDate.month,
+    15.clamp(1, 28),
+  );
+  if (pastDate.isAfter(firstDate) && pastDate.isBefore(lastDate)) {
+    values.add('${pastDate.day.toString().padLeft(2, '0')}/${pastDate.month.toString().padLeft(2, '0')}/${pastDate.year}');
+  }
+
+  // today - if within range
+  if (now.isAfter(firstDate) && now.isBefore(lastDate)) {
+    values.add('${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}');
+  }
+
+  // future_date - close to lastDate
+  final futureDate = DateTime(
+    lastDate.year - 1,
+    lastDate.month,
+    15.clamp(1, 28),
+  );
+  if (futureDate.isAfter(firstDate) && futureDate.isBefore(lastDate) && futureDate.isAfter(now)) {
+    values.add('${futureDate.day.toString().padLeft(2, '0')}/${futureDate.month.toString().padLeft(2, '0')}/${futureDate.year}');
+  }
+
+  // Ensure we have at least 2 non-null values
+  if (values.length < 3) {
+    // Add a middle date
+    final middleDate = DateTime(
+      (firstDate.year + lastDate.year) ~/ 2,
+      6,
+      15,
+    );
+    values.add('${middleDate.day.toString().padLeft(2, '0')}/${middleDate.month.toString().padLeft(2, '0')}/${middleDate.year}');
+  }
+
+  return values;
+}
+
 int? _maxLenFromMeta(Map<String,dynamic> meta){
   // Check inputFormatter first (LengthLimitingTextInputFormatter takes priority)
   final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
@@ -516,6 +603,12 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           // Radio group
           factorTypes[factorName] = 'radio';
           radioGroupFactors.add(factorName);
+        } else if (datePickerKeys.contains(factorName)) {
+          // DatePicker - detected by checking if factor name is a datepicker key
+          factorTypes[factorName] = 'datepicker';
+        } else if (timePickerKeys.contains(factorName)) {
+          // TimePicker - detected by checking if factor name is a timepicker key
+          factorTypes[factorName] = 'timepicker';
         } else {
           // Dropdown (default for other cases)
           factorTypes[factorName] = 'dropdown';
@@ -634,18 +727,25 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         factors[factorName] = ['checked', 'unchecked'];
       }
 
-      // DatePicker factors: DatePicker, DatePicker2, ...
-      // Values: today, past_date, future_date, null (cancel)
+      // DatePicker factors: Generate real dates based on firstDate/lastDate constraints
       for (int i = 0; i < datePickerKeys.length; i++) {
-        final factorName = datePickerKeys.length == 1 ? datePickerKeys[0] : datePickerKeys[i];
-        factors[factorName] = ['today', 'past_date', 'future_date', 'null'];
+        final key = datePickerKeys[i];
+        final factorName = key; // Use the widget key as factor name
+
+        // Find picker metadata for this widget
+        final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key, orElse: () => <String, dynamic>{});
+        final pickerMeta = (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ?? {};
+
+        // Generate date values based on constraints
+        final dateValues = _generateDateValues(pickerMeta);
+        factors[factorName] = dateValues;
       }
 
-      // TimePicker factors: TimePicker, TimePicker2, ...
-      // Values: now, morning, afternoon, evening, null (cancel)
+      // TimePicker factors: Generate real times
       for (int i = 0; i < timePickerKeys.length; i++) {
-        final factorName = timePickerKeys.length == 1 ? timePickerKeys[0] : timePickerKeys[i];
-        factors[factorName] = ['today', 'future_date', 'null'];
+        final key = timePickerKeys[i];
+        final factorName = timePickerKeys.length == 1 ? key : key;
+        factors[factorName] = ['09:00', '14:30', '18:00', 'null'];
       }
 
       // Generate optimal pairwise combinations (prefer PICT if requested)
@@ -787,6 +887,22 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
+          } else if (datePickerKeys.contains(factorName)) {
+            // DatePicker widget - open picker and select date
+            stepsByKey[factorName] = [
+              {'tap': {'byKey': factorName}},
+              {'pumpAndSettle': true},
+              {'selectDate': pick},
+              {'pumpAndSettle': true}
+            ];
+          } else if (timePickerKeys.contains(factorName)) {
+            // TimePicker widget - open picker and select time
+            stepsByKey[factorName] = [
+              {'tap': {'byKey': factorName}},
+              {'pumpAndSettle': true},
+              {'selectTime': pick},
+              {'pumpAndSettle': true}
+            ];
           }
         }
 
@@ -1064,6 +1180,22 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
+          } else if (datePickerKeys.contains(factorName)) {
+            // DatePicker widget - open picker and select date
+            stepsByKey[factorName] = [
+              {'tap': {'byKey': factorName}},
+              {'pumpAndSettle': true},
+              {'selectDate': pick},
+              {'pumpAndSettle': true}
+            ];
+          } else if (timePickerKeys.contains(factorName)) {
+            // TimePicker widget - open picker and select time
+            stepsByKey[factorName] = [
+              {'tap': {'byKey': factorName}},
+              {'pumpAndSettle': true},
+              {'selectTime': pick},
+              {'pumpAndSettle': true}
+            ];
           }
         }
 
