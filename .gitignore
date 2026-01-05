@@ -49,3 +49,7 @@ app.*.map.json
 
 # Generated output files (manifests, test data, pairwise models, event chains)
 # output/
+
+# Compiled executables and distribution packages
+/bin/
+/dist/
