@@ -373,6 +373,14 @@ Future<void> _runPipeline(String inputFile, CLIOptions options) async {
   final testScriptPath = step4.generateTestScriptFromTestData(testDataPath);
   _logSuccess('Test file: $testScriptPath', options);
 
+  // Widget Coverage Check
+  stdout.writeln('');
+  stdout.writeln('━' * 60);
+  stdout.writeln('  Widget Coverage Analysis');
+  stdout.writeln('━' * 60);
+  stdout.writeln('');
+  await _runWidgetCoverageCheck(manifestPath, testScriptPath, options);
+
   // Final summary
   stdout.writeln('');
   stdout.writeln('━' * 60);
@@ -416,6 +424,33 @@ void _logSkip(String message, CLIOptions options) {
     stdout.writeln('  → $message');
   }
   stdout.writeln('');
+}
+
+/// Run widget coverage check
+Future<void> _runWidgetCoverageCheck(
+  String manifestPath,
+  String testFilePath,
+  CLIOptions options,
+) async {
+  try {
+    // Run widget_coverage.dart as subprocess
+    final result = await Process.run(
+      'dart',
+      ['run', 'tools/widget_coverage.dart', manifestPath, testFilePath],
+    );
+
+    // Print output (coverage report)
+    stdout.write(result.stdout);
+
+    if (result.exitCode != 0 && result.stderr.toString().isNotEmpty) {
+      stderr.write(result.stderr);
+    }
+  } catch (e) {
+    stderr.writeln('⚠ Widget coverage check failed: $e');
+    if (options.verbose) {
+      stderr.writeln('  Skipping coverage analysis...');
+    }
+  }
 }
 
 void _printHelp() {

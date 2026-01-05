@@ -1,6 +1,6 @@
 {
   "source": {
-    "file": "/Users/70009215/Desktop/101/master_project_v2/lib/demos/customer_details_page.dart",
+    "file": "lib/demos/customer_details_page.dart",
     "pageClass": "CustomerDetailsPage",
     "cubitClass": "CustomerCubit",
     "stateClass": "CustomerState",
@@ -13,14 +13,14 @@
       "customer_02_firstname_textfield": [
         {
           "valid": "Alice",
-          "invalid": "A",
+          "invalid": "J",
           "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)"
         }
       ],
       "customer_03_phone_textfield": [
         {
           "valid": "0123456789",
-          "invalid": "12345",
+          "invalid": "012345678",
           "invalidRuleMessages": "Phone number must be exactly 10 digits"
         },
         {
@@ -30,14 +30,14 @@
         },
         {
           "valid": "0123456789",
-          "invalid": "67890",
+          "invalid": "012345678",
           "invalidRuleMessages": "0"
         }
       ],
       "customer_04_lastname_textfield": [
         {
-          "valid": "Jackson",
-          "invalid": "J",
+          "valid": "Smith",
+          "invalid": "S",
           "invalidRuleMessages": "Last name must contain only letters (minimum 2 characters)"
         }
       ]

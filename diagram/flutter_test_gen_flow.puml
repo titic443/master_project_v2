@@ -1,0 +1,141 @@
+@startuml flutter_test_gen_flow
+!theme plain
+skinparam ActivityBackgroundColor #E3F2FD
+skinparam ActivityBorderColor #1976D2
+skinparam ActivityFontSize 12
+skinparam ArrowColor #424242
+skinparam NoteBorderColor #FF9800
+skinparam NoteBackgroundColor #FFF3E0
+
+title Flutter Test Generator - Activity Diagram\n(./bin/flutter_test_gen)
+
+start
+
+:User runs command\n**./bin/flutter_test_gen <UI_FILE>**;
+note right
+  Example:
+  ./bin/flutter_test_gen lib/demos/customer_details_page.dart
+end note
+
+partition "**Step 1/4: Extract UI Manifest**" #LightBlue {
+  :Parse UI file (*.dart);
+  :Extract widgets metadata:
+  - TextFormField (validators, formatters)
+  - DropdownButton (items)
+  - Radio groups
+  - Checkboxes
+  - Submit buttons;
+  :Generate manifest JSON;
+  :Write to **output/manifest/<page>.manifest.json**;
+  note right
+    Contains:
+    - Widget keys
+    - Validation rules
+    - Input formatters
+    - Options/values
+  end note
+}
+
+:✓ Manifest created;
+
+partition "**Step 2/4: Generate Datasets (AI)**" #LightGreen {
+  if (--skip-datasets flag?) then (yes)
+    :Skip AI dataset generation;
+    note right: Uses empty datasets
+  else (no)
+    :Read manifest JSON;
+    :Build AI prompt with:
+    - Field constraints
+    - Validation rules
+    - Input formatters;
+    :Call **Google Gemini API** (gemini-2.5-flash);
+    note right
+      AI generates realistic test data:
+      - Valid values
+      - Invalid values (edge cases)
+      - Error messages
+    end note
+    :Parse AI response;
+    :Write to **output/test_data/<page>.datasets.json**;
+  endif
+}
+
+:✓ Datasets ready;
+
+partition "**Step 3/4: Generate Test Plan (PICT)**" #LightYellow {
+  :Read manifest JSON;
+  :Extract factors from widgets:
+  - TEXT fields: valid/invalid
+  - Dropdown options
+  - Radio options
+  - Checkbox states;
+
+  :Create PICT model files;
+
+  fork
+    :Write **<page>.full.model.txt**\n(all combinations);
+    :Execute PICT tool;
+    :Generate **<page>.full.result.txt**;
+  fork again
+    :Write **<page>.valid.model.txt**\n(valid only);
+    :Execute PICT tool;
+    :Generate **<page>.valid.result.txt**;
+  end fork
+
+  note right
+    All files in:
+    **output/model_pairwise/**
+  end note
+
+  if (PICT tool available?) then (yes)
+    :Use PICT for pairwise combinations;
+  else (no)
+    :Fallback to internal pairwise algorithm;
+    note right: Warns: "PICT failed, using fallback"
+  endif
+
+  :Parse PICT result files;
+  :Map combinations to test steps;
+  :Load datasets from Step 2;
+  :Generate test cases with:
+  - Setup (API mock responses)
+  - Steps (UI interactions)
+  - Assertions (expected results);
+
+  :Write **output/test_data/<page>.testdata.json**;
+}
+
+:✓ Test plan created;
+
+partition "**Step 4/4: Generate Test Script**" #LightCoral {
+  :Read test plan JSON;
+  :Generate Dart code for each test case:
+  - Import statements
+  - Cubit stub classes
+  - Test group
+  - Individual test methods;
+
+  :Write **integration_test/<page>_flow_test.dart**;
+  note right
+    Flutter widget test format:
+    - testWidgets()
+    - BlocProvider setup
+    - UI interactions (tap, enterText)
+    - Assertions (find.text, exists)
+  end note
+}
+
+:✓ Test script generated;
+
+:Display success message with file paths;
+
+stop
+
+legend right
+  |= Symbol |= Meaning |
+  | ✓ | Step completed successfully |
+  | **Bold** | File path or command |
+  | //Italic// | Optional step |
+endlegend
+
+@enduml

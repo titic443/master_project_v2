@@ -1,0 +1,95 @@
+@startuml pict_pairwise_generation
+!theme plain
+skinparam ActivityBackgroundColor #FFF9C4
+skinparam ActivityBorderColor #F57F17
+skinparam NoteBorderColor #1976D2
+skinparam NoteBackgroundColor #E3F2FD
+
+title PICT Pairwise Test Generation Detail\n(Step 3: Generate Test Plan)
+
+start
+
+:Input: Manifest JSON with widgets;
+
+:Extract factors from widgets;
+note right
+  Factors = testable parameters
+  Examples:
+  - customer_02_firstname_textfield
+  - customer_01_title_dropdown
+  - customer_05_age_radio_group
+end note
+
+partition "**Build PICT Model (Full)**" {
+  :For each widget, define factor values;
+
+  floating note left
+    **TextFormField:**
+    factor: valid, invalid
+
+    **DropdownButton:**
+    factor: "Option1", "Option2", "Option3"
+
+    **Radio Group:**
+    factor: radio_1, radio_2, radio_3
+
+    **Checkbox:**
+    factor: checked, unchecked
+  end note
+
+  :Write PICT model syntax;
+  :Save to **customer_details_page.full.model.txt**;
+}
+
+:Execute PICT command:\n**./pict <model_file>**;
+
+if (PICT execution success?) then (yes)
+  :PICT generates pairwise combinations;
+  :Output: Tab-separated values (TSV);
+  note right
+    Example output:
+    firstname  lastname  age     country
+    valid      valid     age_20  UK
+    invalid    valid     age_30  US
+    valid      invalid   age_40  Thailand
+  end note
+
+  :Save to **customer_details_page.full.result.txt**;
+else (no - ProcessException)
+  :⚠ PICT tool not found or failed;
+  :Use internal pairwise fallback algorithm;
+  note right
+    Generates combinations manually
+    Less optimal than PICT
+  end note
+endif
+
+partition "**Build PICT Model (Valid Only)**" {
+  :Remove all 'invalid' factors;
+  :Keep only valid values;
+  :Save to **customer_details_page.valid.model.txt**;
+  :Execute PICT again;
+  :Save to **customer_details_page.valid.result.txt**;
+}
+
+:Parse PICT results (TSV);
+
+:Map each row to test case;
+note right
+  Each row = 1 test case
+  Each column = factor value
+
+  Row 1 → Test Case 1:
+  - Set firstname = "valid" → use datasets
+  - Set lastname = "valid" → use datasets
+  - Select age_20_radio
+  - Select country "UK"
+end note
+
+:Generate test steps from combinations;
+
+:Output: Test cases with steps + assertions;
+
+stop
+
+@enduml

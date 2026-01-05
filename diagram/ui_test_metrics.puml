@@ -1,0 +1,110 @@
+@startuml ui_test_metrics
+!theme plain
+skinparam BackgroundColor #FAFAFA
+skinparam defaultFontSize 11
+
+title UI Testing Metrics for Widget Tests
+
+package "**UI Test Metrics**" {
+
+  rectangle "**1. Widget Coverage**" as WC #E3F2FD {
+    card "**Widget Rendering**" #BBDEFB {
+      :• All widgets rendered?
+      • All widget states tested?
+      • Conditional widgets (if/else)
+      ---
+      Target: 100% widgets
+    }
+
+    card "**Widget Interaction**" #90CAF9 {
+      :• All tappable widgets tapped?
+      • All text fields filled?
+      • All dropdowns selected?
+      ---
+      Target: 100% interactive widgets
+    }
+  }
+
+  rectangle "**2. User Flow Coverage**" as UFC #E8F5E9 {
+    card "**Happy Path**" #C8E6C9 {
+      :• Success scenarios
+      • Valid input → Success output
+      ---
+      Example: Valid form → Submit success
+    }
+
+    card "**Error Path**" #A5D6A7 {
+      :• Validation errors
+      • Invalid input → Error messages
+      ---
+      Example: Empty email → "Required"
+    }
+
+    card "**Edge Cases**" #81C784 {
+      :• Boundary values
+      • Special characters
+      • Network errors
+      ---
+      Example: Max length input
+    }
+  }
+
+  rectangle "**3. Assertion Coverage**" as AC #FFF9C4 {
+    card "**Visual Assertions**" #FFF59D {
+      :• Text visibility
+      • Widget existence
+      • Color/style
+      ---
+      find.text('Welcome')
+      find.byKey(Key('button'))
+    }
+
+    card "**State Assertions**" #FFF176 {
+      :• Cubit/Bloc state
+      • Form validation state
+      • Loading/Error states
+      ---
+      expect(state.status, isLoading)
+    }
+
+    card "**Behavior Assertions**" #FFEE58 {
+      :• Navigation occurred?
+      • Dialog shown?
+      • Snackbar displayed?
+      ---
+      expect(find.byType(Dialog), findsOne)
+    }
+  }
+
+  rectangle "**4. Test Quality**" as TQ #FCE4EC {
+    card "**Test Maintainability**" #F8BBD0 {
+      :• Clear test names
+      • DRY principles
+      • Page Object pattern
+    }
+
+    card "**Test Reliability**" #F48FB1 {
+      :• No flaky tests
+      • Deterministic results
+      • Proper async handling
+    }
+
+    card "**Test Speed**" #F06292 {
+      :• Fast execution
+      • Minimal delays
+      • Efficient setup
+      ---
+      Target: <1s per test
+    }
+  }
+}
+
+legend right
+  |= Metric Type |= Purpose |
+  | Widget Coverage | Ensure all UI rendered |
+  | User Flow Coverage | Test all user paths |
+  | Assertion Coverage | Verify expectations |
+  | Test Quality | Maintainability |
+endlegend
+
+@enduml

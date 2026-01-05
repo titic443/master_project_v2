@@ -1,0 +1,100 @@
+@startuml sequence_diagram
+!theme plain
+skinparam ParticipantBackgroundColor #E3F2FD
+skinparam ParticipantBorderColor #1976D2
+skinparam SequenceArrowColor #424242
+
+title Flutter Test Generator - Sequence Diagram
+
+actor User
+participant "flutter_test_gen\n(CLI)" as CLI
+participant "extract_ui_manifest.dart" as Manifest
+participant "generate_datasets.dart" as Datasets
+participant "Gemini API" as AI
+participant "generate_test_data.dart" as TestData
+participant "generator_pict.dart" as PICT
+participant "PICT Tool\n(./pict)" as PICTBin
+participant "generate_test_script.dart" as TestScript
+database "File System" as FS
+
+User -> CLI: ./bin/flutter_test_gen\nlib/demos/customer_details_page.dart
+
+CLI -> Manifest: Extract UI widgets
+activate Manifest
+Manifest -> Manifest: Parse Dart AST
+Manifest -> Manifest: Extract:\n- TextFormField metadata\n- Dropdown items\n- Radio groups\n- Validators
+Manifest -> FS: Write manifest JSON
+FS --> Manifest: output/manifest/customer_details_page.manifest.json
+Manifest --> CLI: ✓ Manifest created
+deactivate Manifest
+
+CLI -> Datasets: Generate test datasets
+activate Datasets
+Datasets -> FS: Read manifest JSON
+FS --> Datasets: Manifest data
+
+Datasets -> Datasets: Build AI prompt with\nvalidation rules
+
+Datasets -> AI: POST request with prompt
+activate AI
+AI -> AI: Generate realistic\ntest data pairs\n(valid/invalid)
+AI --> Datasets: JSON response with datasets
+deactivate AI
+
+Datasets -> FS: Write datasets JSON
+FS --> Datasets: output/test_data/customer_details_page.datasets.json
+Datasets --> CLI: ✓ Datasets generated
+deactivate Datasets
+
+CLI -> TestData: Generate test plan
+activate TestData
+TestData -> FS: Read manifest JSON
+FS --> TestData: Manifest data
+
+TestData -> PICT: Extract factors & create PICT models
+activate PICT
+
+PICT -> PICT: Build factor map:\n- TEXT: valid/invalid\n- Dropdown: options\n- Radio: choices
+
+PICT -> FS: Write PICT model files
+FS --> PICT: .full.model.txt\n.valid.model.txt
+
+PICT -> PICTBin: Execute: ./pict full.model.txt
+activate PICTBin
+PICTBin -> PICTBin: Generate pairwise\ncombinations
+PICTBin --> PICT: Tab-separated output
+deactivate PICTBin
+
+PICT -> FS: Write PICT result files
+FS --> PICT: .full.result.txt\n.valid.result.txt
+
+PICT --> TestData: Pairwise combinations
+deactivate PICT
+
+TestData -> TestData: Map combinations\nto test cases
+
+TestData -> FS: Read datasets JSON
+FS --> TestData: AI-generated test values
+
+TestData -> TestData: Merge:\n- PICT combinations\n- AI datasets\n- Assertions
+
+TestData -> FS: Write test plan JSON
+FS --> TestData: output/test_data/customer_details_page.testdata.json
+TestData --> CLI: ✓ Test plan created
+deactivate TestData
+
+CLI -> TestScript: Generate test script
+activate TestScript
+TestScript -> FS: Read test plan JSON
+FS --> TestScript: Test cases with steps
+
+TestScript -> TestScript: Generate Dart code:\n- Import statements\n- Cubit stubs\n- testWidgets() methods\n- UI interactions\n- Assertions
+
+TestScript -> FS: Write Flutter test file
+FS --> TestScript: integration_test/\ncustomer_details_page_flow_test.dart
+TestScript --> CLI: ✓ Test script generated
+deactivate TestScript
+
+CLI --> User: ✓ SUCCESS\nNext steps: flutter test
+
+@enduml
