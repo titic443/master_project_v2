@@ -1,6 +1,6 @@
 {
   "source": {
-    "file": "lib/demos/customer_details_page.dart",
+    "file": "/Users/70009215/Desktop/101/master_project_v2/lib/demos/customer_details_page.dart",
     "pageClass": "CustomerDetailsPage",
     "cubitClass": "CustomerCubit",
     "stateClass": "CustomerState",
@@ -9,7 +9,39 @@
   },
   "datasets": {
     "defaults": {},
-    "byKey": {}
+    "byKey": {
+      "customer_02_firstname_textfield": [
+        {
+          "valid": "Alice",
+          "invalid": "A",
+          "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)"
+        }
+      ],
+      "customer_03_phone_textfield": [
+        {
+          "valid": "0123456789",
+          "invalid": "12345",
+          "invalidRuleMessages": "Phone number must be exactly 10 digits"
+        },
+        {
+          "valid": "0123456789",
+          "invalid": "1234567890",
+          "invalidRuleMessages": "Phone number must start with 0"
+        },
+        {
+          "valid": "0123456789",
+          "invalid": "67890",
+          "invalidRuleMessages": "0"
+        }
+      ],
+      "customer_04_lastname_textfield": [
+        {
+          "valid": "Jackson",
+          "invalid": "J",
+          "invalidRuleMessages": "Last name must contain only letters (minimum 2 characters)"
+        }
+      ]
+    }
   },
   "cases": [
     {
@@ -84,6 +116,18 @@
         }
       ],
       "asserts": [
+        {
+          "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -249,6 +293,14 @@
       ],
       "asserts": [
         {
+          "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -334,6 +386,10 @@
         }
       ],
       "asserts": [
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -429,6 +485,14 @@
       ],
       "asserts": [
         {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -498,6 +562,10 @@
         }
       ],
       "asserts": [
+        {
+          "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -663,6 +731,18 @@
       ],
       "asserts": [
         {
+          "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -748,6 +828,14 @@
         }
       ],
       "asserts": [
+        {
+          "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true
@@ -835,6 +923,14 @@
       ],
       "asserts": [
         {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -913,6 +1009,14 @@
       ],
       "asserts": [
         {
+          "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -982,6 +1086,14 @@
         }
       ],
       "asserts": [
+        {
+          "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
         {
           "byKey": "customer_01_expected_fail",
           "exists": true

@@ -1,2 +1,0 @@
-datepicker_01_birthdate_tile: null, 15/01/1901, 15/06/1962
-datepicker_02_appointment_date_tile: null, 15/12/2026, 15/06/2025

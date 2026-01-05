@@ -1,8 +1,0 @@
-product_07_instock_checkbox: checked, unchecked
-state.priceRange: price_0_100_radio, price_100_500_radio, price_500_plus_radio
-product_02_name_textfield: valid, invalid
-product_03_category_dropdown: Electronics, Clothing, Food, Books
-product_04_sku_textfield: valid, invalid
-product_05_quantity_textfield: valid, invalid
-product_07_instock_formfield: checked, unchecked
-product_08_featured_checkbox: checked, unchecked
