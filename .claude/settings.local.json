@@ -10,7 +10,11 @@
       "Bash(git init:*)",
       "Bash(flutter analyze:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nrefactor: clean up project structure and update main.dart\n\n- Remove unused demo pages (login, register, submit, dashboard, widgets)\n- Remove unused cubits and states (demo, login, register, submit)\n- Remove all integration tests\n- Update main.dart to use only CustomerDetailsPage and CustomerCubit\n- Add comprehensive README documentation for script_v2 tools\n- Update customer_details_page.dart\n- Update dependencies in pubspec.yaml\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(./tools/check_coverage_gaps.sh:*)",
+      "Bash(./tools/show_test_gaps.sh:*)",
+      "Bash(./bin/flutter_test_gen:*)"
     ],
     "deny": [],
     "ask": []
