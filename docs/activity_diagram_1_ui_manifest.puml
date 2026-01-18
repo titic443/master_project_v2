@@ -1,100 +1,198 @@
-@startuml
-title Activity Diagram 1: การวิเคราะห์และสกัดสมรรถนะส่วนติดต่อผู้ใช้
-skinparam defaultTextAlignment center
-skinparam activityBackgroundColor #E3F2FD
-skinparam activityBorderColor #1976D2
-skinparam decisionBackgroundColor #FFF9C4
-skinparam decisionBorderColor #F57F17
+@startuml Activity Diagram 1: UI Manifest Extraction
+!theme plain
 
+title แผนภาพกิจกรรม 1: การวิเคราะห์และสกัดสมรรถนะส่วนติดต่อผู้ใช้\n(Extract UI Manifest - Step 1)
+
+|นักทดสอบ|
+|เครื่องมือสกัด UI Manifest|
+
+|นักทดสอบ|
 start
-
-:รับ Input Path;
+:เรียกใช้เครื่องมือ\nextract_ui_manifest.dart;
 note right
-  **Input:**
-  - lib/demos/*.dart
-  - หรือ Scan all *_page.dart
+  คำสั่ง:
+  • dart run tools/script_v2/extract_ui_manifest.dart <file>
+  • dart run tools/script_v2/extract_ui_manifest.dart (scan all)
 end note
 
-if (มี arguments?) then (yes)
-  :ใช้ไฟล์ที่ระบุ;
-else (no)
-  :Scan lib/** หา\n*_page.dart ทั้งหมด;
+if (ระบุไฟล์ UI?) then (ระบุไฟล์)
+  :ป้อนพาธไฟล์ UI\n(lib/demos/xxx_page.dart);
+else (ไม่ระบุ)
+  :ให้ระบบสแกนทั้งโฟลเดอร์\n(lib/**/*_page.dart);
 endif
 
-partition "สำหรับแต่ละไฟล์" {
-  :อ่าน Source Code;
+|เครื่องมือสกัด UI Manifest|
+:รับรายการไฟล์ที่จะประมวลผล;
 
-  :ลบ Comments\n(// และ /* */)
-  |
-  :สกัด String Constants\n(const VAR = 'value');
+repeat
+  :เลือกไฟล์ถัดไป;
 
-  :ค้นหา Page Class Name;
+  :ตรวจสอบไฟล์มีอยู่จริง\n(File.existsSync);
 
-  :ค้นหา Cubit/State Types\n(BlocBuilder/BlocListener);
+  if (ไฟล์มีอยู่?) then (พบไฟล์)
+    :อ่าน source code\nจากไฟล์ .dart;
+    note right
+      File.readAsStringSync()
+      อ่านเนื้อหาทั้งหมดของไฟล์
+    end note
 
-  partition "สแกน Widgets" {
-    :ค้นหา Widget Patterns\n- TextField/TextFormField\n- ElevatedButton/TextButton\n- Dropdown/Radio/Checkbox\n- DatePicker/TimePicker;
+    :ลบ comments ออก\n(// และ /* */);
+    note right
+      ป้องกัน false positives
+      จาก widgets ใน comments
+    end note
 
-    :สำหรับแต่ละ Widget:\n- สกัด Key\n- สกัด Validation Rules\n- สกัด Input Formatters\n- สกัด Picker Metadata;
+    partition "วิเคราะห์ Metadata" {
+      :สกัด String Constants\n(const KEY = 'value');
 
-    :เชื่อมโยง Picker Metadata\nกับ onTap methods;
-  }
+      :ค้นหา Page Class\n(extends StatefulWidget);
+      note right
+        class XxxPage extends StatefulWidget
+      end note
 
-  :กรองเฉพาะ Widgets\nที่มี Key;
+      :ค้นหา Cubit Type\n(BlocBuilder<XxxCubit, ...>);
 
-  :ลบ Duplicate Keys\n(เก็บ first occurrence);
+      :ค้นหา State Type\n(BlocBuilder<..., XxxState>);
 
-  :จัดเรียง Widgets:\n1. ตาม SEQUENCE (1_, 2_, 3_...)\n2. ตาม source order;
+      :ค้นหาพาธไฟล์ Cubit/State\n(จาก import statements);
+    }
 
-  :สร้าง JSON Structure\n{source, widgets};
+    partition "สแกนและสกัด Widgets" {
+      :สแกนหา Widget patterns\nที่รองรับ;
+      note right
+        Widget types:
+        • TextField, TextFormField
+        • ElevatedButton, TextButton, IconButton
+        • DropdownButton, Radio, Checkbox
+        • Switch, Slider, ListTile
+        • Text, Visibility, SnackBar
+      end note
 
-  :คำนวณ Output Path\nตาม subfolder structure;
+      repeat
+        :พบ Widget constructor;
 
-  :สร้าง output/manifest/\n[subfolder]/\n<page>.manifest.json;
+        :ใช้ Regex match parentheses\nสกัด arguments;
 
-  :แสดงข้อความสำเร็จ;
-}
+        :สกัดข้อมูล Widget:
+        • widgetType
+        • key (Key/ValueKey/ObjectKey)
+        • sourceOrder;
 
-:Output: Manifest Files;
-note right
-  **Output:**
-  output/manifest/**/*.manifest.json
+        if (Widget type คือ?) then (TextField/TextFormField)
+          :สกัด TextField metadata:
+          • keyboardType
+          • obscureText
+          • maxLength
+          • inputFormatters
+          • validatorRules;
 
-  **การบันทึกไฟล์:**
-  บันทึกข้อมูลทั้งหมดเป็นไฟล์ JSON
-  ที่เรียกว่า Manifest File โดยเก็บไว้
-  ในโฟลเดอร์ output/manifest/ พร้อมทั้ง
-  แสดงข้อความแจ้งเตือนว่าการสกัดข้อมูล
-  สำเร็จพร้อมเส้นทางของไฟล์ที่สร้างขึ้น
+        elseif (DropdownButton) then
+          :สกัด Dropdown options:
+          • value
+          • text (label);
 
-  **การกรอง Widgets:**
-  ⚠️ วิดเจ็ตที่ไม่มีคีย์หรือไม่พบวิดเจ็ต
-  ที่รองรับเลย วิดเจ็ตเหล่านั้นจะถูกกรอง
-  ออกและไม่รวมอยู่ในไฟล์ Manifest
+        elseif (Radio) then
+          :สกัด Radio metadata:
+          • value
+          • groupValue;
 
-  **โครงสร้าง:**
-  {
-    "source": {
-      "file": "lib/...",
-      "pageClass": "...",
-      "cubitClass": "...",
-      "stateClass": "...",
-      "fileCubit": "...",
-      "fileState": "..."
-    },
-    "widgets": [
+        elseif (FormField with Radio) then
+          :สกัด Radio options\nภายใน FormField builder;
+
+        elseif (Text with state binding) then
+          :สกัด displayBinding\n(state.fieldName);
+
+        else (Widget อื่นๆ)
+          :สกัด metadata พื้นฐาน;
+        endif
+
+        :ตรวจสอบ onTap callback;
+
+        if (มี onTap ที่เรียก Picker?) then (มี)
+          :สกัด Picker metadata:
+          • DatePicker: firstDate, lastDate, initialDate
+          • TimePicker: initialTime;
+
+          :เชื่อมโยง pickerMetadata\nกับ widget;
+        endif
+
+        :เพิ่ม widget ลง list;
+
+      repeat while (ยังมี widgets?) is (มี)
+      -> ไม่มีแล้ว;
+    }
+
+    :กรองเฉพาะ widgets ที่มี key;
+    note right
+      widgets ที่ไม่มี key จะถูกละทิ้ง
+      เพราะไม่สามารถทดสอบได้
+    end note
+
+    :ลบ duplicate keys\n(เก็บ first occurrence);
+
+    :เรียงลำดับ widgets:
+    1. ตาม SEQUENCE prefix (1_, 2_, 3_...)
+    2. ตาม sourceOrder;
+    note right
+      Pattern: {SEQUENCE}_*_{WIDGET}
+      เช่น "1_customer_firstname_textfield"
+    end note
+
+    :ลบ sourceOrder ออก\n(ใช้สำหรับ sorting เท่านั้น);
+
+    :สร้าง JSON structure;
+    note right
       {
-        "widgetType": "TextField",
-        "key": "1_firstname_textfield",
-        "meta": {
-          "validatorRules": [...],
-          "inputFormatters": [...]
-        }
-      },
-      ...
-    ]
-  }
-end note
+        "source": {
+          "file": "lib/...",
+          "pageClass": "XxxPage",
+          "cubitClass": "XxxCubit",
+          "stateClass": "XxxState",
+          "fileCubit": "lib/cubit/xxx_cubit.dart",
+          "fileState": "lib/cubit/xxx_state.dart"
+        },
+        "widgets": [
+          {
+            "widgetType": "TextField",
+            "key": "1_firstname_textfield",
+            "meta": {
+              "keyboardType": "text",
+              "maxLength": 50,
+              "inputFormatters": [...],
+              "validatorRules": [...]
+            }
+          },
+          ...
+        ]
+      }
+    end note
+
+    :คำนวณ output path\nตาม subfolder structure;
+    note right
+      Input:  lib/demos/buttons_page.dart
+      Output: output/manifest/demos/
+              buttons_page.manifest.json
+    end note
+
+    :สร้าง output directory\n(createSync recursive);
+
+    :เขียนไฟล์ JSON\n(JsonEncoder.withIndent);
+
+    |นักทดสอบ|
+    :แสดงข้อความสำเร็จ\n"✓ Manifest written: <path>";
+
+    |เครื่องมือสกัด UI Manifest|
+  else (ไม่พบไฟล์)
+    |นักทดสอบ|
+    :แสดง Error\n"File not found: <path>";
+    |เครื่องมือสกัด UI Manifest|
+  endif
+
+repeat while (ยังมีไฟล์?) is (มี)
+-> ประมวลผลครบแล้ว;
+
+|นักทดสอบ|
+:ได้รับ Manifest Files\n(output/manifest/**/*.manifest.json);
 
 stop
 

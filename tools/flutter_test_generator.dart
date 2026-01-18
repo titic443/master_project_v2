@@ -409,13 +409,11 @@ Future<void> _runPipeline(String inputFile, CLIOptions options) async {
         _logSkip('No text fields found', options);
       }
     } catch (e) {
-      if (e.toString().contains('API') || e.toString().contains('No TextField')) {
-        // Skip if API key missing or no text fields found
-        final message = e.toString().contains('TextField')
-            ? 'No text fields found'
-            : 'API key not found (use --api-key or .env)';
-        _logSkip(message, options);
+      if (e.toString().contains('No TextField')) {
+        // Skip only if no text fields found
+        _logSkip('No text fields found', options);
       } else {
+        // For API key errors or other errors, fail immediately
         rethrow;
       }
     }
