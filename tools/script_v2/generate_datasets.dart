@@ -30,7 +30,8 @@ import 'utils.dart' as utils;
 // 3. Use --api-key flag: --api-key=your_key
 // Get your API key from: https://aistudio.google.com/app/apikey
 // ========================================
-const String hardcodedApiKey = 'AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg'; // Removed for security
+const String hardcodedApiKey =
+    'AIzaSyBgq9_nA0LZLq7GKz6qd5S2x6Lr0B2BoUg'; // Removed for security
 
 /// Public API for flutter_test_generator.dart
 /// Generates datasets from a manifest file and returns the output path
@@ -243,25 +244,21 @@ Future<void> _processManifest(
     };
   }
 
-  // Process fields WITH rules: use AI
+  // Process fields WITH rules: use AI (REQUIRED - no local fallback)
   if (fieldsWithRules.isNotEmpty) {
     Map<String, dynamic>? aiResult;
-    if (!localOnly && apiKey != null && apiKey.isNotEmpty) {
-      try {
-        aiResult = await _callGeminiForDatasets(
-            apiKey, model, uiFile, fieldsWithRules);
-      } catch (e) {
-        throw Exception('Gemini call failed: $e');
-      }
+
+    // AI is required for fields with validation rules
+    if (apiKey == null || apiKey.isEmpty) {
+      throw Exception('AI datasets generation requires API key. '
+          'Fields with validation rules cannot use local generation.');
     }
 
-    // If using local-only mode, use local generation
-    if (localOnly) {
-      aiResult = _localGenerateDatasets(uiFile, fieldsWithRules);
-    }
-
-    if (aiResult == null) {
-      throw Exception('AI result is unavailable and fallback is disabled');
+    try {
+      aiResult =
+          await _callGeminiForDatasets(apiKey, model, uiFile, fieldsWithRules);
+    } catch (e) {
+      throw Exception('Gemini call failed: $e');
     }
 
     // Merge AI result with per-rule normalization (prefer AI values where available)
@@ -469,53 +466,6 @@ String _stripCodeFences(String s) {
   return s.replaceAll(rxFence, '');
 }
 
-Map<String, dynamic> _localGenerateDatasets(
-    String uiFile, List<Map<String, dynamic>> fields) {
-  final byKey = <String, dynamic>{};
-  for (final f in fields) {
-    final key = f['key'] as String;
-    final meta = (f['meta'] as Map<String, dynamic>?) ?? <String, dynamic>{};
-    byKey[key] = _generateDatasetForField(key, meta);
-  }
-  return {
-    'file': uiFile,
-    'datasets': {
-      'byKey': byKey,
-    }
-  };
-}
-
-Map<String, dynamic> _generateDatasetForField(
-    String key, Map<String, dynamic> meta) {
-  final constraints = _analyzeConstraintsFromMeta(key, meta);
-  final rules = (meta['validatorRules'] as List?)?.cast<Map>() ?? const [];
-  if (rules.isNotEmpty) {
-    final valids = <String>[];
-    final invalids = <String>[];
-    for (final rule in rules) {
-      final cond = (rule['condition'] ?? '').toString();
-      final pair = _samplesFromRule(key, cond, constraints);
-      if (pair.$1 != null) invalids.add(pair.$1!); // keep '' for Required
-      if (pair.$2 != null) valids.add(pair.$2!);
-    }
-    // Fallback when rules did not yield any samples
-    if (valids.isEmpty || invalids.isEmpty) {
-      final v = _generateValidData(key, constraints);
-      final iv = _generateInvalidData(key, constraints);
-      if (valids.isEmpty) valids.add(v);
-      if (invalids.isEmpty) invalids.add(iv);
-    }
-    // Return per-rule lists as-is to preserve 1:1 mapping with rules
-    return {'valid': valids, 'invalid': invalids};
-  }
-  final validData = _generateValidData(key, constraints);
-  final invalidData = _generateInvalidData(key, constraints);
-  return {
-    'valid': [validData],
-    'invalid': [invalidData],
-  };
-}
-
 class FieldConstraints {
   final String pattern;
   final int maxLength;
@@ -642,12 +592,6 @@ String _generateValidData(String key, FieldConstraints c) {
   return _genFromPattern(c.pattern, c.maxLength, random);
 }
 
-String _generateInvalidData(String key, FieldConstraints c) {
-  final random = Random(7);
-  if (c.isEmail) return 'invalid.email';
-  return _genInvalidFromPattern(c.pattern, random);
-}
-
 String _genFromPattern(String pattern, int maxLength, Random random) {
   final chars = <String>[];
   if (pattern.contains('a-z'))
@@ -667,72 +611,8 @@ String _genFromPattern(String pattern, int maxLength, Random random) {
       .join('');
 }
 
-String _genInvalidFromPattern(String pattern, Random random) {
-  final allowed = <String>{};
-  final norm = pattern.replaceAll('\\\\', '');
-  if (norm.contains('a-z'))
-    allowed.addAll('abcdefghijklmnopqrstuvwxyz'.split(''));
-  if (norm.contains('A-Z'))
-    allowed.addAll('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
-  if (norm.contains('0-9') || pattern.contains('\\\\d'))
-    allowed.addAll('0123456789'.split(''));
-  for (final ch in '@#\$%^&+=!*-_.'.split('')) {
-    if (norm.contains(ch)) allowed.add(ch);
-  }
-  final simple = [')', ':', '|', '~', '`'];
-  for (final ch in simple) {
-    if (!allowed.contains(ch)) return ch * 3;
-  }
-  final candidates = ' !"#\$%&()*+,./:;<=>?@[\\]^`{|}~'.split('');
-  final notAllowed = candidates.where((c) => !allowed.contains(c)).toList();
-  if (notAllowed.isEmpty) return '   ';
-  return List.generate(3, (_) => notAllowed[random.nextInt(notAllowed.length)])
-      .join('');
-}
-
-// Returns (invalid, valid) for one validator rule condition
-(String?, String?) _samplesFromRule(
-    String key, String condition, FieldConstraints c) {
-  final lower = condition.replaceAll('\n', ' ').trim();
-  if (lower.contains('isEmpty') || lower.contains('== null')) {
-    final invalid = '';
-    final valid = _minimalValidForConstraints(key, c);
-    return (invalid, valid);
-  }
-  final m = RegExp("RegExp\\(\\s*r?(['\\\"])((?:.|\\n)*?)\\1\\s*\\)")
-      .firstMatch(condition);
-  if (m != null) {
-    final patternStr = m.group(2) ?? '';
-    if (patternStr.isNotEmpty) {
-      final negated = lower.contains('!RegExp') || lower.contains('== false');
-      final validAgainst = _genFromPattern(patternStr, c.maxLength, Random(11));
-      final invalidAgainst = _genInvalidFromPattern(patternStr, Random(13));
-      return negated
-          ? (invalidAgainst, validAgainst)
-          : (validAgainst, invalidAgainst);
-    }
-  }
-  final lenM = RegExp(r'length\s*<\s*(\d+)').firstMatch(lower);
-  if (lenM != null) {
-    final n = int.tryParse(lenM.group(1) ?? '0') ?? 0;
-    final invalid =
-        (n > 0) ? _repeatCharFor((n - 1).clamp(0, c.maxLength)) : '';
-    final valid = _repeatCharFor(n.clamp(1, c.maxLength));
-    return (invalid, valid);
-  }
-  final fbInvalid = _generateInvalidData(key, c);
-  final fbValid = _generateValidData(key, c);
-  return (fbInvalid, fbValid);
-}
-
-String _minimalValidForConstraints(String key, FieldConstraints c) {
-  if (c.isDigitsOnly) return '1';
-  if (c.isEmail) return 'a1@b2.co';
-  final s = _genFromPattern(c.pattern, c.maxLength, Random(17));
-  return s.isNotEmpty ? s : 'a';
-}
-
-String _repeatCharFor(int n) => n <= 0 ? '' : List.filled(n, 'A').join();
-
 // Removed: _basename, _basenameWithoutExtension, _readApiKeyFromEnv
+// Removed: _localGenerateDatasets, _generateDatasetForField, _samplesFromRule,
+//          _minimalValidForConstraints, _repeatCharFor, _generateInvalidData,
+//          _genInvalidFromPattern (AI-only dataset generation)
 // Now using utils.dart module instead

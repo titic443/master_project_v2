@@ -1,0 +1,230 @@
+@startuml Interactive Mode Full Flow
+!theme plain
+
+title แผนภาพกิจกรรม: Flutter Test Generator - Interactive Mode\n(Complete Flow)
+
+|นักทดสอบ|
+|เครื่องมือ Test Generator|
+|ระบบ AI (Gemini)|
+|File System|
+
+|นักทดสอบ|
+start
+:เรียกใช้ Binary\n./flutter_test_gen;
+
+|เครื่องมือ Test Generator|
+:แสดง Banner\nInteractive Mode;
+
+:แสดงข้อความต้อนรับ\n"This wizard will walk you through...";
+
+partition "Question 1: UI File Path" {
+  |นักทดสอบ|
+  :ป้อนพาธไฟล์ UI\n(lib/demos/xxx_page.dart);
+
+  |เครื่องมือ Test Generator|
+  :รับ input path;
+
+  if (Input ว่างเปล่า?) then (ใช่)
+    :แสดง "This field is required";
+    detach
+  endif
+
+  |File System|
+  :ตรวจสอบไฟล์\n(File.existsSync);
+
+  if (ไฟล์มีอยู่?) then (ไม่พบ)
+    |นักทดสอบ|
+    :แสดง Error\n"File not found: <path>";
+    stop
+  endif
+
+  |เครื่องมือ Test Generator|
+  :แสดง "Scanning widgets...";
+
+  :สแกน widgets จากไฟล์\n(extract_ui_manifest);
+
+  if (พบ widgets ที่มี key?) then (ไม่พบ)
+    |นักทดสอบ|
+    :แสดง Error\n"No testable widgets found"\n+ คำแนะนำ;
+    stop
+  else (พบ)
+    |นักทดสอบ|
+    :แสดงผลสำเร็จ\n✓ UI file imported successfully\n→ Found N widget(s) with keys;
+  endif
+}
+
+partition "Question 2: Skip AI Dataset Generation" {
+  |นักทดสอบ|
+  :ตอบคำถาม\n"Skip AI dataset generation? (y/N)";
+
+  |เครื่องมือ Test Generator|
+  :รับคำตอบ (Y/N);
+
+  if (ตอบ Y - Skip?) then (Y - Skip)
+    :บันทึก skipDatasets = true;
+    note right
+      ไม่ต้องเช็ค API key
+      จะข้าม Step 2 ในภายหลัง
+    end note
+  else (N - ต้องการ AI)
+    :บันทึก skipDatasets = false;
+    note right
+      จะต้องมี API key
+      ใน Step 2 ภายหลัง
+    end note
+  endif
+}
+
+partition "Question 3: Use PICT Constraints" {
+  |นักทดสอบ|
+  :ตอบคำถาม\n"Use PICT constraints? (y/N)";
+
+  |เครื่องมือ Test Generator|
+  :รับคำตอบ (Y/N);
+
+  if (ตอบ Y?) then (Y)
+    :ถามแหล่ง constraints\n(file / manual input);
+
+    if (เลือก file?) then (file)
+      |นักทดสอบ|
+      :ป้อนพาธไฟล์ constraints;
+
+      |File System|
+      :ตรวจสอบไฟล์;
+
+      if (ไฟล์มีอยู่?) then (ไม่พบ)
+        |นักทดสอบ|
+        :แสดง Warning\n"File does not exist yet";
+      endif
+    else (manual input)
+      |นักทดสอบ|
+      :ป้อน constraints\n(ทีละบรรทัด);
+    endif
+  endif
+}
+
+partition "Question 4: Verbose Logging" {
+  |นักทดสอบ|
+  :ตอบคำถาม\n"Enable verbose logging? (y/N)";
+
+  |เครื่องมือ Test Generator|
+  :รับคำตอบ (Y/N);
+}
+
+partition "Configuration Summary" {
+  |นักทดสอบ|
+  :แสดง Configuration Summary\n- UI file\n- Skip datasets\n- Use constraints\n- Verbose;
+
+  :ถาม "Proceed with this configuration? (Y/n)";
+
+  |เครื่องมือ Test Generator|
+  :รับคำตอบ;
+
+  if (ตอบ N - ยกเลิก?) then (N)
+    :แสดง "User cancelled";
+    stop
+  endif
+}
+
+|เครื่องมือ Test Generator|
+:เริ่ม Pipeline;
+
+partition "Step 1: Extract UI Manifest" {
+  |File System|
+  :อ่าน source code;
+
+  |เครื่องมือ Test Generator|
+  :สกัด widgets metadata;
+
+  :สร้าง manifest.json;
+
+  |File System|
+  :บันทึกไฟล์\noutput/manifest/*.manifest.json;
+
+  |นักทดสอบ|
+  :แสดง "[1/4] Extracting UI manifest... ✓";
+}
+
+partition "Step 2: Generate Datasets (AI)" {
+  |เครื่องมือ Test Generator|
+  if (skipDatasets?) then (Y - Skip)
+    |นักทดสอบ|
+    :แสดง "[2/4] ... ⊘\nDatasets generation skipped";
+  else (N - ต้องการ AI)
+    |เครื่องมือ Test Generator|
+    :ตรวจสอบ API key\n(.env, hardcoded, flag);
+
+    if (มี API key?) then (ไม่มี)
+      |นักทดสอบ|
+      :แสดง Error\n✗ Pipeline failed\nGEMINI_API_KEY not set\n+ วิธีการตั้งค่า;
+      stop
+    else (มี)
+      |ระบบ AI (Gemini)|
+      :เรียก Gemini API\ngenerate test datasets;
+
+      if (API สำเร็จ?) then (ล้มเหลว)
+        |นักทดสอบ|
+        :แสดง Error\n✗ Gemini call failed;
+        stop
+      else (สำเร็จ)
+        |เครื่องมือ Test Generator|
+        :รับ AI datasets;
+
+        |File System|
+        :บันทึกไฟล์\noutput/test_data/*.datasets.json;
+
+        |นักทดสอบ|
+        :แสดง "[2/4] ... ✓\nDatasets: <path>";
+      endif
+    endif
+  endif
+}
+
+partition "Step 3: Generate Test Plan (PICT)" {
+  |เครื่องมือ Test Generator|
+  :อ่าน manifest.json;
+
+  if (มี constraints?) then (มี)
+    :อ่าน constraints;
+  endif
+
+  :เรียก PICT\n(pairwise testing);
+
+  :สร้าง test plan;
+
+  |File System|
+  :บันทึกไฟล์\noutput/test_data/*.testdata.json;
+
+  |นักทดสอบ|
+  :แสดง "[3/4] ... ✓\nTest plan: <path>";
+}
+
+partition "Step 4: Generate Test Script" {
+  |เครื่องมือ Test Generator|
+  :อ่าน test plan;
+
+  :สร้าง Flutter test script\n(widget tests);
+
+  |File System|
+  :บันทึกไฟล์\nintegration_test/*_flow_test.dart;
+
+  |นักทดสอบ|
+  :แสดง "[4/4] ... ✓\nTest file: <path>";
+}
+
+partition "Widget Coverage Analysis" {
+  |เครื่องมือ Test Generator|
+  :รัน widget_coverage.dart;
+
+  :วิเคราะห์ coverage\n(tested vs untested widgets);
+
+  |นักทดสอบ|
+  :แสดง Coverage Report\n- Total Widgets\n- Tested Widgets\n- Coverage %\n- Untested list;
+}
+
+|นักทดสอบ|
+:แสดงข้อความสำเร็จ\n✓ SUCCESS - Test generation complete!\n\nNext steps:\n  flutter test <path>;
+
+stop
+
+@enduml
