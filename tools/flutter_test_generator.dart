@@ -12,6 +12,7 @@
 //   dart run tools/flutter_test_generator.dart lib/demos/buttons_page.dart --verbose
 //   dart run tools/flutter_test_generator.dart --help
 
+import 'dart:convert';
 import 'dart:io';
 
 // Import pipeline steps
@@ -107,6 +108,37 @@ CLIOptions _parseArgs(List<String> args) {
   return options;
 }
 
+/// Validate that UI file contains testable widgets with keys
+/// Returns (isValid, widgetCount, errorMessage)
+Future<(bool, int, String?)> _validateUiFile(String filePath) async {
+  try {
+    // Call extract_ui_manifest to scan widgets
+    final manifestPath = step1.processUiFile(filePath);
+
+    // Read generated manifest
+    final manifestContent = File(manifestPath).readAsStringSync();
+    final manifest = jsonDecode(manifestContent) as Map<String, dynamic>;
+    final widgets = (manifest['widgets'] as List?) ?? [];
+
+    if (widgets.isEmpty) {
+      return (false, 0,
+        'No testable widgets found in file.\n'
+        '  The file must contain widgets with keys:\n'
+        '    • TextField/TextFormField with key: Key(\'xxx\')\n'
+        '    • Button/Dropdown/Radio with key: Key(\'xxx\')\n'
+        '\n'
+        '  Example:\n'
+        '    TextField(key: Key(\'username_field\'), ...)\n'
+        '    ElevatedButton(key: Key(\'submit_button\'), ...)'
+      );
+    }
+
+    return (true, widgets.length, null);
+  } catch (e) {
+    return (false, 0, 'Failed to scan widgets: $e');
+  }
+}
+
 /// Interactive mode - prompts user for all options
 Future<CLIOptions> _runInteractiveMode() async {
   final options = CLIOptions();
@@ -127,6 +159,22 @@ Future<CLIOptions> _runInteractiveMode() async {
   if (!File(options.inputFile!).existsSync()) {
     throw Exception('File not found: ${options.inputFile}');
   }
+
+  // Validate file contains testable widgets
+  stdout.writeln('');
+  stdout.write('  Scanning widgets... ');
+  final (isValid, widgetCount, errorMsg) = await _validateUiFile(options.inputFile!);
+
+  if (!isValid) {
+    stdout.writeln('✗\n');
+    stderr.writeln('⚠ Warning: ${errorMsg ?? "No widgets found"}');
+    stderr.writeln('');
+    throw Exception('No testable widgets found in ${options.inputFile}');
+  }
+
+  stdout.writeln('✓');
+  stdout.writeln('  → Found $widgetCount widget(s) with keys');
+  stdout.writeln('');
 
   // Question 2: Skip datasets
   final skipDatasets = await _promptYesNo(
@@ -309,6 +357,40 @@ Future<void> _runPipeline(String inputFile, CLIOptions options) async {
   _logStep(1, 'Extracting UI manifest', options);
   final manifestPath = step1.processUiFile(inputFile);
   _logSuccess('Manifest: $manifestPath', options);
+
+  // Validate manifest contains widgets
+  final manifestContent = File(manifestPath).readAsStringSync();
+  final manifest = jsonDecode(manifestContent) as Map<String, dynamic>;
+  final widgets = (manifest['widgets'] as List?) ?? [];
+
+  if (widgets.isEmpty) {
+    stdout.writeln('');
+    stderr.writeln('━' * 60);
+    stderr.writeln('⚠ ERROR: No testable widgets found');
+    stderr.writeln('━' * 60);
+    stderr.writeln('');
+    stderr.writeln('The file must contain widgets with keys:');
+    stderr.writeln('  • TextField/TextFormField with key: Key(\'xxx\')');
+    stderr.writeln('  • Button/Dropdown/Radio with key: Key(\'xxx\')');
+    stderr.writeln('');
+    stderr.writeln('Example:');
+    stderr.writeln('  TextField(');
+    stderr.writeln('    key: Key(\'username_field\'),');
+    stderr.writeln('    // ...');
+    stderr.writeln('  )');
+    stderr.writeln('');
+    stderr.writeln('  ElevatedButton(');
+    stderr.writeln('    key: Key(\'submit_button\'),');
+    stderr.writeln('    // ...');
+    stderr.writeln('  )');
+    stderr.writeln('');
+    throw Exception('No testable widgets found in $inputFile');
+  }
+
+  if (options.verbose) {
+    stdout.writeln('  ✓ Found ${widgets.length} widget(s) with keys');
+    stdout.writeln('');
+  }
 
   // Step 2: Generate datasets (optional)
   String? datasetsPath;
