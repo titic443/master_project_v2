@@ -173,6 +173,7 @@ Future<CLIOptions> _runInteractiveMode() async {
   }
 
   stdout.writeln('✓');
+  stdout.writeln('  ✓ UI file imported successfully');
   stdout.writeln('  → Found $widgetCount widget(s) with keys');
   stdout.writeln('');
 
@@ -388,7 +389,8 @@ Future<void> _runPipeline(String inputFile, CLIOptions options) async {
   }
 
   if (options.verbose) {
-    stdout.writeln('  ✓ Found ${widgets.length} widget(s) with keys');
+    stdout.writeln('  ✓ UI file imported successfully');
+    stdout.writeln('  → Found ${widgets.length} widget(s) with keys');
     stdout.writeln('');
   }
 
