@@ -1,0 +1,101 @@
+@startuml
+title Activity Diagram 1: การวิเคราะห์และสกัดสมรรถนะส่วนติดต่อผู้ใช้
+skinparam defaultTextAlignment center
+skinparam activityBackgroundColor #E3F2FD
+skinparam activityBorderColor #1976D2
+skinparam decisionBackgroundColor #FFF9C4
+skinparam decisionBorderColor #F57F17
+
+start
+
+:รับ Input Path;
+note right
+  **Input:**
+  - lib/demos/*.dart
+  - หรือ Scan all *_page.dart
+end note
+
+if (มี arguments?) then (yes)
+  :ใช้ไฟล์ที่ระบุ;
+else (no)
+  :Scan lib/** หา\n*_page.dart ทั้งหมด;
+endif
+
+partition "สำหรับแต่ละไฟล์" {
+  :อ่าน Source Code;
+
+  :ลบ Comments\n(// และ /* */)
+  |
+  :สกัด String Constants\n(const VAR = 'value');
+
+  :ค้นหา Page Class Name;
+
+  :ค้นหา Cubit/State Types\n(BlocBuilder/BlocListener);
+
+  partition "สแกน Widgets" {
+    :ค้นหา Widget Patterns\n- TextField/TextFormField\n- ElevatedButton/TextButton\n- Dropdown/Radio/Checkbox\n- DatePicker/TimePicker;
+
+    :สำหรับแต่ละ Widget:\n- สกัด Key\n- สกัด Validation Rules\n- สกัด Input Formatters\n- สกัด Picker Metadata;
+
+    :เชื่อมโยง Picker Metadata\nกับ onTap methods;
+  }
+
+  :กรองเฉพาะ Widgets\nที่มี Key;
+
+  :ลบ Duplicate Keys\n(เก็บ first occurrence);
+
+  :จัดเรียง Widgets:\n1. ตาม SEQUENCE (1_, 2_, 3_...)\n2. ตาม source order;
+
+  :สร้าง JSON Structure\n{source, widgets};
+
+  :คำนวณ Output Path\nตาม subfolder structure;
+
+  :สร้าง output/manifest/\n[subfolder]/\n<page>.manifest.json;
+
+  :แสดงข้อความสำเร็จ;
+}
+
+:Output: Manifest Files;
+note right
+  **Output:**
+  output/manifest/**/*.manifest.json
+
+  **การบันทึกไฟล์:**
+  บันทึกข้อมูลทั้งหมดเป็นไฟล์ JSON
+  ที่เรียกว่า Manifest File โดยเก็บไว้
+  ในโฟลเดอร์ output/manifest/ พร้อมทั้ง
+  แสดงข้อความแจ้งเตือนว่าการสกัดข้อมูล
+  สำเร็จพร้อมเส้นทางของไฟล์ที่สร้างขึ้น
+
+  **การกรอง Widgets:**
+  ⚠️ วิดเจ็ตที่ไม่มีคีย์หรือไม่พบวิดเจ็ต
+  ที่รองรับเลย วิดเจ็ตเหล่านั้นจะถูกกรอง
+  ออกและไม่รวมอยู่ในไฟล์ Manifest
+
+  **โครงสร้าง:**
+  {
+    "source": {
+      "file": "lib/...",
+      "pageClass": "...",
+      "cubitClass": "...",
+      "stateClass": "...",
+      "fileCubit": "...",
+      "fileState": "..."
+    },
+    "widgets": [
+      {
+        "widgetType": "TextField",
+        "key": "1_firstname_textfield",
+        "meta": {
+          "validatorRules": [...],
+          "inputFormatters": [...]
+        }
+      },
+      ...
+    ]
+  }
+end note
+
+stop
+
+@enduml

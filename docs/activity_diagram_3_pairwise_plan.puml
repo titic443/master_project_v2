@@ -1,0 +1,121 @@
+@startuml
+title Activity Diagram 3: การออกแบบแผนทดสอบแบบ Pairwise
+skinparam defaultTextAlignment center
+skinparam activityBackgroundColor #FCE4EC
+skinparam activityBorderColor #C2185B
+skinparam decisionBackgroundColor #FFF9C4
+skinparam decisionBorderColor #F57F17
+skinparam swimlaneWidth 380
+
+|ระบบ|
+start
+
+:รับ Input Manifest Path;
+note right
+  **Input:**
+  output/manifest/**/*.manifest.json
+  output/test_data/*.datasets.json
+end note
+
+if (มี arguments?) then (yes)
+  :ใช้ไฟล์ที่ระบุ;
+else (no)
+  :Scan output/manifest/\nหาทุกไฟล์ .manifest.json;
+endif
+
+partition "สำหรับแต่ละ Manifest" {
+  :อ่าน Manifest JSON;
+
+  :โหลด External Datasets\n(ถ้ามี .datasets.json);
+
+  :ระบุ Widget Types:\n- textKeys\n- radioKeys\n- dropdownKeys\n- checkboxKeys\n- datePickerKeys\n- timePickerKeys;
+
+  :หา End Button\n(highest SEQUENCE button);
+
+  :หา Expected Keys\n(_expected_success, _expected_fail);
+
+  |PICT Generator|
+  partition "สร้าง PICT Model" {
+    :สร้าง Factors:\n• TEXT/TEXT2/TEXT3... = {valid, invalid}\n• Radio1/Radio2... = {option values}\n• Dropdown = {dropdown values}\n• Checkbox/Checkbox2... = {checked, unchecked}\n• DatePicker = {dates, null}\n• TimePicker = {times, null};
+
+    :เขียน PICT Model Files:\n- <page>.full.model.txt\n- <page>.valid.model.txt;
+
+    :รัน PICT Binary\n(./pict);
+
+    :อ่าน PICT Result:\n- <page>.full.result.txt\n- <page>.valid.result.txt;
+  }
+
+  if (PICT Result พร้อม?) then (yes)
+    :Parse PICT Combinations;
+  else (no)
+    :ใช้ Internal Pairwise\nGenerator (fallback);
+  endif
+
+  partition "สร้าง Test Cases" {
+    :สำหรับแต่ละ Combination:;
+
+    :สร้าง Test Steps:\n1. enterText สำหรับ TEXT factors\n2. tap สำหรับ Radio/Checkbox\n3. tap+tapText สำหรับ Dropdown\n4. tap+selectDate สำหรับ DatePicker\n5. tap+selectTime สำหรับ TimePicker\n6. tap End Button (ถ้ามี);
+
+    :จัดเรียง Steps\nตาม Widget Key Order;
+
+    if (มี invalid data?) then (yes)
+      :กำหนด kind = "failed";
+      :สร้าง Asserts:\n- invalidRuleMessages จาก datasets\n- expected_fail keys;
+    else (no)
+      :กำหนด kind = "success";
+      :สร้าง Asserts:\n- expected_success keys;
+    endif
+
+    :เพิ่ม Test Case\nลง cases[];
+  }
+
+  partition "สร้าง Edge Cases" {
+    :วิเคราะห์ Required Fields\nจาก validatorRules;
+
+    :สร้าง Empty-All-Fields Case:\n- Steps: tap End Button\n- Asserts: Required messages + count;
+
+    :เพิ่ม Edge Case ลง cases[];
+  }
+
+  :รวม Test Plan = \n{source, datasets, cases};
+
+  :คำนวณ Output Path\n= output/test_data/<page>.testdata.json;
+
+  :เขียนไฟล์ JSON;
+
+  :แสดงข้อความสำเร็จ;
+}
+
+:Output: Test Plan Files;
+note right
+  **Output:**
+  output/test_data/*.testdata.json
+
+  **โครงสร้าง:**
+  {
+    "source": {...},
+    "datasets": {...},
+    "cases": [
+      {
+        "tc": "pairwise_valid_invalid_cases_1",
+        "kind": "success|failed",
+        "group": "pairwise_valid_invalid_cases",
+        "steps": [
+          {"enterText": {"byKey": "...", "dataset": "..."}},
+          {"pump": true},
+          {"tap": {"byKey": "..."}},
+          ...
+        ],
+        "asserts": [
+          {"byKey": "...", "exists": true},
+          {"text": "...", "exists": true}
+        ]
+      },
+      ...
+    ]
+  }
+end note
+
+stop
+
+@enduml

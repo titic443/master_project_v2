@@ -1,0 +1,77 @@
+@startuml ป้อนพาธไฟล์ UI
+!theme plain
+
+title แผนภาพกิจกรรม: การป้อนพาธไฟล์ UI\n(Interactive Mode - UI File Input)
+
+|นักทดสอบ|
+|เครื่องมือ|
+
+|นักทดสอบ|
+start
+:ป้อนพาธไฟล์ UI\n(เช่น lib/demos/buttons_page.dart);
+note right
+  ตัวอย่างพาธไฟล์:
+  • lib/demos/buttons_page.dart
+  • lib/pages/login_page.dart
+  • lib/screens/register_page.dart
+end note
+
+|เครื่องมือ|
+:ตรวจสอบความถูกต้อง\nของพาธไฟล์;
+
+if (พาธไฟล์ถูกต้อง?) then (ถูกต้อง)
+  :ค้นหาไฟล์ในระบบไฟล์\n(File.existsSync);
+
+  if (พบไฟล์ในระบบ?) then (พบไฟล์)
+    :สแกน widgets ในไฟล์;
+
+    if (พบ widgets ที่มี key?) then (พบ widgets)
+      |นักทดสอบ|
+      :แสดงพาธไฟล์และ\nดำเนินการต่อขั้นตอนถัดไป;
+      note left
+        ✓ File validated
+        ✓ Found N widgets with keys
+        Proceeding to next step...
+      end note
+    else (ไม่พบ widgets)
+      |นักทดสอบ|
+      :แสดงข้อความแจ้งเตือน\n"No testable widgets found";
+      note left
+        ⚠ Warning:
+        No widgets with keys found
+
+        The file must contain widgets:
+        • TextField, TextFormField
+        • Button, Dropdown, Radio, etc.
+        • With key: Key('xxx')
+
+        Cannot proceed with test generation
+      end note
+      detach
+    endif
+  else (ไม่พบไฟล์)
+    |นักทดสอบ|
+    :แสดงข้อความแจ้งเตือน\n"File not found: (path)";
+    note left
+      ✗ Error:
+      File not found
+
+      Please check:
+      • File path is correct
+      • File exists in project
+    end note
+    detach
+  endif
+else (ไม่ถูกต้อง)
+  |นักทดสอบ|
+  :แสดงข้อความแจ้งเตือน\n"This field is required";
+  note left
+    ✗ This field is required
+    Please enter a valid file path
+  end note
+  detach
+endif
+
+stop
+
+@enduml

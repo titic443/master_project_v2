@@ -1,0 +1,127 @@
+@startuml
+title Activity Diagram 2: การสร้างข้อมูลทดสอบด้วยระบบเอไอ
+skinparam defaultTextAlignment center
+skinparam activityBackgroundColor #E8F5E9
+skinparam activityBorderColor #388E3C
+skinparam decisionBackgroundColor #FFF9C4
+skinparam decisionBorderColor #F57F17
+skinparam swimlaneWidth 350
+
+|ระบบ|
+start
+
+:รับ Input Manifest Path;
+note right
+  **Input:**
+  output/manifest/**/*.manifest.json
+end note
+
+if (มี arguments?) then (yes)
+  :ใช้ไฟล์ที่ระบุ;
+else (no)
+  :Scan output/manifest/\nหาทุกไฟล์ .manifest.json;
+endif
+
+partition "สำหรับแต่ละ Manifest" {
+  :อ่าน Manifest JSON;
+
+  :ตรวจสอบ API Key\n(--api-key > .env > ENV > hardcoded);
+
+  if (พบ API Key?) then (no)
+    if (--local-only mode?) then (yes)
+      :ใช้ Local Generation;
+    else (no)
+      :❌ Error: API Key Required;
+      stop
+    endif
+  else (yes)
+    :✓ API Key พร้อมใช้งาน;
+  endif
+
+  :สแกน TextField/TextFormField\nจาก widgets[];
+
+  if (พบ TextField?) then (no)
+    :⊘ Skip (No text fields);
+    stop
+  else (yes)
+    :แยก Fields:\n- fieldsWithRules\n- fieldsWithoutRules;
+  endif
+
+  partition "ประมวลผล Fields ไม่มี Rules" {
+    :สำหรับแต่ละ field:;
+    :วิเคราะห์ Constraints\n(keyboardType, inputFormatters);
+    :สร้าง 1 valid value\n(Local Generator);
+    :เพิ่มลง byKey[field]\n= {valid: [value], invalid: []};
+  }
+
+  if (มี fieldsWithRules?) then (yes)
+    if (--local-only mode?) then (yes)
+      |Local Generator|
+      :สำหรับแต่ละ field:;
+      :วิเคราะห์ validatorRules;
+      :สร้าง valid/invalid pairs\nตาม rule conditions;
+      :เพิ่มลง byKey[field];
+    else (no)
+      |Gemini API|
+      :สร้าง AI Prompt:\n- Context\n- Objective\n- Execution Steps\n- Style Guidelines;
+      note right
+        **Prompt Structure:**
+        1. วิเคราะห์ constraints
+        2. กรอง isEmpty/null rules
+        3. สร้าง N pairs (N=จำนวน non-empty rules)
+        4. Invalid ต้อง pass inputFormatters
+           แต่ fail validators
+        5. Output: JSON เท่านั้น
+      end note
+
+      :ส่ง HTTP POST\nไปยัง Gemini API;
+
+      if (API Success?) then (yes)
+        :รับ Response JSON;
+        :ลบ markdown code fences;
+        :แปลง JSON String\nเป็น Object;
+        :Normalize ด้วย maxLength;
+        :เพิ่มลง byKey[field];
+      else (no)
+        :❌ Error: Gemini API Failed;
+        stop
+      endif
+    endif
+  endif
+
+  :รวม datasets = {byKey: {...}};
+
+  :คำนวณ Output Path\n= output/test_data/<page>.datasets.json;
+
+  :เขียนไฟล์ JSON;
+
+  :แสดงข้อความสำเร็จ;
+}
+
+:Output: Datasets Files;
+note right
+  **Output:**
+  output/test_data/*.datasets.json
+
+  **โครงสร้าง:**
+  {
+    "file": "lib/...",
+    "datasets": {
+      "byKey": {
+        "1_firstname_textfield": [
+          {
+            "valid": "Alice",
+            "invalid": "A",
+            "invalidRuleMessages": "Min 2 chars"
+          },
+          ...
+        ],
+        "2_email_textfield": [...]
+      }
+    }
+  }
+end note
+
+stop
+
+@enduml

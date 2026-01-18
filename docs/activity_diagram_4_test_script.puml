@@ -1,0 +1,160 @@
+@startuml
+title Activity Diagram 4: การสร้างสคริปต์ทดสอบ
+skinparam defaultTextAlignment center
+skinparam activityBackgroundColor #F3E5F5
+skinparam activityBorderColor #7B1FA2
+skinparam decisionBackgroundColor #FFF9C4
+skinparam decisionBorderColor #F57F17
+skinparam swimlaneWidth 400
+
+|ระบบ|
+start
+
+:รับ Input Test Data Path;
+note right
+  **Input:**
+  output/test_data/*.testdata.json
+end note
+
+if (มี arguments?) then (yes)
+  :ใช้ไฟล์ที่ระบุ;
+else (no)
+  :Scan output/test_data/\nหาทุกไฟล์ .testdata.json;
+endif
+
+partition "สำหรับแต่ละ Test Data" {
+  :อ่าน Test Plan JSON;
+
+  :สกัดข้อมูล:\n- source (file, pageClass, cubitClass)\n- datasets (byKey)\n- cases (steps, asserts);
+
+  :โหลด External Datasets\n(ถ้ามี);
+
+  :สร้าง Code Buffer;
+
+  |Code Generator|
+  partition "สร้าง Header" {
+    :เขียน Imports:\n- flutter/material\n- flutter_test\n- integration_test\n- BlocProvider\n- Page/Cubit/State classes;
+
+    if (มี Cubit Class?) then (yes)
+      :สร้าง Cubit Stubs:\n• _Success<Cubit>\n  - override onEndButton()\n  - emit success response\n• _Fail<Cubit>\n  - override onEndButton()\n  - emit exception;
+    endif
+
+    :สร้าง Helper Function:\n_wrap(child, success, response, failureCode)\n- wrap ด้วย BlocProviders\n- wrap ด้วย MaterialApp;
+  }
+
+  partition "สร้าง Test Groups" {
+    :จัดกลุ่ม Test Cases\nตาม 'group' field;
+
+    :สำหรับแต่ละ Group:;
+
+    :เขียน group('<groupName>', () {;
+
+    partition "สร้าง Test Cases" {
+      :สำหรับแต่ละ Test Case:;
+
+      :เขียน testWidgets('<tc>', ...);
+
+      :สร้าง Widget Wrapper:\nfinal w = _wrap(PageClass(),\n  success: ...,\n  response: ...,\n  failureCode: ...);
+
+      :เขียน pumpWidget(w);
+
+      partition "แปลง Steps เป็น Code" {
+        :สำหรับแต่ละ Step:;
+
+        if (Step type?) then (enterText)
+          :resolve dataset path\nจาก datasets;
+          :เขียน:\nawait tester.enterText(\n  find.byKey(...),\n  '<text>');
+        elseif (tap)
+          :เขียน:\nawait tester.ensureVisible(...)\nawait tester.tap(\n  find.byKey(...));
+        elseif (tapText)
+          :เขียน:\nawait tester.tap(\n  find.text(...));
+        elseif (selectDate)
+          if (action = null?) then (yes)
+            :เขียน Cancel Logic:\ntap('CANCEL')|('Cancel')|('ยกเลิก');
+          else (no)
+            :Parse DD/MM/YYYY;
+            :เขียน Date Selection:\n1. tap year → select year\n2. navigate month\n3. tap day\n4. tap OK;
+          endif
+        elseif (selectTime)
+          if (action = null?) then (yes)
+            :เขียน Cancel Logic;
+          else (no)
+            :Parse HH:MM;
+            :เขียน Time Selection:\n1. tap hour\n2. tap minute\n3. tap OK;
+          endif
+        elseif (pumpAndSettle)
+          :เขียน:\nawait tester.pumpAndSettle();
+        else (pump)
+          :เขียน:\nawait tester.pump();
+        endif
+
+        :เพิ่ม pump() ถ้าจำเป็น;
+      }
+
+      partition "สร้าง Assertions" {
+        :สำหรับแต่ละ Assert:;
+
+        if (Assert type?) then (byKey exists)
+          :เขียน:\nexpect(find.byKey(...),\n  findsOneWidget|findsNothing);
+        elseif (byKey textEquals)
+          :เขียน:\nfinal _tw = tester.widget<Text>(...)\nexpect(_tw.data, '...');
+        elseif (byKey textContains)
+          :เขียน:\nexpect((_tw.data).contains('...'),\n  true);
+        elseif (text exists)
+          :คำนวณ count\nจาก validation rules;
+          :เขียน:\nexpect(find.text('...'),\n  findsOneWidget|findsNWidgets(N));
+        endif
+      }
+
+      :ปิด testWidgets();
+    }
+
+    :ปิด group();
+  }
+
+  :ปิด main();
+
+  :คำนวณ Output Path\n= integration_test/<page>_flow_test.dart;
+
+  :เขียนไฟล์ Dart Code;
+
+  :แสดงข้อความสำเร็จ;
+}
+
+:Output: Integration Test Files;
+note right
+  **Output:**
+  integration_test/*_flow_test.dart
+
+  **โครงสร้าง:**
+  ```dart
+  // Imports
+  import 'package:flutter_test/flutter_test.dart';
+  import '...';
+
+  // Cubit Stubs
+  class _SuccessRegisterCubit extends RegisterCubit {...}
+  class _FailRegisterCubit extends RegisterCubit {...}
+
+  // Helper
+  Widget _wrap(...) {...}
+
+  // Tests
+  void main() {
+    IntegrationTestWidgetsFlutterBinding
+      .ensureInitialized();
+
+    group('page flow', () {
+      group('pairwise_valid_invalid_cases', () {
+        testWidgets('pairwise_..._1', (tester) async {
+          // test code...
+        });
+      });
+    });
+  }
+  ```
+end note
+
+stop
+
+@enduml
