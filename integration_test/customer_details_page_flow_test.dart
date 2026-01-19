@@ -20,13 +20,49 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mr.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        // dataset: byKey.customer_02_firstname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
+        await tester.pump();
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
+        await tester.tap(find.byKey(const Key('customer_08_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('Phone number must be exactly 10 digits'),
+          find.byKey(const Key('customer_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_2', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
+        await tester.pumpWidget(w);
+        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.pump();
+        await tester.tap(find.text('Mr.'));
+        await tester.pump();
+        // dataset: byKey.customer_02_firstname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
+        await tester.pump();
+        // dataset: byKey.customer_03_phone_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
@@ -34,8 +70,11 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -44,7 +83,6 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
           find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
@@ -52,7 +90,7 @@ void main() {
             reason: 'Expected at least one of the elements to exist');
       });
 
-      testWidgets('pairwise_valid_invalid_cases_2', (tester) async {
+      testWidgets('pairwise_valid_invalid_cases_3', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
         ];
@@ -72,11 +110,8 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
@@ -87,46 +122,6 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.byKey(const Key('customer_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_3', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
-        await tester.pumpWidget(w);
-        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Dr.'));
-        await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
-        await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
-        await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
-        await tester.tap(find.byKey(const Key('customer_08_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -142,25 +137,22 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Ms.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        // dataset: byKey.customer_02_firstname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        // dataset: byKey.customer_03_phone_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -168,6 +160,8 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Phone number must be exactly 10 digits'),
           find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
@@ -184,10 +178,10 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Dr.'));
+        await tester.tap(find.text('Ms.'));
         await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        // dataset: byKey.customer_02_firstname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
@@ -195,17 +189,8 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -213,6 +198,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
           find.text('Phone number must be exactly 10 digits'),
           find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
@@ -230,19 +216,25 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Ms.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        // dataset: byKey.customer_03_phone_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -251,6 +243,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -266,54 +259,13 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mr.'));
-        await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
-        await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
-        await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
-        await tester.tap(find.byKey(const Key('customer_08_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('customer_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_8', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
-        await tester.pumpWidget(w);
-        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.pump();
         await tester.tap(find.text('Mrs.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
         await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
+        // dataset: byKey.customer_03_phone_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
         // dataset: byKey.customer_04_lastname_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
@@ -331,8 +283,46 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
           find.text('Last name must contain only letters (minimum 2 characters)'),
+          find.byKey(const Key('customer_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_8', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
+        await tester.pumpWidget(w);
+        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.pump();
+        await tester.tap(find.text('Mr.'));
+        await tester.pump();
+        // dataset: byKey.customer_02_firstname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.pump();
+        // dataset: byKey.customer_03_phone_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
+        await tester.pump();
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
+        await tester.tap(find.byKey(const Key('customer_08_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('Phone number must be exactly 10 digits'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -350,49 +340,6 @@ void main() {
         await tester.pump();
         await tester.tap(find.text('Mr.'));
         await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
-        await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
-        await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
-        await tester.tap(find.byKey(const Key('customer_08_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Phone number must be exactly 10 digits'),
-          find.byKey(const Key('customer_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_10', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
-        await tester.pumpWidget(w);
-        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Ms.'));
-        await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
@@ -408,9 +355,6 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
         await tester.pump();
@@ -425,7 +369,7 @@ void main() {
             reason: 'Expected at least one of the elements to exist');
       });
 
-      testWidgets('pairwise_valid_invalid_cases_11', (tester) async {
+      testWidgets('pairwise_valid_invalid_cases_10', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
         ];
@@ -442,14 +386,14 @@ void main() {
         // dataset: byKey.customer_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '012345678');
         await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -458,7 +402,45 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Phone number must be exactly 10 digits'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
+          find.byKey(const Key('customer_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_11', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
+        await tester.pumpWidget(w);
+        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.pump();
+        await tester.tap(find.text('Dr.'));
+        await tester.pump();
+        // dataset: byKey.customer_02_firstname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
+        await tester.pump();
+        // dataset: byKey.customer_03_phone_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.pump();
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
+        await tester.tap(find.byKey(const Key('customer_08_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('First name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -474,16 +456,57 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Dr.'));
+        await tester.tap(find.text('Ms.'));
         await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'J');
+        // dataset: byKey.customer_02_firstname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
         await tester.pump();
         // dataset: byKey.customer_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
         await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'S');
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
+        await tester.tap(find.byKey(const Key('customer_08_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.byKey(const Key('customer_01_expected_success')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_13', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
+        await tester.pumpWidget(w);
+        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.pump();
+        await tester.tap(find.text('Ms.'));
+        await tester.pump();
+        // dataset: byKey.customer_02_firstname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'A');
+        await tester.pump();
+        // dataset: byKey.customer_03_phone_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.pump();
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
@@ -495,7 +518,6 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('First name must contain only letters (minimum 2 characters)'),
-          find.text('Last name must contain only letters (minimum 2 characters)'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -513,7 +535,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mrs.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
@@ -524,17 +546,11 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -557,45 +573,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Dr.'));
-        await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
-        await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
-        await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
-        await tester.tap(find.byKey(const Key('customer_08_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('customer_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_cases_3', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
-        await tester.pumpWidget(w);
-        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Ms.'));
+        await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
@@ -609,46 +587,8 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
-        await tester.tap(find.byKey(const Key('customer_08_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.byKey(const Key('customer_01_expected_success')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_cases_4', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
-        await tester.pumpWidget(w);
-        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
-        await tester.pump();
-        await tester.tap(find.text('Ms.'));
-        await tester.pump();
-        // dataset: byKey.customer_02_firstname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
-        await tester.pump();
-        // dataset: byKey.customer_03_phone_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
-        await tester.pump();
-        // dataset: byKey.customer_04_lastname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
@@ -665,7 +605,7 @@ void main() {
             reason: 'Expected at least one of the elements to exist');
       });
 
-      testWidgets('pairwise_valid_cases_5', (tester) async {
+      testWidgets('pairwise_valid_cases_3', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
         ];
@@ -691,8 +631,84 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
+        await tester.tap(find.byKey(const Key('customer_08_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.byKey(const Key('customer_01_expected_success')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_cases_4', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
+        await tester.pumpWidget(w);
+        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.pump();
+        await tester.tap(find.text('Mrs.'));
+        await tester.pump();
+        // dataset: byKey.customer_02_firstname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.pump();
+        // dataset: byKey.customer_03_phone_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.pump();
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
+        await tester.tap(find.byKey(const Key('customer_08_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.byKey(const Key('customer_01_expected_success')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_cases_5', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<CustomerCubit>(create: (_)=> CustomerCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: CustomerDetailsPage()));
+        await tester.pumpWidget(w);
+        await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
+        await tester.pump();
+        await tester.tap(find.text('Ms.'));
+        await tester.pump();
+        // dataset: byKey.customer_02_firstname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
+        await tester.pump();
+        // dataset: byKey.customer_03_phone_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_03_phone_textfield')), '0123456789');
+        await tester.pump();
+        // dataset: byKey.customer_04_lastname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -726,14 +742,11 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
@@ -770,17 +783,11 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -814,11 +821,14 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -841,7 +851,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mr.'));
+        await tester.tap(find.text('Ms.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
@@ -855,8 +865,8 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
@@ -893,14 +903,14 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_40_50_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_40_50_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -923,7 +933,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Dr.'));
+        await tester.tap(find.text('Mr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
@@ -934,11 +944,14 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
+        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
+        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));
@@ -961,7 +974,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.tap(find.byKey(const Key('customer_01_title_dropdown')));
         await tester.pump();
-        await tester.tap(find.text('Mr.'));
+        await tester.tap(find.text('Dr.'));
         await tester.pump();
         // dataset: byKey.customer_02_firstname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_02_firstname_textfield')), 'Alice');
@@ -972,17 +985,11 @@ void main() {
         // dataset: byKey.customer_04_lastname_textfield[0].valid
         await tester.enterText(find.byKey(const Key('customer_04_lastname_textfield')), 'Smith');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_05_age_30_40_radio')));
-        await tester.tap(find.byKey(const Key('customer_05_age_30_40_radio')));
+        await tester.ensureVisible(find.byKey(const Key('customer_05_age_10_20_radio')));
+        await tester.tap(find.byKey(const Key('customer_05_age_10_20_radio')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('customer_06_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.tap(find.byKey(const Key('customer_06_agree_terms_formfield')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
-        await tester.tap(find.byKey(const Key('customer_07_subscribe_newsletter_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('customer_08_end_button')));
         await tester.tap(find.byKey(const Key('customer_08_end_button')));

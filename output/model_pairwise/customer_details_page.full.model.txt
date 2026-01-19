@@ -4,5 +4,4 @@ customer_01_title_dropdown: Mr., Mrs., Ms., Dr.
 customer_02_firstname_textfield: valid, invalid
 customer_03_phone_textfield: valid, invalid
 customer_04_lastname_textfield: valid, invalid
-customer_06_agree_terms_formfield: checked, unchecked
 customer_07_subscribe_newsletter_checkbox: checked, unchecked
