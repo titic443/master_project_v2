@@ -318,7 +318,9 @@ FactorExtractionResult extractFactorsFromManifest(List<Map<String, dynamic>> wid
 
     // Checkbox - use actual widget key as factor name
     // Include all checkboxes in PICT model (both required and optional)
-    if ((widgetType == 'Checkbox' || widgetType.startsWith('FormField<bool>')) && key.isNotEmpty) {
+    // NOTE: Skip FormField<bool> as it's a wrapper widget, not an interactive element
+    //       The actual Checkbox inside should be used as the factor instead
+    if (widgetType == 'Checkbox' && key.isNotEmpty) {
       // Use actual widget key as factor name
       factors[key] = ['checked', 'unchecked'];
     }
@@ -357,31 +359,32 @@ FactorExtractionResult extractFactorsFromManifest(List<Map<String, dynamic>> wid
       }
     }
 
-    // Continue with original Checkbox logic for required detection
-    if ((widgetType == 'Checkbox' || widgetType.startsWith('FormField<bool>')) && key.isNotEmpty) {
-      // (Duplicate assignment to factors[key] removed above, keeping detection logic)
+    // Detect required checkboxes from FormField<bool> validators
+    // NOTE: FormField<bool> is NOT added as a factor (it's a wrapper widget)
+    //       But we still need to detect if it has a "required" validator
+    //       to mark the inner Checkbox as required
+    if (widgetType.startsWith('FormField<bool>') && key.isNotEmpty) {
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
 
-      // Detect if this checkbox is required by checking validatorRules
-      if (widgetType.startsWith('FormField<bool>')) {
-        final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
-        final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
-
-        for (final rule in rules) {
-          if (rule is Map) {
-            final condition = rule['condition']?.toString() ?? '';
-            // Check if condition requires value to be true
-            // Pattern: "value == null || !value" means checkbox must be checked
-            final normalized = condition.toLowerCase().replaceAll(' ', '');
-            if (normalized.contains('!value') ||
-                normalized.contains('value==false') ||
-                (normalized.contains('value==null') && normalized.contains('||!value'))) {
-              requiredCheckboxes.add(key);
-              break;
-            }
+      for (final rule in rules) {
+        if (rule is Map) {
+          final condition = rule['condition']?.toString() ?? '';
+          // Check if condition requires value to be true
+          // Pattern: "value == null || !value" means checkbox must be checked
+          final normalized = condition.toLowerCase().replaceAll(' ', '');
+          if (normalized.contains('!value') ||
+              normalized.contains('value==false') ||
+              (normalized.contains('value==null') && normalized.contains('||!value'))) {
+            // Find the associated Checkbox key by replacing _formfield with _checkbox
+            // Example: customer_06_agree_terms_formfield -> customer_06_agree_terms_checkbox
+            final checkboxKey = key.replaceAll('_formfield', '_checkbox');
+            requiredCheckboxes.add(checkboxKey);
+            break;
           }
         }
       }
-      continue;
+      continue; // Skip adding FormField<bool> as a factor
     }
   }
 

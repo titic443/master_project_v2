@@ -26,17 +26,13 @@ partition "สำหรับแต่ละ Manifest" {
   :อ่าน Manifest JSON;
 
   :ตรวจสอบ API Key\n(--api-key > .env > ENV > hardcoded);
-
-  if (พบ API Key?) then (no)
-    if (--local-only mode?) then (yes)
-      :ใช้ Local Generation;
-    else (no)
-      :❌ Error: API Key Required;
-      stop
-    endif
-  else (yes)
-    :✓ API Key พร้อมใช้งาน;
-  endif
+  note right
+    **API Key Priority:**
+    1. --api-key flag
+    2. .env file
+    3. Environment variable
+    4. Hardcoded constant
+  end note
 
   :สแกน TextField/TextFormField\nจาก widgets[];
 
@@ -44,79 +40,113 @@ partition "สำหรับแต่ละ Manifest" {
     :⊘ Skip (No text fields);
     stop
   else (yes)
-    :แยก Fields:\n- fieldsWithRules\n- fieldsWithoutRules;
+    :รวม ALL fields\n(ทั้ง with/without rules);
   endif
 
-  partition "ประมวลผล Fields ไม่มี Rules" {
-    :สำหรับแต่ละ field:;
-    :วิเคราะห์ Constraints\n(keyboardType, inputFormatters);
-    :สร้าง 1 valid value\n(Local Generator);
-    :เพิ่มลง byKey[field]\n= {valid: [value], invalid: []};
-  }
+  :เช็ค API Key (บังคับ);
+  note right
+    **CRITICAL:**
+    ทุก TextField ต้องใช้ AI
+    ไม่มี local generation
+  end note
 
-  if (มี fieldsWithRules?) then (yes)
-    if (--local-only mode?) then (yes)
-      |Local Generator|
-      :สำหรับแต่ละ field:;
-      :วิเคราะห์ validatorRules;
-      :สร้าง valid/invalid pairs\nตาม rule conditions;
-      :เพิ่มลง byKey[field];
+  if (มี API Key?) then (no)
+    :❌ Error: GEMINI_API_KEY Required;
+    stop
+  else (yes)
+    |Gemini API|
+    :สร้าง AI Prompt:\n- Fields WITHOUT rules: สร้าง valid เท่านั้น\n- Fields WITH rules: สร้าง valid/invalid pairs;
+    note right
+      **Prompt Structure:**
+
+      **For fields WITHOUT validatorRules:**
+      - สร้าง 1 realistic valid value
+      - invalid = empty string
+      - invalidRuleMessages = empty string
+
+      **For fields WITH validatorRules:**
+      1. วิเคราะห์ constraints
+      2. กรอง isEmpty/null rules
+      3. สร้าง N pairs (N=จำนวน non-empty rules)
+      4. Invalid ต้อง pass inputFormatters
+         แต่ fail validators
+      5. Output: JSON เท่านั้น
+    end note
+
+    :ส่ง HTTP POST\nไปยัง Gemini API;
+
+    if (API Success?) then (yes)
+      :รับ Response JSON;
+      :ลบ markdown code fences;
+      :แปลง JSON String\nเป็น Object;
+      :Normalize ด้วย maxLength;
+      :สร้าง byKey datasets;
     else (no)
-      |Gemini API|
-      :สร้าง AI Prompt:\n- Context\n- Objective\n- Execution Steps\n- Style Guidelines;
-      note right
-        **Prompt Structure:**
-        1. วิเคราะห์ constraints
-        2. กรอง isEmpty/null rules
-        3. สร้าง N pairs (N=จำนวน non-empty rules)
-        4. Invalid ต้อง pass inputFormatters
-           แต่ fail validators
-        5. Output: JSON เท่านั้น
-      end note
-
-      :ส่ง HTTP POST\nไปยัง Gemini API;
-
-      if (API Success?) then (yes)
-        :รับ Response JSON;
-        :ลบ markdown code fences;
-        :แปลง JSON String\nเป็น Object;
-        :Normalize ด้วย maxLength;
-        :เพิ่มลง byKey[field];
-      else (no)
-        :❌ Error: Gemini API Failed;
-        stop
-      endif
+      :❌ Error: Gemini API Failed;
+      stop
     endif
   endif
 
-  :รวม datasets = {byKey: {...}};
+  :สร้าง Output JSON\n= {file, datasets};
+  note right
+    **โครงสร้าง:**
+    {
+      "file": "lib/demos/xxx_page.dart",
+      "datasets": {
+        "byKey": {
+          "<key>": [
+            {
+              "valid": "...",
+              "invalid": "...",
+              "invalidRuleMessages": "..."
+            }
+          ]
+        }
+      }
+    }
+  end note
 
   :คำนวณ Output Path\n= output/test_data/<page>.datasets.json;
 
   :เขียนไฟล์ JSON;
 
-  :แสดงข้อความสำเร็จ;
+  :แสดงข้อความสำเร็จ\n"✓ Generated: <path>";
 }
 
 :Output: Datasets Files;
 note right
-  **Output:**
+  **Output Path:**
   output/test_data/*.datasets.json
 
-  **โครงสร้าง:**
+  **Format (Array of Objects):**
+  - ALL fields ใช้รูปแบบเดียวกัน: array of objects
+  - fieldsWithoutRules: [{"valid":"...", "invalid":"", "invalidRuleMessages":""}]
+  - fieldsWithRules: [{"valid":"...", "invalid":"...", "invalidRuleMessages":"..."}]
+
+  **Example:**
   {
-    "file": "lib/...",
+    "file": "lib/demos/customer_details_page.dart",
     "datasets": {
       "byKey": {
-        "1_firstname_textfield": [
+        "comment_textfield": [
+          {
+            "valid": "This is a sample comment",
+            "invalid": "",
+            "invalidRuleMessages": ""
+          }
+        ],
+        "customer_02_firstname_textfield": [
           {
             "valid": "Alice",
             "invalid": "A",
             "invalidRuleMessages": "Min 2 chars"
           },
-          ...
-        ],
-        "2_email_textfield": [...]
+          {
+            "valid": "Bob",
+            "invalid": "B@",
+            "invalidRuleMessages": "Letters only"
+          }
+        ]
       }
     }
   }

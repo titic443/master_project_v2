@@ -287,7 +287,8 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
       textKeys.add(k);
     } else if (t.startsWith('Radio') && k.isNotEmpty) {
       radioKeys.add(k);
-    } else if ((t.startsWith('Checkbox') || t == 'CheckboxListTile' || t.startsWith('FormField<bool>')) && k.isNotEmpty) {
+    } else if ((t.startsWith('Checkbox') || t == 'CheckboxListTile') && k.isNotEmpty) {
+      // NOTE: Skip FormField<bool> as it's a wrapper widget, not an interactive element
       checkboxKeys.add(k);
     } else if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty && k != endKey) {
       // Exclude the end button (highest sequence button) from primary buttons
@@ -308,6 +309,36 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
     final k = (w['key'] ?? '').toString();
     final isOption = (k.endsWith('_radio') || k.contains('_yes_radio') || k.contains('_no_radio')) && !k.contains('_radio_group');
     if (isOption && !radioKeys.contains(k)) radioKeys.add(k);
+  }
+
+  // Detect required checkboxes from FormField<bool> validators
+  // A checkbox is required if its FormField wrapper has a validator that checks for true
+  final requiredCheckboxKeys = <String>{};
+  for (final w in widgets) {
+    final t = (w['widgetType'] ?? '').toString();
+    final k = (w['key'] ?? '').toString();
+
+    if (t.startsWith('FormField<bool>') && k.isNotEmpty) {
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+
+      for (final rule in rules) {
+        if (rule is Map) {
+          final condition = rule['condition']?.toString() ?? '';
+          // Check if condition requires value to be true
+          // Pattern: "value == null || !value" means checkbox must be checked
+          final normalized = condition.toLowerCase().replaceAll(' ', '');
+          if (normalized.contains('!value') ||
+              normalized.contains('value==false') ||
+              (normalized.contains('value==null') && normalized.contains('||!value'))) {
+            // Find the associated Checkbox key by replacing _formfield with _checkbox
+            final checkboxKey = k.replaceAll('_formfield', '_checkbox');
+            requiredCheckboxKeys.add(checkboxKey);
+            break;
+          }
+        }
+      }
+    }
   }
 
   // Detect dropdowns and their display items (support multiple dropdowns)
@@ -878,6 +909,9 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'tap': {'byKey': factorName}},
                 {'pump': true}
               ];
+            } else if (pick == 'unchecked' && requiredCheckboxKeys.contains(factorName)) {
+              // Required checkbox is unchecked = invalid form state
+              hasInvalidData = true;
             }
           } else if (factorType == 'switch') {
             // Switch widget - tap only if 'on', skip if 'off' (default state)
