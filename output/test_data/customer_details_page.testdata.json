@@ -1,6 +1,6 @@
 {
   "source": {
-    "file": "/Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/lib/demos/customer_details_page.dart",
+    "file": "lib/demos/customer_details_page.dart",
     "pageClass": "CustomerDetailsPage",
     "cubitClass": "CustomerCubit",
     "stateClass": "CustomerState",
@@ -110,6 +110,10 @@
       "asserts": [
         {
           "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
           "exists": true
         },
         {
@@ -285,6 +289,10 @@
       ],
       "asserts": [
         {
+          "text": "You must agree to terms",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -454,6 +462,10 @@
         },
         {
           "text": "Last name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
           "exists": true
         },
         {
@@ -719,6 +731,10 @@
           "exists": true
         },
         {
+          "text": "You must agree to terms",
+          "exists": true
+        },
+        {
           "byKey": "customer_01_expected_fail",
           "exists": true
         }
@@ -884,6 +900,10 @@
       "asserts": [
         {
           "text": "Phone number must be exactly 10 digits",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
           "exists": true
         },
         {
@@ -1126,6 +1146,10 @@
       "asserts": [
         {
           "text": "First name must contain only letters (minimum 2 characters)",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
           "exists": true
         },
         {

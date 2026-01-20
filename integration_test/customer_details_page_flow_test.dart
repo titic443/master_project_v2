@@ -41,6 +41,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Phone number must be exactly 10 digits'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -122,6 +123,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('You must agree to terms'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -201,6 +203,7 @@ void main() {
           find.text('First name must contain only letters (minimum 2 characters)'),
           find.text('Phone number must be exactly 10 digits'),
           find.text('Last name must contain only letters (minimum 2 characters)'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -323,6 +326,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Phone number must be exactly 10 digits'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -402,6 +406,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Phone number must be exactly 10 digits'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -518,6 +523,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('First name must contain only letters (minimum 2 characters)'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('customer_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,

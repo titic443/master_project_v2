@@ -313,7 +313,8 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
 
   // Detect required checkboxes from FormField<bool> validators
   // A checkbox is required if its FormField wrapper has a validator that checks for true
-  final requiredCheckboxKeys = <String>{};
+  // Map: checkbox key -> validation message
+  final requiredCheckboxValidation = <String, String>{};
   for (final w in widgets) {
     final t = (w['widgetType'] ?? '').toString();
     final k = (w['key'] ?? '').toString();
@@ -325,6 +326,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
       for (final rule in rules) {
         if (rule is Map) {
           final condition = rule['condition']?.toString() ?? '';
+          final message = rule['message']?.toString() ?? '';
           // Check if condition requires value to be true
           // Pattern: "value == null || !value" means checkbox must be checked
           final normalized = condition.toLowerCase().replaceAll(' ', '');
@@ -333,7 +335,7 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
               (normalized.contains('value==null') && normalized.contains('||!value'))) {
             // Find the associated Checkbox key by replacing _formfield with _checkbox
             final checkboxKey = k.replaceAll('_formfield', '_checkbox');
-            requiredCheckboxKeys.add(checkboxKey);
+            requiredCheckboxValidation[checkboxKey] = message;
             break;
           }
         }
@@ -843,6 +845,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
       // Track if any field uses invalid data to determine test case kind
       bool hasInvalidData = false;
       final invalidFields = <String>[]; // Track which fields have invalid data
+      final uncheckedRequiredCheckboxes = <String>[]; // Track unchecked required checkboxes
 
       // Process factors in PICT header order (if using external combos)
       if (usingExternalCombos) {
@@ -909,9 +912,10 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'tap': {'byKey': factorName}},
                 {'pump': true}
               ];
-            } else if (pick == 'unchecked' && requiredCheckboxKeys.contains(factorName)) {
+            } else if (pick == 'unchecked' && requiredCheckboxValidation.containsKey(factorName)) {
               // Required checkbox is unchecked = invalid form state
               hasInvalidData = true;
+              uncheckedRequiredCheckboxes.add(factorName);
             }
           } else if (factorType == 'switch') {
             // Switch widget - tap only if 'on', skip if 'off' (default state)
@@ -1111,6 +1115,14 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 asserts.add({'text': invalidRuleMsg, 'exists': true});
               }
             }
+          }
+        }
+
+        // Add validation messages for unchecked required checkboxes
+        for (final checkboxKey in uncheckedRequiredCheckboxes) {
+          final validationMsg = requiredCheckboxValidation[checkboxKey];
+          if (validationMsg != null && validationMsg.isNotEmpty) {
+            asserts.add({'text': validationMsg, 'exists': true});
           }
         }
 
