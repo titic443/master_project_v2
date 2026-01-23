@@ -172,29 +172,16 @@ flutter test integration_test/ -d <device-id>
 
 ## Test Coverage
 
-### รันเทสต์พร้อม Coverage
+ดูรายละเอียดเพิ่มเติมที่ [read_first/TEST_COVERAGE.md](read_first/TEST_COVERAGE.md)
+
+### Quick Start
 
 ```sh
-# Integration tests พร้อม coverage
+# รัน tests พร้อม coverage
 flutter test integration_test/ --coverage
 
-# สร้าง HTML coverage report
-brew install lcov  # ติดตั้ง lcov ก่อน
-genhtml coverage/lcov.info -o coverage/html
-open coverage/html/index.html
-```
-
-### ดู Coverage แบบ CLI
-
-```sh
-# Coverage summary
-flutter test --coverage && lcov --summary coverage/lcov.info
-
-# Coverage ต่อไฟล์
-flutter test --coverage && lcov --list coverage/lcov.info
-
-# กรองเฉพาะ lib/
-flutter test --coverage && lcov --list coverage/lcov.info | grep "lib/"
+# สร้าง HTML report
+genhtml coverage/lcov.info -o coverage/html && open coverage/html/index.html
 ```
 
 ## Test Plan Structure
