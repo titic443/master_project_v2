@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Test Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Flutter Test Generator</h1>
+            <p class="subtitle">Generate widget tests using pairwise combinatorial testing</p>
+        </header>
+
+        <main>
+            <!-- Step 1: UI File Selection -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">1</span>
+                    <h2>Select UI File</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="uiFile" placeholder="lib/demos/customer_details_page.dart">
+                    <button type="button" id="scanBtn" class="btn-secondary">Scan Widgets</button>
+                </div>
+                <div id="widgetInfo" class="info-box hidden">
+                    <span class="icon">&#10003;</span>
+                    <span id="widgetCount"></span>
+                </div>
+                <div class="file-list-section">
+                    <button type="button" id="showFilesBtn" class="btn-link">Show available files</button>
+                    <div id="fileList" class="file-list hidden"></div>
+                </div>
+            </section>
+
+            <!-- Step 2: Options -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">2</span>
+                    <h2>Options</h2>
+                </div>
+
+                <div class="options-grid">
+                    <div class="option-card">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="skipDatasets">
+                            <label for="skipDatasets">Skip AI Dataset Generation</label>
+                        </div>
+                        <p class="option-desc">Skip generating test datasets using Gemini AI</p>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="runTests">
+                            <label for="runTests">Run Tests After Generation</label>
+                        </div>
+                        <p class="option-desc">Automatically run flutter test after generating</p>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="withCoverage">
+                            <label for="withCoverage">Generate Coverage Report</label>
+                        </div>
+                        <p class="option-desc">Run tests with --coverage flag</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Generate -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">3</span>
+                    <h2>Generate Tests</h2>
+                </div>
+                <div class="button-group">
+                    <button type="button" id="generateBtn" class="btn-primary btn-large" disabled>
+                        <span class="btn-icon">&#9654;</span>
+                        <span class="btn-text">Generate Tests</span>
+                    </button>
+                    <button type="button" id="generateAllBtn" class="btn-secondary btn-large">
+                        <span class="btn-icon">&#9776;</span>
+                        <span class="btn-text">Generate All</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Progress -->
+            <section id="progressSection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Progress</h2>
+                </div>
+                <div class="progress-list">
+                    <div class="progress-item" data-step="1">
+                        <span class="progress-icon">&#9675;</span>
+                        <span class="progress-label">Extract UI manifest</span>
+                        <span class="progress-status"></span>
+                    </div>
+                    <div class="progress-item" data-step="2">
+                        <span class="progress-icon">&#9675;</span>
+                        <span class="progress-label">Generate datasets (AI)</span>
+                        <span class="progress-status"></span>
+                    </div>
+                    <div class="progress-item" data-step="3">
+                        <span class="progress-icon">&#9675;</span>
+                        <span class="progress-label">Generate test plan (PICT)</span>
+                        <span class="progress-status"></span>
+                    </div>
+                    <div class="progress-item" data-step="4">
+                        <span class="progress-icon">&#9675;</span>
+                        <span class="progress-label">Generate test script</span>
+                        <span class="progress-status"></span>
+                    </div>
+                    <div class="progress-item" data-step="5">
+                        <span class="progress-icon">&#9675;</span>
+                        <span class="progress-label">Run tests</span>
+                        <span class="progress-status"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Log -->
+            <section id="outputSection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Output</h2>
+                    <button type="button" id="clearLogBtn" class="btn-link">Clear</button>
+                </div>
+                <div id="outputLog" class="output-box"></div>
+            </section>
+
+            <!-- Results -->
+            <section id="resultsSection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Results</h2>
+                </div>
+                <div class="results-grid">
+                    <div class="result-card" id="manifestResult">
+                        <h3>Manifest</h3>
+                        <p class="result-path"></p>
+                    </div>
+                    <div class="result-card" id="datasetsResult">
+                        <h3>Datasets</h3>
+                        <p class="result-path"></p>
+                    </div>
+                    <div class="result-card" id="testDataResult">
+                        <h3>Test Plan</h3>
+                        <p class="result-path"></p>
+                    </div>
+                    <div class="result-card" id="testScriptResult">
+                        <h3>Test Script</h3>
+                        <p class="result-path"></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Powered by PICT (Pairwise Independent Combinatorial Testing)</p>
+            <p class="version">v1.0.0</p>
+        </footer>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
