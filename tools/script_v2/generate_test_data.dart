@@ -26,6 +26,9 @@ Future<String> generateTestDataFromManifest(
   String pictBin = './pict',
   String? constraints,
 }) async {
+  // DEBUG: Check if constraints are passed (uncomment for debugging)
+  // stderr.writeln('[DEBUG] generateTestDataFromManifest - constraints: ${constraints == null ? "NULL" : "\"${constraints.substring(0, constraints.length.clamp(0, 50))}...\""}');
+
   // Read manifest to get UI file path (same logic as _processOne)
   final raw = File(manifestPath).readAsStringSync();
   final j = jsonDecode(raw) as Map<String, dynamic>;

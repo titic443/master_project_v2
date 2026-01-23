@@ -190,6 +190,9 @@ Future<CLIOptions> _runInteractiveMode() async {
     defaultValue: false,
   );
   options.useConstraints = useConstraints;
+  // DEBUG: Uncomment for debugging interactive mode
+  // stderr.writeln('[DEBUG-interactive] useConstraints from prompt: $useConstraints');
+  // stderr.writeln('[DEBUG-interactive] options.useConstraints after set: ${options.useConstraints}');
 
   if (useConstraints) {
     // Question 4: Constraints source
@@ -208,6 +211,7 @@ Future<CLIOptions> _runInteractiveMode() async {
         'Constraints file path',
         defaultValue: suggestedPath,
       );
+      // stderr.writeln('[DEBUG-interactive] options.constraintsFile set to: ${options.constraintsFile}');
 
       // Validate file exists
       if (!File(options.constraintsFile!).existsSync()) {
@@ -265,6 +269,14 @@ Future<CLIOptions> _runInteractiveMode() async {
   if (!confirm) {
     throw Exception('User cancelled');
   }
+
+  // DEBUG: Print final options before returning (uncomment for debugging)
+  // stderr.writeln('[DEBUG-interactive] === Final options before return ===');
+  // stderr.writeln('[DEBUG-interactive] inputFile: ${options.inputFile}');
+  // stderr.writeln('[DEBUG-interactive] useConstraints: ${options.useConstraints}');
+  // stderr.writeln('[DEBUG-interactive] constraintsFile: ${options.constraintsFile}');
+  // stderr.writeln('[DEBUG-interactive] constraintsContent: ${options.constraintsContent}');
+  // stderr.writeln('[DEBUG-interactive] ================================');
 
   return options;
 }
@@ -423,15 +435,22 @@ Future<void> _runPipeline(String inputFile, CLIOptions options) async {
 
   // Step 3: Prepare constraints if specified
   String? constraintsContent;
+  // DEBUG: Check options (uncomment for debugging)
+  // stderr.writeln('[DEBUG] options.useConstraints: ${options.useConstraints}');
+  // stderr.writeln('[DEBUG] options.constraintsFile: ${options.constraintsFile}');
+  // stderr.writeln('[DEBUG] options.constraintsContent: ${options.constraintsContent}');
+
   if (options.useConstraints) {
     if (options.constraintsFile != null) {
       // Load from file
       final file = File(options.constraintsFile!);
+      // stderr.writeln('[DEBUG] Constraints file exists: ${file.existsSync()}');
       if (!file.existsSync()) {
         stderr.writeln('Warning: Constraints file not found: ${options.constraintsFile}');
         stderr.writeln('         Continuing without constraints...');
       } else {
         constraintsContent = file.readAsStringSync();
+        // stderr.writeln('[DEBUG] Loaded constraintsContent: "${constraintsContent.substring(0, constraintsContent.length.clamp(0, 50))}..."');
         if (options.verbose) {
           stdout.writeln('  → Loaded constraints from: ${options.constraintsFile}');
         }
@@ -444,6 +463,7 @@ Future<void> _runPipeline(String inputFile, CLIOptions options) async {
       }
     }
   }
+  // stderr.writeln('[DEBUG] Final constraintsContent: ${constraintsContent == null ? "NULL" : "\"${constraintsContent.substring(0, constraintsContent.length.clamp(0, 50))}...\""}');
 
   // Step 3: Generate test data
   _logStep(3, 'Generating test plan (PICT)', options);

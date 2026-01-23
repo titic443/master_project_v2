@@ -39,6 +39,9 @@ import 'utils.dart' as utils;
 /// IF [Type] = "RAID-5" THEN [Compression] = "Off";
 /// ```
 String generatePictModel(Map<String, List<String>> factors, {String? constraints}) {
+  // DEBUG: Check constraints parameter (uncomment for debugging)
+  // stderr.writeln('[DEBUG] generatePictModel - constraints: ${constraints == null ? "NULL" : "\"${constraints.trim()}\""}');
+
   final buffer = StringBuffer();
   for (final entry in factors.entries) {
     buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
