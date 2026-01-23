@@ -1,0 +1,102 @@
+{
+  "name": "flutter-test-generator",
+  "displayName": "Flutter Test Generator",
+  "description": "Generate Flutter widget tests using pairwise combinatorial testing with PICT constraints",
+  "version": "0.1.0",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "flutter",
+    "dart",
+    "testing",
+    "pairwise",
+    "pict",
+    "test generation"
+  ],
+  "activationEvents": [
+    "onLanguage:dart",
+    "workspaceContains:**/*.dart"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "flutterTestGenerator.openPanel",
+        "title": "Flutter Test Generator: Open Panel",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "flutterTestGenerator.generateFromFile",
+        "title": "Flutter Test Generator: Generate Tests from This File"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "flutterTestGenerator.generateFromFile",
+          "when": "resourceExtname == .dart && resourcePath =~ /lib/",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "flutterTestGenerator.generateFromFile",
+          "when": "resourceExtname == .dart && resourcePath =~ /lib/",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "flutterTestGenerator.openPanel",
+          "when": "resourceExtname == .dart",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Flutter Test Generator",
+      "properties": {
+        "flutterTestGenerator.pictBinaryPath": {
+          "type": "string",
+          "default": "./pict",
+          "description": "Path to PICT binary"
+        },
+        "flutterTestGenerator.geminiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Gemini API key for AI dataset generation"
+        },
+        "flutterTestGenerator.defaultSkipDatasets": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip AI dataset generation by default"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
