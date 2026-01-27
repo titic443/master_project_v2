@@ -16,6 +16,9 @@ const outputSection = document.getElementById('outputSection');
 const outputLog = document.getElementById('outputLog');
 const clearLogBtn = document.getElementById('clearLogBtn');
 const resultsSection = document.getElementById('resultsSection');
+const coverageSection = document.getElementById('coverageSection');
+const viewCoverageBtn = document.getElementById('viewCoverageBtn');
+const openCoverageFolderBtn = document.getElementById('openCoverageFolderBtn');
 
 // State
 let isGenerating = false;
@@ -34,6 +37,8 @@ function setupEventListeners() {
     runTestBtn.addEventListener('click', runAutomateTest);
     runCoverageBtn.addEventListener('click', runCoverageTest);
     clearLogBtn.addEventListener('click', clearLog);
+    viewCoverageBtn.addEventListener('click', viewCoverageReport);
+    openCoverageFolderBtn.addEventListener('click', openCoverageFolder);
 }
 
 // Check if File System Access API is available
@@ -285,9 +290,11 @@ async function runCoverageTest() {
     updateButtonStates();
     progressSection.classList.remove('hidden');
     outputSection.classList.remove('hidden');
+    coverageSection.classList.add('hidden');
     clearLog();
 
     log('=== Running Coverage Test ===\n', 'info');
+    log('Step 1: Running flutter test with --coverage...', 'info');
     updateProgress(5, 'running', 'Running tests with coverage...');
 
     try {
@@ -299,8 +306,19 @@ async function runCoverageTest() {
         if (testResult.success) {
             updateProgress(5, 'complete', `${testResult.passed} passed + coverage`);
             log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
-            log('Coverage report generated in coverage/ directory', 'success');
-            log('\n=== Coverage test completed! ===', 'success');
+
+            // Check if HTML coverage was generated
+            if (testResult.coverageHtmlPath) {
+                log('\nStep 2: Generated HTML coverage report', 'success');
+                log(`Coverage HTML: ${testResult.coverageHtmlPath}`, 'success');
+                log('\n=== Coverage test completed! ===', 'success');
+
+                // Show coverage section
+                showCoverageSection(testResult.passed, testResult.failed, testResult.coverageHtmlPath);
+            } else {
+                log('\nWarning: Could not generate HTML coverage report', 'error');
+                log('Make sure genhtml (lcov) is installed: brew install lcov', 'info');
+            }
         } else {
             updateProgress(5, 'error', testResult.error);
             log(`Tests failed: ${testResult.error}`, 'error');
@@ -316,6 +334,60 @@ async function runCoverageTest() {
     } finally {
         isGenerating = false;
         updateButtonStates();
+    }
+}
+
+// Show coverage section with results
+function showCoverageSection(passed, failed, htmlPath) {
+    coverageSection.classList.remove('hidden');
+    const summary = document.getElementById('coverageSummary');
+    summary.textContent = `Coverage report generated! (${passed} passed, ${failed} failed)`;
+
+    // Update coverage path display
+    const pathEl = document.querySelector('.coverage-path');
+    if (pathEl && htmlPath) {
+        pathEl.textContent = htmlPath;
+    }
+}
+
+// View coverage report in browser
+async function viewCoverageReport() {
+    try {
+        // Open coverage report via server
+        const response = await fetch(`${API_BASE}/open-coverage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'view' })
+        });
+
+        const data = await response.json();
+        if (data.success && data.url) {
+            window.open(data.url, '_blank');
+        } else {
+            // Fallback: open local file
+            window.open(`${API_BASE}/coverage/index.html`, '_blank');
+        }
+    } catch (error) {
+        // Fallback: try to open via server
+        window.open(`${API_BASE}/coverage/index.html`, '_blank');
+    }
+}
+
+// Open coverage folder in file explorer
+async function openCoverageFolder() {
+    try {
+        const response = await fetch(`${API_BASE}/open-coverage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'folder' })
+        });
+
+        const data = await response.json();
+        if (!data.success) {
+            log('Could not open coverage folder', 'error');
+        }
+    } catch (error) {
+        log(`Error: ${error.message}`, 'error');
     }
 }
 

@@ -71,7 +71,15 @@ Future<void> handleRequest(HttpRequest request) async {
     case '/generate-all':
       await handleGenerateAll(request);
       break;
+    case '/open-coverage':
+      await handleOpenCoverage(request);
+      break;
     default:
+      // Serve coverage files
+      if (path.startsWith('/coverage/')) {
+        await serveCoverageFile(request);
+        return;
+      }
       // Serve static files
       await serveStaticFile(request);
   }
@@ -377,11 +385,13 @@ Future<void> handleRunTests(HttpRequest request) async {
     return;
   }
 
+  // Step 1: Run flutter test
   final args = ['test', testScript];
   if (withCoverage) {
     args.add('--coverage');
   }
 
+  print('  > flutter ${args.join(' ')}');
   final result = await Process.run('flutter', args);
 
   // Parse test results
@@ -389,12 +399,56 @@ Future<void> handleRunTests(HttpRequest request) async {
   final passedMatch = RegExp(r'(\d+) tests? passed').firstMatch(output);
   final failedMatch = RegExp(r'(\d+) tests? failed').firstMatch(output);
 
+  String? coverageHtmlPath;
+  String coverageOutput = '';
+
+  // Step 2: Generate HTML coverage report (if coverage enabled)
+  if (withCoverage) {
+    print('  > Checking coverage/lcov.info...');
+    final lcovFile = File('coverage/lcov.info');
+
+    if (await lcovFile.exists()) {
+      print('  ✓ Found lcov.info');
+
+      // Run genhtml to generate HTML report
+      print('  > genhtml coverage/lcov.info -o coverage/html');
+      final genHtmlResult = await Process.run(
+        'genhtml',
+        ['coverage/lcov.info', '-o', 'coverage/html'],
+      );
+
+      if (genHtmlResult.exitCode == 0) {
+        coverageHtmlPath = 'coverage/html/index.html';
+        coverageOutput = genHtmlResult.stdout.toString();
+        print('  ✓ Coverage HTML generated: $coverageHtmlPath');
+
+        // Step 3: Open coverage report in browser
+        print('  > open coverage/html/index.html');
+        if (Platform.isMacOS) {
+          await Process.run('open', ['coverage/html/index.html']);
+        } else if (Platform.isWindows) {
+          await Process.run('start', ['coverage/html/index.html'], runInShell: true);
+        } else if (Platform.isLinux) {
+          await Process.run('xdg-open', ['coverage/html/index.html']);
+        }
+        print('  ✓ Opened coverage report in browser');
+      } else {
+        coverageOutput = 'genhtml failed: ${genHtmlResult.stderr}';
+        print('  ✗ genhtml failed: ${genHtmlResult.stderr}');
+      }
+    } else {
+      print('  ✗ lcov.info not found - coverage may not have been generated');
+    }
+  }
+
   request.response.write(jsonEncode({
     'success': result.exitCode == 0,
     'passed': passedMatch != null ? int.parse(passedMatch.group(1)!) : 0,
     'failed': failedMatch != null ? int.parse(failedMatch.group(1)!) : 0,
     'output': output,
     'error': result.stderr.toString(),
+    'coverageHtmlPath': coverageHtmlPath,
+    'coverageOutput': coverageOutput,
   }));
 
   await request.response.close();
@@ -476,6 +530,74 @@ Future<void> handleGenerateAll(HttpRequest request) async {
   }));
 
   await request.response.close();
+}
+
+/// Open coverage report or folder
+Future<void> handleOpenCoverage(HttpRequest request) async {
+  final body = await readBody(request);
+  final action = body['action'] as String? ?? 'view';
+
+  final coveragePath = 'coverage/html/index.html';
+  final coverageFile = File(coveragePath);
+
+  if (!await coverageFile.exists()) {
+    request.response.write(jsonEncode({
+      'success': false,
+      'error': 'Coverage report not found. Run coverage test first.',
+    }));
+    await request.response.close();
+    return;
+  }
+
+  if (action == 'folder') {
+    // Open coverage folder in file explorer
+    final coverageDir = Directory('coverage/html').absolute.path;
+    if (Platform.isMacOS) {
+      await Process.run('open', [coverageDir]);
+    } else if (Platform.isWindows) {
+      await Process.run('explorer', [coverageDir]);
+    } else if (Platform.isLinux) {
+      await Process.run('xdg-open', [coverageDir]);
+    }
+    request.response.write(jsonEncode({'success': true}));
+  } else {
+    // Return URL to view coverage
+    request.response.write(jsonEncode({
+      'success': true,
+      'url': 'http://localhost:8080/coverage/index.html',
+      'path': coveragePath,
+    }));
+  }
+
+  await request.response.close();
+}
+
+/// Serve coverage HTML files
+Future<void> serveCoverageFile(HttpRequest request) async {
+  var path = request.uri.path;
+  // /coverage/index.html -> coverage/html/index.html
+  final filePath = path.replaceFirst('/coverage/', 'coverage/html/');
+
+  final file = File(filePath);
+  if (await file.exists()) {
+    final ext = path.split('.').last;
+    final contentType = switch (ext) {
+      'html' => ContentType.html,
+      'css' => ContentType('text', 'css'),
+      'js' => ContentType('application', 'javascript'),
+      'png' => ContentType('image', 'png'),
+      'gif' => ContentType('image', 'gif'),
+      'svg' => ContentType('image', 'svg+xml'),
+      _ => ContentType.binary,
+    };
+
+    request.response.headers.contentType = contentType;
+    await file.openRead().pipe(request.response);
+  } else {
+    request.response.statusCode = 404;
+    request.response.write('Coverage file not found: $filePath');
+    await request.response.close();
+  }
 }
 
 /// Serve static files (HTML, CSS, JS)
