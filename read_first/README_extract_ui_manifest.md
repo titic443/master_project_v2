@@ -535,3 +535,198 @@ Widgets จะถูกเรียงตาม SEQUENCE number ก่อน จ
 - Script จะลบ comments ออกก่อนวิเคราะห์เพื่อหลีกเลี่ยงการจับ widgets ใน commented code
 - Widgets ที่มี key ซ้ำจะถูกรวมเป็น entry เดียว (ใช้ entry แรกที่พบ)
 - รองรับ nested widgets (เช่น Radio ภายใน FormField builder)
+
+---
+
+## Internal Architecture
+
+### Processing Flow
+
+```
+┌─────────────────────┐
+│  Read .dart file    │
+│  (readAsStringSync) │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  _stripComments()   │  ← ลบ // และ /* */ โดยไม่ลบ strings
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  _collectStringConsts() │  ← เก็บ const strings สำหรับ resolve keys
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  Find Page Metadata │
+│  - _findPageClass() │
+│  - _findCubitType() │
+│  - _findStateType() │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  _scanWidgets()     │  ← Scan หา target widgets ด้วย Regex
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  Extract per-widget │
+│  - _extractKey()    │
+│  - _extractTextFieldMeta() │
+│  - _extractValidationMeta() │
+│  - _extractRadioMeta()      │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  Sort by SEQUENCE   │  ← เรียงตาม key pattern: {SEQ}_*
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│  Write manifest.json│
+└─────────────────────┘
+```
+
+### Core Functions
+
+| Function | Line | Description |
+|----------|------|-------------|
+| `main()` | 41-57 | Entry point, handle args |
+| `_processOne()` | 59-160 | Process single file |
+| `_stripComments()` | 163-233 | Remove comments, preserve strings |
+| `_scanWidgets()` | 240-307 | Find and extract widgets |
+| `_matchParen()` | 309-328 | Match parentheses |
+| `_matchBrace()` | 330-349 | Match braces |
+| `_extractKey()` | 351-374 | Extract widget key |
+| `_extractTextFieldMeta()` | 564-644 | Extract TextField metadata |
+| `_extractValidationMeta()` | 646-805 | Extract validator rules |
+| `_extractRadioMeta()` | 868-875 | Extract Radio metadata |
+| `_collectRadioOptionMeta()` | 877-916 | Collect Radio options |
+| `_scanDateTimePickers()` | 980-1032 | Find date/time pickers |
+
+### Widget Detection
+
+Script ใช้ Regex หา pattern:
+```
+WidgetName<GenericType>(
+```
+
+**Target Widgets:**
+```dart
+final targets = <String>{
+  'TextField', 'TextFormField', 'FormField',
+  'Radio', 'ElevatedButton', 'TextButton', 'OutlinedButton', 'IconButton',
+  'Text', 'DropdownButton', 'DropdownButtonFormField',
+  'Checkbox', 'Switch', 'SwitchListTile', 'Slider',
+  'ListTile', 'Visibility', 'SnackBar',
+};
+```
+
+### Key Extraction Patterns
+
+```dart
+// รองรับหลายรูปแบบ:
+key: Key('my_key')
+key: const Key('my_key')
+key: ValueKey<String>('my_key')
+key: ValueKey('my_key')
+key: ObjectKey(['part1', 'part2'])
+```
+
+### Validation Rules Extraction
+
+Script วิเคราะห์ validator closure และสกัด condition-message pairs:
+
+```dart
+// Input:
+validator: (value) {
+  if (value == null || value.isEmpty) {
+    return 'Required';
+  }
+  if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+    return 'Letters only';
+  }
+  return null;
+}
+
+// Output:
+{
+  "validatorRules": [
+    {"condition": "value == null || value.isEmpty", "message": "Required"},
+    {"condition": "!RegExp(r'^[a-zA-Z]+$').hasMatch(value)", "message": "Letters only"}
+  ]
+}
+```
+
+### InputFormatter Detection
+
+| Formatter | Output |
+|-----------|--------|
+| `FilteringTextInputFormatter.digitsOnly` | `{"type": "digitsOnly"}` |
+| `FilteringTextInputFormatter.allow(RegExp(r'[a-z]'))` | `{"type": "allow", "pattern": "[a-z]"}` |
+| `FilteringTextInputFormatter.deny(RegExp(r'[0-9]'))` | `{"type": "deny", "pattern": "[0-9]"}` |
+| `LengthLimitingTextInputFormatter(50)` | `{"type": "lengthLimit", "max": 50}` |
+| `CustomFormatter()` | `{"type": "custom", "name": "CustomFormatter"}` |
+
+### Date/Time Picker Detection
+
+Script หา `showDatePicker` และ `showTimePicker` แล้ว link กับ widget ที่มี `onTap`:
+
+```dart
+// Input:
+TextFormField(
+  key: const Key('date_field'),
+  onTap: () => _selectDate(context),
+)
+
+Future<void> _selectDate(BuildContext context) async {
+  await showDatePicker(
+    context: context,
+    firstDate: DateTime(1900),
+    lastDate: DateTime.now(),
+  );
+}
+
+// Output:
+{
+  "widgetType": "TextFormField",
+  "key": "date_field",
+  "onTap": "_selectDate",
+  "pickerMetadata": {
+    "type": "DatePicker",
+    "firstDate": "DateTime(1900)",
+    "lastDate": "DateTime.now()"
+  }
+}
+```
+
+### Sorting Algorithm
+
+Widgets ถูกเรียงตาม:
+1. **SEQUENCE number** (ถ้ามี) - จาก key pattern `{SEQ}_*`
+2. **Source order** - ตำแหน่งที่พบใน source code
+
+```dart
+// Keys with sequence:
+"1_customer_name"    → sequence 1
+"2_customer_email"   → sequence 2
+"10_customer_submit" → sequence 10
+
+// Keys without sequence (sorted by source order):
+"customer_info"      → source position
+```
+
+### Error Handling
+
+- ไฟล์ไม่พบ: แสดง error และข้าม
+- Parse error: ข้าม widget นั้นและดำเนินการต่อ
+- Unmatched parentheses: ข้าม widget นั้น
+
+### Public API
+
+สำหรับเรียกจากโปรแกรมอื่น:
+
+```dart
+import 'tools/script_v2/extract_ui_manifest.dart';
+
+// Returns path to generated manifest
+String manifestPath = processUiFile('lib/demos/my_page.dart');
+// → 'output/manifest/demos/my_page.manifest.json'
+```
