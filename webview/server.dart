@@ -44,6 +44,12 @@ Future<void> handleRequest(HttpRequest request) async {
     case '/files':
       await handleGetFiles(request);
       break;
+    case '/test-scripts':
+      await handleGetTestScripts(request);
+      break;
+    case '/find-file':
+      await handleFindFile(request);
+      break;
     case '/scan':
       await handleScan(request);
       break;
@@ -85,6 +91,73 @@ Future<void> handleGetFiles(HttpRequest request) async {
   }
 
   request.response.write(jsonEncode({'files': files}));
+  await request.response.close();
+}
+
+/// Get list of available test scripts in integration_test/
+Future<void> handleGetTestScripts(HttpRequest request) async {
+  final testDir = Directory('integration_test');
+  final files = <String>[];
+
+  if (await testDir.exists()) {
+    await for (final entity in testDir.list()) {
+      if (entity is File && entity.path.endsWith('_flow_test.dart')) {
+        files.add(entity.path);
+      }
+    }
+  }
+
+  request.response.write(jsonEncode({'files': files}));
+  await request.response.close();
+}
+
+/// Find file path by matching filename and content
+Future<void> handleFindFile(HttpRequest request) async {
+  final body = await readBody(request);
+  final fileName = body['fileName'] as String?;
+  final content = body['content'] as String?;
+
+  if (fileName == null) {
+    request.response.statusCode = 400;
+    request.response.write(jsonEncode({'error': 'fileName required'}));
+    await request.response.close();
+    return;
+  }
+
+  // Search in lib/ directory
+  final libDir = Directory('lib');
+  String? foundPath;
+
+  if (await libDir.exists()) {
+    await for (final entity in libDir.list(recursive: true)) {
+      if (entity is File && entity.path.endsWith(fileName)) {
+        // If content provided, verify it matches
+        if (content != null) {
+          final fileContent = await entity.readAsString();
+          if (fileContent == content) {
+            foundPath = entity.path;
+            break;
+          }
+        } else {
+          foundPath = entity.path;
+          break;
+        }
+      }
+    }
+  }
+
+  if (foundPath != null) {
+    request.response.write(jsonEncode({
+      'success': true,
+      'filePath': foundPath,
+    }));
+  } else {
+    request.response.write(jsonEncode({
+      'success': false,
+      'error': 'File not found in project',
+    }));
+  }
+
   await request.response.close();
 }
 
