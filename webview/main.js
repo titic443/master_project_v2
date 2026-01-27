@@ -2,17 +2,15 @@
 const API_BASE = 'http://localhost:8080';
 
 // DOM Elements
-const uiFileInput = document.getElementById('uiFile');
-const scanBtn = document.getElementById('scanBtn');
+const inputFileInput = document.getElementById('inputFile');
+const outputFileInput = document.getElementById('outputFile');
+const browseInputBtn = document.getElementById('browseInputBtn');
+const browseOutputBtn = document.getElementById('browseOutputBtn');
 const widgetInfo = document.getElementById('widgetInfo');
 const widgetCount = document.getElementById('widgetCount');
-const showFilesBtn = document.getElementById('showFilesBtn');
-const fileList = document.getElementById('fileList');
-const skipDatasetsCheckbox = document.getElementById('skipDatasets');
-const runTestsCheckbox = document.getElementById('runTests');
-const withCoverageCheckbox = document.getElementById('withCoverage');
 const generateBtn = document.getElementById('generateBtn');
-const generateAllBtn = document.getElementById('generateAllBtn');
+const runTestBtn = document.getElementById('runTestBtn');
+const runCoverageBtn = document.getElementById('runCoverageBtn');
 const progressSection = document.getElementById('progressSection');
 const outputSection = document.getElementById('outputSection');
 const outputLog = document.getElementById('outputLog');
@@ -20,72 +18,123 @@ const clearLogBtn = document.getElementById('clearLogBtn');
 const resultsSection = document.getElementById('resultsSection');
 
 // State
-let availableFiles = [];
 let isGenerating = false;
+let generatedTestScript = null;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    loadAvailableFiles();
     setupEventListeners();
+    checkFileSystemAccess();
 });
 
 function setupEventListeners() {
-    uiFileInput.addEventListener('input', validateForm);
-    scanBtn.addEventListener('click', scanWidgets);
-    showFilesBtn.addEventListener('click', toggleFileList);
+    browseInputBtn.addEventListener('click', browseInputFile);
+    browseOutputBtn.addEventListener('click', browseOutputFile);
     generateBtn.addEventListener('click', generateTests);
-    generateAllBtn.addEventListener('click', generateAllTests);
+    runTestBtn.addEventListener('click', runAutomateTest);
+    runCoverageBtn.addEventListener('click', runCoverageTest);
     clearLogBtn.addEventListener('click', clearLog);
 }
 
-// Load available Dart files
-async function loadAvailableFiles() {
-    try {
-        const response = await fetch(`${API_BASE}/files`);
-        if (response.ok) {
-            const data = await response.json();
-            availableFiles = data.files || [];
-            renderFileList();
-        }
-    } catch (error) {
-        log('Could not load file list. Make sure the server is running.', 'error');
-        // Fallback: Show message
-        fileList.innerHTML = '<div class="file-item">Server not running. Start with: dart run webview/server.dart</div>';
+// Check if File System Access API is available
+function checkFileSystemAccess() {
+    if (!('showOpenFilePicker' in window)) {
+        log('Warning: File System Access API not supported. Please use Chrome or Edge.', 'error');
     }
 }
 
-function renderFileList() {
-    fileList.innerHTML = availableFiles.map(file =>
-        `<div class="file-item" onclick="selectFile('${file}')">${file}</div>`
-    ).join('');
+// Browse for input file using native file picker
+async function browseInputFile() {
+    try {
+        const [fileHandle] = await window.showOpenFilePicker({
+            types: [{
+                description: 'Dart Files',
+                accept: { 'text/plain': ['.dart'] }
+            }],
+            multiple: false
+        });
+
+        // Get the file path (we need to send relative path to server)
+        const file = await fileHandle.getFile();
+        const fileName = file.name;
+
+        // Try to get the full path by reading content and matching
+        const content = await file.text();
+
+        // Store file handle for later use
+        inputFileInput.dataset.fileHandle = 'set';
+        inputFileInput.value = fileName;
+
+        // Ask server to find the file path
+        const response = await fetch(`${API_BASE}/find-file`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileName, content })
+        });
+
+        const data = await response.json();
+        if (data.success && data.filePath) {
+            inputFileInput.value = data.filePath;
+
+            // Auto-generate output path
+            const baseName = fileName.replace('.dart', '');
+            outputFileInput.value = `integration_test/${baseName}_flow_test.dart`;
+
+            // Scan widgets
+            scanWidgets(data.filePath);
+        } else {
+            // If can't find, just use the filename
+            log(`File selected: ${fileName}`, 'info');
+        }
+
+        validateForm();
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            log(`Error selecting file: ${err.message}`, 'error');
+        }
+    }
 }
 
-function selectFile(file) {
-    uiFileInput.value = file;
-    fileList.classList.add('hidden');
-    validateForm();
-    scanWidgets();
-}
+// Browse for output file location
+async function browseOutputFile() {
+    try {
+        const fileHandle = await window.showSaveFilePicker({
+            types: [{
+                description: 'Dart Test Files',
+                accept: { 'text/plain': ['.dart'] }
+            }],
+            suggestedName: 'test_flow_test.dart'
+        });
 
-function toggleFileList() {
-    fileList.classList.toggle('hidden');
-    showFilesBtn.textContent = fileList.classList.contains('hidden')
-        ? 'Show available files'
-        : 'Hide files';
+        // Get the suggested file name
+        const fileName = fileHandle.name;
+        outputFileInput.value = `integration_test/${fileName}`;
+        outputFileInput.dataset.fileHandle = 'set';
+
+        validateForm();
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            log(`Error selecting output location: ${err.message}`, 'error');
+        }
+    }
 }
 
 function validateForm() {
-    const hasFile = uiFileInput.value.trim().length > 0;
-    generateBtn.disabled = !hasFile || isGenerating;
+    const hasInput = inputFileInput.value.trim().length > 0;
+    const hasOutput = outputFileInput.value.trim().length > 0;
+
+    generateBtn.disabled = !hasInput || !hasOutput || isGenerating;
+
+    // Enable run buttons if we have a test script path
+    const testScriptExists = outputFileInput.value.trim().length > 0;
+    runTestBtn.disabled = !testScriptExists || isGenerating;
+    runCoverageBtn.disabled = !testScriptExists || isGenerating;
 }
 
 // Scan widgets
-async function scanWidgets() {
-    const filePath = uiFileInput.value.trim();
+async function scanWidgets(filePath) {
     if (!filePath) return;
 
-    scanBtn.disabled = true;
-    scanBtn.textContent = 'Scanning...';
     widgetInfo.classList.add('hidden');
 
     try {
@@ -100,37 +149,27 @@ async function scanWidgets() {
         if (data.success) {
             widgetCount.textContent = `Found ${data.widgetCount} widgets in manifest`;
             widgetInfo.classList.remove('hidden');
-            validateForm();
-        } else {
-            log(`Scan failed: ${data.error}`, 'error');
         }
     } catch (error) {
-        log(`Scan error: ${error.message}`, 'error');
-    } finally {
-        scanBtn.disabled = false;
-        scanBtn.textContent = 'Scan Widgets';
+        // Silent fail
     }
 }
 
-// Generate tests for single file
+// Generate tests
 async function generateTests() {
-    const filePath = uiFileInput.value.trim();
-    if (!filePath || isGenerating) return;
+    const filePath = inputFileInput.value.trim();
+    const outputPath = outputFileInput.value.trim();
+    if (!filePath || !outputPath || isGenerating) return;
 
     isGenerating = true;
-    generateBtn.disabled = true;
+    updateButtonStates();
     progressSection.classList.remove('hidden');
     outputSection.classList.remove('hidden');
     resultsSection.classList.add('hidden');
     resetProgress();
     clearLog();
 
-    const config = {
-        file: filePath,
-        skipDatasets: skipDatasetsCheckbox.checked,
-        runTests: runTestsCheckbox.checked,
-        withCoverage: withCoverageCheckbox.checked
-    };
+    log('=== Starting Test Generation ===\n', 'info');
 
     try {
         // Step 1: Extract manifest
@@ -141,21 +180,16 @@ async function generateTests() {
         log(`Manifest: ${manifestResult.manifestPath}`, 'success');
 
         // Step 2: Generate datasets
-        if (!config.skipDatasets) {
-            updateProgress(2, 'running', 'Generating datasets (AI)...');
-            const datasetResult = await runStep('generate-datasets', { manifest: manifestResult.manifestPath });
-            if (datasetResult.skipped) {
-                updateProgress(2, 'skipped', 'No text fields found');
-                log('Datasets: Skipped (no text fields)', 'info');
-            } else if (!datasetResult.success) {
-                throw new Error(datasetResult.error);
-            } else {
-                updateProgress(2, 'complete', datasetResult.datasetsPath);
-                log(`Datasets: ${datasetResult.datasetsPath}`, 'success');
-            }
+        updateProgress(2, 'running', 'Generating datasets (AI)...');
+        const datasetResult = await runStep('generate-datasets', { manifest: manifestResult.manifestPath });
+        if (datasetResult.skipped) {
+            updateProgress(2, 'skipped', 'No text fields found');
+            log('Datasets: Skipped (no text fields)', 'info');
+        } else if (!datasetResult.success) {
+            throw new Error(datasetResult.error);
         } else {
-            updateProgress(2, 'skipped', 'Skipped by user');
-            log('Datasets: Skipped by user', 'info');
+            updateProgress(2, 'complete', datasetResult.datasetsPath);
+            log(`Datasets: ${datasetResult.datasetsPath}`, 'success');
         }
 
         // Step 3: Generate test data
@@ -167,84 +201,127 @@ async function generateTests() {
 
         // Step 4: Generate test script
         updateProgress(4, 'running', 'Generating test script...');
-        const scriptResult = await runStep('generate-test-script', { testData: testDataResult.testDataPath });
+        const scriptResult = await runStep('generate-test-script', {
+            testData: testDataResult.testDataPath,
+            outputPath: outputPath
+        });
         if (!scriptResult.success) throw new Error(scriptResult.error);
         updateProgress(4, 'complete', scriptResult.testScriptPath);
         log(`Test script: ${scriptResult.testScriptPath}`, 'success');
 
-        // Step 5: Run tests (optional)
-        if (config.runTests) {
-            updateProgress(5, 'running', 'Running tests...');
-            const testResult = await runStep('run-tests', {
-                testScript: scriptResult.testScriptPath,
-                withCoverage: config.withCoverage
-            });
-            if (testResult.success) {
-                updateProgress(5, 'complete', `${testResult.passed} passed`);
-                log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
-            } else {
-                updateProgress(5, 'error', testResult.error);
-                log(`Tests failed: ${testResult.error}`, 'error');
-            }
-        } else {
-            updateProgress(5, 'skipped', 'Skipped');
-        }
+        // Step 5: Mark as skipped (user can run manually)
+        updateProgress(5, 'skipped', 'Click "Run Automate Test" to run');
+
+        // Store generated test script path
+        generatedTestScript = scriptResult.testScriptPath;
 
         // Show results
         showResults({
             manifest: manifestResult.manifestPath,
-            datasets: config.skipDatasets ? 'Skipped' : 'Generated',
+            datasets: datasetResult.skipped ? 'Skipped' : datasetResult.datasetsPath,
             testData: testDataResult.testDataPath,
             testScript: scriptResult.testScriptPath
         });
 
         log('\n=== Generation complete! ===', 'success');
+        log('Click "Run Automate Test" or "Run Coverage Test" to execute tests.', 'info');
 
     } catch (error) {
         log(`\nError: ${error.message}`, 'error');
     } finally {
         isGenerating = false;
-        generateBtn.disabled = false;
+        updateButtonStates();
     }
 }
 
-// Generate tests for all files
-async function generateAllTests() {
-    if (isGenerating) return;
+// Run automate test
+async function runAutomateTest() {
+    const testScript = outputFileInput.value.trim();
+    if (!testScript || isGenerating) return;
 
     isGenerating = true;
-    generateAllBtn.disabled = true;
+    updateButtonStates();
     progressSection.classList.remove('hidden');
     outputSection.classList.remove('hidden');
     clearLog();
 
-    log('=== Generating tests for all files ===\n', 'info');
+    log('=== Running Automate Test ===\n', 'info');
+    updateProgress(5, 'running', 'Running tests...');
 
     try {
-        const response = await fetch(`${API_BASE}/generate-all`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                skipDatasets: skipDatasetsCheckbox.checked,
-                runTests: runTestsCheckbox.checked,
-                withCoverage: withCoverageCheckbox.checked
-            })
+        const testResult = await runStep('run-tests', {
+            testScript: testScript,
+            withCoverage: false
         });
 
-        const data = await response.json();
-
-        if (data.success) {
-            log(`\nProcessed ${data.filesProcessed} files`, 'success');
-            log(`Generated ${data.testsGenerated} test files`, 'success');
+        if (testResult.success) {
+            updateProgress(5, 'complete', `${testResult.passed} passed`);
+            log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
+            log('\n=== Tests completed! ===', 'success');
         } else {
-            log(`Error: ${data.error}`, 'error');
+            updateProgress(5, 'error', testResult.error);
+            log(`Tests failed: ${testResult.error}`, 'error');
+        }
+
+        if (testResult.output) {
+            log('\n--- Test Output ---', 'info');
+            log(testResult.output, '');
         }
     } catch (error) {
+        updateProgress(5, 'error', error.message);
         log(`Error: ${error.message}`, 'error');
     } finally {
         isGenerating = false;
-        generateAllBtn.disabled = false;
+        updateButtonStates();
     }
+}
+
+// Run coverage test
+async function runCoverageTest() {
+    const testScript = outputFileInput.value.trim();
+    if (!testScript || isGenerating) return;
+
+    isGenerating = true;
+    updateButtonStates();
+    progressSection.classList.remove('hidden');
+    outputSection.classList.remove('hidden');
+    clearLog();
+
+    log('=== Running Coverage Test ===\n', 'info');
+    updateProgress(5, 'running', 'Running tests with coverage...');
+
+    try {
+        const testResult = await runStep('run-tests', {
+            testScript: testScript,
+            withCoverage: true
+        });
+
+        if (testResult.success) {
+            updateProgress(5, 'complete', `${testResult.passed} passed + coverage`);
+            log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
+            log('Coverage report generated in coverage/ directory', 'success');
+            log('\n=== Coverage test completed! ===', 'success');
+        } else {
+            updateProgress(5, 'error', testResult.error);
+            log(`Tests failed: ${testResult.error}`, 'error');
+        }
+
+        if (testResult.output) {
+            log('\n--- Test Output ---', 'info');
+            log(testResult.output, '');
+        }
+    } catch (error) {
+        updateProgress(5, 'error', error.message);
+        log(`Error: ${error.message}`, 'error');
+    } finally {
+        isGenerating = false;
+        updateButtonStates();
+    }
+}
+
+function updateButtonStates() {
+    validateForm();
+    generateBtn.querySelector('.btn-text').textContent = isGenerating ? 'Generating...' : 'Generate Test Script';
 }
 
 // Run a single step
@@ -261,7 +338,7 @@ async function runStep(step, params) {
 function resetProgress() {
     document.querySelectorAll('.progress-item').forEach(item => {
         item.className = 'progress-item';
-        item.querySelector('.progress-icon').textContent = '\u25CB'; // ○
+        item.querySelector('.progress-icon').textContent = '\u25CB'; // empty circle
         item.querySelector('.progress-status').textContent = '';
     });
 }
@@ -276,16 +353,16 @@ function updateProgress(step, status, message) {
 
     switch (status) {
         case 'running':
-            icon.textContent = '\u25CF'; // ●
+            icon.textContent = '\u25CF'; // filled circle
             break;
         case 'complete':
-            icon.textContent = '\u2713'; // ✓
+            icon.textContent = '\u2713'; // check mark
             break;
         case 'error':
-            icon.textContent = '\u2717'; // ✗
+            icon.textContent = '\u2717'; // X mark
             break;
         case 'skipped':
-            icon.textContent = '\u2212'; // −
+            icon.textContent = '\u2212'; // minus
             break;
     }
 
@@ -314,6 +391,3 @@ function showResults(results) {
     document.querySelector('#testDataResult .result-path').textContent = results.testData || '-';
     document.querySelector('#testScriptResult .result-path').textContent = results.testScript || '-';
 }
-
-// Global function for file selection
-window.selectFile = selectFile;

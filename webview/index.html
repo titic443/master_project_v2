@@ -14,74 +14,53 @@
         </header>
 
         <main>
-            <!-- Step 1: UI File Selection -->
+            <!-- Step 1: Input File Selection -->
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">1</span>
-                    <h2>Select UI File</h2>
+                    <h2>Select Input File</h2>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="uiFile" placeholder="lib/demos/customer_details_page.dart">
-                    <button type="button" id="scanBtn" class="btn-secondary">Scan Widgets</button>
+                    <input type="text" id="inputFile" placeholder="Select a Dart UI file..." readonly>
+                    <button type="button" id="browseInputBtn" class="btn-secondary">Browse...</button>
                 </div>
                 <div id="widgetInfo" class="info-box hidden">
                     <span class="icon">&#10003;</span>
                     <span id="widgetCount"></span>
                 </div>
-                <div class="file-list-section">
-                    <button type="button" id="showFilesBtn" class="btn-link">Show available files</button>
-                    <div id="fileList" class="file-list hidden"></div>
-                </div>
             </section>
 
-            <!-- Step 2: Options -->
+            <!-- Step 2: Output File Selection -->
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">2</span>
-                    <h2>Options</h2>
+                    <h2>Select Output Test Script</h2>
                 </div>
-
-                <div class="options-grid">
-                    <div class="option-card">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="skipDatasets">
-                            <label for="skipDatasets">Skip AI Dataset Generation</label>
-                        </div>
-                        <p class="option-desc">Skip generating test datasets using Gemini AI</p>
-                    </div>
-
-                    <div class="option-card">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="runTests">
-                            <label for="runTests">Run Tests After Generation</label>
-                        </div>
-                        <p class="option-desc">Automatically run flutter test after generating</p>
-                    </div>
-
-                    <div class="option-card">
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="withCoverage">
-                            <label for="withCoverage">Generate Coverage Report</label>
-                        </div>
-                        <p class="option-desc">Run tests with --coverage flag</p>
-                    </div>
+                <div class="input-group">
+                    <input type="text" id="outputFile" placeholder="Select output location..." readonly>
+                    <button type="button" id="browseOutputBtn" class="btn-secondary">Browse...</button>
                 </div>
+                <p class="input-hint">Choose where to save the generated test script</p>
             </section>
 
-            <!-- Step 3: Generate -->
+            <!-- Step 3: Actions -->
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">3</span>
-                    <h2>Generate Tests</h2>
+                    <h2>Actions</h2>
                 </div>
-                <div class="button-group">
-                    <button type="button" id="generateBtn" class="btn-primary btn-large" disabled>
-                        <span class="btn-icon">&#9654;</span>
-                        <span class="btn-text">Generate Tests</span>
+                <div class="action-buttons">
+                    <button type="button" id="generateBtn" class="btn-primary btn-action" disabled>
+                        <span class="btn-icon">&#9881;</span>
+                        <span class="btn-text">Generate Test Script</span>
                     </button>
-                    <button type="button" id="generateAllBtn" class="btn-secondary btn-large">
-                        <span class="btn-icon">&#9776;</span>
-                        <span class="btn-text">Generate All</span>
+                    <button type="button" id="runTestBtn" class="btn-secondary btn-action" disabled>
+                        <span class="btn-icon">&#9654;</span>
+                        <span class="btn-text">Run Automate Test</span>
+                    </button>
+                    <button type="button" id="runCoverageBtn" class="btn-secondary btn-action" disabled>
+                        <span class="btn-icon">&#9733;</span>
+                        <span class="btn-text">Run Coverage Test</span>
                     </button>
                 </div>
             </section>
