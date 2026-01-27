@@ -1,0 +1,7 @@
+product_07_instock_checkbox: checked
+state.priceRange: price_0_100_radio, price_100_500_radio, price_500_plus_radio
+product_02_name_textfield: valid
+product_03_category_dropdown: Electronics, Clothing, Food, Books
+product_04_sku_textfield: valid
+product_05_quantity_textfield: valid
+product_08_featured_checkbox: checked, unchecked
