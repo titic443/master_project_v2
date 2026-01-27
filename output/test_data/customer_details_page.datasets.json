@@ -5,7 +5,7 @@
       "customer_02_firstname_textfield": [
         {
           "valid": "Alice",
-          "invalid": "J",
+          "invalid": "A",
           "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)"
         }
       ],
@@ -22,7 +22,7 @@
         },
         {
           "valid": "0123456789",
-          "invalid": "012345678",
+          "invalid": "000000000",
           "invalidRuleMessages": "0"
         }
       ],
