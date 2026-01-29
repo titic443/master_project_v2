@@ -1,102 +1,225 @@
-// dart run tools/script_v2/generate_test_data.dart [manifest.json]
+// =============================================================================
+// generate_test_data.dart
+// =============================================================================
+// Script สำหรับสร้าง test plan (test data) จาก UI manifest
+// ใช้ Pairwise Combinatorial Testing เพื่อสร้าง test cases ที่ครอบคลุม
+// แต่ลดจำนวน test cases ให้น้อยลงด้วยเทคนิค pairwise
 //
-// Generate pairwise test plans from UI manifest using combinatorial testing.
-// Creates comprehensive test cases that cover all widget interactions efficiently.
+// วิธีใช้งาน:
+//   1. ประมวลผลไฟล์ manifest เฉพาะ:
+//      dart run tools/script_v2/generate_test_data.dart output/manifest/demos/login_page.manifest.json
 //
-// Usage:
-//   1. Process specific manifest file:
-//      dart run tools/script_v2/generate_test_data.dart manifest/login/login_page.manifest.json
-//
-//   2. Process all manifest files in manifest/ folder:
+//   2. ประมวลผลทุกไฟล์ manifest ใน output/manifest/:
 //      dart run tools/script_v2/generate_test_data.dart
 //
-// Output: test_data/<page>.testdata.json
+// Input:
+//   - output/manifest/<subfolder>/<page>.manifest.json (จาก extract_ui_manifest.dart)
+//   - output/test_data/<page>.datasets.json (optional, จาก generate_datasets.dart)
+//
+// Output:
+//   - output/test_data/<page>.testdata.json (test plan สำหรับ generate_test_script.dart)
+//   - output/model_pairwise/<page>.full.model.txt (PICT model file)
+//   - output/model_pairwise/<page>.full.result.txt (PICT combinations result)
+//   - output/model_pairwise/<page>.valid.model.txt (PICT model for valid-only)
+//   - output/model_pairwise/<page>.valid.result.txt (PICT valid combinations)
+//
+// Features:
+//   - สร้าง pairwise test combinations ด้วย PICT tool
+//   - รองรับ TextFormField, Radio, Checkbox, Dropdown, Switch
+//   - รองรับ DatePicker และ TimePicker widgets
+//   - สร้าง edge cases (empty fields test)
+//   - ตรวจจับ validation rules และ required fields
+//   - รองรับ external datasets จาก AI generation
+// =============================================================================
 
+// -----------------------------------------------------------------------------
+// Import Libraries
+// -----------------------------------------------------------------------------
+
+// dart:convert - สำหรับ JSON encoding/decoding
+// - jsonDecode()      : แปลง JSON string เป็น Map/List
+// - JsonEncoder       : แปลง Map/List เป็น JSON string (with formatting)
 import 'dart:convert';
+
+// dart:io - สำหรับ file I/O และ process operations
+// - File             : อ่าน/เขียนไฟล์
+// - Directory        : จัดการ folders และ scan files
+// - stdout/stderr    : เขียน output/error messages
+// - exit()           : จบ process พร้อม exit code
 import 'dart:io';
 
+// generator_pict.dart - module สำหรับ PICT (Pairwise Independent Combinatorial Testing)
+// - executePict()           : รัน PICT binary เพื่อสร้าง combinations
+// - generatePairwiseInternal(): สร้าง pairwise combinations แบบ internal (ไม่ใช้ PICT)
+// - parsePictModel()        : parse PICT model file เพื่อดึง factors
+// - parsePictResult()       : parse PICT result file เพื่อดึง combinations
+// - extractFactorsFromManifest(): ดึง factors จาก manifest widgets
+// - writePictModelFiles()   : เขียน PICT model และ result files
 import 'generator_pict.dart' as pict;
+
+// utils.dart - utility functions ที่ใช้ร่วมกับ scripts อื่น
+// - basenameWithoutExtension() : ดึงชื่อไฟล์โดยไม่มี extension
+// - basename()                 : ดึงชื่อไฟล์
 import 'utils.dart' as utils;
 
-/// Public API for flutter_test_generator.dart
-/// Generates test data from a manifest file using pairwise testing
-/// Returns the path to the generated testdata.json file
+// =============================================================================
+// PUBLIC API FUNCTION
+// =============================================================================
+
+/// Function สาธารณะสำหรับเรียกใช้จาก script อื่น (เช่น flutter_test_generator.dart)
+///
+/// สร้าง test data (test plan) จาก manifest file โดยใช้ pairwise testing
+///
+/// Parameters:
+///   [manifestPath] - path ของไฟล์ .manifest.json
+///                    เช่น "output/manifest/demos/login_page.manifest.json"
+///   [pictBin]      - path ของ PICT binary (default: './pict')
+///   [constraints]  - PICT constraints string (optional)
+///                    เช่น "IF [field1] = 'invalid' THEN [field2] = 'valid';"
+///
+/// Returns:
+///   Future<String> - path ของ test data file ที่สร้าง
+///                    เช่น "output/test_data/login_page.testdata.json"
+///
+/// Example:
+///   final outputPath = await generateTestDataFromManifest(
+///     'output/manifest/demos/login_page.manifest.json',
+///     pictBin: './pict',
+///   );
+///   print('Generated: $outputPath');
 Future<String> generateTestDataFromManifest(
   String manifestPath, {
   String pictBin = './pict',
   String? constraints,
 }) async {
-  // DEBUG: Check if constraints are passed (uncomment for debugging)
+  // DEBUG: ตรวจสอบว่า constraints ถูกส่งมาหรือไม่ (uncomment เพื่อ debug)
   // stderr.writeln('[DEBUG] generateTestDataFromManifest - constraints: ${constraints == null ? "NULL" : "\"${constraints.substring(0, constraints.length.clamp(0, 50))}...\""}');
 
-  // Read manifest to get UI file path (same logic as _processOne)
+  // ---------------------------------------------------------------------------
+  // อ่าน manifest file เพื่อดึง UI file path
+  // ---------------------------------------------------------------------------
+
+  // อ่านเนื้อหา manifest ทั้งไฟล์เป็น string
   final raw = File(manifestPath).readAsStringSync();
+
+  // แปลง JSON string เป็น Map
   final j = jsonDecode(raw) as Map<String, dynamic>;
+
+  // ดึง source section (ถ้าไม่มีใช้ empty map)
   final source = (j['source'] as Map<String, dynamic>?) ?? const {};
+
+  // ดึง path ของ UI file จาก source
   final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
+
+  // ---------------------------------------------------------------------------
+  // เรียก _processOne เพื่อสร้าง test data
+  // ---------------------------------------------------------------------------
 
   await _processOne(
     manifestPath,
-    pairwiseMerge: true,
-    planSummary: false,
-    pairwiseUsePict: true,
-    pictBin: pictBin,
-    constraints: constraints,
+    pairwiseMerge: true,      // ใช้ pairwise mode เสมอ
+    planSummary: false,       // ไม่แสดง plan summary
+    pairwiseUsePict: true,    // ใช้ PICT tool
+    pictBin: pictBin,         // path ของ PICT binary
+    constraints: constraints, // PICT constraints
   );
 
-  // Return output path (same logic as _processOne line 1093)
+  // ---------------------------------------------------------------------------
+  // คำนวณและ return output path
+  // ---------------------------------------------------------------------------
+
+  // สร้าง output path จากชื่อ UI file
+  // ตัวอย่าง: lib/demos/login_page.dart -> output/test_data/login_page.testdata.json
   return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
 }
 
-void main(List<String> args) async {
-  // Default settings
-  const bool pairwiseMerge = true;  // Always use pairwise mode
-  const bool planSummary = false;   // Never show plan summary
-  const bool pairwiseUsePict = true; // Always use PICT for pairwise
-  const String pictBin = './pict';   // Fixed PICT binary path
+// =============================================================================
+// MAIN FUNCTION - Entry Point
+// =============================================================================
 
+/// Entry point ของ script เมื่อรันจาก command line
+///
+/// รองรับ 2 modes:
+///   1. Batch mode (ไม่มี arguments): ประมวลผลทุกไฟล์ใน output/manifest/
+///   2. Single/Multiple file mode: ประมวลผลเฉพาะไฟล์ที่ระบุ
+///
+/// Parameter:
+///   [args] - List ของ command line arguments
+///            รับเฉพาะ paths ที่ลงท้ายด้วย .manifest.json
+void main(List<String> args) async {
+  // ---------------------------------------------------------------------------
+  // Default Settings - ค่าคงที่สำหรับการประมวลผล
+  // ---------------------------------------------------------------------------
+
+  const bool pairwiseMerge = true;   // ใช้ pairwise mode เสมอ (ลดจำนวน test cases)
+  const bool planSummary = false;    // ไม่แสดง plan summary
+  const bool pairwiseUsePict = true; // ใช้ PICT tool แทน internal algorithm
+  const String pictBin = './pict';   // path ของ PICT binary (relative to project root)
+
+  // List เก็บ paths ของไฟล์ที่จะประมวลผล
   final inputs = <String>[];
 
-  // Parse command line arguments - only accept manifest file paths
+  // ---------------------------------------------------------------------------
+  // Parse Command Line Arguments
+  // ---------------------------------------------------------------------------
+
+  // วนลูปตรวจสอบแต่ละ argument
   for (final arg in args) {
+    // รับเฉพาะไฟล์ .manifest.json
     if (arg.endsWith('.manifest.json')) {
       inputs.add(arg);
     } else {
+      // แจ้งเตือนถ้า argument ไม่ใช่ manifest file
       stderr.writeln('Warning: Ignoring unrecognized argument: $arg');
     }
   }
 
-  // If no inputs provided, scan entire output/manifest/ folder
+  // ---------------------------------------------------------------------------
+  // Batch Mode: Scan output/manifest/ folder ถ้าไม่มี inputs
+  // ---------------------------------------------------------------------------
+
   if (inputs.isEmpty) {
+    // สร้าง Directory object ชี้ไปยัง manifest folder
     final manifestDir = Directory('output/manifest');
+
+    // ตรวจสอบว่า folder มีอยู่หรือไม่
     if (!manifestDir.existsSync()) {
       stderr.writeln('Error: No manifest directory found: output/manifest/');
       stderr.writeln('Please create manifest files first using extract_ui_manifest.dart');
-      exit(1);
+      exit(1); // exit code 1 = error
     }
 
-    // Recursively find all .manifest.json files
+    // ค้นหาไฟล์ .manifest.json แบบ recursive
+    // listSync(recursive: true) จะค้นหา subfolders ด้วย
     for (final f in manifestDir.listSync(recursive: true).whereType<File>()) {
       if (f.path.endsWith('.manifest.json')) {
         inputs.add(f.path);
       }
     }
 
+    // ตรวจสอบว่าพบไฟล์หรือไม่
     if (inputs.isEmpty) {
       stderr.writeln('Error: No manifest files found in output/manifest/');
       stderr.writeln('Expected: *.manifest.json files');
       exit(1);
     }
 
+    // แสดงจำนวนไฟล์ที่พบ
     stdout.writeln('Found ${inputs.length} manifest file(s) to process');
   }
 
-  // Process each manifest file
-  int successCount = 0;
-  int errorCount = 0;
+  // ---------------------------------------------------------------------------
+  // Process Each Manifest File
+  // ---------------------------------------------------------------------------
 
+  // ตัวนับสำหรับ summary
+  int successCount = 0; // จำนวนที่สำเร็จ
+  int errorCount = 0;   // จำนวนที่ล้มเหลว
+
+  // วนลูปประมวลผลแต่ละไฟล์
   for (final path in inputs) {
     try {
+      // เรียก _processOne เพื่อประมวลผล manifest
       await _processOne(
         path,
         pairwiseMerge: pairwiseMerge,
@@ -104,142 +227,261 @@ void main(List<String> args) async {
         pairwiseUsePict: pairwiseUsePict,
         pictBin: pictBin,
       );
-      successCount++;
+      successCount++; // เพิ่มตัวนับถ้าสำเร็จ
     } catch (e, st) {
+      // จับ error และแสดง message
       stderr.writeln('✗ Failed to process $path: $e');
+      // แสดง stack trace ถ้ามี --verbose flag
       if (args.contains('--verbose')) {
         stderr.writeln(st);
       }
-      errorCount++;
+      errorCount++; // เพิ่มตัวนับ error
     }
   }
 
-  // Print summary if processing multiple files
+  // ---------------------------------------------------------------------------
+  // Print Summary (ถ้าประมวลผลหลายไฟล์)
+  // ---------------------------------------------------------------------------
+
   if (inputs.length > 1) {
     stdout.writeln('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     stdout.writeln('Summary: $successCount succeeded, $errorCount failed');
     stdout.writeln('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   }
 
+  // Exit with error code ถ้ามี error
   if (errorCount > 0) {
     exit(1);
   }
 }
 
-// Helper functions for dynamic key generation
+// =============================================================================
+// HELPER FUNCTIONS - Dynamic Key Generation
+// =============================================================================
+
+/// ดึง prefix ของ page จากชื่อ class หรือ file path
+///
+/// ใช้สำหรับสร้าง expected keys เช่น buttons_expected_success
+///
+/// Parameters:
+///   [pageClass] - ชื่อ page class เช่น "ButtonsDemo", "LoginPage"
+///   [filePath]  - path ของไฟล์ เช่น "lib/demos/buttons_page.dart"
+///
+/// Returns:
+///   String - prefix ของ page เช่น "buttons", "login"
+///
+/// Examples:
+///   _extractPagePrefix('ButtonsDemo', null)        -> 'buttons'
+///   _extractPagePrefix('LoginPage', null)          -> 'login'
+///   _extractPagePrefix(null, 'lib/demos/buttons_page.dart') -> 'buttons'
 String _extractPagePrefix(String? pageClass, String? filePath) {
+  // ---------------------------------------------------------------------------
+  // Method 1: ดึงจาก pageClass (preferred)
+  // ---------------------------------------------------------------------------
   if (pageClass != null) {
-    // ButtonsDemo -> buttons, LoginPage -> login, ProfileDemo -> profile, DemoPage -> demo
+    // แปลงเป็น lowercase และลบ suffixes ที่ไม่ต้องการ
+    // ButtonsDemo -> buttons, LoginPage -> login
     String prefix = pageClass.toLowerCase()
-      .replaceAll('demo', '')
-      .replaceAll('page', '')
-      .replaceAll('screen', '');
-    
-    // If empty after removing suffixes, use original class name without suffixes
+      .replaceAll('demo', '')   // ลบ 'demo'
+      .replaceAll('page', '')   // ลบ 'page'
+      .replaceAll('screen', ''); // ลบ 'screen'
+
+    // ถ้า prefix ว่างหลังจากลบ suffixes (เช่น DemoPage -> '')
+    // ให้ลองอีกครั้งโดยลบเฉพาะ page และ screen
     if (prefix.isEmpty) {
       prefix = pageClass.toLowerCase()
         .replaceAll('page', '')
         .replaceAll('screen', '');
+      // ถ้ายังว่างอยู่ ใช้ชื่อ class ทั้งหมด
       if (prefix.isEmpty) {
         prefix = pageClass.toLowerCase();
       }
     }
     return prefix;
   }
+
+  // ---------------------------------------------------------------------------
+  // Method 2: ดึงจาก filePath (fallback)
+  // ---------------------------------------------------------------------------
   if (filePath != null) {
-    // lib/demos/buttons_page.dart -> buttons
+    // ดึงชื่อไฟล์จาก path
+    // lib/demos/buttons_page.dart -> buttons_page.dart
     final fileName = filePath.split('/').last;
+
+    // ลบ suffixes และ extension
+    // buttons_page.dart -> buttons
     return fileName.replaceAll('_page.dart', '')
                 .replaceAll('_demo.dart', '')
                 .replaceAll('_screen.dart', '')
                 .replaceAll('.dart', '');
   }
-  return 'page'; // fallback
+
+  // ---------------------------------------------------------------------------
+  // Fallback: return 'page' ถ้าไม่มีข้อมูล
+  // ---------------------------------------------------------------------------
+  return 'page';
 }
 
 
+// =============================================================================
+// PROCESS ONE FILE - ฟังก์ชันหลักในการประมวลผล
+// =============================================================================
+
+/// ประมวลผล manifest file หนึ่งไฟล์และสร้าง test data
+///
+/// Parameters:
+///   [path]           - path ของไฟล์ .manifest.json
+///   [pairwiseMerge]  - ใช้ pairwise testing (default: false)
+///   [planSummary]    - แสดง plan summary (default: false)
+///   [pairwiseUsePict]- ใช้ PICT tool (default: false)
+///   [pictBin]        - path ของ PICT binary
+///   [constraints]    - PICT constraints string (optional)
+///
+/// การทำงานหลัก:
+///   1. อ่านและ parse manifest JSON
+///   2. สร้าง PICT model จาก widgets
+///   3. โหลด external datasets (ถ้ามี)
+///   4. ระบุ widget types (textfield, radio, checkbox, etc.)
+///   5. สร้าง pairwise test combinations
+///   6. สร้าง edge cases (empty fields)
+///   7. เขียน test data file
 Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSummary = false, bool pairwiseUsePict = false, String pictBin = './pict', String? constraints}) async {
+  // ---------------------------------------------------------------------------
+  // STEP 1: อ่านและ parse manifest file
+  // ---------------------------------------------------------------------------
+
+  // อ่านเนื้อหา manifest ทั้งไฟล์เป็น string
   final raw = File(path).readAsStringSync();
+
+  // แปลง JSON string เป็น Map
   final j = jsonDecode(raw) as Map<String, dynamic>;
+
+  // ดึง source section จาก manifest
   final source = (j['source'] as Map<String, dynamic>? ) ?? const {};
+
+  // ดึง path ของ UI file
   final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
+
+  // ดึงชื่อ page class (ถ้าไม่ระบุ ใช้ชื่อไฟล์แทน)
   final pageClass = (source['pageClass'] as String?) ?? utils.basenameWithoutExtension(uiFile);
-  // Try to emit a PICT model from manifest first for verification
+
+  // ---------------------------------------------------------------------------
+  // STEP 2: สร้าง PICT model จาก manifest
+  // ---------------------------------------------------------------------------
+
+  // พยายามสร้าง PICT model files เพื่อใช้ในการ generate combinations
   try {
     await _tryWritePictModelFromManifestForUi(uiFile, pictBin: pictBin, constraints: constraints);
   } catch (e) {
     stderr.writeln('! Failed to write PICT model from manifest: $e');
   }
+
+  // ดึง list ของ widgets จาก manifest
   final widgets = (j['widgets'] as List? ?? const []).cast<Map<String, dynamic>>();
 
-  // Extract page prefix for expected keys
+  // ดึง page prefix สำหรับสร้าง expected keys
+  // เช่น buttons_expected_success, customer_expected_fail
   final pagePrefix = _extractPagePrefix(pageClass, uiFile);
 
-  // Providers detection removed - no longer included in output structure
+  // NOTE: Providers detection ถูกลบออก - ไม่ต้องใช้ใน output structure แล้ว
 
-  // Helper function to preserve datasets format (no conversion needed)
-  // Keep the new format: {"key": [{"valid": "value1", "invalid": "value2", "invalidRuleMessages": "msg"}]}
+  // ---------------------------------------------------------------------------
+  // STEP 3: โหลด external datasets (ถ้ามี)
+  // ---------------------------------------------------------------------------
+
+  /// Helper function: รักษา format ของ datasets (ไม่ต้อง convert)
+  /// Format ใหม่: {"key": [{"valid": "value1", "invalid": "value2", "invalidRuleMessages": "msg"}]}
   Map<String, dynamic> _convertDatasetsToOldFormat(Map<String, dynamic> byKey) {
-    // Simply return as-is to preserve the array of objects format
+    // Return as-is เพื่อรักษา array of objects format
     return Map<String, dynamic>.from(byKey);
   }
 
-  // Attempt to load external datasets produced by datasets_from_ai/datasets_from_ir
+  // สร้างโครงสร้าง datasets พื้นฐาน
   final datasets = {
-    'defaults': <String, dynamic>{},
-    'byKey': <String, dynamic>{},
+    'defaults': <String, dynamic>{},  // ค่า default ของแต่ละ field
+    'byKey': <String, dynamic>{},     // ค่าตาม widget key
   };
+
+  // Flag บอกว่าโหลด external datasets สำเร็จหรือไม่
   bool hasExternalDatasets = false;
+
+  // พยายามโหลด external datasets จาก .datasets.json
+  // ไฟล์นี้ถูกสร้างโดย generate_datasets.dart (AI-based)
   try {
+    // สร้าง path ของ datasets file
     final extPath = 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.datasets.json';
     final f = File(extPath);
+
+    // ตรวจสอบว่าไฟล์มีอยู่หรือไม่
     if (f.existsSync()) {
+      // อ่านและ parse JSON
       final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+
+      // ดึง datasets.byKey
       final extDatasets = (ext['datasets'] as Map?)?.cast<String, dynamic>();
       final extByKey = (extDatasets?['byKey'] as Map?)?.cast<String, dynamic>();
+
+      // ถ้ามี byKey ให้ merge เข้า datasets
       if (extByKey != null) {
-        // Convert new format (array of pairs) to old format ({valid: [], invalid: []})
         final converted = _convertDatasetsToOldFormat(extByKey);
         (datasets['byKey'] as Map<String, dynamic>).addAll(converted);
         hasExternalDatasets = (converted.isNotEmpty);
       }
     }
-  } catch (_) {}
+  } catch (_) {
+    // ignore errors - จะใช้ datasets เปล่าแทน
+  }
 
-  // Helper function to extract sequence number from key
-  // Pattern: <page_prefix>_<sequence>_<description>_<widget_type>
-  // Example: customer_07_end_button → 07
+  // ---------------------------------------------------------------------------
+  // STEP 4: Helper Functions สำหรับวิเคราะห์ widget keys
+  // ---------------------------------------------------------------------------
+
+  /// ดึง sequence number จาก widget key
+  ///
+  /// Pattern: <page_prefix>_<sequence>_<description>_<widget_type>
+  /// Example: customer_07_end_button → 07
+  ///
+  /// Returns: sequence number หรือ -1 ถ้าไม่พบ
   int _extractSequence(String key) {
+    // Return -1 ถ้า key ว่าง
     if (key.isEmpty) return -1;
+
+    // แยก key เป็น parts ด้วย underscore
     final parts = key.split('_');
     if (parts.length < 2) return -1;
 
-    // Try second part first (most common pattern)
+    // ลองดึง sequence จาก part ที่ 2 ก่อน (pattern ที่พบบ่อยที่สุด)
+    // customer_07_end_button → ['customer', '07', 'end', 'button']
     final secondPart = parts[1];
     final seq = int.tryParse(secondPart);
     if (seq != null) return seq;
 
-    // Fallback: scan all parts for a number
+    // Fallback: scan ทุก parts หา number
     for (final part in parts) {
       final num = int.tryParse(part);
       if (num != null) return num;
     }
-    return -1;
+
+    return -1; // ไม่พบ sequence
   }
 
-  // Find Button widget with highest sequence number
-  // This will be used as the end/submit button
+  /// หา Button widget ที่มี sequence number สูงสุด
+  /// Button นี้จะถูกใช้เป็น end/submit button
+  ///
+  /// Returns: widget key ของ button หรือ null ถ้าไม่พบ
   String? _findHighestSequenceButton(List<Map<String, dynamic>> widgets) {
-    String? highestKey;
-    int highestSeq = -1;
+    String? highestKey;  // key ของ button ที่มี sequence สูงสุด
+    int highestSeq = -1; // sequence สูงสุดที่พบ
 
+    // วนลูปทุก widgets
     for (final w in widgets) {
-      final t = (w['widgetType'] ?? '').toString();
-      final k = (w['key'] ?? '').toString();
+      final t = (w['widgetType'] ?? '').toString(); // widget type
+      final k = (w['key'] ?? '').toString();         // widget key
 
-      // Only consider Button types
+      // พิจารณาเฉพาะ Button types
       if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty) {
         final seq = _extractSequence(k);
+        // อัพเดทถ้าพบ sequence ที่สูงกว่า
         if (seq > highestSeq) {
           highestSeq = seq;
           highestKey = k;
@@ -250,54 +492,87 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
     return highestKey;
   }
 
-  // Discover end key by finding button with highest sequence
+  // ---------------------------------------------------------------------------
+  // STEP 5: หา End Button และ Expected Keys
+  // ---------------------------------------------------------------------------
+
+  // หา end key โดยหา button ที่มี sequence สูงสุด
+  // End button คือปุ่มสุดท้ายที่ผู้ใช้กดเพื่อ submit form
   String? endKey = _findHighestSequenceButton(widgets);
 
-  // Collect expected keys (_expected_success and _expected_fail)
-  // Use Set to ensure unique keys (SnackBar can appear multiple times in manifest)
-  final expectedSuccessKeys = <String>{};
-  final expectedFailKeys = <String>{};
+  // รวบรวม expected keys สำหรับ success และ fail cases
+  // ใช้ Set เพื่อป้องกัน duplicates (SnackBar อาจปรากฏหลายครั้งใน manifest)
+  final expectedSuccessKeys = <String>{}; // keys สำหรับ success (เช่น snackbar success)
+  final expectedFailKeys = <String>{};    // keys สำหรับ fail (เช่น error message)
 
-  // Identify keys
-  final textKeys = <String>[];
-  final radioKeys = <String>[];
-  final checkboxKeys = <String>[];
-  final primaryButtons = <String>[];
-  final datePickerKeys = <String>[];
-  final timePickerKeys = <String>[];
+  // ---------------------------------------------------------------------------
+  // STEP 6: ระบุและจัดหมวดหมู่ Widget Keys
+  // ---------------------------------------------------------------------------
 
+  // Lists เก็บ keys แยกตาม widget type
+  final textKeys = <String>[];       // TextFormField, TextField keys
+  final radioKeys = <String>[];      // Radio button keys
+  final checkboxKeys = <String>[];   // Checkbox keys
+  final primaryButtons = <String>[]; // ปุ่มอื่นๆ ที่ไม่ใช่ end button
+  final datePickerKeys = <String>[]; // DatePicker keys
+  final timePickerKeys = <String>[]; // TimePicker keys
+
+  // วนลูปครั้งแรก: หา expected keys
   for (final w in widgets) {
     final k = (w['key'] ?? '').toString();
 
+    // เก็บ keys ที่มี _expected_success (เช่น snackbar แสดง success message)
     if (k.contains('_expected_success')) {
       expectedSuccessKeys.add(k);
     }
+    // เก็บ keys ที่มี _expected_fail (เช่น error message)
     if (k.contains('_expected_fail')) {
       expectedFailKeys.add(k);
     }
   }
 
-  // Check if we have end button (determines if this is an API flow)
+  // ตรวจสอบว่ามี end button หรือไม่
+  // ถ้ามี = API flow (form submission)
+  // ถ้าไม่มี = widget demo (ไม่มี form submission)
   final hasEndButton = endKey != null;
 
-  // Build a single full-page steps sequence (previous version behavior)
+  // วนลูปครั้งที่สอง: จัดหมวดหมู่ widgets ตาม type
   for (final w in widgets) {
-    final t = (w['widgetType'] ?? '').toString();
-    final k = (w['key'] ?? '').toString();
-    final pickerMeta = w['pickerMetadata'] as Map?;
+    final t = (w['widgetType'] ?? '').toString(); // widget type
+    final k = (w['key'] ?? '').toString();         // widget key
+    final pickerMeta = w['pickerMetadata'] as Map?; // metadata สำหรับ picker widgets
 
+    // ---------------------------------------------------------------------
+    // TextFormField / TextField - input fields สำหรับกรอกข้อความ
+    // ---------------------------------------------------------------------
     if ((t.startsWith('TextField') || t.startsWith('TextFormField')) && k.isNotEmpty) {
       textKeys.add(k);
-    } else if (t.startsWith('Radio') && k.isNotEmpty) {
+    }
+    // ---------------------------------------------------------------------
+    // Radio - radio button options
+    // ---------------------------------------------------------------------
+    else if (t.startsWith('Radio') && k.isNotEmpty) {
       radioKeys.add(k);
-    } else if ((t.startsWith('Checkbox') || t == 'CheckboxListTile') && k.isNotEmpty) {
-      // NOTE: Skip FormField<bool> as it's a wrapper widget, not an interactive element
+    }
+    // ---------------------------------------------------------------------
+    // Checkbox / CheckboxListTile - checkbox widgets
+    // NOTE: Skip FormField<bool> เพราะเป็น wrapper ไม่ใช่ interactive element
+    // ---------------------------------------------------------------------
+    else if ((t.startsWith('Checkbox') || t == 'CheckboxListTile') && k.isNotEmpty) {
       checkboxKeys.add(k);
-    } else if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty && k != endKey) {
-      // Exclude the end button (highest sequence button) from primary buttons
+    }
+    // ---------------------------------------------------------------------
+    // Buttons - ปุ่มต่างๆ (ยกเว้น end button)
+    // ---------------------------------------------------------------------
+    else if ((t == 'ElevatedButton' || t == 'TextButton' || t == 'OutlinedButton') && k.isNotEmpty && k != endKey) {
+      // ไม่รวม end button (จะใช้แยกต่างหากตอน submit)
       primaryButtons.add(k);
-    } else if (pickerMeta != null && k.isNotEmpty) {
-      // Detect DatePicker and TimePicker widgets
+    }
+    // ---------------------------------------------------------------------
+    // DatePicker / TimePicker - date และ time picker widgets
+    // ตรวจจับจาก pickerMetadata
+    // ---------------------------------------------------------------------
+    else if (pickerMeta != null && k.isNotEmpty) {
       final pickerType = (pickerMeta['type'] ?? '').toString();
       if (pickerType == 'DatePicker') {
         datePickerKeys.add(k);
@@ -307,76 +582,107 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
     }
   }
 
-  // Fallback: include only concrete radio options, ignore FormField group keys
+  // ---------------------------------------------------------------------------
+  // Fallback: หา radio options ที่อาจพลาดไป
+  // รวมเฉพาะ concrete radio options, ไม่รวม FormField group keys
+  // ---------------------------------------------------------------------------
   for (final w in widgets) {
     final k = (w['key'] ?? '').toString();
+    // ตรวจสอบว่าเป็น radio option จากชื่อ key
+    // Pattern: _radio, _yes_radio, _no_radio แต่ไม่ใช่ _radio_group
     final isOption = (k.endsWith('_radio') || k.contains('_yes_radio') || k.contains('_no_radio')) && !k.contains('_radio_group');
+    // เพิ่มถ้ายังไม่มีใน list
     if (isOption && !radioKeys.contains(k)) radioKeys.add(k);
   }
 
-  // Detect required checkboxes from FormField<bool> validators
-  // A checkbox is required if its FormField wrapper has a validator that checks for true
+  // ---------------------------------------------------------------------------
+  // STEP 7: ตรวจจับ Required Checkboxes
+  // ---------------------------------------------------------------------------
+
+  // ตรวจจับ required checkboxes จาก FormField<bool> validators
+  // Checkbox ถือว่า required ถ้า FormField wrapper มี validator ที่ต้องการค่า true
   // Map: checkbox key -> validation message
   final requiredCheckboxValidation = <String, String>{};
+
   for (final w in widgets) {
     final t = (w['widgetType'] ?? '').toString();
     final k = (w['key'] ?? '').toString();
 
+    // ตรวจสอบเฉพาะ FormField<bool> (wrapper ของ Checkbox)
     if (t.startsWith('FormField<bool>') && k.isNotEmpty) {
+      // ดึง metadata ของ widget
       final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      // ดึง validator rules
       final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
 
+      // วิเคราะห์แต่ละ rule
       for (final rule in rules) {
         if (rule is Map) {
           final condition = rule['condition']?.toString() ?? '';
           final message = rule['message']?.toString() ?? '';
-          // Check if condition requires value to be true
-          // Pattern: "value == null || !value" means checkbox must be checked
+
+          // ตรวจสอบว่า condition ต้องการให้ checkbox เป็น true
+          // Pattern ที่พบบ่อย: "value == null || !value"
+          // แปลว่า: ถ้า value เป็น null หรือ false ให้แสดง error
           final normalized = condition.toLowerCase().replaceAll(' ', '');
-          if (normalized.contains('!value') ||
-              normalized.contains('value==false') ||
+          if (normalized.contains('!value') ||               // !value
+              normalized.contains('value==false') ||         // value == false
               (normalized.contains('value==null') && normalized.contains('||!value'))) {
-            // Find the associated Checkbox key by replacing _formfield with _checkbox
+            // หา key ของ Checkbox ที่เกี่ยวข้อง
+            // โดยเปลี่ยน _formfield เป็น _checkbox
             final checkboxKey = k.replaceAll('_formfield', '_checkbox');
             requiredCheckboxValidation[checkboxKey] = message;
-            break;
+            break; // หยุดหลังพบ rule แรก
           }
         }
       }
     }
   }
 
-  // Detect dropdowns and their display items (support multiple dropdowns)
-  String? dropdownKey; // keep first for backward compatibility
-  final dropdownValues = <String>[]; // items of the first dropdown
-  final dropdownKeys = <String>[];
-  final dropdownValuesList = <List<String>>[];
-  final dropdownValueToTextMaps = <Map<String, String>>[]; // Map value -> text for each dropdown
+  // ---------------------------------------------------------------------------
+  // STEP 8: ตรวจจับ Dropdowns และ options
+  // ---------------------------------------------------------------------------
 
+  // รองรับหลาย dropdowns ใน form เดียว
+  String? dropdownKey;                           // key ของ dropdown แรก (backward compatibility)
+  final dropdownValues = <String>[];             // items ของ dropdown แรก
+  final dropdownKeys = <String>[];               // keys ของทุก dropdowns
+  final dropdownValuesList = <List<String>>[];   // items ของแต่ละ dropdown
+  final dropdownValueToTextMaps = <Map<String, String>>[]; // Map value -> text สำหรับแต่ละ dropdown
+
+  // วนลูปหา DropdownButton widgets
   for (final w in widgets) {
     final t = (w['widgetType'] ?? '').toString();
+
+    // ตรวจสอบว่าเป็น DropdownButton หรือไม่
     if (t.contains('DropdownButton')) {
       final k = (w['key'] ?? '').toString();
       if (k.isNotEmpty) {
         dropdownKeys.add(k);
+        // เก็บ key แรกสำหรับ backward compatibility
         if (dropdownKey == null) dropdownKey = k;
       }
+
       try {
+        // ดึง options จาก metadata
         final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
         final list = _optionsFromMeta(meta['options']);
         dropdownValuesList.add(list);
+
+        // เก็บ values ของ dropdown แรก
         if (dropdownValues.isEmpty) {
           dropdownValues.addAll(list);
         }
 
-        // Build value -> text mapping for this dropdown
+        // สร้าง value -> text mapping สำหรับ dropdown นี้
+        // ใช้ตอน tap เพื่อแปลง value เป็น text ที่แสดงใน UI
         final valueToText = <String, String>{};
         final options = meta['options'];
         if (options is List) {
           for (final opt in options) {
             if (opt is Map) {
-              final value = opt['value']?.toString();
-              final text = opt['text']?.toString();
+              final value = opt['value']?.toString();  // internal value
+              final text = opt['text']?.toString();    // display text
               if (value != null && value.isNotEmpty && text != null && text.isNotEmpty) {
                 valueToText[value] = text;
               }
@@ -385,25 +691,47 @@ Future<void> _processOne(String path, {bool pairwiseMerge = false, bool planSumm
         }
         dropdownValueToTextMaps.add(valueToText);
       } catch (_) {
+        // ถ้า parse ไม่ได้ ให้เพิ่ม empty map
         dropdownValueToTextMaps.add(<String, String>{});
       }
     }
   }
 
+// ---------------------------------------------------------------------------
+// STEP 9: สร้าง buildSteps Function
+// ---------------------------------------------------------------------------
+
+/// สร้าง list ของ test steps สำหรับ test case เดียว
+///
+/// Parameters:
+///   [radioPick]    - radio option ที่ต้องการเลือก (optional)
+///   [dropdownPick] - dropdown value ที่ต้องการเลือก (optional)
+///
+/// Returns:
+///   List<Map<String,dynamic>> - list ของ steps (enterText, tap, pump, etc.)
 List<Map<String,dynamic>> buildSteps({String? radioPick, String? dropdownPick}){
     final st = <Map<String, dynamic>>[];
-    // enter text (always use valid[0]) for each text field
+
+    // -------------------------------------------------------------------------
+    // Step 9.1: กรอก text ใน TextFormFields (ใช้ valid data เสมอ)
+    // -------------------------------------------------------------------------
     final byKey = (datasets['byKey'] as Map).cast<String, dynamic>();
     for (final k in textKeys) {
+      // เพิ่ม enterText step พร้อม dataset path
+      // Format: byKey.<key>.valid[0] (ใช้ valid value ตัวแรก)
       st.add({'enterText': {'byKey': k, 'dataset': 'byKey.' + k + '.valid[0]'}});
-      st.add({'pump': true});
+      st.add({'pump': true}); // pump หลัง enter text
     }
-    // dropdown selection if requested
+
+    // -------------------------------------------------------------------------
+    // Step 9.2: เลือก Dropdown (ถ้ามี)
+    // -------------------------------------------------------------------------
     if (dropdownKey != null && dropdownPick != null && dropdownPick.isNotEmpty) {
+      // Tap เปิด dropdown
       st.add({'tap': {'byKey': dropdownKey}});
       st.add({'pump': true});
 
-      // Map value -> text for tapText (use first dropdown mapping)
+      // แปลง value เป็น text ที่แสดงใน UI
       String textToTap = dropdownPick;
       if (dropdownValueToTextMaps.isNotEmpty) {
         final mapping = dropdownValueToTextMaps[0];
@@ -411,82 +739,141 @@ List<Map<String,dynamic>> buildSteps({String? radioPick, String? dropdownPick}){
         textToTap = mapping[cleanPick] ?? dropdownPick;
       }
 
+      // Tap เลือก option
       st.add({'tapText': textToTap});
       st.add({'pump': true});
     }
-    // radio options
+
+    // -------------------------------------------------------------------------
+    // Step 9.3: เลือก Radio Options
+    // -------------------------------------------------------------------------
     if (hasEndButton) {
+      // API flow: เลือก radio options ตาม preference
+
+      /// Helper: หา radio key แรกที่มี substring ตาม preferences
       String? _pickFirstContaining(List<String> keys, List<String> prefs){
         for (final p in prefs) {
+          // หา key ที่มี pattern _<pref>_ หรือลงท้ายด้วย _<pref>
           final found = keys.firstWhere((k)=> k.contains('_'+p+'_') || k.endsWith('_'+p), orElse: ()=> '');
           if (found.isNotEmpty) return found;
         }
+        // Fallback: ใช้ key แรก
         return keys.isNotEmpty ? keys.first : null;
       }
+
+      // เลือก radio group 2 (approval status)
       String? g2;
       if (radioPick != null && radioPick.isNotEmpty && radioKeys.contains(radioPick)) {
-        g2 = radioPick;
+        g2 = radioPick; // ใช้ค่าที่ระบุ
       } else {
         g2 = _pickFirstContaining(radioKeys, ['approve','reject','pending']);
       }
       if (g2 != null) { st.add({'tap': {'byKey': g2}}); st.add({'pump': true}); }
+
+      // เลือก radio group 3 (manufacturing type)
       final g3 = _pickFirstContaining(radioKeys, ['manu','che']);
       if (g3 != null) { st.add({'tap': {'byKey': g3}}); st.add({'pump': true}); }
+
+      // เลือก radio group 4 (platform)
       final g4 = _pickFirstContaining(radioKeys, ['android','window','ios']);
       if (g4 != null) { st.add({'tap': {'byKey': g4}}); st.add({'pump': true}); }
     } else if (radioPick != null && radioPick.isNotEmpty) {
+      // มี radio pick ที่ระบุ
       st.add({'tap': {'byKey': radioPick}});
       st.add({'pump': true});
     } else if (!hasEndButton && radioKeys.isNotEmpty) {
-      // non-API flow fallback: tap all radios in order
+      // Non-API flow fallback: tap ทุก radios ตามลำดับ
       for (final rk in radioKeys) { st.add({'tap': {'byKey': rk}}); st.add({'pump': true}); }
     }
-    // DatePicker widgets (non-API flow): select 'today' for all date pickers
+
+    // -------------------------------------------------------------------------
+    // Step 9.4: เลือก DatePicker (non-API flow)
+    // -------------------------------------------------------------------------
     for (final dpk in datePickerKeys) {
-      st.add({'tap': {'byKey': dpk}});
-      st.add({'pumpAndSettle': true});
-      st.add({'selectDate': 'today'});
-      st.add({'pumpAndSettle': true});
+      st.add({'tap': {'byKey': dpk}});           // เปิด picker
+      st.add({'pumpAndSettle': true});            // รอ animation
+      st.add({'selectDate': 'today'});            // เลือกวันนี้
+      st.add({'pumpAndSettle': true});            // รอปิด dialog
     }
-    // TimePicker widgets (non-API flow): select 'today' (current time) for all time pickers
+
+    // -------------------------------------------------------------------------
+    // Step 9.5: เลือก TimePicker (non-API flow)
+    // -------------------------------------------------------------------------
     for (final tpk in timePickerKeys) {
-      st.add({'tap': {'byKey': tpk}});
-      st.add({'pumpAndSettle': true});
-      st.add({'selectTime': 'today'});
-      st.add({'pumpAndSettle': true});
+      st.add({'tap': {'byKey': tpk}});           // เปิด picker
+      st.add({'pumpAndSettle': true});            // รอ animation
+      st.add({'selectTime': 'today'});            // เลือกเวลาปัจจุบัน
+      st.add({'pumpAndSettle': true});            // รอปิด dialog
     }
-    // tap all primary (non-end) buttons
-    for (final bk in primaryButtons) { st.add({'tap': {'byKey': bk}}); st.add({'pump': true}); }
-    // final end action
-    if (endKey != null) { st.add({'tap': {'byKey': endKey}}); st.add({'pumpAndSettle': true}); }
+
+    // -------------------------------------------------------------------------
+    // Step 9.6: Tap primary buttons (ปุ่มอื่นๆ ที่ไม่ใช่ end button)
+    // -------------------------------------------------------------------------
+    for (final bk in primaryButtons) {
+      st.add({'tap': {'byKey': bk}});
+      st.add({'pump': true});
+    }
+
+    // -------------------------------------------------------------------------
+    // Step 9.7: Final End Action (submit form)
+    // -------------------------------------------------------------------------
+    if (endKey != null) {
+      st.add({'tap': {'byKey': endKey}});
+      st.add({'pumpAndSettle': true}); // รอ API call และ animation
+    }
+
     return st;
 }
 
-// Build test cases
+// ---------------------------------------------------------------------------
+// STEP 10: เตรียม Test Cases และ Helper Functions
+// ---------------------------------------------------------------------------
+
+  // List เก็บ test cases ที่จะสร้าง
   final cases = <Map<String, dynamic>>[];
-  // Do not include stubbed setup/response; integration tests use real backend/providers
+
+  // NOTE: ไม่รวม stubbed setup/response
+  // Integration tests ใช้ real backend/providers
   final successSetup = <String, dynamic>{};
 
-  // Helper functions (moved up for early declaration)
+  // ---------------------------------------------------------------------------
+  // Helper Functions สำหรับ Test Case Generation
+  // ---------------------------------------------------------------------------
+
+  /// ดึง short version ของ key (ลบ prefix ออก)
+  /// Example: customer_01_name_textfield -> 01_name_textfield
   String _shortKey(String k){
     final i = k.indexOf('_');
     return (i>0 && i+1<k.length) ? k.substring(i+1) : k;
   }
-  
-Map<String,dynamic> _widgetMetaByKey(String key){
-  for (final w in widgets) {
-    if ((w['key'] ?? '') == key) {
-      return (w['meta'] as Map?)?.cast<String,dynamic>() ?? const {};
-    }
-  }
-  return const {};
-}
 
-/// Generate date values for DatePicker based on firstDate/lastDate constraints
+  /// ดึง metadata ของ widget จาก key
+  /// ค้นหา widget ที่มี key ตรงกันและ return metadata
+  Map<String,dynamic> _widgetMetaByKey(String key){
+    for (final w in widgets) {
+      if ((w['key'] ?? '') == key) {
+        return (w['meta'] as Map?)?.cast<String,dynamic>() ?? const {};
+      }
+    }
+    return const {}; // return empty map ถ้าไม่พบ
+  }
+
+/// สร้าง date values สำหรับ DatePicker ตาม firstDate/lastDate constraints
+///
+/// Parameter:
+///   [pickerMeta] - metadata ของ DatePicker widget
+///
+/// Returns:
+///   List<String> - list ของ date values ในรูปแบบ DD/MM/YYYY
+///                  รวม 'null' สำหรับ cancel case
+///
+/// Example output: ['null', '15/01/2001', '29/01/2026', '15/12/2029']
 List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
   final values = <String>[];
 
-  // Parse firstDate and lastDate from metadata
+  // -------------------------------------------------------------------------
+  // Parse firstDate และ lastDate จาก metadata
+  // -------------------------------------------------------------------------
   final firstDateStr = (pickerMeta['firstDate'] ?? '').toString();
   final lastDateStr = (pickerMeta['lastDate'] ?? '').toString();
 
@@ -496,11 +883,13 @@ List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
 
   // Parse firstDate
   if (firstDateStr.contains('DateTime(1900)')) {
+    // firstDate: DateTime(1900) - วันที่เก่าที่สุด
     firstDate = DateTime(1900);
   } else if (firstDateStr.contains('DateTime.now()')) {
+    // firstDate: DateTime.now() - วันนี้
     firstDate = now;
   } else {
-    // Try to extract year from DateTime(year)
+    // ลอง extract year จาก pattern DateTime(year)
     final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
     if (yearMatch != null) {
       firstDate = DateTime(int.parse(yearMatch.group(1)!));
@@ -510,56 +899,67 @@ List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
   // Parse lastDate
   if (lastDateStr.contains('DateTime.now()')) {
     if (lastDateStr.contains('add') && lastDateStr.contains('365')) {
+      // lastDate: DateTime.now().add(Duration(days: 365)) - 1 ปีข้างหน้า
       lastDate = now.add(const Duration(days: 365));
     } else {
+      // lastDate: DateTime.now() - วันนี้
       lastDate = now;
     }
   } else {
+    // ลอง extract year จาก pattern DateTime(year)
     final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
     if (yearMatch != null) {
       lastDate = DateTime(int.parse(yearMatch.group(1)!));
     }
   }
 
-  // Generate test dates within constraints
+  // -------------------------------------------------------------------------
+  // Default values ถ้า parse ไม่ได้
+  // -------------------------------------------------------------------------
   firstDate ??= DateTime(2000);
   lastDate ??= DateTime(2030);
 
-  // null (cancel) - always include
+  // -------------------------------------------------------------------------
+  // สร้าง test dates ภายใน constraints
+  // -------------------------------------------------------------------------
+
+  // 1. null (cancel) - เสมอ include เพื่อ test cancel behavior
   values.add('null');
 
-  // past_date - close to firstDate
+  // 2. past_date - วันที่ใกล้ firstDate
   final pastDate = DateTime(
-    firstDate.year + 1,
+    firstDate.year + 1,  // ปีถัดจาก firstDate
     firstDate.month,
-    15.clamp(1, 28),
+    15.clamp(1, 28),     // วันที่ 15 (กลางเดือน, ปลอดภัยสำหรับทุกเดือน)
   );
   if (pastDate.isAfter(firstDate) && pastDate.isBefore(lastDate)) {
+    // Format: DD/MM/YYYY
     values.add('${pastDate.day.toString().padLeft(2, '0')}/${pastDate.month.toString().padLeft(2, '0')}/${pastDate.year}');
   }
 
-  // today - if within range
+  // 3. today - วันนี้ (ถ้าอยู่ใน range)
   if (now.isAfter(firstDate) && now.isBefore(lastDate)) {
     values.add('${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}');
   }
 
-  // future_date - close to lastDate
+  // 4. future_date - วันที่ใกล้ lastDate
   final futureDate = DateTime(
-    lastDate.year - 1,
+    lastDate.year - 1,   // ปีก่อน lastDate
     lastDate.month,
-    15.clamp(1, 28),
+    15.clamp(1, 28),     // วันที่ 15
   );
   if (futureDate.isAfter(firstDate) && futureDate.isBefore(lastDate) && futureDate.isAfter(now)) {
     values.add('${futureDate.day.toString().padLeft(2, '0')}/${futureDate.month.toString().padLeft(2, '0')}/${futureDate.year}');
   }
 
-  // Ensure we have at least 2 non-null values
+  // -------------------------------------------------------------------------
+  // Fallback: ถ้ามีน้อยกว่า 3 values ให้เพิ่ม middle date
+  // -------------------------------------------------------------------------
   if (values.length < 3) {
-    // Add a middle date
     final middleDate = DateTime(
-      (firstDate.year + lastDate.year) ~/ 2,
-      6,
-      15,
+      (firstDate.year + lastDate.year) ~/ 2,  // ปีกลางระหว่าง first และ last
+      6,  // เดือน June
+      15, // วันที่ 15
     );
     values.add('${middleDate.day.toString().padLeft(2, '0')}/${middleDate.month.toString().padLeft(2, '0')}/${middleDate.year}');
   }
@@ -567,106 +967,150 @@ List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
   return values;
 }
 
+/// ดึง maxLength จาก widget metadata
+///
+/// ตรวจสอบจาก 2 sources:
+///   1. inputFormatters - LengthLimitingTextInputFormatter
+///   2. maxLength property
+///
+/// Parameter:
+///   [meta] - metadata ของ widget
+///
+/// Returns:
+///   int? - maxLength หรือ null ถ้าไม่พบ
 int? _maxLenFromMeta(Map<String,dynamic> meta){
-  // Check inputFormatter first (LengthLimitingTextInputFormatter takes priority)
+  // ตรวจสอบ inputFormatter ก่อน (LengthLimitingTextInputFormatter มี priority สูงกว่า)
   final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
+  // หา formatter ที่เป็น type 'lengthLimit'
   final lenFmt = fmts.firstWhere((f) => (f['type'] ?? '') == 'lengthLimit', orElse: ()=>{});
+  // ถ้าพบและมี max ให้ return
   if (lenFmt is Map && lenFmt['max'] is int) return lenFmt['max'] as int;
-  
-  // Fallback to maxLength property
+
+  // Fallback: ใช้ maxLength property โดยตรง
   if (meta['maxLength'] is int) return meta['maxLength'] as int;
-  return null;
+
+  return null; // ไม่พบ maxLength
 }
 
+  // ---------------------------------------------------------------------------
+  // NOTE: ส่วนที่ถูกลบออก
+  // - Validation test cases - ไม่สร้าง individual field validation tests แยก
+  // - API Response cases - ไม่ต้องการแล้วกับ naming convention ใหม่
+  // - Full flow mode - รองรับเฉพาะ pairwise testing
+  // ---------------------------------------------------------------------------
 
+  // ---------------------------------------------------------------------------
+  // STEP 11: Pairwise Test Generation
+  // ---------------------------------------------------------------------------
 
-  // Validation test cases removed - no longer generating individual field validation tests
-  // API Response cases removed - no longer needed with new naming convention
-
-  // Functions already declared above
-
-  // Full flow mode removed - only pairwise testing supported
-
-  // --- Pairwise generation (enabled when PICT model exists) ---
-  // Check if PICT model exists (supports both API forms and widget demos)
+  // ตรวจสอบว่ามี PICT model files หรือไม่
+  // รองรับทั้ง API forms และ widget demos
   final pageBase = utils.basenameWithoutExtension(uiFile);
-  final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';
-  final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt';
-  final pageModelPath = 'output/model_pairwise/$pageBase.full.model.txt';
 
+  // Paths ของ PICT files
+  final pageResultPath = 'output/model_pairwise/$pageBase.full.result.txt';      // Full pairwise result
+  final pageValidResultPath = 'output/model_pairwise/$pageBase.valid.result.txt'; // Valid-only result
+  final pageModelPath = 'output/model_pairwise/$pageBase.full.model.txt';         // PICT model definition
+
+  // ตรวจสอบว่า PICT model มีอยู่หรือไม่
   final hasPictModel = File(pageModelPath).existsSync();
 
+  // ---------------------------------------------------------------------------
+  // STEP 12: โหลดและวิเคราะห์ PICT Model (ถ้ามี)
+  // ---------------------------------------------------------------------------
+
   if (hasPictModel) {
-    // Load page-specific PICT results
+    // โหลด PICT results และ model factors
 
-    List<Map<String,String>>? extCombos;
-    List<Map<String,String>>? extValidCombos;
-    Map<String, List<String>>? modelFactors; // Factors from model file
+    List<Map<String,String>>? extCombos;      // Full pairwise combinations
+    List<Map<String,String>>? extValidCombos; // Valid-only combinations
+    Map<String, List<String>>? modelFactors;  // Factors จาก model file
 
-    // Load PICT model to get actual factor names and widget mappings
+    // โหลด PICT model เพื่อดึง factor names และ widget mappings
     if (File(pageModelPath).existsSync()) {
       modelFactors = pict.parsePictModel(File(pageModelPath).readAsStringSync());
     }
 
-    // Build factor type mapping from model factors
-    // Categorize factors as: text, radio, dropdown, checkbox, switch based on their values
-    final factorTypes = <String, String>{}; // factorName -> type (text/radio/dropdown/checkbox/switch)
-    final textFieldFactors = <String>[]; // List of textfield widget keys
-    final radioGroupFactors = <String>[]; // List of radio group names
-    final dropdownFactors = <String>[]; // List of dropdown widget keys
-    final checkboxFactors = <String>[]; // List of checkbox widget keys
-    final switchFactors = <String>[]; // List of switch widget keys
+    // -------------------------------------------------------------------------
+    // สร้าง factor type mapping จาก model factors
+    // จัดหมวดหมู่ factors เป็น: text, radio, dropdown, checkbox, switch, datepicker, timepicker
+    // -------------------------------------------------------------------------
+
+    final factorTypes = <String, String>{};     // factorName -> type
+    final textFieldFactors = <String>[];        // List ของ textfield widget keys
+    final radioGroupFactors = <String>[];       // List ของ radio group names
+    final dropdownFactors = <String>[];         // List ของ dropdown widget keys
+    final checkboxFactors = <String>[];         // List ของ checkbox widget keys
+    final switchFactors = <String>[];           // List ของ switch widget keys
 
     if (modelFactors != null) {
+      // วนลูปแต่ละ factor ใน model
       for (final entry in modelFactors.entries) {
-        final factorName = entry.key;
-        final values = entry.value;
+        final factorName = entry.key;   // ชื่อ factor (เช่น customer_01_name_textfield)
+        final values = entry.value;      // ค่าที่เป็นไปได้ (เช่น ['valid', 'invalid'])
 
-        // Determine factor type based on values
+        // กำหนด factor type ตาม values
         if (values.contains('valid') && values.contains('invalid')) {
-          // Text field
+          // Text field: มี 'valid' และ 'invalid' values
           factorTypes[factorName] = 'text';
           textFieldFactors.add(factorName);
         } else if (values.contains('checked') && values.contains('unchecked')) {
-          // Checkbox
+          // Checkbox: มี 'checked' และ 'unchecked' values
           factorTypes[factorName] = 'checkbox';
           checkboxFactors.add(factorName);
         } else if (values.contains('on') && values.contains('off')) {
-          // Switch widget
+          // Switch widget: มี 'on' และ 'off' values
           factorTypes[factorName] = 'switch';
           switchFactors.add(factorName);
         } else if (values.any((v) => v.endsWith('_radio'))) {
-          // Radio group
+          // Radio group: มี value ที่ลงท้ายด้วย '_radio'
           factorTypes[factorName] = 'radio';
           radioGroupFactors.add(factorName);
         } else if (datePickerKeys.contains(factorName)) {
-          // DatePicker - detected by checking if factor name is a datepicker key
+          // DatePicker: ตรวจจากว่า factor name อยู่ใน datePickerKeys
           factorTypes[factorName] = 'datepicker';
         } else if (timePickerKeys.contains(factorName)) {
-          // TimePicker - detected by checking if factor name is a timepicker key
+          // TimePicker: ตรวจจากว่า factor name อยู่ใน timePickerKeys
           factorTypes[factorName] = 'timepicker';
         } else {
-          // Dropdown (default for other cases)
+          // Dropdown (default): cases อื่นๆ ถือว่าเป็น dropdown
           factorTypes[factorName] = 'dropdown';
           dropdownFactors.add(factorName);
         }
       }
     }
 
+    // -------------------------------------------------------------------------
+    // โหลด PICT result files
+    // -------------------------------------------------------------------------
+
+    // โหลด full pairwise combinations (valid + invalid)
     if (File(pageResultPath).existsSync()) {
       extCombos = pict.parsePictResult(File(pageResultPath).readAsStringSync());
     }
 
-    // Load valid-only combinations
+    // โหลด valid-only combinations
     if (File(pageValidResultPath).existsSync()) {
       extValidCombos = pict.parsePictResult(File(pageValidResultPath).readAsStringSync());
     }
 
-    // Helper to map Radio suffix to full Radio key
-    // Example: age_10_20_radio -> customer_04_age_10_20_radio
+    // -------------------------------------------------------------------------
+    // Helper Function: Map Radio Suffix to Full Key
+    // -------------------------------------------------------------------------
+
+    /// แปลง Radio suffix เป็น full Radio key
+    /// Example: age_10_20_radio -> customer_04_age_10_20_radio
+    ///
+    /// Parameters:
+    ///   [keys]   - list ของ radio keys ทั้งหมด
+    ///   [suffix] - suffix ที่ต้องการหา
+    ///
+    /// Returns:
+    ///   String? - full key หรือ null ถ้าไม่พบ
     String? _radioKeyForSuffix(List<String> keys, String suffix){
       if (suffix.isEmpty) return null;
-      // Find key that ends with the suffix
+
+      // หา key ที่ลงท้ายด้วย suffix
       String hit = keys.firstWhere(
         (k) => k.endsWith('_$suffix') || k.endsWith(suffix),
         orElse: () => ''
@@ -674,30 +1118,47 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
       return hit.isEmpty ? null : hit;
     }
 
-    // If we have external combos from PICT result, use them directly
+    // -------------------------------------------------------------------------
+    // เลือก combinations ที่จะใช้
+    // -------------------------------------------------------------------------
+
     List<Map<String,String>> combos;
     bool usingExternalCombos = false;
+
+    // ถ้ามี external combos จาก PICT result ให้ใช้เลย
     if (extCombos != null && extCombos.isNotEmpty) {
       combos = extCombos;
       usingExternalCombos = true;
-    } else {
-      // Build factors (excluding API outcome as per requirement)
+    }
+    // ถ้าไม่มี ต้องสร้าง combinations ใหม่
+    else {
+      // -----------------------------------------------------------------------
+      // Fallback: สร้าง factors ใหม่ (ไม่มี PICT model)
+      // -----------------------------------------------------------------------
+
       final factors = <String,List<String>>{};
-      // TextFormField factors: only 'valid' and 'invalid' per requirement
+
+      // TextFormField factors: เฉพาะ 'valid' และ 'invalid'
       for (int i = 0; i < textKeys.length; i++) {
+        // ใช้ชื่อ TEXT, TEXT2, TEXT3, ... สำหรับหลาย fields
         final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${i + 1}';
         factors[factorName] = ['valid', 'invalid'];
       }
 
-      // Auto-detect Radio groups from widgets metadata
-      // Method 1: Group by groupValueBinding (most reliable)
+      // -----------------------------------------------------------------------
+      // Auto-detect Radio groups จาก widgets metadata
+      // -----------------------------------------------------------------------
+
       final radioGroups = <String, List<String>>{};
+
+      // Method 1: Group by groupValueBinding (reliable ที่สุด)
       for (final w in widgets) {
         final t = (w['widgetType'] ?? '').toString();
         final k = (w['key'] ?? '').toString();
         if (t.startsWith('Radio') && k.isNotEmpty && radioKeys.contains(k)) {
           try {
             final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+            // ดึง groupValueBinding (ระบุว่า radio ไหนอยู่ group เดียวกัน)
             final groupBinding = (meta['groupValueBinding'] ?? '').toString();
             if (groupBinding.isNotEmpty) {
               radioGroups.putIfAbsent(groupBinding, () => []);
@@ -707,21 +1168,23 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         }
       }
 
-      // Method 2: Fallback to FormField<int> options (if no groupValueBinding found)
+      // Method 2: Fallback ใช้ FormField<int> options (ถ้าไม่พบ groupValueBinding)
       if (radioGroups.isEmpty) {
         for (final w in widgets) {
           final t = (w['widgetType'] ?? '').toString();
+          // FormField<int> มักเป็น wrapper ของ radio group
           if (t == 'FormField<int>') {
             try {
               final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
               final options = meta['options'];
               if (options is List) {
                 final radioGroup = <String>[];
+                // วนลูปหา Radio ที่ตรงกับแต่ละ option
                 for (final opt in options) {
                   if (opt is Map) {
                     final optValue = opt['value']?.toString();
                     if (optValue != null) {
-                      // Find Radio with matching valueExpr
+                      // หา Radio ที่มี valueExpr ตรงกัน
                       for (final rw in widgets) {
                         final rt = (rw['widgetType'] ?? '').toString();
                         final rk = (rw['key'] ?? '').toString();
@@ -736,6 +1199,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                     }
                   }
                 }
+                // เพิ่ม group ถ้ามีมากกว่า 1 option
                 if (radioGroup.length > 1) {
                   final groupKey = (w['key'] ?? 'unknown').toString();
                   radioGroups[groupKey] = radioGroup;
@@ -746,7 +1210,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         }
       }
 
-      // Add radio groups to factors
+      // เพิ่ม radio groups เป็น factors
       int radioIndex = 1;
       for (final entry in radioGroups.entries) {
         if (entry.value.length > 1) {
@@ -755,6 +1219,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         }
       }
 
+      // Dropdown factors: ใช้ values จาก dropdown แรก
       if (dropdownValues.isNotEmpty) factors['Dropdown'] = List<String>.from(dropdownValues);
 
       // Checkbox factors: Checkbox, Checkbox2, Checkbox3, ...
@@ -763,127 +1228,198 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         factors[factorName] = ['checked', 'unchecked'];
       }
 
-      // DatePicker factors: Generate real dates based on firstDate/lastDate constraints
+      // DatePicker factors: สร้าง dates ตาม constraints
       for (int i = 0; i < datePickerKeys.length; i++) {
         final key = datePickerKeys[i];
-        final factorName = key; // Use the widget key as factor name
+        final factorName = key; // ใช้ widget key เป็น factor name
 
-        // Find picker metadata for this widget
+        // หา picker metadata
         final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key, orElse: () => <String, dynamic>{});
         final pickerMeta = (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ?? {};
 
-        // Generate date values based on constraints
+        // สร้าง date values ตาม constraints
         final dateValues = _generateDateValues(pickerMeta);
         factors[factorName] = dateValues;
       }
 
-      // TimePicker factors: Generate real times
+      // TimePicker factors: สร้าง times
       for (int i = 0; i < timePickerKeys.length; i++) {
         final key = timePickerKeys[i];
         final factorName = timePickerKeys.length == 1 ? key : key;
+        // ค่าเวลาตัวอย่าง + null สำหรับ cancel
         factors[factorName] = ['09:00', '14:30', '18:00', 'null'];
       }
 
-      // Generate optimal pairwise combinations (prefer PICT if requested)
+      // -----------------------------------------------------------------------
+      // Generate pairwise combinations
+      // -----------------------------------------------------------------------
+
       if (pairwiseUsePict) {
+        // ลองใช้ PICT tool ก่อน
         try {
           combos = await pict.executePict(factors, pictBin: pictBin);
         } catch (e) {
+          // ถ้า PICT ล้มเหลว ใช้ internal algorithm แทน
           stderr.writeln('! PICT failed ($e). Falling back to internal pairwise.');
           combos = pict.generatePairwiseInternal(factors);
         }
       } else {
+        // ใช้ internal algorithm
         combos = pict.generatePairwiseInternal(factors);
       }
     }
     
+    // -------------------------------------------------------------------------
+    // Helper Functions สำหรับสร้าง Test Data
+    // -------------------------------------------------------------------------
+
+    /// สร้าง text value สำหรับ boundary value bucket
+    ///
+    /// รองรับ legacy buckets: min, min+1, nominal, max-1, max
+    /// ใช้เมื่อไม่มี dataset สำหรับ field นั้น
+    ///
+    /// Parameters:
+    ///   [tfKey]  - key ของ textfield
+    ///   [bucket] - boundary bucket (valid, invalid, min, max, etc.)
+    ///
+    /// Returns:
+    ///   String - text value ที่เหมาะกับ bucket
     String textForBucket(String tfKey, String bucket){
-      // Legacy buckets fallback if encountered
+      // ดึง maxLength ของ field
       final maxLen = _maxLenFromMeta(_widgetMetaByKey(tfKey));
-      if (bucket=='min') return '';
-      if (bucket=='min+1') return 'A';
+
+      // Legacy boundary buckets
+      if (bucket=='min') return '';           // empty string
+      if (bucket=='min+1') return 'A';        // 1 character
       if (bucket=='nominal') {
+        // ค่ากลาง: ครึ่งหนึ่งของ maxLength หรือ 5
         final n = (maxLen != null && maxLen > 2) ? (maxLen~/2) : 5;
         return 'A' * n;
       }
       if (bucket=='max-1') {
+        // maxLength - 1
         if (maxLen != null && maxLen > 1) return 'A' * (maxLen-1);
         return 'A';
       }
       if (bucket=='max') {
+        // maxLength เต็ม
         final m = maxLen ?? 10;
         return 'A' * m;
       }
+
+      // Default: 5 characters
       return 'A' * 5;
     }
+
+    /// สร้าง dataset path สำหรับ field และ bucket ที่กำหนด
+    ///
+    /// Parameters:
+    ///   [tfKey]  - key ของ textfield
+    ///   [bucket] - 'valid' หรือ 'invalid'
+    ///
+    /// Returns:
+    ///   String? - dataset path หรือ null ถ้าไม่พบ
+    ///
+    /// Example:
+    ///   datasetPathForKeyBucket('name_textfield', 'valid')
+    ///   -> 'byKey.name_textfield[0].valid'
     String? datasetPathForKeyBucket(String tfKey, String bucket){
       final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+
+      // ตรวจสอบว่ามี key นี้ใน datasets หรือไม่
       if (!ds.containsKey(tfKey)) return null;
+
+      // รับเฉพาะ valid และ invalid buckets
       if (bucket != 'valid' && bucket != 'invalid') return null;
 
-      // New format: byKey.<key> is an array of objects
+      // New format: byKey.<key> เป็น array of objects
       final dataArray = ds[tfKey];
       if (dataArray is List && dataArray.isNotEmpty) {
-        // Return path: byKey.<key>[0].valid or byKey.<key>[0].invalid
+        // Return path: byKey.<key>[0].valid หรือ byKey.<key>[0].invalid
         return 'byKey.$tfKey[0].$bucket';
       }
 
-      // Fallback for old format (if exists)
+      // Fallback: old format (map with valid/invalid lists)
       final sub = (ds[tfKey] as Map?)?.cast<String, dynamic>() ?? const {};
       final list = (sub[bucket] as List?) ?? const [];
       if (list.isEmpty) return null;
       return 'byKey.$tfKey.$bucket[0]';
     }
 
+    // -------------------------------------------------------------------------
+    // STEP 13: สร้าง Pairwise Test Cases
+    // -------------------------------------------------------------------------
+
+    // วนลูปแต่ละ combination ที่ได้จาก PICT
     for (int i = 0; i < combos.length; i++) {
-      final c = combos[i];
+      final c = combos[i]; // current combination
+
+      // ดึง radio picks (legacy support)
       final r1Pick = (c['Radio1'] ?? '').toString();
       final r2Pick = (c['Radio2'] ?? '').toString();
       final r3Pick = (c['Radio3'] ?? '').toString();
       final r4Pick = (c['Radio4'] ?? '').toString();
       final ddPick = (c['Dropdown'] ?? '').toString();
 
+      // List เก็บ steps สำหรับ test case นี้
       final st = <Map<String,dynamic>>[];
 
-      // Track if any field uses invalid data to determine test case kind
-      bool hasInvalidData = false;
-      final invalidFields = <String>[]; // Track which fields have invalid data
-      final uncheckedRequiredCheckboxes = <String>[]; // Track unchecked required checkboxes
+      // -----------------------------------------------------------------------
+      // Track Invalid Data
+      // ใช้เพื่อกำหนด test case kind (success/failed)
+      // -----------------------------------------------------------------------
 
-      // Process factors in PICT header order (if using external combos)
+      bool hasInvalidData = false;                      // มี invalid data หรือไม่
+      final invalidFields = <String>[];                  // fields ที่ใช้ invalid data
+      final uncheckedRequiredCheckboxes = <String>[];   // required checkboxes ที่ไม่ได้ check
+
+      // -----------------------------------------------------------------------
+      // Process Factors ตาม PICT header order (ถ้าใช้ external combos)
+      // -----------------------------------------------------------------------
       if (usingExternalCombos) {
-        // Get the header order from the first PICT result to follow factor sequence
+        // ดึง header order จาก PICT result file เพื่อเรียง factors
         List<String> headerOrder = [];
         if (File(pageResultPath).existsSync()) {
           final content = File(pageResultPath).readAsStringSync();
+          // แยก lines และกรอง empty lines
           final lines = content.trim().split(RegExp(r'\r?\n')).where((l) => l.trim().isNotEmpty).toList();
           if (lines.isNotEmpty) {
+            // บรรทัดแรกคือ header (tab-separated)
             headerOrder = lines.first.split('\t').map((s) => s.trim()).toList();
           }
         }
 
-        // Build a map of all steps keyed by widget key to maintain manifest order
+        // สร้าง map เก็บ steps แยกตาม widget key
+        // ใช้เพื่อรักษาลำดับตาม manifest
         final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
-        // Process factors using actual factor names from model
+        // Process แต่ละ factor ตาม actual factor names จาก model
         for (final factorName in c.keys) {
-          final factorType = factorTypes[factorName];
-          final pick = (c[factorName] ?? '').toString();
+          final factorType = factorTypes[factorName]; // ดึง type ของ factor
+          final pick = (c[factorName] ?? '').toString(); // ค่าที่เลือกสำหรับ factor นี้
           if (pick.isEmpty) continue;
 
+          // -----------------------------------------------------------------
+          // Text Field: กรอกข้อความ valid หรือ invalid
+          // -----------------------------------------------------------------
           if (factorType == 'text') {
-            // Text field - use factor name as widget key directly
+            // กำหนด bucket จากค่าที่เลือก
             final bucket = (pick == 'invalid') ? 'invalid' : 'valid';
             if (bucket == 'invalid') {
               hasInvalidData = true;
-              invalidFields.add(factorName); // Track this field as invalid
+              invalidFields.add(factorName); // Track field นี้เป็น invalid
             }
+            // สร้าง enterText step พร้อม dataset path
             stepsByKey[factorName] = [
               {'enterText': {'byKey': factorName, 'dataset': 'byKey.$factorName[0].$bucket'}},
               {'pump': true}
             ];
-          } else if (factorType == 'radio') {
-            // Radio group - pick is the radio option suffix
+          }
+          // -----------------------------------------------------------------
+          // Radio Group: เลือก radio option
+          // -----------------------------------------------------------------
+          else if (factorType == 'radio') {
+            // pick คือ radio option suffix (เช่น age_10_20_radio)
             final matchedKey = _radioKeyForSuffix(radioKeys, pick);
             if (matchedKey != null) {
               stepsByKey[matchedKey] = [
@@ -891,9 +1427,12 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
-          } else if (factorType == 'dropdown') {
-            // Dropdown - use factor name as widget key directly
-            // Map value -> text for tapText
+          }
+          // -----------------------------------------------------------------
+          // Dropdown: เลือก dropdown option
+          // -----------------------------------------------------------------
+          else if (factorType == 'dropdown') {
+            // แปลง value เป็น text ที่แสดงใน UI
             String textToTap = pick;
             final dropdownIdx = dropdownKeys.indexOf(factorName);
             if (dropdownIdx >= 0 && dropdownIdx < dropdownValueToTextMaps.length) {
@@ -903,51 +1442,68 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
             }
 
             stepsByKey[factorName] = [
-              {'tap': {'byKey': factorName}},
+              {'tap': {'byKey': factorName}},   // เปิด dropdown
               {'pump': true},
-              {'tapText': textToTap},
+              {'tapText': textToTap},            // เลือก option
               {'pump': true}
             ];
-          } else if (factorType == 'checkbox') {
-            // Checkbox - use factor name as widget key directly
+          }
+          // -----------------------------------------------------------------
+          // Checkbox: check หรือ uncheck
+          // -----------------------------------------------------------------
+          else if (factorType == 'checkbox') {
             if (pick == 'checked') {
+              // Tap เพื่อ check
               stepsByKey[factorName] = [
                 {'tap': {'byKey': factorName}},
                 {'pump': true}
               ];
             } else if (pick == 'unchecked' && requiredCheckboxValidation.containsKey(factorName)) {
-              // Required checkbox is unchecked = invalid form state
+              // Required checkbox ที่ unchecked = invalid form state
               hasInvalidData = true;
               uncheckedRequiredCheckboxes.add(factorName);
             }
-          } else if (factorType == 'switch') {
-            // Switch widget - tap only if 'on', skip if 'off' (default state)
+            // ถ้า unchecked และไม่ required ไม่ต้องทำอะไร (default state)
+          }
+          // -----------------------------------------------------------------
+          // Switch: on หรือ off
+          // -----------------------------------------------------------------
+          else if (factorType == 'switch') {
+            // Tap เฉพาะถ้า 'on' (off คือ default state)
             if (pick == 'on') {
               stepsByKey[factorName] = [
                 {'tap': {'byKey': factorName}},
                 {'pump': true}
               ];
             }
-          } else if (datePickerKeys.contains(factorName)) {
-            // DatePicker widget - open picker and select date
+          }
+          // -----------------------------------------------------------------
+          // DatePicker: เปิด picker และเลือกวันที่
+          // -----------------------------------------------------------------
+          else if (datePickerKeys.contains(factorName)) {
             stepsByKey[factorName] = [
-              {'tap': {'byKey': factorName}},
-              {'pumpAndSettle': true},
-              {'selectDate': pick},
-              {'pumpAndSettle': true}
+              {'tap': {'byKey': factorName}},    // เปิด picker
+              {'pumpAndSettle': true},            // รอ dialog
+              {'selectDate': pick},               // เลือกวันที่
+              {'pumpAndSettle': true}             // รอปิด dialog
             ];
-          } else if (timePickerKeys.contains(factorName)) {
-            // TimePicker widget - open picker and select time
+          }
+          // -----------------------------------------------------------------
+          // TimePicker: เปิด picker และเลือกเวลา
+          // -----------------------------------------------------------------
+          else if (timePickerKeys.contains(factorName)) {
             stepsByKey[factorName] = [
-              {'tap': {'byKey': factorName}},
-              {'pumpAndSettle': true},
-              {'selectTime': pick},
-              {'pumpAndSettle': true}
+              {'tap': {'byKey': factorName}},    // เปิด picker
+              {'pumpAndSettle': true},            // รอ dialog
+              {'selectTime': pick},               // เลือกเวลา
+              {'pumpAndSettle': true}             // รอปิด dialog
             ];
           }
         }
 
-        // Add steps in key sequence order (sort widgets by key before iterating)
+        // ---------------------------------------------------------------------
+        // เพิ่ม steps ตามลำดับ widget key (sort ก่อน)
+        // ---------------------------------------------------------------------
         final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
         sortedWidgets.sort((a, b) {
           final keyA = (a['key'] ?? '').toString();
@@ -955,33 +1511,47 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           return keyA.compareTo(keyB);
         });
 
+        // วนลูปเพิ่ม steps ตามลำดับ sorted widgets
         for (final w in sortedWidgets) {
           final key = (w['key'] ?? '').toString();
           if (stepsByKey.containsKey(key)) {
             st.addAll(stepsByKey[key]!);
           }
         }
-      } else {
-        // Fallback to original logic for non-external combos
-        // Build a map of all steps keyed by widget key to maintain manifest order
+      }
+      // ---------------------------------------------------------------------
+      // Fallback: ไม่ได้ใช้ external combos
+      // ---------------------------------------------------------------------
+      else {
+        // Fallback: ใช้ original logic สำหรับ non-external combos
+        // สร้าง map เก็บ steps แยกตาม widget key
         final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
-        // Process text fields and collect their steps
+        // ---------------------------------------------------------------------
+        // Process Text Fields
+        // ---------------------------------------------------------------------
         for (int j = 0; j < textKeys.length; j++) {
+          // กำหนด factor name: TEXT, TEXT2, TEXT3, ...
           final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
-          final tfBucket = c[factorName];
+          final tfBucket = c[factorName]; // ค่า bucket ที่เลือก (valid/invalid)
+
           if (tfBucket != null) {
+            // Track invalid data
             if (tfBucket.toString() == 'invalid') {
               hasInvalidData = true;
-              invalidFields.add(textKeys[j]); // Track this field as invalid
+              invalidFields.add(textKeys[j]);
             }
+
+            // หา dataset path
             final dsPath = datasetPathForKeyBucket(textKeys[j], tfBucket.toString());
             if (dsPath != null) {
+              // ใช้ dataset path
               stepsByKey[textKeys[j]] = [
                 {'enterText': {'byKey': textKeys[j], 'dataset': dsPath}},
                 {'pump': true}
               ];
             } else {
+              // Fallback: ใช้ generated text
               stepsByKey[textKeys[j]] = [
                 {'enterText': {'byKey': textKeys[j], 'text': textForBucket(textKeys[j], tfBucket)}},
                 {'pump': true}
@@ -990,26 +1560,30 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Process dropdown and collect steps
+        // ---------------------------------------------------------------------
+        // Process Dropdown
+        // ---------------------------------------------------------------------
         if (dropdownKey != null && c['Dropdown'] != null) {
           final ddPick = (c['Dropdown'] ?? '').toString();
           if (ddPick.isNotEmpty) {
             stepsByKey[dropdownKey] = [
-              {'tap': {'byKey': dropdownKey}},
+              {'tap': {'byKey': dropdownKey}}, // เปิด dropdown
               {'pump': true},
-              {'tapText': ddPick},
+              {'tapText': ddPick},              // เลือก option
               {'pump': true}
             ];
           }
         }
 
-        // Process radios and collect their steps
-        // Match Radio suffix from PICT with full Radio key
+        // ---------------------------------------------------------------------
+        // Process Radio Groups
+        // Match Radio suffix จาก PICT กับ full Radio key
+        // ---------------------------------------------------------------------
         for (final factorName in c.keys) {
           if (factorName.startsWith('Radio')) {
             final pick = (c[factorName] ?? '').toString();
             if (pick.isNotEmpty) {
-              // pick is Radio suffix like "age_10_20_radio"
+              // pick คือ Radio suffix เช่น "age_10_20_radio"
               final matchedKey = _radioKeyForSuffix(radioKeys, pick);
               if (matchedKey != null) {
                 stepsByKey[matchedKey] = [
@@ -1021,10 +1595,15 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Process checkboxes and collect their steps
+        // ---------------------------------------------------------------------
+        // Process Checkboxes
+        // ---------------------------------------------------------------------
         for (int idx = 0; idx < checkboxKeys.length; idx++) {
+          // กำหนด factor name: Checkbox, Checkbox2, Checkbox3, ...
           final factorName = (checkboxKeys.length == 1 || idx == 0) ? 'Checkbox' : 'Checkbox${idx + 1}';
           final pick = (c[factorName] ?? '').toString();
+
+          // Tap เฉพาะถ้าเลือก 'checked'
           if (pick == 'checked') {
             final key = checkboxKeys[idx];
             if (key.isNotEmpty) {
@@ -1036,37 +1615,45 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Process DatePicker widgets
+        // ---------------------------------------------------------------------
+        // Process DatePicker Widgets
+        // ---------------------------------------------------------------------
         for (int idx = 0; idx < datePickerKeys.length; idx++) {
           final key = datePickerKeys[idx];
           final factorName = datePickerKeys.length == 1 ? key : key;
           final pick = (c[factorName] ?? '').toString();
+
           if (pick.isNotEmpty && key.isNotEmpty) {
             stepsByKey[key] = [
-              {'tap': {'byKey': key}},
-              {'pumpAndSettle': true},  // Wait for dialog to appear
-              {'selectDate': pick},      // Select date: today, past_date, future_date, null
-              {'pumpAndSettle': true}    // Wait for dialog to close
+              {'tap': {'byKey': key}},          // เปิด picker
+              {'pumpAndSettle': true},           // รอ dialog ปรากฏ
+              {'selectDate': pick},              // เลือกวันที่: DD/MM/YYYY หรือ null
+              {'pumpAndSettle': true}            // รอ dialog ปิด
             ];
           }
         }
 
-        // Process TimePicker widgets
+        // ---------------------------------------------------------------------
+        // Process TimePicker Widgets
+        // ---------------------------------------------------------------------
         for (int idx = 0; idx < timePickerKeys.length; idx++) {
           final key = timePickerKeys[idx];
           final factorName = timePickerKeys.length == 1 ? key : key;
           final pick = (c[factorName] ?? '').toString();
+
           if (pick.isNotEmpty && key.isNotEmpty) {
             stepsByKey[key] = [
-              {'tap': {'byKey': key}},
-              {'pumpAndSettle': true},  // Wait for dialog to appear
-              {'selectTime': pick},      // Select time: today, future_date, null
-              {'pumpAndSettle': true}    // Wait for dialog to close
+              {'tap': {'byKey': key}},          // เปิด picker
+              {'pumpAndSettle': true},           // รอ dialog ปรากฏ
+              {'selectTime': pick},              // เลือกเวลา: HH:MM หรือ null
+              {'pumpAndSettle': true}            // รอ dialog ปิด
             ];
           }
         }
 
-        // Add steps in key sequence order (sort widgets by key before iterating)
+        // ---------------------------------------------------------------------
+        // เพิ่ม steps ตามลำดับ widget key (sort ก่อน)
+        // ---------------------------------------------------------------------
         final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
         sortedWidgets.sort((a, b) {
           final keyA = (a['key'] ?? '').toString();
@@ -1082,35 +1669,51 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         }
       }
 
-      // Final API call (if end button exists)
+      // -----------------------------------------------------------------------
+      // Final Action: Submit Form (ถ้ามี end button)
+      // -----------------------------------------------------------------------
+
       if (hasEndButton && endKey != null) {
+        // API flow: กดปุ่ม submit
         st.add({'tap': {'byKey': endKey}});
-        st.add({'pumpAndSettle': true});
+        st.add({'pumpAndSettle': true}); // รอ API call และ animation
       } else {
-        // For widget demos without submit button, just pump
+        // Widget demo: ไม่มีปุ่ม submit, แค่ pump
         st.add({'pump': true});
       }
 
-      // Determine test case kind based on whether invalid data is used
+      // -----------------------------------------------------------------------
+      // กำหนด Test Case Kind
+      // -----------------------------------------------------------------------
+
+      // กำหนดว่า test case เป็น success หรือ failed
+      // ขึ้นอยู่กับว่ามี invalid data หรือไม่
       final caseKind = hasInvalidData ? 'failed' : 'success';
+
+      // สร้าง test case ID
       final id = 'pairwise_valid_invalid_cases_${i + 1}';
 
-      // Build assertions - include validation error messages for invalid fields
+      // -----------------------------------------------------------------------
+      // สร้าง Assertions
+      // -----------------------------------------------------------------------
+
       final asserts = <Map<String, dynamic>>[];
 
       if (hasInvalidData) {
-        // For cases with invalid data, expect invalidRuleMessages from datasets (not empty/required messages)
+        // Case: มี invalid data -> คาดหวัง validation error messages
+
         final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
 
+        // ดึง invalidRuleMessages จาก datasets สำหรับแต่ละ invalid field
         for (final fieldKey in invalidFields) {
-          // Get invalidRuleMessages from datasets for this field
           final dataArray = ds[fieldKey];
           if (dataArray is List && dataArray.isNotEmpty) {
-            // Use index [0] since dataset path uses [0]
+            // ใช้ index [0] ตาม dataset path
             final firstPair = dataArray[0];
             if (firstPair is Map) {
               final invalidRuleMsg = firstPair['invalidRuleMessages']?.toString();
-              // Only include non-empty validation messages (exclude "Required"/"กรุณา" messages)
+              // รวมเฉพาะ validation messages ที่ไม่ใช่ "Required" หรือ "กรุณา"
+              // (empty field messages ถูกจัดการแยกใน edge_cases)
               if (invalidRuleMsg != null &&
                   invalidRuleMsg.isNotEmpty &&
                   !invalidRuleMsg.toLowerCase().contains('required') &&
@@ -1121,7 +1724,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Add validation messages for unchecked required checkboxes
+        // เพิ่ม validation messages สำหรับ unchecked required checkboxes
         for (final checkboxKey in uncheckedRequiredCheckboxes) {
           final validationMsg = requiredCheckboxValidation[checkboxKey];
           if (validationMsg != null && validationMsg.isNotEmpty) {
@@ -1129,66 +1732,77 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Assert that expected fail keys exist (if any)
+        // Assert ว่า expected fail keys ต้อง exist
         for (final failKey in expectedFailKeys) {
           asserts.add({'byKey': failKey, 'exists': true});
         }
       } else {
-        // For valid data cases, expect success keys
+        // Case: valid data -> คาดหวัง success keys
+
         for (final successKey in expectedSuccessKeys) {
           asserts.add({'byKey': successKey, 'exists': true});
         }
       }
 
+      // -----------------------------------------------------------------------
+      // เพิ่ม Test Case ลง List
+      // -----------------------------------------------------------------------
+
       cases.add({
-        'tc': id,
-        'kind': caseKind,
-        'group': 'pairwise_valid_invalid_cases',
-        'steps': st,
-        'asserts': asserts,
+        'tc': id,                              // Test case ID
+        'kind': caseKind,                      // success หรือ failed
+        'group': 'pairwise_valid_invalid_cases', // Group name
+        'steps': st,                           // List ของ steps
+        'asserts': asserts,                    // List ของ assertions
       });
     }
 
-    // --- Generate pairwise valid-only cases ---
-    // Generate additional valid-only test cases if we have valid combinations
+    // -------------------------------------------------------------------------
+    // STEP 14: สร้าง Pairwise Valid-Only Cases
+    // สร้าง test cases เพิ่มเติมที่ใช้เฉพาะ valid data
+    // -------------------------------------------------------------------------
+
     if (extValidCombos != null && extValidCombos.isNotEmpty) {
+      // วนลูปแต่ละ valid combination
       for (int i = 0; i < extValidCombos.length; i++) {
         final c = extValidCombos[i];
         final st = <Map<String,dynamic>>[];
 
-        // Get the header order for valid combos (similar to regular pairwise)
+        // ดึง header order จาก valid result file
         List<String> headerOrder = [];
         if (File(pageValidResultPath).existsSync()) {
           final content = File(pageValidResultPath).readAsStringSync();
           final lines = content.trim().split(RegExp(r'\r?\n')).where((l) => l.trim().isNotEmpty).toList();
           if (lines.isNotEmpty) {
+            // บรรทัดแรกคือ header
             headerOrder = lines.first.split('\t').map((s) => s.trim()).toList();
           }
         }
 
-        // If no header order found, fall back to default order
+        // Fallback: ใช้ default order ถ้าไม่พบ header
         if (headerOrder.isEmpty) {
           headerOrder = ['TEXT', 'TEXT2', 'TEXT3', 'Radio2', 'Radio3', 'Radio4', 'Dropdown'];
         }
 
-        // Build a map of all steps keyed by widget key to maintain manifest order
+        // สร้าง map เก็บ steps แยกตาม widget key
         final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
-        // Process each factor and collect steps using actual factor names
+        // Process แต่ละ factor ตาม header order
         for (final factorName in headerOrder) {
           final pick = (c[factorName] ?? '').toString();
           if (pick.isEmpty) continue;
 
           final factorType = factorTypes[factorName];
 
+          // Text field: ใช้ valid data เสมอ
           if (factorType == 'text') {
-            // Text field - always use valid for valid-only cases
             stepsByKey[factorName] = [
               {'enterText': {'byKey': factorName, 'dataset': 'byKey.$factorName[0].valid'}},
               {'pump': true}
             ];
-          } else if (factorType == 'radio') {
-            // Radio group - pick is the radio option suffix
+          }
+          // Radio group
+          else if (factorType == 'radio') {
             final matchedKey = _radioKeyForSuffix(radioKeys, pick);
             if (matchedKey != null) {
               stepsByKey[matchedKey] = [
@@ -1196,9 +1810,9 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
                 {'pump': true}
               ];
             }
-          } else if (factorType == 'dropdown') {
-            // Dropdown - use factor name as widget key directly
-            // Map value -> text for tapText
+          }
+          // Dropdown
+          else if (factorType == 'dropdown') {
             String textToTap = pick;
             final dropdownIdx = dropdownKeys.indexOf(factorName);
             if (dropdownIdx >= 0 && dropdownIdx < dropdownValueToTextMaps.length) {
@@ -1213,32 +1827,36 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
               {'tapText': textToTap},
               {'pump': true}
             ];
-          } else if (factorType == 'checkbox') {
-            // Checkbox - use factor name as widget key directly
+          }
+          // Checkbox
+          else if (factorType == 'checkbox') {
             if (pick == 'checked') {
               stepsByKey[factorName] = [
                 {'tap': {'byKey': factorName}},
                 {'pump': true}
               ];
             }
-          } else if (factorType == 'switch') {
-            // Switch widget - tap only if 'on', skip if 'off' (default state)
+          }
+          // Switch
+          else if (factorType == 'switch') {
             if (pick == 'on') {
               stepsByKey[factorName] = [
                 {'tap': {'byKey': factorName}},
                 {'pump': true}
               ];
             }
-          } else if (datePickerKeys.contains(factorName)) {
-            // DatePicker widget - open picker and select date
+          }
+          // DatePicker
+          else if (datePickerKeys.contains(factorName)) {
             stepsByKey[factorName] = [
               {'tap': {'byKey': factorName}},
               {'pumpAndSettle': true},
               {'selectDate': pick},
               {'pumpAndSettle': true}
             ];
-          } else if (timePickerKeys.contains(factorName)) {
-            // TimePicker widget - open picker and select time
+          }
+          // TimePicker
+          else if (timePickerKeys.contains(factorName)) {
             stepsByKey[factorName] = [
               {'tap': {'byKey': factorName}},
               {'pumpAndSettle': true},
@@ -1248,7 +1866,7 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Add steps in key sequence order (sort widgets by key before iterating)
+        // เพิ่ม steps ตามลำดับ sorted widgets
         final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
         sortedWidgets.sort((a, b) {
           final keyA = (a['key'] ?? '').toString();
@@ -1263,19 +1881,17 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
           }
         }
 
-        // Final API call (if end button exists)
+        // Final action
         if (hasEndButton && endKey != null) {
           st.add({'tap': {'byKey': endKey}});
           st.add({'pumpAndSettle': true});
         } else {
-          // For widget demos without submit button, just pump
           st.add({'pump': true});
         }
 
-        // Valid-only cases should always expect success
+        // Valid-only cases: คาดหวัง success เสมอ
         final id = 'pairwise_valid_cases_${i + 1}';
         final asserts = <Map<String, dynamic>>[];
-        // Expect success keys for valid cases
         for (final successKey in expectedSuccessKeys) {
           asserts.add({'byKey': successKey, 'exists': true});
         }
@@ -1289,138 +1905,218 @@ int? _maxLenFromMeta(Map<String,dynamic> meta){
         });
       }
     }
-  }
+  } // End of hasPictModel block
 
-  // --- Radio-only state cases removed as per latest requirement ---
+  // ---------------------------------------------------------------------------
+  // NOTE: Radio-only state cases ถูกลบออกตาม requirement ล่าสุด
+  // ---------------------------------------------------------------------------
 
-  // --- Single empty-all-fields case (no API) ---
-  // No typing steps; if there is *_validate_button, tap it to trigger validate.
-  // Ifไม่มี validate button แยก แต่มี *_endapi_* หรือ *_end_* ให้กดปุ่มนั้นแทนเพื่อ trigger validate
-  // For empty fields test, detect required fields by checking validator conditions (not just message text)
+  // ---------------------------------------------------------------------------
+  // STEP 15: สร้าง Edge Cases - Empty All Fields Test
+  // ---------------------------------------------------------------------------
+
+  // Test case: กดปุ่ม submit โดยไม่กรอกข้อมูลใดๆ
+  // คาดหวังว่าจะเห็น validation messages สำหรับทุก required fields
+
+  // Map เก็บ validation messages และจำนวนครั้งที่คาดหวังจะเห็น
   final expectedMsgsCount = <String, int>{};
 
-  // Helper to check if a condition indicates empty/null validation
+  /// Helper: ตรวจสอบว่า condition เป็นการ validate empty/null หรือไม่
   bool _isEmptyCheckCondition(String condition) {
     final normalized = condition.toLowerCase().replaceAll(' ', '');
+    // Patterns ที่บ่งบอกว่าเป็น empty validation
     return normalized.contains('value==null') ||
            normalized.contains('value.isempty') ||
            normalized.contains('valuenull') ||
            normalized.contains('valueisempty');
   }
 
+  // วนลูปหา validation messages จากทุก widgets
   for (final w in widgets) {
     try {
       final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
 
-      // Check validatorRules (more reliable - uses condition logic)
+      // -------------------------------------------------------------------------
+      // Method 1: ตรวจสอบ validatorRules (reliable กว่า - ใช้ condition logic)
+      // -------------------------------------------------------------------------
       final rules = (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
       for (final rule in rules) {
         if (rule is Map) {
           final condition = rule['condition']?.toString() ?? '';
           final msg = rule['message']?.toString() ?? '';
 
-          // Check if this rule validates empty/null values by analyzing the condition
+          // วิเคราะห์ condition เพื่อดูว่าเป็น empty validation หรือไม่
           if (msg.isNotEmpty && _isEmptyCheckCondition(condition)) {
+            // นับจำนวนครั้งที่คาดหวังจะเห็น message นี้
             expectedMsgsCount[msg] = (expectedMsgsCount[msg] ?? 0) + 1;
           }
         }
       }
 
-      // Fallback: Check validatorMessages (for TextFormField without explicit rules)
-      // Use pattern matching for common empty-field messages
+      // -------------------------------------------------------------------------
+      // Method 2: Fallback - ใช้ validatorMessages (สำหรับ TextFormField ที่ไม่มี explicit rules)
+      // -------------------------------------------------------------------------
       if (rules.isEmpty) {
         final v = (meta['validatorMessages'] as List?)?.cast<dynamic>() ?? const [];
         for (final m in v) {
           final s = m?.toString() ?? '';
-          // Match common patterns for empty field validation (multilingual support)
+          // Pattern matching สำหรับ empty field validation messages
+          // รองรับทั้งภาษาอังกฤษและภาษาไทย
           if (s.isNotEmpty && (
               s.toLowerCase().contains('required') ||
-              s.contains('กรุณา') ||
-              s.contains('โปรด') ||
-              s.contains('ต้อง') ||
+              s.contains('กรุณา') ||        // Thai: "please"
+              s.contains('โปรด') ||          // Thai: "please"
+              s.contains('ต้อง') ||          // Thai: "must"
               s.toLowerCase().contains('please') ||
               s.toLowerCase().contains('cannot be empty') ||
               s.toLowerCase().contains('is required'))) {
             expectedMsgsCount[s] = (expectedMsgsCount[s] ?? 0) + 1;
-            break; // Only take the first empty-validation message
+            break; // เก็บแค่ message แรกของ field นี้
           }
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      // ignore errors
+    }
   }
 
-  // If no specific "Required" messages found, add default "Required" for each TextFormField
+  // Fallback: ถ้าไม่พบ specific messages ให้ใช้ "Required" default
   if (expectedMsgsCount.isEmpty && textKeys.isNotEmpty) {
     for (final tfKey in textKeys) {
       expectedMsgsCount['Required'] = (expectedMsgsCount['Required'] ?? 0) + 1;
     }
   }
 
+  // สร้าง assertions สำหรับ empty fields test
+  // รวม 'count' เพื่อบอกว่าคาดหวังจะเห็น message นี้กี่ครั้ง
   final emptyAsserts = [
     for (final entry in expectedMsgsCount.entries)
       {'text': entry.key, 'exists': true, 'count': entry.value}
   ];
+
+  // สร้าง steps สำหรับ empty fields test
   final emptySteps = <Map<String,dynamic>>[];
-  // Use endKey (end button) to trigger validation
+  // กดปุ่ม end/submit เพื่อ trigger validation
   if (endKey != null) {
     emptySteps.add({'tap': {'byKey': endKey}});
     emptySteps.add({'pumpAndSettle': true});
   }
+
+  // เพิ่ม edge case ลง test cases
   cases.add({
-    'tc': 'edge_cases_empty_all_fields',
-    'kind': 'failed',
-    'group': 'edge_cases',
-    'steps': emptySteps,
-    'asserts': emptyAsserts,
+    'tc': 'edge_cases_empty_all_fields',  // Test case ID
+    'kind': 'failed',                       // คาดหวังว่าจะ fail
+    'group': 'edge_cases',                  // Group name
+    'steps': emptySteps,                    // Steps (แค่กดปุ่ม submit)
+    'asserts': emptyAsserts,                // คาดหวังเห็น validation messages
   });
 
-  // Output structure: only 3 main sections (source, datasets, cases)
+  // ---------------------------------------------------------------------------
+  // STEP 16: เขียน Output File
+  // ---------------------------------------------------------------------------
+
+  // สร้างโครงสร้าง output JSON
+  // มี 3 sections หลัก: source, datasets, cases
   final plan = <String, dynamic>{
-    'source': source,
-    'datasets': datasets,
-    'cases': cases,
+    'source': source,      // ข้อมูล source (UI file, page class, cubit class)
+    'datasets': datasets,  // datasets สำหรับ test data
+    'cases': cases,        // list ของ test cases
   };
 
+  // กำหนด output path
+  // ตัวอย่าง: lib/demos/customer_page.dart -> output/test_data/customer_page.testdata.json
   final outPath = 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+
+  // สร้าง directory ถ้ายังไม่มี (recursive)
   File(outPath).createSync(recursive: true);
+
+  // เขียน JSON ไฟล์ (pretty print with 2-space indent)
   File(outPath).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(plan) + '\n');
+
+  // แสดง success message
   stdout.writeln('✓ fullpage plan: $outPath');
 }
 
+// =============================================================================
+// NOTE: _basename, _basenameWithoutExtension ถูกย้ายไปใช้จาก utils.dart
+// =============================================================================
 
-// Removed: _basename, _basenameWithoutExtension - now using utils.dart
+// =============================================================================
+// PICT MODEL GENERATION
+// =============================================================================
 
-// Attempt to read output/manifest/**/<page>.manifest.json and emit a PICT model
+/// พยายามสร้าง PICT model จาก manifest file
+///
+/// อ่าน manifest file และสร้าง PICT model files สำหรับ pairwise testing
+///
+/// Parameters:
+///   [uiFile]      - path ของ UI file (เช่น lib/demos/register_page.dart)
+///   [pictBin]     - path ของ PICT binary
+///   [constraints] - PICT constraints string (optional)
+///
+/// Output files:
+///   - output/model_pairwise/<page>.full.model.txt
+///   - output/model_pairwise/<page>.full.result.txt
+///   - output/model_pairwise/<page>.valid.model.txt
+///   - output/model_pairwise/<page>.valid.result.txt
 Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin = './pict', String? constraints}) async {
+  // ดึงชื่อไฟล์โดยไม่มี extension
   final base = utils.basenameWithoutExtension(uiFile);
 
-  // Extract subfolder structure from uiFile (e.g., lib/demos/register_page.dart → demos)
-  final normalizedPath = uiFile.replaceAll('\\', '/');
+  // ---------------------------------------------------------------------------
+  // คำนวณ subfolder path จาก uiFile
+  // ตัวอย่าง: lib/demos/register_page.dart → demos
+  // ---------------------------------------------------------------------------
+
+  final normalizedPath = uiFile.replaceAll('\\', '/'); // normalize path separators
   String subfolderPath = '';
+
   if (normalizedPath.startsWith('lib/')) {
+    // ดึง path หลัง 'lib/'
     final pathAfterLib = normalizedPath.substring(4);
+    // หา last slash เพื่อแยก folder และ filename
     final lastSlash = pathAfterLib.lastIndexOf('/');
     if (lastSlash > 0) {
       subfolderPath = pathAfterLib.substring(0, lastSlash);
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // กำหนด manifest path
+  // ---------------------------------------------------------------------------
+
   final manifestPath = subfolderPath.isNotEmpty
-      ? 'output/manifest/$subfolderPath/$base.manifest.json'
-      : 'output/manifest/$base.manifest.json';
+      ? 'output/manifest/$subfolderPath/$base.manifest.json'  // มี subfolder
+      : 'output/manifest/$base.manifest.json';                 // ไม่มี subfolder
+
   final f = File(manifestPath);
-  if (!f.existsSync()) return; // silently skip when no manifest
+
+  // ถ้าไม่มี manifest ให้ข้ามไป (silently)
+  if (!f.existsSync()) return;
+
+  // ---------------------------------------------------------------------------
+  // อ่านและ parse manifest
+  // ---------------------------------------------------------------------------
 
   final j = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
   final widgets = (j['widgets'] as List? ?? const []).cast<Map<String, dynamic>>();
 
-  // Extract factors and required checkboxes using pict_generator module
+  // ---------------------------------------------------------------------------
+  // ดึง factors และ required checkboxes จาก manifest
+  // ใช้ pict_generator module
+  // ---------------------------------------------------------------------------
+
   final extractionResult = pict.extractFactorsFromManifest(widgets);
   final factors = extractionResult.factors;
   final requiredCheckboxes = extractionResult.requiredCheckboxes;
-  if (factors.isEmpty) return; // nothing to write
 
-  // Generate and write PICT model files using pict_generator module
+  // ถ้าไม่มี factors ให้ข้ามไป
+  if (factors.isEmpty) return;
+
+  // ---------------------------------------------------------------------------
+  // สร้างและเขียน PICT model files
+  // ---------------------------------------------------------------------------
+
   await pict.writePictModelFiles(
     factors: factors,
     pageBaseName: base,
@@ -1430,25 +2126,46 @@ Future<void> _tryWritePictModelFromManifestForUi(String uiFile, {String pictBin 
   );
 }
 
-// Helper functions for dropdown options
+// =============================================================================
+// HELPER FUNCTIONS - Dropdown Options
+// =============================================================================
+
+/// ดึง options จาก dropdown metadata
+///
+/// รองรับหลาย formats:
+///   - List ของ Maps: [{value: "v1", text: "Text 1"}, ...]
+///   - List ของ strings: ["opt1", "opt2", ...]
+///
+/// Parameter:
+///   [raw] - raw options data จาก metadata
+///
+/// Returns:
+///   List<String> - list ของ option values (cleaned for PICT compatibility)
 List<String> _optionsFromMeta(dynamic raw) {
   final out = <String>[];
+
   if (raw is List) {
+    // วนลูปแต่ละ entry
     for (final entry in raw) {
       if (entry is Map) {
-        // Use value field for PICT compatibility (ASCII only, no Thai characters)
+        // Format: {value: "...", text: "...", label: "..."}
+        // ใช้ value field ก่อน (PICT compatible - ASCII only)
         final value = entry['value']?.toString();
         final text = entry['text']?.toString();
         final label = entry['label']?.toString();
+
+        // เลือก field ที่มีค่า
         final chosen = (value != null && value.isNotEmpty) ? value
                      : (text != null && text.isNotEmpty) ? text
                      : label;
+
         if (chosen != null && chosen.isNotEmpty) {
-          // Replace spaces with underscores for PICT compatibility
+          // แทนที่ spaces ด้วย underscores สำหรับ PICT compatibility
           final cleaned = chosen.replaceAll(' ', '_');
           out.add(cleaned);
         }
       } else if (entry != null) {
+        // Format: string โดยตรง
         final s = entry.toString();
         if (s.isNotEmpty) {
           final cleaned = s.replaceAll(' ', '_');
@@ -1457,5 +2174,6 @@ List<String> _optionsFromMeta(dynamic raw) {
       }
     }
   }
+
   return out;
 }
