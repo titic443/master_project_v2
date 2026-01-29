@@ -20,6 +20,13 @@ const coverageSection = document.getElementById('coverageSection');
 const viewCoverageBtn = document.getElementById('viewCoverageBtn');
 const openCoverageFolderBtn = document.getElementById('openCoverageFolderBtn');
 
+// Constraints elements
+const useConstraintsCheckbox = document.getElementById('useConstraints');
+const constraintsPanel = document.getElementById('constraintsPanel');
+const constraintsText = document.getElementById('constraintsText');
+const loadConstraintsBtn = document.getElementById('loadConstraintsBtn');
+const clearConstraintsBtn = document.getElementById('clearConstraintsBtn');
+
 // State
 let isGenerating = false;
 let generatedTestScript = null;
@@ -39,6 +46,92 @@ function setupEventListeners() {
     clearLogBtn.addEventListener('click', clearLog);
     viewCoverageBtn.addEventListener('click', viewCoverageReport);
     openCoverageFolderBtn.addEventListener('click', openCoverageFolder);
+
+    // -------------------------------------------------------------------------
+    // Constraints event listeners
+    // สำหรับจัดการ PICT constraints panel
+    // -------------------------------------------------------------------------
+
+    // เมื่อ checkbox เปลี่ยนสถานะ -> แสดง/ซ่อน constraints panel
+    useConstraintsCheckbox.addEventListener('change', toggleConstraintsPanel);
+
+    // เมื่อกดปุ่ม "Load from file" -> เปิด file picker เพื่อโหลด constraints
+    loadConstraintsBtn.addEventListener('click', loadConstraintsFile);
+
+    // เมื่อกดปุ่ม "Clear" -> ล้าง textarea
+    clearConstraintsBtn.addEventListener('click', clearConstraints);
+}
+
+// =============================================================================
+// PICT CONSTRAINTS FUNCTIONS
+// =============================================================================
+
+/**
+ * toggleConstraintsPanel - แสดง/ซ่อน constraints panel
+ *
+ * เมื่อ user เลือก "Use custom constraints" checkbox:
+ * - checked: แสดง panel ให้กรอก constraints
+ * - unchecked: ซ่อน panel
+ */
+function toggleConstraintsPanel() {
+    if (useConstraintsCheckbox.checked) {
+        // แสดง constraints panel โดยลบ class 'hidden'
+        constraintsPanel.classList.remove('hidden');
+    } else {
+        // ซ่อน constraints panel โดยเพิ่ม class 'hidden'
+        constraintsPanel.classList.add('hidden');
+    }
+}
+
+/**
+ * loadConstraintsFile - โหลด PICT constraints จากไฟล์
+ *
+ * เปิด native file picker ให้ user เลือกไฟล์ .txt หรือ .pict
+ * แล้วโหลด content มาใส่ใน textarea
+ *
+ * รองรับไฟล์:
+ * - .txt  - text file ทั่วไป
+ * - .pict - PICT constraints file
+ *
+ * ตัวอย่าง PICT Constraints:
+ *   IF [dropdown] = "option1" THEN [checkbox] <> "unchecked";
+ *   IF [textField] = "empty" THEN [submitButton] = "disabled";
+ */
+async function loadConstraintsFile() {
+    try {
+        // เปิด file picker dialog ให้ user เลือกไฟล์
+        const [fileHandle] = await window.showOpenFilePicker({
+            types: [{
+                description: 'Text Files',
+                accept: { 'text/plain': ['.txt', '.pict'] }
+            }],
+            multiple: false  // เลือกได้ไฟล์เดียว
+        });
+
+        // อ่านเนื้อหาไฟล์
+        const file = await fileHandle.getFile();
+        const content = await file.text();
+
+        // ใส่เนื้อหาลง textarea
+        constraintsText.value = content;
+
+        // แสดง log ว่าโหลดสำเร็จ
+        log(`Loaded constraints from: ${file.name}`, 'info');
+    } catch (err) {
+        // ไม่แสดง error ถ้า user กด Cancel (AbortError)
+        if (err.name !== 'AbortError') {
+            log(`Error loading constraints: ${err.message}`, 'error');
+        }
+    }
+}
+
+/**
+ * clearConstraints - ล้าง constraints textarea
+ *
+ * ใช้เมื่อ user ต้องการเริ่มเขียน constraints ใหม่
+ */
+function clearConstraints() {
+    constraintsText.value = '';
 }
 
 // Check if File System Access API is available
@@ -197,9 +290,33 @@ async function generateTests() {
             log(`Datasets: ${datasetResult.datasetsPath}`, 'success');
         }
 
-        // Step 3: Generate test data
+        // ---------------------------------------------------------------------
+        // Step 3: Generate test data (PICT)
+        // สร้าง pairwise test combinations จาก manifest
+        // ---------------------------------------------------------------------
+
         updateProgress(3, 'running', 'Generating test plan (PICT)...');
-        const testDataResult = await runStep('generate-test-data', { manifest: manifestResult.manifestPath });
+
+        // เตรียม parameters สำหรับ API call
+        // manifest: path ของ UI manifest file ที่สร้างจาก Step 1
+        const testDataParams = { manifest: manifestResult.manifestPath };
+
+        // ---------------------------------------------------------------------
+        // เพิ่ม PICT constraints ถ้า user เปิดใช้งาน
+        // Constraints ใช้สำหรับ:
+        //   - กำหนด invalid combinations (เช่น IF [A]="x" THEN [B]<>"y")
+        //   - กำหนด dependencies ระหว่าง parameters
+        //   - ลด test cases ที่ไม่ต้องการ
+        // ---------------------------------------------------------------------
+
+        if (useConstraintsCheckbox.checked && constraintsText.value.trim()) {
+            // เพิ่ม constraints string เข้าไปใน request body
+            testDataParams.constraints = constraintsText.value.trim();
+            log('Using custom PICT constraints', 'info');
+        }
+
+        // เรียก API เพื่อสร้าง test data
+        const testDataResult = await runStep('generate-test-data', testDataParams);
         if (!testDataResult.success) throw new Error(testDataResult.error);
         updateProgress(3, 'complete', testDataResult.testDataPath);
         log(`Test plan: ${testDataResult.testDataPath}`, 'success');

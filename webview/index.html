@@ -30,10 +30,43 @@
                 </div>
             </section>
 
-            <!-- Step 2: Output File Selection -->
+            <!-- Step 2: PICT Constraints (Optional) -->
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">2</span>
+                    <h2>PICT Constraints</h2>
+                    <span class="optional-badge">Optional</span>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="useConstraints">
+                    <label for="useConstraints">Use custom constraints</label>
+                </div>
+                <div id="constraintsPanel" class="constraints-panel hidden">
+                    <textarea id="constraintsText" class="constraints-textarea" placeholder="# Enter PICT constraints here...
+# Example:
+# IF [submitButton] = &quot;enabled&quot; THEN [username] &lt;&gt; &quot;empty&quot;;
+# IF [dropdown] = &quot;option1&quot; THEN [checkbox] = &quot;checked&quot;;"></textarea>
+                    <div class="constraints-actions">
+                        <button type="button" id="loadConstraintsBtn" class="btn-secondary btn-small">
+                            <span class="btn-icon">&#128196;</span>
+                            Load from file...
+                        </button>
+                        <button type="button" id="clearConstraintsBtn" class="btn-secondary btn-small">
+                            <span class="btn-icon">&#128465;</span>
+                            Clear
+                        </button>
+                        <a href="https://github.com/microsoft/pict/blob/main/doc/pict.md#constraints" target="_blank" class="btn-link btn-small">
+                            <span class="btn-icon">&#128214;</span>
+                            Constraint syntax
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Output File Selection -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">3</span>
                     <h2>Select Output Test Script</h2>
                 </div>
                 <div class="input-group">
@@ -43,10 +76,10 @@
                 <p class="input-hint">Choose where to save the generated test script</p>
             </section>
 
-            <!-- Step 3: Actions -->
+            <!-- Step 4: Actions -->
             <section class="form-section">
                 <div class="section-header">
-                    <span class="step-badge">3</span>
+                    <span class="step-badge">4</span>
                     <h2>Actions</h2>
                 </div>
                 <div class="action-buttons">
