@@ -593,3 +593,60 @@ input[type="text"][readonly]:focus {
     color: #666;
     font-family: monospace;
 }
+
+/* Optional Badge */
+.optional-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
+/* Constraints Panel */
+.constraints-panel {
+    margin-top: 12px;
+}
+
+.constraints-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    font-size: 13px;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.constraints-textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.constraints-textarea::placeholder {
+    color: #999;
+}
+
+.constraints-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-small .btn-icon {
+    margin-right: 4px;
+}

@@ -160,17 +160,64 @@ void main(List<String> args) async {
   final inputs = <String>[];
 
   // ---------------------------------------------------------------------------
+  // PICT Constraints File (Optional)
+  // ---------------------------------------------------------------------------
+  // ไฟล์ constraints ใช้สำหรับกำหนดเงื่อนไขเพิ่มเติมให้ PICT
+  // เช่น:
+  //   IF [dropdown] = "option1" THEN [checkbox] <> "unchecked";
+  //   IF [textField] = "empty" THEN [submitButton] = "disabled";
+  //
+  // ส่งผ่าน command line: --constraints-file <path>
+  // ---------------------------------------------------------------------------
+  String? constraintsFile;
+
+  // ---------------------------------------------------------------------------
   // Parse Command Line Arguments
   // ---------------------------------------------------------------------------
+  // รองรับ arguments:
+  //   <manifest.json>              - ไฟล์ manifest ที่ต้องการประมวลผล
+  //   --constraints-file <path>    - ไฟล์ PICT constraints (optional)
+  //   --verbose                    - แสดง stack trace เมื่อเกิด error
+  // ---------------------------------------------------------------------------
 
-  // วนลูปตรวจสอบแต่ละ argument
-  for (final arg in args) {
+  // วนลูปตรวจสอบแต่ละ argument (ใช้ index-based loop เพราะต้อง skip argument)
+  for (var i = 0; i < args.length; i++) {
+    final arg = args[i];
+
+    // ตรวจสอบ --constraints-file argument
+    // Format: --constraints-file <path>
+    if (arg == '--constraints-file' && i + 1 < args.length) {
+      constraintsFile = args[i + 1];  // เก็บ path ของ constraints file
+      i++;  // ข้าม argument ถัดไป (เพราะเป็น file path)
+    }
     // รับเฉพาะไฟล์ .manifest.json
-    if (arg.endsWith('.manifest.json')) {
+    else if (arg.endsWith('.manifest.json')) {
       inputs.add(arg);
-    } else {
-      // แจ้งเตือนถ้า argument ไม่ใช่ manifest file
+    } else if (!arg.startsWith('--')) {
+      // แจ้งเตือนถ้า argument ไม่ใช่ manifest file (และไม่ใช่ flag)
       stderr.writeln('Warning: Ignoring unrecognized argument: $arg');
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Load Constraints from File
+  // ---------------------------------------------------------------------------
+  // อ่าน constraints จากไฟล์ถ้ามีการระบุ --constraints-file
+  // Constraints จะถูกส่งต่อไปให้ PICT tool เพื่อ:
+  //   - กำหนด invalid combinations
+  //   - กำหนด dependencies ระหว่าง parameters
+  //   - ลด test cases ที่ไม่ต้องการ
+  // ---------------------------------------------------------------------------
+  String? constraints;
+  if (constraintsFile != null) {
+    final file = File(constraintsFile);
+    if (file.existsSync()) {
+      // อ่านเนื้อหาทั้งหมดจากไฟล์
+      constraints = file.readAsStringSync();
+      stdout.writeln('Loaded constraints from: $constraintsFile');
+    } else {
+      // แจ้งเตือนถ้าไฟล์ไม่พบ (ไม่ใช่ error เพราะ constraints เป็น optional)
+      stderr.writeln('Warning: Constraints file not found: $constraintsFile');
     }
   }
 
@@ -226,6 +273,7 @@ void main(List<String> args) async {
         planSummary: planSummary,
         pairwiseUsePict: pairwiseUsePict,
         pictBin: pictBin,
+        constraints: constraints,
       );
       successCount++; // เพิ่มตัวนับถ้าสำเร็จ
     } catch (e, st) {

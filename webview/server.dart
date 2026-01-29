@@ -518,17 +518,47 @@ Future<void> handleGenerateDatasets(HttpRequest request) async {
 
 /// POST /generate-test-data - สร้าง test plan ด้วย PICT
 ///
+/// Endpoint นี้รับ manifest file และสร้าง pairwise test combinations
+/// โดยใช้ PICT (Pairwise Independent Combinatorial Testing) tool
+///
+/// สามารถกำหนด constraints เพิ่มเติมเพื่อ:
+/// - ไม่รวม invalid combinations (เช่น IF [A]="x" THEN [B]<>"y")
+/// - กำหนด dependencies ระหว่าง parameters
+/// - ลด test cases ที่ไม่จำเป็น
+///
 /// Request body:
-///   { "manifest": "output/manifest/demos/page.manifest.json" }
+///   {
+///     "manifest": "output/manifest/demos/page.manifest.json",
+///     "constraints": "IF [x] = \"a\" THEN [y] <> \"b\";"  // optional - PICT constraints
+///   }
 ///
 /// Response:
 ///   { "success": true, "testDataPath": "...", "output": "..." }
+///
+/// PICT Constraint Syntax Examples:
+///   IF [dropdown] = "option1" THEN [checkbox] <> "unchecked";
+///   IF [textField] = "empty" THEN [submitButton] = "disabled";
 Future<void> handleGenerateTestData(HttpRequest request) async {
+  // ---------------------------------------------------------------------------
+  // อ่าน request body และ extract parameters
+  // ---------------------------------------------------------------------------
+
+  // อ่าน JSON body จาก request
   final body = await readBody(request);
+
+  // manifest: path ของ UI manifest file (required)
   final manifest = body['manifest'] as String?;
 
-  // Validate input
+  // constraints: PICT constraints string (optional)
+  // ใช้สำหรับกำหนดเงื่อนไขเพิ่มเติมในการสร้าง test combinations
+  final constraints = body['constraints'] as String?;
+
+  // ---------------------------------------------------------------------------
+  // Validate input - ตรวจสอบว่ามี manifest path หรือไม่
+  // ---------------------------------------------------------------------------
+
   if (manifest == null) {
+    // ส่ง 400 Bad Request ถ้าไม่มี manifest
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'Manifest path required'}));
     await request.response.close();
@@ -536,32 +566,83 @@ Future<void> handleGenerateTestData(HttpRequest request) async {
   }
 
   // ---------------------------------------------------------------------------
-  // รัน generate_test_data.dart
-  // Script นี้ใช้ PICT tool เพื่อสร้าง pairwise test combinations
+  // เตรียม arguments สำหรับรัน generate_test_data.dart
   // ---------------------------------------------------------------------------
 
-  final result = await runDartScript(
-    'tools/script_v2/generate_test_data.dart',
-    [manifest],
-  );
+  // สร้าง list ของ arguments โดยเริ่มจาก manifest path
+  final args = <String>[manifest];
 
-  if (result.exitCode == 0) {
-    // คำนวณ test data path
-    final baseName = manifest.split('/').last.replaceAll('.manifest.json', '');
-    final testDataPath = 'output/test_data/$baseName.testdata.json';
+  // ---------------------------------------------------------------------------
+  // จัดการ PICT Constraints (ถ้ามี)
+  // ---------------------------------------------------------------------------
 
-    request.response.write(jsonEncode({
-      'success': true,
-      'testDataPath': testDataPath,
-      'output': result.stdout,
-    }));
-  } else {
-    request.response.write(jsonEncode({
-      'success': false,
-      'error': result.stderr.isNotEmpty ? result.stderr : result.stdout,
-    }));
+  // ตัวแปรเก็บ reference ของ temp file (ใช้สำหรับ cleanup ภายหลัง)
+  File? constraintsFile;
+
+  // ตรวจสอบว่ามี constraints และไม่ใช่ string ว่าง
+  if (constraints != null && constraints.trim().isNotEmpty) {
+    // สร้าง temporary file สำหรับเก็บ constraints
+    // ใช้ชื่อ .tmp_constraints.txt (จะถูกลบหลังใช้งานเสร็จ)
+    constraintsFile = File('.tmp_constraints.txt');
+
+    // เขียน constraints string ลงไฟล์
+    await constraintsFile.writeAsString(constraints);
+
+    // เพิ่ม --constraints-file argument ให้ generate_test_data.dart
+    args.addAll(['--constraints-file', constraintsFile.path]);
+
+    // Log สำหรับ debugging
+    print('Using custom PICT constraints');
   }
 
+  // ---------------------------------------------------------------------------
+  // รัน generate_test_data.dart script
+  // ---------------------------------------------------------------------------
+
+  try {
+    // เรียก Dart script พร้อม arguments
+    // Script จะอ่าน manifest, สร้าง PICT model, และ generate test combinations
+    final result = await runDartScript(
+      'tools/script_v2/generate_test_data.dart',
+      args,
+    );
+
+    // -------------------------------------------------------------------------
+    // จัดการ response ตาม exit code
+    // -------------------------------------------------------------------------
+
+    if (result.exitCode == 0) {
+      // Success: คำนวณ output path และส่ง response
+      // ตัวอย่าง: page.manifest.json -> output/test_data/page.testdata.json
+      final baseName = manifest.split('/').last.replaceAll('.manifest.json', '');
+      final testDataPath = 'output/test_data/$baseName.testdata.json';
+
+      // ส่ง success response พร้อม path ของ test data file
+      request.response.write(jsonEncode({
+        'success': true,
+        'testDataPath': testDataPath,
+        'output': result.stdout,
+      }));
+    } else {
+      // Error: ส่ง error message กลับ
+      request.response.write(jsonEncode({
+        'success': false,
+        'error': result.stderr.isNotEmpty ? result.stderr : result.stdout,
+      }));
+    }
+  } finally {
+    // -------------------------------------------------------------------------
+    // Cleanup: ลบ temporary constraints file
+    // -------------------------------------------------------------------------
+
+    // ตรวจสอบว่ามี temp file และยังอยู่หรือไม่
+    if (constraintsFile != null && await constraintsFile.exists()) {
+      // ลบ temp file เพื่อไม่ให้เหลือค้าง
+      await constraintsFile.delete();
+    }
+  }
+
+  // ปิด response
   await request.response.close();
 }
 
