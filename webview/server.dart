@@ -1,28 +1,114 @@
+// =============================================================================
+// server.dart
+// =============================================================================
+// HTTP Server สำหรับ Flutter Test Generator Web UI
+//
+// Server นี้ให้บริการ:
+//   1. Static files (HTML, CSS, JS) สำหรับ Web UI
+//   2. REST API endpoints สำหรับ test generation pipeline
+//   3. Coverage report serving
+//
+// วิธีใช้งาน:
+//   dart run webview/server.dart
+//
+// Server จะรันที่:
+//   http://localhost:8080
+//
+// API Endpoints:
+//   GET  /files              - รายการ Dart files ใน lib/demos/
+//   GET  /test-scripts       - รายการ test scripts ใน integration_test/
+//   POST /find-file          - หา file path จาก filename
+//   POST /scan               - scan widgets ใน file
+//   POST /extract-manifest   - สร้าง UI manifest
+//   POST /generate-datasets  - สร้าง datasets ด้วย AI
+//   POST /generate-test-data - สร้าง test plan ด้วย PICT
+//   POST /generate-test-script - สร้าง Flutter test script
+//   POST /run-tests          - รัน Flutter tests
+//   POST /generate-all       - รัน full pipeline
+//   POST /open-coverage      - เปิด coverage report
+//   GET  /coverage/*         - serve coverage HTML files
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Import Libraries
+// -----------------------------------------------------------------------------
+
+// dart:convert - สำหรับ JSON encoding/decoding และ UTF-8 conversion
+// - jsonEncode() : แปลง Map/List เป็น JSON string
+// - jsonDecode() : แปลง JSON string เป็น Map/List
+// - utf8         : UTF-8 encoder/decoder
 import 'dart:convert';
+
+// dart:io - สำหรับ HTTP server, file I/O, และ process execution
+// - HttpServer      : HTTP server class
+// - HttpRequest     : HTTP request object
+// - InternetAddress : IP address representation
+// - ContentType     : HTTP content type
+// - File/Directory  : file system operations
+// - Process         : run external processes
+// - Platform        : detect OS platform
 import 'dart:io';
 
-/// Simple HTTP server for Flutter Test Generator WebView
+// =============================================================================
+// MAIN FUNCTION - Server Entry Point
+// =============================================================================
+
+/// Entry point ของ HTTP server
+///
+/// สร้าง server ที่รับ requests และส่งต่อไปยัง handler functions
 void main() async {
+  // ---------------------------------------------------------------------------
+  // สร้างและ bind HTTP server
+  // ---------------------------------------------------------------------------
+
+  // HttpServer.bind() สร้าง server ที่ listen บน IP และ port ที่กำหนด
+  // InternetAddress.loopbackIPv4 = 127.0.0.1 (localhost)
+  // Port 8080 เป็น port มาตรฐานสำหรับ development server
   final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
+
+  // แสดง startup message
   print('Server running at http://localhost:8080');
   print('Open webview/index.html in your browser\n');
 
+  // ---------------------------------------------------------------------------
+  // Request handling loop
+  // ---------------------------------------------------------------------------
+
+  // await for loop รับ requests จาก server stream
+  // ทุก request ที่เข้ามาจะถูกประมวลผลใน loop นี้
   await for (final request in server) {
-    // CORS headers
+    // -------------------------------------------------------------------------
+    // CORS Headers
+    // Cross-Origin Resource Sharing - อนุญาตให้ browser เรียก API จาก origin อื่น
+    // -------------------------------------------------------------------------
+
+    // Allow-Origin: * หมายถึงอนุญาตจากทุก origin
     request.response.headers.add('Access-Control-Allow-Origin', '*');
+    // Allow-Methods: กำหนด HTTP methods ที่อนุญาต
     request.response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    // Allow-Headers: กำหนด headers ที่อนุญาตใน request
     request.response.headers.add('Access-Control-Allow-Headers', 'Content-Type');
 
-    // Handle preflight
+    // -------------------------------------------------------------------------
+    // Handle Preflight Request
+    // Browser จะส่ง OPTIONS request ก่อน POST เพื่อตรวจสอบ CORS
+    // -------------------------------------------------------------------------
+
     if (request.method == 'OPTIONS') {
-      request.response.statusCode = 200;
+      request.response.statusCode = 200;  // OK
       await request.response.close();
-      continue;
+      continue;  // ข้ามไป request ถัดไป
     }
 
+    // -------------------------------------------------------------------------
+    // Handle Request with Error Handling
+    // -------------------------------------------------------------------------
+
     try {
+      // ส่งต่อ request ไปยัง main handler
       await handleRequest(request);
     } catch (e, stackTrace) {
+      // จับ error และส่ง 500 Internal Server Error
       print('Error: $e');
       print(stackTrace);
       request.response.statusCode = 500;
@@ -32,114 +118,183 @@ void main() async {
   }
 }
 
-Future<void> handleRequest(HttpRequest request) async {
-  final path = request.uri.path;
-  final method = request.method;
+// =============================================================================
+// REQUEST ROUTER - Main Handler
+// =============================================================================
 
+/// Router หลักสำหรับจัดการ requests ตาม path
+///
+/// Parameter:
+///   [request] - HttpRequest object ที่ต้องการประมวลผล
+Future<void> handleRequest(HttpRequest request) async {
+  // ดึง path และ method จาก request
+  final path = request.uri.path;    // เช่น '/scan', '/extract-manifest'
+  final method = request.method;    // เช่น 'GET', 'POST'
+
+  // Log request สำหรับ debugging
   print('[$method] $path');
 
+  // กำหนด default content type เป็น JSON
   request.response.headers.contentType = ContentType.json;
 
+  // ---------------------------------------------------------------------------
+  // Route request ไปยัง handler ที่เหมาะสมตาม path
+  // ---------------------------------------------------------------------------
+
   switch (path) {
+    // API Endpoints
     case '/files':
+      // GET /files - รายการ Dart files
       await handleGetFiles(request);
       break;
     case '/test-scripts':
+      // GET /test-scripts - รายการ test scripts
       await handleGetTestScripts(request);
       break;
     case '/find-file':
+      // POST /find-file - หา file path
       await handleFindFile(request);
       break;
     case '/scan':
+      // POST /scan - scan widgets
       await handleScan(request);
       break;
     case '/extract-manifest':
+      // POST /extract-manifest - สร้าง manifest
       await handleExtractManifest(request);
       break;
     case '/generate-datasets':
+      // POST /generate-datasets - สร้าง datasets
       await handleGenerateDatasets(request);
       break;
     case '/generate-test-data':
+      // POST /generate-test-data - สร้าง test plan
       await handleGenerateTestData(request);
       break;
     case '/generate-test-script':
+      // POST /generate-test-script - สร้าง test script
       await handleGenerateTestScript(request);
       break;
     case '/run-tests':
+      // POST /run-tests - รัน tests
       await handleRunTests(request);
       break;
     case '/generate-all':
+      // POST /generate-all - รัน full pipeline
       await handleGenerateAll(request);
       break;
     case '/open-coverage':
+      // POST /open-coverage - เปิด coverage report
       await handleOpenCoverage(request);
       break;
     default:
-      // Serve coverage files
+      // -------------------------------------------------------------------------
+      // Static File Serving
+      // -------------------------------------------------------------------------
+
+      // Serve coverage files (path เริ่มด้วย /coverage/)
       if (path.startsWith('/coverage/')) {
         await serveCoverageFile(request);
         return;
       }
-      // Serve static files
+      // Serve static files (HTML, CSS, JS)
       await serveStaticFile(request);
   }
 }
 
-/// Get list of available Dart files in lib/demos/
+// =============================================================================
+// API HANDLERS - File Listing
+// =============================================================================
+
+/// GET /files - ดึงรายการ Dart files ใน lib/demos/
+///
+/// Response:
+///   { "files": ["lib/demos/file1.dart", "lib/demos/file2.dart", ...] }
 Future<void> handleGetFiles(HttpRequest request) async {
+  // กำหนด directory ที่จะ scan
   final demosDir = Directory('lib/demos');
   final files = <String>[];
 
+  // ตรวจสอบว่า directory มีอยู่หรือไม่
   if (await demosDir.exists()) {
+    // list(recursive: true) จะหาไฟล์ใน subfolders ด้วย
     await for (final entity in demosDir.list(recursive: true)) {
+      // กรองเอาเฉพาะ .dart files
       if (entity is File && entity.path.endsWith('.dart')) {
         files.add(entity.path);
       }
     }
   }
 
+  // ส่ง response เป็น JSON
   request.response.write(jsonEncode({'files': files}));
   await request.response.close();
 }
 
-/// Get list of available test scripts in integration_test/
+/// GET /test-scripts - ดึงรายการ test scripts ใน integration_test/
+///
+/// Response:
+///   { "files": ["integration_test/page1_flow_test.dart", ...] }
 Future<void> handleGetTestScripts(HttpRequest request) async {
+  // กำหนด directory ที่จะ scan
   final testDir = Directory('integration_test');
   final files = <String>[];
 
+  // ตรวจสอบว่า directory มีอยู่หรือไม่
   if (await testDir.exists()) {
+    // list() โดยไม่ recursive (เฉพาะ root level)
     await for (final entity in testDir.list()) {
+      // กรองเอาเฉพาะไฟล์ที่ลงท้ายด้วย _flow_test.dart
       if (entity is File && entity.path.endsWith('_flow_test.dart')) {
         files.add(entity.path);
       }
     }
   }
 
+  // ส่ง response
   request.response.write(jsonEncode({'files': files}));
   await request.response.close();
 }
 
-/// Find file path by matching filename and content
-Future<void> handleFindFile(HttpRequest request) async {
-  final body = await readBody(request);
-  final fileName = body['fileName'] as String?;
-  final content = body['content'] as String?;
+// =============================================================================
+// API HANDLERS - File Operations
+// =============================================================================
 
+/// POST /find-file - หา file path จาก filename และ content
+///
+/// Request body:
+///   { "fileName": "page.dart", "content": "..." (optional) }
+///
+/// Response:
+///   { "success": true, "filePath": "lib/demos/page.dart" }
+///   หรือ { "success": false, "error": "..." }
+Future<void> handleFindFile(HttpRequest request) async {
+  // อ่าน request body
+  final body = await readBody(request);
+  final fileName = body['fileName'] as String?;  // ชื่อไฟล์ที่ต้องการหา
+  final content = body['content'] as String?;    // content สำหรับ verify (optional)
+
+  // Validate input
   if (fileName == null) {
-    request.response.statusCode = 400;
+    request.response.statusCode = 400;  // Bad Request
     request.response.write(jsonEncode({'error': 'fileName required'}));
     await request.response.close();
     return;
   }
 
-  // Search in lib/ directory
+  // ---------------------------------------------------------------------------
+  // ค้นหาไฟล์ใน lib/ directory
+  // ---------------------------------------------------------------------------
+
   final libDir = Directory('lib');
   String? foundPath;
 
   if (await libDir.exists()) {
+    // ค้นหาแบบ recursive ใน lib/
     await for (final entity in libDir.list(recursive: true)) {
+      // ตรวจสอบว่าชื่อไฟล์ตรงกัน
       if (entity is File && entity.path.endsWith(fileName)) {
-        // If content provided, verify it matches
+        // ถ้ามี content ให้ verify ว่าตรงกัน
         if (content != null) {
           final fileContent = await entity.readAsString();
           if (fileContent == content) {
@@ -147,12 +302,17 @@ Future<void> handleFindFile(HttpRequest request) async {
             break;
           }
         } else {
+          // ไม่มี content verification ใช้ไฟล์แรกที่พบ
           foundPath = entity.path;
           break;
         }
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // ส่ง response
+  // ---------------------------------------------------------------------------
 
   if (foundPath != null) {
     request.response.write(jsonEncode({
@@ -169,11 +329,23 @@ Future<void> handleFindFile(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Scan widgets in a file
+// =============================================================================
+// API HANDLERS - Test Generation Pipeline
+// =============================================================================
+
+/// POST /scan - Scan widgets ใน file และสร้าง manifest
+///
+/// Request body:
+///   { "file": "lib/demos/page.dart" }
+///
+/// Response:
+///   { "success": true, "widgetCount": 10, "manifestPath": "..." }
 Future<void> handleScan(HttpRequest request) async {
+  // อ่าน request body
   final body = await readBody(request);
   final file = body['file'] as String?;
 
+  // Validate input
   if (file == null || file.isEmpty) {
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'File path required'}));
@@ -181,18 +353,30 @@ Future<void> handleScan(HttpRequest request) async {
     return;
   }
 
-  // Run extract_ui_manifest.dart
+  // ---------------------------------------------------------------------------
+  // รัน extract_ui_manifest.dart
+  // Script นี้จะ analyze Dart file และสร้าง manifest JSON
+  // ---------------------------------------------------------------------------
+
   final result = await runDartScript(
     'tools/script_v2/extract_ui_manifest.dart',
-    [file],
+    [file],  // ส่ง file path เป็น argument
   );
 
+  // ---------------------------------------------------------------------------
+  // ประมวลผล result
+  // ---------------------------------------------------------------------------
+
   if (result.exitCode == 0) {
-    // Parse manifest to get widget count
+    // สำเร็จ - อ่าน manifest เพื่อนับ widgets
+
+    // คำนวณ manifest path จากชื่อไฟล์
+    // lib/demos/page.dart -> output/manifest/demos/page.manifest.json
     final baseName = file.split('/').last.replaceAll('.dart', '');
     final manifestPath = 'output/manifest/demos/$baseName.manifest.json';
     int widgetCount = 0;
 
+    // อ่าน manifest file เพื่อนับ widgets
     final manifestFile = File(manifestPath);
     if (await manifestFile.exists()) {
       try {
@@ -203,12 +387,14 @@ Future<void> handleScan(HttpRequest request) async {
       }
     }
 
+    // ส่ง success response
     request.response.write(jsonEncode({
       'success': true,
       'widgetCount': widgetCount,
       'manifestPath': manifestPath,
     }));
   } else {
+    // ล้มเหลว - ส่ง error message
     request.response.write(jsonEncode({
       'success': false,
       'error': result.stderr.isNotEmpty ? result.stderr : result.stdout,
@@ -218,11 +404,18 @@ Future<void> handleScan(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Extract UI manifest
+/// POST /extract-manifest - สร้าง UI manifest จาก Dart file
+///
+/// Request body:
+///   { "file": "lib/demos/page.dart" }
+///
+/// Response:
+///   { "success": true, "manifestPath": "...", "output": "..." }
 Future<void> handleExtractManifest(HttpRequest request) async {
   final body = await readBody(request);
   final file = body['file'] as String?;
 
+  // Validate input
   if (file == null) {
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'File path required'}));
@@ -230,19 +423,24 @@ Future<void> handleExtractManifest(HttpRequest request) async {
     return;
   }
 
+  // ---------------------------------------------------------------------------
+  // รัน extract_ui_manifest.dart
+  // ---------------------------------------------------------------------------
+
   final result = await runDartScript(
     'tools/script_v2/extract_ui_manifest.dart',
     [file],
   );
 
   if (result.exitCode == 0) {
+    // คำนวณ manifest path
     final baseName = file.split('/').last.replaceAll('.dart', '');
     final manifestPath = 'output/manifest/demos/$baseName.manifest.json';
 
     request.response.write(jsonEncode({
       'success': true,
       'manifestPath': manifestPath,
-      'output': result.stdout,
+      'output': result.stdout,  // รวม stdout สำหรับ logging
     }));
   } else {
     request.response.write(jsonEncode({
@@ -254,11 +452,19 @@ Future<void> handleExtractManifest(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Generate datasets using AI
+/// POST /generate-datasets - สร้าง datasets ด้วย AI (Gemini)
+///
+/// Request body:
+///   { "manifest": "output/manifest/demos/page.manifest.json" }
+///
+/// Response:
+///   { "success": true, "datasetsPath": "...", "output": "..." }
+///   หรือ { "success": true, "skipped": true } ถ้าไม่มี text fields
 Future<void> handleGenerateDatasets(HttpRequest request) async {
   final body = await readBody(request);
   final manifest = body['manifest'] as String?;
 
+  // Validate input
   if (manifest == null) {
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'Manifest path required'}));
@@ -266,13 +472,22 @@ Future<void> handleGenerateDatasets(HttpRequest request) async {
     return;
   }
 
+  // ---------------------------------------------------------------------------
+  // รัน generate_datasets.dart
+  // Script นี้ใช้ AI เพื่อสร้าง valid/invalid test data
+  // ---------------------------------------------------------------------------
+
   final result = await runDartScript(
     'tools/script_v2/generate_datasets.dart',
     [manifest],
   );
 
-  // Check if skipped due to no text fields
+  // ---------------------------------------------------------------------------
+  // ตรวจสอบว่า skip เพราะไม่มี text fields
+  // ---------------------------------------------------------------------------
+
   if (result.stdout.contains('No TextField') || result.stdout.contains('No text')) {
+    // ไม่มี text fields - skip datasets generation
     request.response.write(jsonEncode({
       'success': true,
       'skipped': true,
@@ -282,6 +497,7 @@ Future<void> handleGenerateDatasets(HttpRequest request) async {
   }
 
   if (result.exitCode == 0) {
+    // คำนวณ datasets path
     final baseName = manifest.split('/').last.replaceAll('.manifest.json', '');
     final datasetsPath = 'output/test_data/$baseName.datasets.json';
 
@@ -300,11 +516,18 @@ Future<void> handleGenerateDatasets(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Generate test data using PICT
+/// POST /generate-test-data - สร้าง test plan ด้วย PICT
+///
+/// Request body:
+///   { "manifest": "output/manifest/demos/page.manifest.json" }
+///
+/// Response:
+///   { "success": true, "testDataPath": "...", "output": "..." }
 Future<void> handleGenerateTestData(HttpRequest request) async {
   final body = await readBody(request);
   final manifest = body['manifest'] as String?;
 
+  // Validate input
   if (manifest == null) {
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'Manifest path required'}));
@@ -312,12 +535,18 @@ Future<void> handleGenerateTestData(HttpRequest request) async {
     return;
   }
 
+  // ---------------------------------------------------------------------------
+  // รัน generate_test_data.dart
+  // Script นี้ใช้ PICT tool เพื่อสร้าง pairwise test combinations
+  // ---------------------------------------------------------------------------
+
   final result = await runDartScript(
     'tools/script_v2/generate_test_data.dart',
     [manifest],
   );
 
   if (result.exitCode == 0) {
+    // คำนวณ test data path
     final baseName = manifest.split('/').last.replaceAll('.manifest.json', '');
     final testDataPath = 'output/test_data/$baseName.testdata.json';
 
@@ -336,11 +565,18 @@ Future<void> handleGenerateTestData(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Generate test script
+/// POST /generate-test-script - สร้าง Flutter test script
+///
+/// Request body:
+///   { "testData": "output/test_data/page.testdata.json" }
+///
+/// Response:
+///   { "success": true, "testScriptPath": "...", "output": "..." }
 Future<void> handleGenerateTestScript(HttpRequest request) async {
   final body = await readBody(request);
   final testData = body['testData'] as String?;
 
+  // Validate input
   if (testData == null) {
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'Test data path required'}));
@@ -348,12 +584,18 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
     return;
   }
 
+  // ---------------------------------------------------------------------------
+  // รัน generate_test_script.dart
+  // Script นี้จะแปลง test plan JSON เป็น Flutter test code
+  // ---------------------------------------------------------------------------
+
   final result = await runDartScript(
     'tools/script_v2/generate_test_script.dart',
     [testData],
   );
 
   if (result.exitCode == 0) {
+    // คำนวณ test script path
     final baseName = testData.split('/').last.replaceAll('.testdata.json', '');
     final testScriptPath = 'integration_test/${baseName}_flow_test.dart';
 
@@ -372,12 +614,23 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Run Flutter tests
+// =============================================================================
+// API HANDLERS - Test Execution
+// =============================================================================
+
+/// POST /run-tests - รัน Flutter tests (optional with coverage)
+///
+/// Request body:
+///   { "testScript": "integration_test/page_flow_test.dart", "withCoverage": true }
+///
+/// Response:
+///   { "success": true, "passed": 5, "failed": 0, "output": "...", "coverageHtmlPath": "..." }
 Future<void> handleRunTests(HttpRequest request) async {
   final body = await readBody(request);
   final testScript = body['testScript'] as String?;
   final withCoverage = body['withCoverage'] as bool? ?? false;
 
+  // Validate input
   if (testScript == null) {
     request.response.statusCode = 400;
     request.response.write(jsonEncode({'error': 'Test script path required'}));
@@ -385,32 +638,53 @@ Future<void> handleRunTests(HttpRequest request) async {
     return;
   }
 
-  // Step 1: Run flutter test
+  // ---------------------------------------------------------------------------
+  // Step 1: รัน flutter test
+  // ---------------------------------------------------------------------------
+
+  // สร้าง arguments สำหรับ flutter test command
   final args = ['test', testScript];
   if (withCoverage) {
-    args.add('--coverage');
+    args.add('--coverage');  // เพิ่ม flag เพื่อสร้าง coverage data
   }
 
+  // Log command
   print('  > flutter ${args.join(' ')}');
+
+  // รัน flutter test
   final result = await Process.run('flutter', args);
 
-  // Parse test results
+  // ---------------------------------------------------------------------------
+  // Parse test results จาก output
+  // ---------------------------------------------------------------------------
+
   final output = result.stdout.toString();
+
+  // ใช้ RegExp หาจำนวน tests ที่ passed และ failed
+  // Pattern: "X tests passed" หรือ "X test passed"
   final passedMatch = RegExp(r'(\d+) tests? passed').firstMatch(output);
   final failedMatch = RegExp(r'(\d+) tests? failed').firstMatch(output);
+
+  // ---------------------------------------------------------------------------
+  // Step 2: Generate HTML coverage report (ถ้า coverage enabled)
+  // ---------------------------------------------------------------------------
 
   String? coverageHtmlPath;
   String coverageOutput = '';
 
-  // Step 2: Generate HTML coverage report (if coverage enabled)
   if (withCoverage) {
     print('  > Checking coverage/lcov.info...');
     final lcovFile = File('coverage/lcov.info');
 
+    // ตรวจสอบว่า lcov.info ถูกสร้างหรือไม่
     if (await lcovFile.exists()) {
       print('  ✓ Found lcov.info');
 
-      // Run genhtml to generate HTML report
+      // -------------------------------------------------------------------------
+      // รัน genhtml เพื่อแปลง lcov.info เป็น HTML report
+      // genhtml เป็น tool จาก lcov package
+      // -------------------------------------------------------------------------
+
       print('  > genhtml coverage/lcov.info -o coverage/html');
       final genHtmlResult = await Process.run(
         'genhtml',
@@ -422,17 +696,25 @@ Future<void> handleRunTests(HttpRequest request) async {
         coverageOutput = genHtmlResult.stdout.toString();
         print('  ✓ Coverage HTML generated: $coverageHtmlPath');
 
-        // Step 3: Open coverage report in browser
+        // -----------------------------------------------------------------------
+        // Step 3: เปิด coverage report ใน browser
+        // ใช้ command ที่เหมาะกับ platform
+        // -----------------------------------------------------------------------
+
         print('  > open coverage/html/index.html');
         if (Platform.isMacOS) {
+          // macOS: ใช้ 'open' command
           await Process.run('open', ['coverage/html/index.html']);
         } else if (Platform.isWindows) {
+          // Windows: ใช้ 'start' command (ต้อง runInShell)
           await Process.run('start', ['coverage/html/index.html'], runInShell: true);
         } else if (Platform.isLinux) {
+          // Linux: ใช้ 'xdg-open' command
           await Process.run('xdg-open', ['coverage/html/index.html']);
         }
         print('  ✓ Opened coverage report in browser');
       } else {
+        // genhtml failed
         coverageOutput = 'genhtml failed: ${genHtmlResult.stderr}';
         print('  ✗ genhtml failed: ${genHtmlResult.stderr}');
       }
@@ -440,6 +722,10 @@ Future<void> handleRunTests(HttpRequest request) async {
       print('  ✗ lcov.info not found - coverage may not have been generated');
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // ส่ง response
+  // ---------------------------------------------------------------------------
 
   request.response.write(jsonEncode({
     'success': result.exitCode == 0,
@@ -454,7 +740,13 @@ Future<void> handleRunTests(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Generate tests for all files
+/// POST /generate-all - รัน full test generation pipeline
+///
+/// Request body:
+///   { "skipDatasets": false }
+///
+/// Response:
+///   { "success": true, "filesProcessed": 5, "testsGenerated": 5 }
 Future<void> handleGenerateAll(HttpRequest request) async {
   final body = await readBody(request);
   final skipDatasets = body['skipDatasets'] as bool? ?? false;
@@ -462,10 +754,14 @@ Future<void> handleGenerateAll(HttpRequest request) async {
   int filesProcessed = 0;
   int testsGenerated = 0;
 
+  // ---------------------------------------------------------------------------
   // Step 1: Extract all manifests
+  // รัน extract_ui_manifest.dart โดยไม่มี arguments = batch mode
+  // ---------------------------------------------------------------------------
+
   var result = await runDartScript(
     'tools/script_v2/extract_ui_manifest.dart',
-    [],
+    [],  // empty args = process all files
   );
   if (result.exitCode != 0) {
     request.response.write(jsonEncode({
@@ -476,15 +772,22 @@ Future<void> handleGenerateAll(HttpRequest request) async {
     return;
   }
 
-  // Step 2: Generate datasets (if not skipped)
+  // ---------------------------------------------------------------------------
+  // Step 2: Generate datasets (ถ้าไม่ skip)
+  // ---------------------------------------------------------------------------
+
   if (!skipDatasets) {
     result = await runDartScript(
       'tools/script_v2/generate_datasets.dart',
       [],
     );
+    // ไม่ check exit code เพราะอาจจะ skip ได้ถ้าไม่มี text fields
   }
 
+  // ---------------------------------------------------------------------------
   // Step 3: Generate test data
+  // ---------------------------------------------------------------------------
+
   result = await runDartScript(
     'tools/script_v2/generate_test_data.dart',
     [],
@@ -498,13 +801,20 @@ Future<void> handleGenerateAll(HttpRequest request) async {
     return;
   }
 
+  // ---------------------------------------------------------------------------
   // Step 4: Generate test scripts
+  // ---------------------------------------------------------------------------
+
   result = await runDartScript(
     'tools/script_v2/generate_test_script.dart',
     [],
   );
 
-  // Count generated files
+  // ---------------------------------------------------------------------------
+  // นับจำนวนไฟล์ที่ประมวลผล
+  // ---------------------------------------------------------------------------
+
+  // นับ manifest files
   final manifestDir = Directory('output/manifest');
   if (await manifestDir.exists()) {
     await for (final entity in manifestDir.list(recursive: true)) {
@@ -514,6 +824,7 @@ Future<void> handleGenerateAll(HttpRequest request) async {
     }
   }
 
+  // นับ test scripts ที่สร้าง
   final testDir = Directory('integration_test');
   if (await testDir.exists()) {
     await for (final entity in testDir.list()) {
@@ -523,6 +834,7 @@ Future<void> handleGenerateAll(HttpRequest request) async {
     }
   }
 
+  // ส่ง response
   request.response.write(jsonEncode({
     'success': true,
     'filesProcessed': filesProcessed,
@@ -532,11 +844,23 @@ Future<void> handleGenerateAll(HttpRequest request) async {
   await request.response.close();
 }
 
-/// Open coverage report or folder
+// =============================================================================
+// API HANDLERS - Coverage Operations
+// =============================================================================
+
+/// POST /open-coverage - เปิด coverage report หรือ folder
+///
+/// Request body:
+///   { "action": "view" } - เปิดใน browser
+///   { "action": "folder" } - เปิด folder ใน file explorer
+///
+/// Response:
+///   { "success": true, "url": "..." }
 Future<void> handleOpenCoverage(HttpRequest request) async {
   final body = await readBody(request);
   final action = body['action'] as String? ?? 'view';
 
+  // ตรวจสอบว่า coverage report มีอยู่หรือไม่
   final coveragePath = 'coverage/html/index.html';
   final coverageFile = File(coveragePath);
 
@@ -549,9 +873,14 @@ Future<void> handleOpenCoverage(HttpRequest request) async {
     return;
   }
 
+  // ---------------------------------------------------------------------------
+  // Handle action
+  // ---------------------------------------------------------------------------
+
   if (action == 'folder') {
-    // Open coverage folder in file explorer
+    // เปิด coverage folder ใน file explorer
     final coverageDir = Directory('coverage/html').absolute.path;
+
     if (Platform.isMacOS) {
       await Process.run('open', [coverageDir]);
     } else if (Platform.isWindows) {
@@ -559,9 +888,10 @@ Future<void> handleOpenCoverage(HttpRequest request) async {
     } else if (Platform.isLinux) {
       await Process.run('xdg-open', [coverageDir]);
     }
+
     request.response.write(jsonEncode({'success': true}));
   } else {
-    // Return URL to view coverage
+    // Return URL สำหรับเปิดใน browser
     request.response.write(jsonEncode({
       'success': true,
       'url': 'http://localhost:8080/coverage/index.html',
@@ -572,78 +902,141 @@ Future<void> handleOpenCoverage(HttpRequest request) async {
   await request.response.close();
 }
 
+// =============================================================================
+// STATIC FILE SERVING
+// =============================================================================
+
 /// Serve coverage HTML files
+///
+/// Maps /coverage/* to coverage/html/*
+/// เช่น /coverage/index.html -> coverage/html/index.html
 Future<void> serveCoverageFile(HttpRequest request) async {
   var path = request.uri.path;
+
+  // แปลง URL path เป็น file path
   // /coverage/index.html -> coverage/html/index.html
   final filePath = path.replaceFirst('/coverage/', 'coverage/html/');
 
   final file = File(filePath);
   if (await file.exists()) {
+    // ---------------------------------------------------------------------------
+    // กำหนด Content-Type ตาม file extension
+    // ---------------------------------------------------------------------------
+
     final ext = path.split('.').last;
     final contentType = switch (ext) {
-      'html' => ContentType.html,
-      'css' => ContentType('text', 'css'),
-      'js' => ContentType('application', 'javascript'),
-      'png' => ContentType('image', 'png'),
-      'gif' => ContentType('image', 'gif'),
-      'svg' => ContentType('image', 'svg+xml'),
-      _ => ContentType.binary,
+      'html' => ContentType.html,                        // text/html
+      'css' => ContentType('text', 'css'),               // text/css
+      'js' => ContentType('application', 'javascript'),  // application/javascript
+      'png' => ContentType('image', 'png'),              // image/png
+      'gif' => ContentType('image', 'gif'),              // image/gif
+      'svg' => ContentType('image', 'svg+xml'),          // image/svg+xml
+      _ => ContentType.binary,                           // application/octet-stream
     };
 
     request.response.headers.contentType = contentType;
+
+    // Stream file content ไปยัง response
+    // pipe() จะอ่าน file และเขียน response efficiently
     await file.openRead().pipe(request.response);
   } else {
+    // File not found
     request.response.statusCode = 404;
     request.response.write('Coverage file not found: $filePath');
     await request.response.close();
   }
 }
 
-/// Serve static files (HTML, CSS, JS)
+/// Serve static files (HTML, CSS, JS) สำหรับ Web UI
+///
+/// Files ถูก serve จาก webview/ directory
+/// เช่น /index.html -> webview/index.html
 Future<void> serveStaticFile(HttpRequest request) async {
   var path = request.uri.path;
+
+  // Default path '/' ไปยัง '/index.html'
   if (path == '/') path = '/index.html';
 
+  // สร้าง file path (webview/ prefix)
   final file = File('webview$path');
+
   if (await file.exists()) {
+    // ---------------------------------------------------------------------------
+    // กำหนด Content-Type ตาม file extension
+    // ---------------------------------------------------------------------------
+
     final ext = path.split('.').last;
     final contentType = switch (ext) {
-      'html' => ContentType.html,
-      'css' => ContentType('text', 'css'),
-      'js' => ContentType('application', 'javascript'),
-      _ => ContentType.binary,
+      'html' => ContentType.html,                        // text/html
+      'css' => ContentType('text', 'css'),               // text/css
+      'js' => ContentType('application', 'javascript'),  // application/javascript
+      _ => ContentType.binary,                           // application/octet-stream
     };
 
     request.response.headers.contentType = contentType;
+
+    // Stream file content
     await file.openRead().pipe(request.response);
   } else {
+    // File not found
     request.response.statusCode = 404;
     request.response.write('Not found: $path');
     await request.response.close();
   }
 }
 
-/// Read JSON body from request
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
+
+/// อ่าน JSON body จาก POST request
+///
+/// Parameter:
+///   [request] - HttpRequest object
+///
+/// Returns:
+///   Map<String, dynamic> - parsed JSON body หรือ empty map ถ้า error
 Future<Map<String, dynamic>> readBody(HttpRequest request) async {
+  // เฉพาะ POST requests เท่านั้นที่มี body
   if (request.method != 'POST') return {};
 
   try {
+    // อ่าน request body และ decode เป็น UTF-8
+    // utf8.decoder.bind() สร้าง stream transformer
+    // join() รวม chunks เป็น single string
     final content = await utf8.decoder.bind(request).join();
+
+    // Return empty map ถ้า content ว่าง
     if (content.isEmpty) return {};
+
+    // Parse JSON string เป็น Map
     return jsonDecode(content) as Map<String, dynamic>;
   } catch (e) {
+    // Return empty map ถ้า parse error
     return {};
   }
 }
 
-/// Run a Dart script and return result
+/// รัน Dart script และ return result
+///
+/// Parameters:
+///   [script] - path ของ script ที่จะรัน
+///   [args]   - arguments ที่จะส่งให้ script
+///
+/// Returns:
+///   ProcessResult - ผลลัพธ์จากการรัน script
+///                   (exitCode, stdout, stderr)
 Future<ProcessResult> runDartScript(String script, List<String> args) async {
+  // Log command สำหรับ debugging
   print('  > dart run $script ${args.join(' ')}');
+
+  // รัน dart command
+  // dart run <script> <args>
   final result = await Process.run(
     'dart',
     ['run', script, ...args],
-    workingDirectory: Directory.current.path,
+    workingDirectory: Directory.current.path,  // ใช้ current directory
   );
+
   return result;
 }
