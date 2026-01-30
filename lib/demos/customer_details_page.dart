@@ -105,6 +105,7 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    Text('XXXXXX', key: const Key('customer_99_XXXX_text')),
                     // Title - Dropdown
                     DropdownButtonFormField<String>(
                       key: const Key('customer_01_title_dropdown'),

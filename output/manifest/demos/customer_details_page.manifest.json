@@ -32,6 +32,19 @@
       "key": "customer_01_expected_fail"
     },
     {
+      "widgetType": "Text",
+      "key": "customer_99_XXXX_text",
+      "textLiteral": "XXXXXX"
+    },
+    {
+      "widgetType": "Radio<int>",
+      "key": "customer_05_age_30_40_radio",
+      "meta": {
+        "valueExpr": "2",
+        "groupValueBinding": "state.ageRange"
+      }
+    },
+    {
       "widgetType": "DropdownButtonFormField<String>",
       "key": "customer_01_title_dropdown",
       "meta": {
@@ -62,14 +75,6 @@
       }
     },
     {
-      "widgetType": "Radio<int>",
-      "key": "customer_05_age_30_40_radio",
-      "meta": {
-        "valueExpr": "2",
-        "groupValueBinding": "state.ageRange"
-      }
-    },
-    {
       "widgetType": "TextFormField",
       "key": "customer_02_firstname_textfield",
       "meta": {
@@ -93,6 +98,14 @@
             "message": "First name must contain only letters (minimum 2 characters)"
           }
         ]
+      }
+    },
+    {
+      "widgetType": "Radio<int>",
+      "key": "customer_05_age_40_50_radio",
+      "meta": {
+        "valueExpr": "3",
+        "groupValueBinding": "state.ageRange"
       }
     },
     {
@@ -126,14 +139,6 @@
             "message": "0"
           }
         ]
-      }
-    },
-    {
-      "widgetType": "Radio<int>",
-      "key": "customer_05_age_40_50_radio",
-      "meta": {
-        "valueExpr": "3",
-        "groupValueBinding": "state.ageRange"
       }
     },
     {

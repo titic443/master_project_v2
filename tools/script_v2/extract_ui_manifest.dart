@@ -96,7 +96,10 @@ void main(List<String> args) {
   if (args.isEmpty) {
     // ไม่มี arguments → Scan หา page files ทั้งหมดใน lib/
     // Pattern: *_page.dart หรือ *.page.dart
-    final pages = utils.listFiles('lib', (p) => p.endsWith('_page.dart') || p.endsWith('.page.dart')).toList();
+    final pages = utils
+        .listFiles(
+            'lib', (p) => p.endsWith('_page.dart') || p.endsWith('.page.dart'))
+        .toList();
 
     if (pages.isEmpty) {
       stderr.writeln('No page files found under lib/**');
@@ -208,7 +211,7 @@ void _processOne(String path) {
       return seqA.compareTo(seqB);
     }
     if (seqA != null) return -1; // A มี sequence, B ไม่มี → A มาก่อน
-    if (seqB != null) return 1;  // B มี sequence, A ไม่มี → B มาก่อน
+    if (seqB != null) return 1; // B มี sequence, A ไม่มี → B มาก่อน
 
     // Priority 2: Widgets ที่ไม่มี SEQUENCE เรียงตาม source order
     final orderA = (a['sourceOrder'] as int?) ?? 0;
@@ -259,8 +262,10 @@ void _processOne(String path) {
 
   // ===== STEP 8: เขียน Manifest File =====
 
-  final outPath = '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
-  File(outPath).writeAsStringSync(const JsonEncoder.withIndent('  ').convert(ir) + '\n');
+  final outPath =
+      '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
+  File(outPath)
+      .writeAsStringSync(const JsonEncoder.withIndent('  ').convert(ir) + '\n');
   stdout.writeln('✓ Manifest written: $outPath');
 }
 
@@ -293,12 +298,12 @@ String _stripComments(String s) {
   final b = StringBuffer();
 
   // State flags สำหรับ track ว่าอยู่ใน context ไหน
-  bool inS = false;      // อยู่ใน single-quoted string '...'
-  bool inD = false;      // อยู่ใน double-quoted string "..."
-  bool inRawS = false;   // อยู่ใน raw single-quoted string r'...'
-  bool inRawD = false;   // อยู่ใน raw double-quoted string r"..."
-  bool inLine = false;   // อยู่ใน line comment //
-  bool inBlock = false;  // อยู่ใน block comment /* */
+  bool inS = false; // อยู่ใน single-quoted string '...'
+  bool inD = false; // อยู่ใน double-quoted string "..."
+  bool inRawS = false; // อยู่ใน raw single-quoted string r'...'
+  bool inRawD = false; // อยู่ใน raw double-quoted string r"..."
+  bool inLine = false; // อยู่ใน line comment //
+  bool inBlock = false; // อยู่ใน block comment /* */
 
   for (int i = 0; i < s.length; i++) {
     final c = s[i];
@@ -343,8 +348,11 @@ String _stripComments(String s) {
       final n2 = i + 1 < s.length ? s[i + 1] : '';
       if (n2 == '\'' || n2 == '"') {
         // เริ่ม raw string
-        if (n2 == '\'') inRawS = true; else inRawD = true;
-        b.write(c);  // เขียน 'r'
+        if (n2 == '\'')
+          inRawS = true;
+        else
+          inRawD = true;
+        b.write(c); // เขียน 'r'
         i++;
         b.write(n2); // เขียน quote
         continue;
@@ -368,7 +376,7 @@ String _stripComments(String s) {
       // Escape character ใน string
       if ((inS || inD) && c == '\\') {
         if (i + 1 < s.length) {
-          b.write(c);        // เขียน \
+          b.write(c); // เขียน \
           b.write(s[i + 1]); // เขียน escaped char
           i++;
           continue;
@@ -408,7 +416,9 @@ String _stripComments(String s) {
 /// // Returns: "CustomerDetailsPage"
 /// ```
 String? _findPageClass(String src) {
-  final m = RegExp(r'class\s+(\w+)\s+extends\s+(?:StatefulWidget|StatelessWidget)').firstMatch(src);
+  final m =
+      RegExp(r'class\s+(\w+)\s+extends\s+(?:StatefulWidget|StatelessWidget)')
+          .firstMatch(src);
   return m?.group(1);
 }
 
@@ -430,14 +440,28 @@ String? _findPageClass(String src) {
 /// - ElevatedButton, TextButton, OutlinedButton, IconButton
 /// - DropdownButton, DropdownButtonFormField
 /// - Text, ListTile, Visibility, SnackBar
-List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts = const {}, String? cubitType}) {
+List<Map<String, dynamic>> _scanWidgets(String src,
+    {Map<String, String> consts = const {}, String? cubitType}) {
   // Target widget types ที่ต้องการ extract
   final targets = <String>{
-    'TextField', 'TextFormField', 'FormField',
-    'Radio', 'ElevatedButton', 'TextButton', 'OutlinedButton', 'IconButton',
-    'Text', 'DropdownButton', 'DropdownButtonFormField',
-    'Checkbox', 'Switch', 'SwitchListTile', 'Slider',
-    'ListTile', 'Visibility', 'SnackBar',
+    'TextField',
+    'TextFormField',
+    'FormField',
+    'Radio',
+    'ElevatedButton',
+    'TextButton',
+    'OutlinedButton',
+    'IconButton',
+    'Text',
+    'DropdownButton',
+    'DropdownButtonFormField',
+    'Checkbox',
+    'Switch',
+    'SwitchListTile',
+    'Slider',
+    'ListTile',
+    'Visibility',
+    'SnackBar',
   };
 
   final out = <Map<String, dynamic>>[];
@@ -453,15 +477,16 @@ List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts 
     // Pattern: WidgetName<GenericType>(
     // Group 1: Widget name (เริ่มด้วยตัวพิมพ์ใหญ่)
     // Group 2: Generic type parameter (optional)
-    final m = RegExp(r'([A-Z][A-Za-z0-9_]*)\s*(<[^>]*>)?\s*\(').matchAsPrefix(src, i);
+    final m =
+        RegExp(r'([A-Z][A-Za-z0-9_]*)\s*(<[^>]*>)?\s*\(').matchAsPrefix(src, i);
 
     if (m == null) {
       i++;
       continue;
     }
 
-    final type = m.group(1)!;      // Widget type name
-    final generics = m.group(2);   // Generic parameters เช่น <String>
+    final type = m.group(1)!; // Widget type name
+    final generics = m.group(2); // Generic parameters เช่น <String>
 
     // ข้าม widgets ที่ไม่ใช่ target
     if (!targets.contains(type)) {
@@ -488,7 +513,8 @@ List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts 
     final key = _extractKey(argsSrc, consts: consts);
 
     // Extract Text binding สำหรับ Text widget
-    final binding = type == 'Text' ? _extractTextBinding(argsSrc, consts: consts) : null;
+    final binding =
+        type == 'Text' ? _extractTextBinding(argsSrc, consts: consts) : null;
 
     // Extract onTap method name (สำหรับ link กับ pickers)
     final onTapMethod = _extractOnTapMethod(argsSrc);
@@ -565,11 +591,11 @@ List<Map<String, dynamic>> _scanWidgets(String src, {Map<String, String> consts 
 /// 2. Skip parentheses ที่อยู่ใน single-quoted หรือ double-quoted strings
 /// 3. Return เมื่อ depth กลับเป็น 0
 int _matchParen(String s, int openIdx) {
-  int depth = 0;          // Track parenthesis nesting level
-  bool inS = false;       // อยู่ใน single-quoted string '...'
-  bool inD = false;       // อยู่ใน double-quoted string "..."
+  int depth = 0; // Track parenthesis nesting level
+  bool inS = false; // อยู่ใน single-quoted string '...'
+  bool inD = false; // อยู่ใน double-quoted string "..."
   // ignore: unused_local_variable
-  bool inRawStr = false;  // Reserved สำหรับ raw strings (ยังไม่ได้ใช้)
+  bool inRawStr = false; // Reserved สำหรับ raw strings (ยังไม่ได้ใช้)
 
   for (int i = openIdx; i < s.length; i++) {
     final c = s[i];
@@ -580,18 +606,18 @@ int _matchParen(String s, int openIdx) {
       if (c == '(') depth++;
       if (c == ')') {
         depth--;
-        if (depth == 0) return i;  // พบ matching closing paren
+        if (depth == 0) return i; // พบ matching closing paren
       }
       // เริ่ม string
-      if (c == '\'' ) inS = true;
+      if (c == '\'') inS = true;
       if (c == '"') inD = true;
     } else {
       // อยู่ใน string - check end of string
-      if (inS && c == '\'' ) inS = false;
+      if (inS && c == '\'') inS = false;
       if (inD && c == '"') inD = false;
     }
   }
-  return -1;  // ไม่พบ matching paren
+  return -1; // ไม่พบ matching paren
 }
 
 /// หา matching closing brace สำหรับ opening brace ที่ตำแหน่ง openIdx
@@ -613,11 +639,11 @@ int _matchParen(String s, int openIdx) {
 ///
 /// Algorithm: เหมือน _matchParen แต่ใช้ '{' และ '}' แทน
 int _matchBrace(String s, int openIdx) {
-  int depth = 0;          // Track brace nesting level
-  bool inS = false;       // อยู่ใน single-quoted string '...'
-  bool inD = false;       // อยู่ใน double-quoted string "..."
+  int depth = 0; // Track brace nesting level
+  bool inS = false; // อยู่ใน single-quoted string '...'
+  bool inD = false; // อยู่ใน double-quoted string "..."
   // ignore: unused_local_variable
-  bool inRawStr = false;  // Reserved สำหรับ raw strings (ยังไม่ได้ใช้)
+  bool inRawStr = false; // Reserved สำหรับ raw strings (ยังไม่ได้ใช้)
 
   for (int i = openIdx; i < s.length; i++) {
     final c = s[i];
@@ -628,7 +654,7 @@ int _matchBrace(String s, int openIdx) {
       if (c == '{') depth++;
       if (c == '}') {
         depth--;
-        if (depth == 0) return i;  // พบ matching closing brace
+        if (depth == 0) return i; // พบ matching closing brace
       }
       // เริ่ม string
       if (c == '\'') inS = true;
@@ -639,7 +665,7 @@ int _matchBrace(String s, int openIdx) {
       if (inD && c == '"') inD = false;
     }
   }
-  return -1;  // ไม่พบ matching brace
+  return -1; // ไม่พบ matching brace
 }
 
 /// ============================================================================
@@ -673,42 +699,48 @@ int _matchBrace(String s, int openIdx) {
 String? _extractKey(String args, {Map<String, String> consts = const {}}) {
   // Helper function: resolve string interpolation ${varName}
   // แทนที่ ${varName} ด้วยค่าจาก consts map
-  String resolve(String s) => s.replaceAllMapped(RegExp(r"\$\{(\w+)\}"), (mm){
-    final name = mm.group(1)!;
-    return consts[name] ?? mm.group(0)!;  // ถ้าไม่เจอใน consts, คืน original
-  });
+  String resolve(String s) => s.replaceAllMapped(RegExp(r"\$\{(\w+)\}"), (mm) {
+        final name = mm.group(1)!;
+        return consts[name] ?? mm.group(0)!; // ถ้าไม่เจอใน consts, คืน original
+      });
 
   // Pattern 1: Key('...')
   // ตัวอย่าง: key: Key('customer_name')
-  var m = RegExp(r"key\s*:\s*(?:const\s+)?Key\(\s*'([^']+)'\s*\)").firstMatch(args);
+  var m =
+      RegExp(r"key\s*:\s*(?:const\s+)?Key\(\s*'([^']+)'\s*\)").firstMatch(args);
   if (m != null) return resolve(m.group(1)!);
 
   // Pattern 2: Key("...")
   // ตัวอย่าง: key: Key("customer_name")
-  m = RegExp(r'key\s*:\s*(?:const\s+)?Key\(\s*"([^\"]+)"\s*\)').firstMatch(args);
+  m = RegExp(r'key\s*:\s*(?:const\s+)?Key\(\s*"([^\"]+)"\s*\)')
+      .firstMatch(args);
   if (m != null) return resolve(m.group(1)!);
 
   // Pattern 3: ValueKey<T>('...')
   // ตัวอย่าง: key: ValueKey<String>('customer_name')
-  m = RegExp(r"key\s*:\s*(?:const\s+)?ValueKey(?:<[^>]+>)?\(\s*'([^']+)'\s*\)").firstMatch(args);
+  m = RegExp(r"key\s*:\s*(?:const\s+)?ValueKey(?:<[^>]+>)?\(\s*'([^']+)'\s*\)")
+      .firstMatch(args);
   if (m != null) return resolve(m.group(1)!);
 
   // Pattern 4: ValueKey("...")
-  m = RegExp(r'key\s*:\s*(?:const\s+)?ValueKey(?:<[^>]+>)?\(\s*"([^\"]+)"\s*\)').firstMatch(args);
+  m = RegExp(r'key\s*:\s*(?:const\s+)?ValueKey(?:<[^>]+>)?\(\s*"([^\"]+)"\s*\)')
+      .firstMatch(args);
   if (m != null) return resolve(m.group(1)!);
 
   // Pattern 5: ObjectKey([...])
   // ตัวอย่าง: key: ObjectKey(['customer', 'name'])
   // → extract string แรกในลิสต์
-  m = RegExp(r'key\s*:\s*(?:const\s+)?ObjectKey\(\s*\[([^\]]*)\]\s*\)').firstMatch(args);
+  m = RegExp(r'key\s*:\s*(?:const\s+)?ObjectKey\(\s*\[([^\]]*)\]\s*\)')
+      .firstMatch(args);
   if (m != null) {
     final inside = m.group(1) ?? '';
     // หา string literal แรกใน list
-    final ms = RegExp(r"'([^']+)'").firstMatch(inside) ?? RegExp(r'"([^\"]+)"').firstMatch(inside);
+    final ms = RegExp(r"'([^']+)'").firstMatch(inside) ??
+        RegExp(r'"([^\"]+)"').firstMatch(inside);
     if (ms != null) return resolve(ms.group(1)!);
   }
 
-  return null;  // ไม่พบ key
+  return null; // ไม่พบ key
 }
 
 /// ============================================================================
@@ -738,7 +770,8 @@ String? _extractOnTapMethod(String args) {
   // Pattern 1: Arrow function
   // onTap: () => _methodName(...)
   // Captures: _methodName
-  final arrowPattern = RegExp(r'onTap\s*:\s*\(\s*\)\s*=>\s*([A-Za-z_]\w*)\s*\(');
+  final arrowPattern =
+      RegExp(r'onTap\s*:\s*\(\s*\)\s*=>\s*([A-Za-z_]\w*)\s*\(');
   final arrowMatch = arrowPattern.firstMatch(args);
   if (arrowMatch != null) {
     return arrowMatch.group(1);
@@ -747,7 +780,8 @@ String? _extractOnTapMethod(String args) {
   // Pattern 2: Block function (closure with braces)
   // onTap: () { _methodName(...); }
   // Captures: _methodName
-  final blockPattern = RegExp(r'onTap\s*:\s*\(\s*\)\s*\{\s*([A-Za-z_]\w*)\s*\(');
+  final blockPattern =
+      RegExp(r'onTap\s*:\s*\(\s*\)\s*\{\s*([A-Za-z_]\w*)\s*\(');
   final blockMatch = blockPattern.firstMatch(args);
   if (blockMatch != null) {
     return blockMatch.group(1);
@@ -762,7 +796,7 @@ String? _extractOnTapMethod(String args) {
     return directMatch.group(1);
   }
 
-  return null;  // ไม่พบ onTap หรือไม่ใช่ pattern ที่รองรับ
+  return null; // ไม่พบ onTap หรือไม่ใช่ pattern ที่รองรับ
 }
 
 /// ============================================================================
@@ -824,9 +858,18 @@ List<String> _detectWrappers(String src, int pos) {
 /// หมายเหตุ: Function นี้ยังไม่ได้ใช้งานใน version ปัจจุบัน
 /// @deprecated Reserved for future use
 // ignore: unused_element
-List<Map<String, dynamic>> _extractActions(String type, String? generics, String args, {String? cubitType, String? fullSource}) {
+List<Map<String, dynamic>> _extractActions(
+    String type, String? generics, String args,
+    {String? cubitType, String? fullSource}) {
   // Event types ที่ต้องการ capture
-  final events = <String>['onPressed','onChanged','onTap','onSubmitted','onFieldSubmitted','onSaved'];
+  final events = <String>[
+    'onPressed',
+    'onChanged',
+    'onTap',
+    'onSubmitted',
+    'onFieldSubmitted',
+    'onSaved'
+  ];
   final out = <Map<String, dynamic>>[];
 
   for (final e in events) {
@@ -837,16 +880,18 @@ List<Map<String, dynamic>> _extractActions(String type, String? generics, String
     final expr = m.group(1)!.trim();
 
     // Extract method calls จาก expression
-    final calls = _extractCalls(expr, cubitType: cubitType, fullSource: fullSource);
+    final calls =
+        _extractCalls(expr, cubitType: cubitType, fullSource: fullSource);
 
     // Guess argument type based on widget และ event type
     final argType = _guessArgType(type, generics, e);
 
     // Filter out internal FormField calls (formState.didChange)
     // เพราะเป็น internal calls ไม่ใช่ user-facing actions
-    final meaningfulCalls = calls.where((call) =>
-      call['target'] != 'formState' || call['method'] != 'didChange'
-    ).toList();
+    final meaningfulCalls = calls
+        .where((call) =>
+            call['target'] != 'formState' || call['method'] != 'didChange')
+        .toList();
 
     // Skip actions ที่ไม่มี meaningful calls สำหรับ FormField
     if (meaningfulCalls.isEmpty && type == 'FormField') continue;
@@ -886,9 +931,10 @@ List<Map<String, dynamic>> _extractActions(String type, String? generics, String
 /// final calls = _extractCalls(expr, cubitType: 'CustomerCubit');
 /// // [{'target': 'CustomerCubit', 'method': 'submit'}]
 /// ```
-List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? fullSource}) {
-  final out = <Map<String,String>>[];
-  final seen = <String>{};  // Deduplicate calls
+List<Map<String, String>> _extractCalls(String expr,
+    {String? cubitType, String? fullSource}) {
+  final out = <Map<String, String>>[];
+  final seen = <String>{}; // Deduplicate calls
 
   // Helper: เพิ่ม call ถ้ายังไม่เจอ
   void addCall(String target, String method) {
@@ -906,7 +952,8 @@ List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? 
 
     // Process false branch (ปกติเป็น method call, true branch เป็น null)
     if (falseBranch != 'null') {
-      final nestedCalls = _extractCalls(falseBranch, cubitType: cubitType, fullSource: fullSource);
+      final nestedCalls = _extractCalls(falseBranch,
+          cubitType: cubitType, fullSource: fullSource);
       for (final call in nestedCalls) {
         addCall(call['target']!, call['method']!);
       }
@@ -914,7 +961,8 @@ List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? 
 
     // Process true branch ถ้าไม่ใช่ null
     if (trueBranch != 'null' && trueBranch != falseBranch) {
-      final nestedCalls = _extractCalls(trueBranch, cubitType: cubitType, fullSource: fullSource);
+      final nestedCalls = _extractCalls(trueBranch,
+          cubitType: cubitType, fullSource: fullSource);
       for (final call in nestedCalls) {
         addCall(call['target']!, call['method']!);
       }
@@ -932,7 +980,8 @@ List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? 
     if (methodBody != null) {
       // Recursive extract จาก method body
       // ส่ง fullSource: null เพื่อป้องกัน infinite recursion
-      final nestedCalls = _extractCalls(methodBody, cubitType: cubitType, fullSource: null);
+      final nestedCalls =
+          _extractCalls(methodBody, cubitType: cubitType, fullSource: null);
       for (final call in nestedCalls) {
         addCall(call['target']!, call['method']!);
       }
@@ -942,7 +991,8 @@ List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? 
 
   // ----- Pattern 3: Navigator Pattern -----
   // Navigator.of(context).pop() / push() / pushNamed() / etc.
-  final navChain = RegExp(r'Navigator\.of\([^)]*\)\.(pop|maybePop|push(?:Named|Replacement|ReplacementNamed)?|pushAndRemoveUntil)\s*\(');
+  final navChain = RegExp(
+      r'Navigator\.of\([^)]*\)\.(pop|maybePop|push(?:Named|Replacement|ReplacementNamed)?|pushAndRemoveUntil)\s*\(');
   final navM = navChain.firstMatch(expr);
   if (navM != null) {
     addCall('Navigator', navM.group(1)!);
@@ -951,7 +1001,8 @@ List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? 
   // ----- Pattern 4: Property Access (Generic Method Call) -----
   // object.method() หรือ object.property.method()
   // ตัวอย่าง: _cubit.submit() / this._cubit.updateName()
-  final m1 = RegExp(r'([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.([A-Za-z_]\w*)\s*\(').allMatches(expr);
+  final m1 = RegExp(r'([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.([A-Za-z_]\w*)\s*\(')
+      .allMatches(expr);
   for (final m in m1) {
     var target = m.group(1)!;
     final method = m.group(2)!;
@@ -969,7 +1020,9 @@ List<Map<String,String>> _extractCalls(String expr, {String? cubitType, String? 
   // ----- Pattern 5: Context.read Pattern -----
   // context.read<CustomerCubit>().submit()
   // context.of<CustomerCubit>().submit()
-  final m2 = RegExp(r'context\.(?:read|of)<\s*(\w+)\s*>\(\)\.([A-Za-z_]\w*)\s*\(').allMatches(expr);
+  final m2 =
+      RegExp(r'context\.(?:read|of)<\s*(\w+)\s*>\(\)\.([A-Za-z_]\w*)\s*\(')
+          .allMatches(expr);
   for (final m in m2) {
     final t = m.group(1)!;
     addCall(cubitType ?? t, m.group(2)!);
@@ -1034,7 +1087,8 @@ String? _findMethodBody(String src, String methodName) {
 /// final binding = _extractTextBinding(args);
 /// // {'key': 'display_name', 'stateField': 'customerName'}
 /// ```
-Map<String, String>? _extractTextBinding(String args, {Map<String, String> consts = const {}}) {
+Map<String, String>? _extractTextBinding(String args,
+    {Map<String, String> consts = const {}}) {
   // Extract key ของ widget
   final key = _extractKey(args, consts: consts);
 
@@ -1071,7 +1125,8 @@ Map<String, dynamic> _maybeTextLiteral(String args) {
   // Pattern 1: Text('literal') - first positional argument
   // Match string literal ที่อยู่ต้น args หรือหลัง comma/paren
   // ไม่จับ strings ที่เป็น named parameter values
-  final m1 = RegExp(r"(?:^|[,(])\s*(?:const\s+)?(?:Text\s*\()?\s*'([^']+)'\s*(?:\)|,|$)")
+  final m1 = RegExp(
+          r"(?:^|[,(])\s*(?:const\s+)?(?:Text\s*\()?\s*'([^']+)'\s*(?:\)|,|$)")
       .firstMatch(args);
   if (m1 != null) {
     return {'textLiteral': m1.group(1)};
@@ -1081,7 +1136,7 @@ Map<String, dynamic> _maybeTextLiteral(String args) {
   final m2 = RegExp(r"\bdata\s*:\s*'([^']+)'").firstMatch(args);
   if (m2 != null) return {'textLiteral': m2.group(1)};
 
-  return const {};  // ไม่พบ literal text
+  return const {}; // ไม่พบ literal text
 }
 
 /// ============================================================================
@@ -1105,10 +1160,12 @@ Map<String, dynamic> _maybeTextLiteral(String args) {
 /// _guessArgType('Radio', '<bool>', 'onChanged');  // 'bool'
 /// _guessArgType('ElevatedButton', null, 'onPressed');  // 'void'
 /// ```
-String? _guessArgType(String type, String? generics, String event){
+String? _guessArgType(String type, String? generics, String event) {
   // TextField/TextFormField: text-related events รับ String
   if (type == 'TextField' || type == 'TextFormField') {
-    if (event == 'onChanged' || event == 'onSubmitted' || event == 'onFieldSubmitted') {
+    if (event == 'onChanged' ||
+        event == 'onSubmitted' ||
+        event == 'onFieldSubmitted') {
       return 'String';
     }
   }
@@ -1153,13 +1210,15 @@ String? _guessArgType(String type, String? generics, String event){
 ///   ]
 /// }
 /// ```
-Map<String, dynamic> _extractTextFieldMeta(String args, {Map<String,String> regexVars = const {}}) {
+Map<String, dynamic> _extractTextFieldMeta(String args,
+    {Map<String, String> regexVars = const {}}) {
   final meta = <String, dynamic>{};
 
   // ----- keyboardType -----
   // Pattern: keyboardType: TextInputType.emailAddress
   // Values: emailAddress, number, phone, text, multiline, etc.
-  final kt = RegExp(r'keyboardType\s*:\s*TextInputType\.(\w+)').firstMatch(args);
+  final kt =
+      RegExp(r'keyboardType\s*:\s*TextInputType\.(\w+)').firstMatch(args);
   if (kt != null) meta['keyboardType'] = kt.group(1);
 
   // ----- obscureText -----
@@ -1193,48 +1252,68 @@ Map<String, dynamic> _extractTextFieldMeta(String args, {Map<String,String> rege
   // 3. FilteringTextInputFormatter.allow(RegExp(...))
   // อนุญาตเฉพาะ characters ที่ match pattern
   // ตัวอย่าง: FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]'))
-  for (final m in RegExp(r"FilteringTextInputFormatter\s*\.\s*allow\s*\(\s*RegExp\(([^)]*)\)\s*(?:,\s*replacementString\s*:\s*'([^']*)')?\s*,?\s*\)").allMatches(args)) {
+  for (final m in RegExp(
+          r"FilteringTextInputFormatter\s*\.\s*allow\s*\(\s*RegExp\(([^)]*)\)\s*(?:,\s*replacementString\s*:\s*'([^']*)')?\s*,?\s*\)")
+      .allMatches(args)) {
     final inside = m.group(1) ?? '';
     // Extract pattern string (รองรับทั้ง raw และ normal strings)
     final s1 = RegExp(r"r?'([^']*)'").firstMatch(inside);
     final s2 = s1 ?? RegExp(r'r?\"([^\"]*)\"').firstMatch(inside);
     final pat = (s2?.group(1)) ?? '';
-    final repl = m.group(2);  // Optional replacement string
+    final repl = m.group(2); // Optional replacement string
     if (pat.isNotEmpty) {
-      fm.add({'type': 'allow', 'pattern': pat, if (repl != null) 'replacement': repl});
+      fm.add({
+        'type': 'allow',
+        'pattern': pat,
+        if (repl != null) 'replacement': repl
+      });
     }
   }
 
   // 4. FilteringTextInputFormatter.deny(RegExp(...))
   // ไม่อนุญาต characters ที่ match pattern
-  for (final m in RegExp(r"FilteringTextInputFormatter\s*\.\s*deny\s*\(\s*RegExp\(([^)]*)\)\s*(?:,\s*replacementString\s*:\s*'([^']*)')?\s*,?\s*\)").allMatches(args)) {
+  for (final m in RegExp(
+          r"FilteringTextInputFormatter\s*\.\s*deny\s*\(\s*RegExp\(([^)]*)\)\s*(?:,\s*replacementString\s*:\s*'([^']*)')?\s*,?\s*\)")
+      .allMatches(args)) {
     final inside = m.group(1) ?? '';
     final s1 = RegExp(r"r?'([^']*)'").firstMatch(inside);
     final s2 = s1 ?? RegExp(r'r?\"([^\"]*)\"').firstMatch(inside);
     final pat = (s2?.group(1)) ?? '';
     final repl = m.group(2);
     if (pat.isNotEmpty) {
-      fm.add({'type': 'deny', 'pattern': pat, if (repl != null) 'replacement': repl});
+      fm.add({
+        'type': 'deny',
+        'pattern': pat,
+        if (repl != null) 'replacement': repl
+      });
     }
   }
 
   // 5. allow/deny with variable reference
   // ตัวอย่าง: FilteringTextInputFormatter.allow(emailPattern)
   // ต้อง resolve variable จาก regexVars map
-  for (final m in RegExp(r"FilteringTextInputFormatter\s*\.\s*(allow|deny)\s*\(\s*([A-Za-z_]\w*)\s*(?:,\s*replacementString\s*:\s*'([^']*)')?\s*\)").allMatches(args)) {
-    final kind = m.group(1)!;  // 'allow' หรือ 'deny'
+  for (final m in RegExp(
+          r"FilteringTextInputFormatter\s*\.\s*(allow|deny)\s*\(\s*([A-Za-z_]\w*)\s*(?:,\s*replacementString\s*:\s*'([^']*)')?\s*\)")
+      .allMatches(args)) {
+    final kind = m.group(1)!; // 'allow' หรือ 'deny'
     final varName = m.group(2)!;
     final repl = m.group(3);
     // Resolve variable name เป็น pattern
     final pat = regexVars[varName];
     if (pat != null && pat.isNotEmpty) {
-      fm.add({'type': kind, 'pattern': pat, if (repl != null) 'replacement': repl});
+      fm.add({
+        'type': kind,
+        'pattern': pat,
+        if (repl != null) 'replacement': repl
+      });
     }
   }
 
   // 6. Legacy WhitelistingTextInputFormatter (deprecated)
   // เหมือน FilteringTextInputFormatter.allow
-  for (final m in RegExp(r"WhitelistingTextInputFormatter\s*\(\s*RegExp\(([^)]*)\)\s*\)").allMatches(args)) {
+  for (final m
+      in RegExp(r"WhitelistingTextInputFormatter\s*\(\s*RegExp\(([^)]*)\)\s*\)")
+          .allMatches(args)) {
     final inside = m.group(1) ?? '';
     final s1 = RegExp(r"r?'([^']*)'").firstMatch(inside);
     final s2 = s1 ?? RegExp(r'r?\"([^\"]*)\"').firstMatch(inside);
@@ -1244,7 +1323,9 @@ Map<String, dynamic> _extractTextFieldMeta(String args, {Map<String,String> rege
 
   // 7. Legacy BlacklistingTextInputFormatter (deprecated)
   // เหมือน FilteringTextInputFormatter.deny
-  for (final m in RegExp(r"BlacklistingTextInputFormatter\s*\(\s*RegExp\(([^)]*)\)\s*\)").allMatches(args)) {
+  for (final m
+      in RegExp(r"BlacklistingTextInputFormatter\s*\(\s*RegExp\(([^)]*)\)\s*\)")
+          .allMatches(args)) {
     final inside = m.group(1) ?? '';
     final s1 = RegExp(r"r?'([^']*)'").firstMatch(inside);
     final s2 = s1 ?? RegExp(r'r?\"([^\"]*)\"').firstMatch(inside);
@@ -1254,13 +1335,15 @@ Map<String, dynamic> _extractTextFieldMeta(String args, {Map<String,String> rege
 
   // 8. LengthLimitingTextInputFormatter(n)
   // จำกัดความยาวเหมือน maxLength
-  for (final m in RegExp(r'LengthLimitingTextInputFormatter\s*\(\s*(\d+)\s*\)').allMatches(args)) {
+  for (final m in RegExp(r'LengthLimitingTextInputFormatter\s*\(\s*(\d+)\s*\)')
+      .allMatches(args)) {
     fm.add({'type': 'lengthLimit', 'max': int.tryParse(m.group(1) ?? '')});
   }
 
   // 9. Custom formatters
   // ตัวอย่าง: ThousandsFormatter(), CurrencyFormatter(symbol: '\$')
-  for (final m in RegExp(r'([A-Za-z_]\w*Formatter)\s*\(([^)]*)\)').allMatches(args)) {
+  for (final m
+      in RegExp(r'([A-Za-z_]\w*Formatter)\s*\(([^)]*)\)').allMatches(args)) {
     final name = m.group(1)!;
     final a = (m.group(2) ?? '').trim();
 
@@ -1329,20 +1412,24 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
       if (braceOpen >= 0) {
         // Block-style validator: validator: (value) { ... }
         final braceClose = _matchBrace(tail, braceOpen);
-        if (braceClose > braceOpen) {
-          body = tail.substring(braceOpen + 1, braceClose);
-        } else {
-          // Fallback: ใช้ heuristic หา end ของ validator
-          final stop = RegExp(r",\s*\n\s*[A-Za-z_]\\w*\s*:").firstMatch(tail)?.start ??
-              RegExp(r"\)[,\)]").firstMatch(tail)?.start ??
-              (tail.length > 300 ? 300 : tail.length);
-          body = tail.substring(0, stop);
-        }
+        body = tail.substring(braceOpen + 1, braceClose);
+        //!TODO RECHECK NO NEED
+        // if (braceClose > braceOpen) {
+        //   body = tail.substring(braceOpen + 1, braceClose);
+        // }
+        // else {
+        //   // Fallback: ใช้ heuristic หา end ของ validator
+        //   final stop = RegExp(r",\s*\n\s*[A-Za-z_]\\w*\s*:").firstMatch(tail)?.start ??
+        //       RegExp(r"\)[,\)]").firstMatch(tail)?.start ??
+        //       (tail.length > 300 ? 300 : tail.length);
+        //   body = tail.substring(0, stop);
+        // }
       } else {
         // Arrow-style หรือ short form: validator: (v) => v.isEmpty ? 'Required' : null
-        final stop = RegExp(r",\s*\n\s*[A-Za-z_]\\w*\s*:").firstMatch(tail)?.start ??
-            RegExp(r"\)[,\)]").firstMatch(tail)?.start ??
-            (tail.length > 300 ? 300 : tail.length);
+        final stop =
+            RegExp(r",\s*\n\s*[A-Za-z_]\\w*\s*:").firstMatch(tail)?.start ??
+                RegExp(r"\)[,\)]").firstMatch(tail)?.start ??
+                (tail.length > 300 ? 300 : tail.length);
         body = tail.substring(0, stop);
       }
 
@@ -1377,7 +1464,8 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
 
         // หา return statement หลัง if
         final after = body.substring(close + 1);
-        final rm = RegExp("return\\s*(['\"])((?:\\\\.|[^\\\\])*?)\\1\\s*;").firstMatch(after);
+        final rm = RegExp("return\\s*(['\"])((?:\\\\.|[^\\\\])*?)\\1\\s*;")
+            .firstMatch(after);
 
         if (rm != null) {
           final msg = (rm.group(2) ?? '').trim();
@@ -1392,7 +1480,10 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
 
       // ----- Ternary Validator Pattern -----
       // Pattern: (condition) ? 'Message' : null
-      for (final m in RegExp("\\((.*?)\\)\\s*\\?\\s*(['\"])((?:\\\\.|[^\\\\])*?)\\2\\s*:\\s*null", dotAll: true).allMatches(body)) {
+      for (final m in RegExp(
+              "\\((.*?)\\)\\s*\\?\\s*(['\"])((?:\\\\.|[^\\\\])*?)\\2\\s*:\\s*null",
+              dotAll: true)
+          .allMatches(body)) {
         final cond = (m.group(1) ?? '').trim();
         final msg = (m.group(3) ?? '').trim();
         if (cond.isNotEmpty && msg.isNotEmpty) {
@@ -1404,13 +1495,15 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
       // ถ้าไม่เจอ rules แต่เจอ RegExp pattern และ message
       // สร้าง rule อัตโนมัติ
       if (rules.isEmpty) {
-        final rxPat = RegExp("RegExp\\(\\s*r?(['\\\"])((?:.|\\n)*?)\\1\\s*\\)").firstMatch(body);
+        final rxPat = RegExp("RegExp\\(\\s*r?(['\\\"])((?:.|\\n)*?)\\1\\s*\\)")
+            .firstMatch(body);
         final patternStr = rxPat?.group(2)?.trim();
 
         if (patternStr != null && patternStr.isNotEmpty) {
           // เลือก message ที่น่าจะเป็น user-facing
           // ไม่รวม 'Required' และ pattern string
-          final candidates = msgs.where((m) => m != 'Required' && m != patternStr).toList();
+          final candidates =
+              msgs.where((m) => m != 'Required' && m != patternStr).toList();
           if (candidates.isNotEmpty) {
             rules.add({
               'condition': "!RegExp(r'$patternStr').hasMatch(value)",
@@ -1425,7 +1518,8 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
       // ----- Secondary Synthesis -----
       // เพิ่ม rules สำหรับ messages ที่ยังไม่ได้ pair
       try {
-        final rxPat2 = RegExp("RegExp\\(\\s*r?(['\\\"])((?:.|\\n)*?)\\1\\s*\\)").firstMatch(body);
+        final rxPat2 = RegExp("RegExp\\(\\s*r?(['\\\"])((?:.|\\n)*?)\\1\\s*\\)")
+            .firstMatch(body);
         final patternStr2 = rxPat2?.group(2)?.trim();
 
         if (patternStr2 != null && patternStr2.isNotEmpty) {
@@ -1440,17 +1534,21 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
 
           // Filter เอา messages ที่น่าจะเป็น user-facing
           // ไม่รวม 'Required', pattern string, และ regex patterns
-          final likelyMsgs = strMatches.where((s) =>
-            s != 'Required' &&
-            s != patternStr2 &&
-            !s.startsWith('^') &&  // ไม่ใช่ regex pattern
-            !s.startsWith('[')     // ไม่ใช่ character class
-          ).toList();
+          final likelyMsgs = strMatches
+              .where((s) =>
+                      s != 'Required' &&
+                      s != patternStr2 &&
+                      !s.startsWith('^') && // ไม่ใช่ regex pattern
+                      !s.startsWith('[') // ไม่ใช่ character class
+                  )
+              .toList();
 
           if (likelyMsgs.isNotEmpty) {
             // เพิ่ม messages ที่ยังไม่มีใน rules
             final messagesAlready = (meta['validatorRules'] as List?)
-                ?.map((e) => (e as Map)['message'] as String).toSet() ?? <String>{};
+                    ?.map((e) => (e as Map)['message'] as String)
+                    .toSet() ??
+                <String>{};
 
             for (final lm in likelyMsgs) {
               if (!messagesAlready.contains(lm)) {
@@ -1471,12 +1569,14 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
 
   // ========== AUTOVALIDATE MODE ==========
   // Pattern: autovalidateMode: AutovalidateMode.onUserInteraction
-  final av = RegExp(r'autovalidateMode\s*:\s*AutovalidateMode\.(\w+)').firstMatch(args);
+  final av = RegExp(r'autovalidateMode\s*:\s*AutovalidateMode\.(\w+)')
+      .firstMatch(args);
   if (av != null) meta['autovalidateMode'] = av.group(1);
 
   // ========== DROPDOWN OPTIONS ==========
   // Extract DropdownMenuItem options
-  if (widgetType == 'DropdownButton' || widgetType == 'DropdownButtonFormField') {
+  if (widgetType == 'DropdownButton' ||
+      widgetType == 'DropdownButtonFormField') {
     final optionEntries = <Map<String, String>>[];
     final itemRegex = RegExp(r'DropdownMenuItem\s*\(([^)]*)\)', dotAll: true);
 
@@ -1484,13 +1584,19 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
       final inside = match.group(1) ?? '';
 
       // Extract value parameter
-      String? value = RegExp(r"value\s*:\s*'([^']+)'\s*").firstMatch(inside)?.group(1) ??
+      String? value = RegExp(r"value\s*:\s*'([^']+)'\s*")
+              .firstMatch(inside)
+              ?.group(1) ??
           RegExp(r'value\s*:\s*"([^"]+)"\s*').firstMatch(inside)?.group(1) ??
           RegExp(r'value\s*:\s*([^,\)]+)').firstMatch(inside)?.group(1)?.trim();
 
       // Extract label จาก child: Text(...)
-      String? label = RegExp(r"child\s*:\s*Text\(\s*'([^']+)'").firstMatch(inside)?.group(1) ??
-          RegExp(r'child\s*:\s*Text\(\s*"([^"]+)"').firstMatch(inside)?.group(1);
+      String? label = RegExp(r"child\s*:\s*Text\(\s*'([^']+)'")
+              .firstMatch(inside)
+              ?.group(1) ??
+          RegExp(r'child\s*:\s*Text\(\s*"([^"]+)"')
+              .firstMatch(inside)
+              ?.group(1);
 
       // สร้าง option entry
       final entry = <String, String>{};
@@ -1500,7 +1606,7 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
       if (label != null && label.isNotEmpty) {
         entry['text'] = label.trim();
       } else if (value != null && value.isNotEmpty) {
-        entry['text'] = value.trim();  // Fallback: ใช้ value เป็น text
+        entry['text'] = value.trim(); // Fallback: ใช้ value เป็น text
       }
 
       if (entry.isNotEmpty) optionEntries.add(entry);
@@ -1549,18 +1655,20 @@ Map<String, dynamic> _extractValidationMeta(String widgetType, String args) {
 /// final vars = _collectRegexVars(src);
 /// // {'emailPattern': '[a-zA-Z@.]'}
 /// ```
-Map<String,String> _collectRegexVars(String src){
-  final out = <String,String>{};
+Map<String, String> _collectRegexVars(String src) {
+  final out = <String, String>{};
 
   // Pattern 1: final/const/var name = RegExp(r'pattern');
-  final rx1 = RegExp(r"(?:final|const|var)\s+([A-Za-z_]\w*)\s*=\s*RegExp\(\s*r?'([^']*)'\s*\)");
-  for(final m in rx1.allMatches(src)){
+  final rx1 = RegExp(
+      r"(?:final|const|var)\s+([A-Za-z_]\w*)\s*=\s*RegExp\(\s*r?'([^']*)'\s*\)");
+  for (final m in rx1.allMatches(src)) {
     out[m.group(1)!] = m.group(2)!;
   }
 
   // Pattern 2: final/const/var name = RegExp(r"pattern");
-  final rx2 = RegExp(r'(?:final|const|var)\s+([A-Za-z_]\w*)\s*=\s*RegExp\(\s*r?"([^"]*)"\s*\)');
-  for(final m in rx2.allMatches(src)){
+  final rx2 = RegExp(
+      r'(?:final|const|var)\s+([A-Za-z_]\w*)\s*=\s*RegExp\(\s*r?"([^"]*)"\s*\)');
+  for (final m in rx2.allMatches(src)) {
     out[m.group(1)!] = m.group(2)!;
   }
 
@@ -1621,10 +1729,10 @@ Map<String, String> _collectStringConsts(String src) {
 String? _findCubitType(String src) {
   // ลอง patterns ทีละตัว คืนค่าแรกที่เจอ
   for (final rx in [
-    RegExp(r'BlocBuilder<\s*(\w+Cubit)\s*,'),     // BlocBuilder<XxxCubit,
-    RegExp(r'BlocListener<\s*(\w+Cubit)\s*,'),    // BlocListener<XxxCubit,
-    RegExp(r'context\.(?:read|of)<\s*(\w+Cubit)\s*>'),  // context.read<XxxCubit>
-    RegExp(r'BlocProvider\.of<\s*(\w+Cubit)\s*>'),      // BlocProvider.of<XxxCubit>
+    RegExp(r'BlocBuilder<\s*(\w+Cubit)\s*,'), // BlocBuilder<XxxCubit,
+    RegExp(r'BlocListener<\s*(\w+Cubit)\s*,'), // BlocListener<XxxCubit,
+    RegExp(r'context\.(?:read|of)<\s*(\w+Cubit)\s*>'), // context.read<XxxCubit>
+    RegExp(r'BlocProvider\.of<\s*(\w+Cubit)\s*>'), // BlocProvider.of<XxxCubit>
   ]) {
     final m = rx.firstMatch(src);
     if (m != null) return m.group(1);
@@ -1651,9 +1759,12 @@ String? _findCubitType(String src) {
 String? _findStateType(String src) {
   // ลอง patterns ทีละตัว คืนค่าแรกที่เจอ
   for (final rx in [
-    RegExp(r'BlocBuilder<\s*\w+Cubit\s*,\s*(\w+State)\s*>'),   // BlocBuilder<, XxxState>
-    RegExp(r'BlocListener<\s*\w+Cubit\s*,\s*(\w+State)\s*>'),  // BlocListener<, XxxState>
-    RegExp(r'BlocConsumer<\s*\w+Cubit\s*,\s*(\w+State)\s*>'),  // BlocConsumer<, XxxState>
+    RegExp(
+        r'BlocBuilder<\s*\w+Cubit\s*,\s*(\w+State)\s*>'), // BlocBuilder<, XxxState>
+    RegExp(
+        r'BlocListener<\s*\w+Cubit\s*,\s*(\w+State)\s*>'), // BlocListener<, XxxState>
+    RegExp(
+        r'BlocConsumer<\s*\w+Cubit\s*,\s*(\w+State)\s*>'), // BlocConsumer<, XxxState>
   ]) {
     final m = rx.firstMatch(src);
     if (m != null) return m.group(1);
@@ -1673,7 +1784,8 @@ String? _findStateType(String src) {
 // ignore: unused_element
 String? _findPageRoute(String src) {
   // Pattern: static const route = '/path';
-  final m = RegExp(r"static\s+const\s+route\s*=\s*'([^']+)'\s*;").firstMatch(src);
+  final m =
+      RegExp(r"static\s+const\s+route\s*=\s*'([^']+)'\s*;").firstMatch(src);
   return m?.group(1);
 }
 
@@ -1699,11 +1811,15 @@ Map<String, dynamic> _extractRadioMeta(String args) {
   final meta = <String, dynamic>{};
 
   // Extract value parameter
-  final v = RegExp(r'\bvalue\s*:\s*([^,\)]+)').firstMatch(args)?.group(1)?.trim();
+  final v =
+      RegExp(r'\bvalue\s*:\s*([^,\)]+)').firstMatch(args)?.group(1)?.trim();
   if (v != null) meta['valueExpr'] = v;
 
   // Extract groupValue parameter (binding กับ state)
-  final gv = RegExp(r'\bgroupValue\s*:\s*([^,\)]+)').firstMatch(args)?.group(1)?.trim();
+  final gv = RegExp(r'\bgroupValue\s*:\s*([^,\)]+)')
+      .firstMatch(args)
+      ?.group(1)
+      ?.trim();
   if (gv != null) meta['groupValueBinding'] = gv;
 
   return meta;
@@ -1760,15 +1876,20 @@ List<Map<String, String>> _collectRadioOptionMeta(String args) {
 
     // หา Text widget ที่ตามหลัง Radio (เป็น label)
     final following = args.substring(close);
-    final labelMatch = RegExp(r"Text\(\s*'([^']+)'\s*\)").firstMatch(following) ??
-        RegExp(r'Text\(\s*"([^"]+)"\s*\)').firstMatch(following);
+    final labelMatch =
+        RegExp(r"Text\(\s*'([^']+)'\s*\)").firstMatch(following) ??
+            RegExp(r'Text\(\s*"([^"]+)"\s*\)').firstMatch(following);
     final label = labelMatch?.group(1)?.trim();
 
     // Only add entry if we have both value and text (same structure as Dropdown)
-    if (value != null && value.trim().isNotEmpty && label != null && label.isNotEmpty) {
+    if (value != null &&
+        value.trim().isNotEmpty &&
+        label != null &&
+        label.isNotEmpty) {
       final entry = <String, String>{};
       entry['value'] = value.replaceAll(',', '').trim();
-      entry['text'] = label; // Use 'text' instead of 'label' to match Dropdown structure
+      entry['text'] =
+          label; // Use 'text' instead of 'label' to match Dropdown structure
       radios.add(entry);
     }
 
@@ -1837,7 +1958,8 @@ String? _findCubitFilePath(String src, String? cubitType) {
 
   // หา import statement ที่ match
   // Pattern: import 'package:PROJECT_NAME/path/to/cubit_file.dart';
-  final importPattern = RegExp("import\\s+['\"]package:[^/]+/(.+?/$fileName\\.dart)['\"]");
+  final importPattern =
+      RegExp("import\\s+['\"]package:[^/]+/(.+?/$fileName\\.dart)['\"]");
   final match = importPattern.firstMatch(src);
   if (match != null) {
     return 'lib/${match.group(1)}';
@@ -1873,7 +1995,8 @@ String? _findStateFilePath(String src, String? stateType) {
   final fileName = utils.camelToSnake(stateType);
 
   // หา import statement ที่ match
-  final importPattern = RegExp("import\\s+['\"]package:[^/]+/(.+?/$fileName\\.dart)['\"]");
+  final importPattern =
+      RegExp("import\\s+['\"]package:[^/]+/(.+?/$fileName\\.dart)['\"]");
   final match = importPattern.firstMatch(src);
   if (match != null) {
     return 'lib/${match.group(1)}';
@@ -1918,8 +2041,8 @@ Map<String, Map<String, dynamic>> _scanDateTimePickers(String src) {
     // หา showDatePicker(
     final match = RegExp(r'showDatePicker\s*\(').matchAsPrefix(src, i);
     if (match != null) {
-      final openParen = match.end - 1;  // ตำแหน่งของ '('
-      final closeParen = _matchParen(src, openParen);  // หา matching ')'
+      final openParen = match.end - 1; // ตำแหน่งของ '('
+      final closeParen = _matchParen(src, openParen); // หา matching ')'
 
       if (closeParen > openParen) {
         // Extract arguments
@@ -1935,7 +2058,7 @@ Map<String, Map<String, dynamic>> _scanDateTimePickers(String src) {
         if (methodName != null && params.isNotEmpty) {
           pickers[methodName] = {
             'type': 'DatePicker',
-            ...params,  // spread firstDate, lastDate, initialDate
+            ...params, // spread firstDate, lastDate, initialDate
           };
         }
       }
@@ -1963,7 +2086,7 @@ Map<String, Map<String, dynamic>> _scanDateTimePickers(String src) {
         if (methodName != null && params.isNotEmpty) {
           pickers[methodName] = {
             'type': 'TimePicker',
-            ...params,  // spread initialTime
+            ...params, // spread initialTime
           };
         }
       }
@@ -2001,7 +2124,8 @@ String? _findContainingMethod(String src, int pos) {
   // Pattern: Future<void> methodName(...) async { ... }
   // หรือ: void methodName(...) { ... }
   // Capture: methodName
-  final methodPattern = RegExp(r'(?:Future<[^>]+>|void|[A-Z]\w*)\s+([A-Za-z_]\w*)\s*\([^)]*\)\s*(?:async\s*)?\{[^}]*$');
+  final methodPattern = RegExp(
+      r'(?:Future<[^>]+>|void|[A-Z]\w*)\s+([A-Za-z_]\w*)\s*\([^)]*\)\s*(?:async\s*)?\{[^}]*$');
   final match = methodPattern.firstMatch(beforePos);
   if (match != null) {
     return match.group(1);
@@ -2038,11 +2162,13 @@ Map<String, dynamic> _extractDatePickerParams(String args) {
 
   // ----- Extract firstDate -----
   // รองรับ: DateTime.now() หรือ DateTime(year, month, day)
-  final firstDateNow = RegExp(r'firstDate\s*:\s*DateTime\.now\(\)').firstMatch(args);
+  final firstDateNow =
+      RegExp(r'firstDate\s*:\s*DateTime\.now\(\)').firstMatch(args);
   if (firstDateNow != null) {
     params['firstDate'] = 'DateTime.now()';
   } else {
-    final firstDateMatch = RegExp(r'firstDate\s*:\s*DateTime\(([^)]+)\)').firstMatch(args);
+    final firstDateMatch =
+        RegExp(r'firstDate\s*:\s*DateTime\(([^)]+)\)').firstMatch(args);
     if (firstDateMatch != null) {
       final dateArgs = firstDateMatch.group(1)!.trim();
       params['firstDate'] = _parseDateTimeArgs(dateArgs);
@@ -2051,17 +2177,22 @@ Map<String, dynamic> _extractDatePickerParams(String args) {
 
   // ----- Extract lastDate -----
   // รองรับ: DateTime.now(), DateTime.now().add(...), DateTime(...)
-  final lastDateNow = RegExp(r'lastDate\s*:\s*DateTime\.now\(\)(?!\.)').firstMatch(args);
+  final lastDateNow =
+      RegExp(r'lastDate\s*:\s*DateTime\.now\(\)(?!\.)').firstMatch(args);
   if (lastDateNow != null) {
     params['lastDate'] = 'DateTime.now()';
   } else {
     // Pattern: DateTime.now().add(const Duration(days: N))
-    final lastDateExpr = RegExp(r'lastDate\s*:\s*DateTime\.now\(\)\.add\(const Duration\(days:\s*(\d+)\)\)').firstMatch(args);
+    final lastDateExpr = RegExp(
+            r'lastDate\s*:\s*DateTime\.now\(\)\.add\(const Duration\(days:\s*(\d+)\)\)')
+        .firstMatch(args);
     if (lastDateExpr != null) {
-      params['lastDate'] = 'DateTime.now().add(Duration(days: ${lastDateExpr.group(1)}))';
+      params['lastDate'] =
+          'DateTime.now().add(Duration(days: ${lastDateExpr.group(1)}))';
     } else {
       // Pattern: DateTime(year, month, day)
-      final lastDateLiteral = RegExp(r'lastDate\s*:\s*DateTime\(([^)]+)\)').firstMatch(args);
+      final lastDateLiteral =
+          RegExp(r'lastDate\s*:\s*DateTime\(([^)]+)\)').firstMatch(args);
       if (lastDateLiteral != null) {
         final dateArgs = lastDateLiteral.group(1)!.trim();
         params['lastDate'] = _parseDateTimeArgs(dateArgs);
