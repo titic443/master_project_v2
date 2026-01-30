@@ -64,8 +64,7 @@ import 'utils.dart' as utils;
 
 // ค่าคงที่สำหรับเก็บ API key แบบ hardcode (ใช้เป็น fallback)
 // SECURITY WARNING: ไม่ควรใช้ในโปรดักชัน ควรใช้ environment variable แทน
-const String hardcodedApiKey =
-    'AIzaSyBlNGoC1UGn33xTghyTOlPC3jxHi75Mf-w';
+const String hardcodedApiKey = 'AIzaSyCC2NXlV1ZOfbRRfA_L4VnHh4zu7MNAnbs';
 
 // =============================================================================
 // PUBLIC API FUNCTION
@@ -126,11 +125,11 @@ Future<String?> generateDatasetsFromManifest(
     //   Output: output/test_data/demos/page.datasets.json
     final base = manifestPath
         .replaceAll('output/manifest/', '') // ลบ prefix folder
-        .replaceAll(RegExp(r'\.manifest\.json$'), ''); // ลบ suffix extension ด้วย regex
+        .replaceAll(
+            RegExp(r'\.manifest\.json$'), ''); // ลบ suffix extension ด้วย regex
 
     // return path ของไฟล์ที่สร้าง
     return 'output/test_data/$base.datasets.json';
-
   } on Exception catch (e) {
     // จับ Exception ที่เกิดขึ้น
 
@@ -227,8 +226,8 @@ void main(List<String> args) async {
     // ตรวจสอบว่าพบไฟล์หรือไม่
     if (manifestFiles.isEmpty) {
       // ไม่พบไฟล์ -> แสดง error และ exit
-      stderr.writeln(
-          'No .manifest.json files found in output/manifest/ folder');
+      stderr
+          .writeln('No .manifest.json files found in output/manifest/ folder');
       exit(1); // exit code 1 = error
     }
 
@@ -240,12 +239,12 @@ void main(List<String> args) async {
     // ตัวนับสถิติสำหรับสรุปผล batch processing
     // ---------------------------------------------------------------------------
     int successCount = 0; // จำนวนไฟล์ที่ประมวลผลสำเร็จ
-    int skipCount = 0;    // จำนวนไฟล์ที่ข้าม (ไม่มี text fields)
-    int failCount = 0;    // จำนวนไฟล์ที่ล้มเหลว (error)
+    int skipCount = 0; // จำนวนไฟล์ที่ข้าม (ไม่มี text fields)
+    int failCount = 0; // จำนวนไฟล์ที่ล้มเหลว (error)
 
     // List เก็บรายชื่อไฟล์ที่มีปัญหา (สำหรับแสดงใน summary)
     final failures = <String>[]; // ไฟล์ที่ล้มเหลว
-    final skipped = <String>[];  // ไฟล์ที่ข้าม
+    final skipped = <String>[]; // ไฟล์ที่ข้าม
 
     // ---------------------------------------------------------------------------
     // วนลูปประมวลผลแต่ละไฟล์
@@ -275,13 +274,13 @@ void main(List<String> args) async {
         // 2. Fail - error จริงๆ (API error, parsing error, etc.)
         if (errorMsg.contains('No TextField/TextFormField widgets found')) {
           // กรณี skip: ไม่มี text fields
-          skipCount++;           // เพิ่มตัวนับ skip
-          skipped.add(path);     // เก็บชื่อไฟล์
+          skipCount++; // เพิ่มตัวนับ skip
+          skipped.add(path); // เก็บชื่อไฟล์
           stdout.writeln('  ⊘ Skipped: No text fields found\n');
         } else {
           // กรณี fail: error จริง
-          failCount++;           // เพิ่มตัวนับ fail
-          failures.add(path);    // เก็บชื่อไฟล์
+          failCount++; // เพิ่มตัวนับ fail
+          failures.add(path); // เก็บชื่อไฟล์
           stderr.writeln('  ✗ Failed: $e\n'); // แสดง error message
         }
       }
@@ -491,7 +490,7 @@ Future<void> _processManifest(
   // ---------------------------------------------------------------------------
 
   // สร้าง Lists สำหรับเก็บ fields แต่ละกลุ่ม
-  final fieldsWithRules = <Map<String, dynamic>>[];    // fields ที่มี rules
+  final fieldsWithRules = <Map<String, dynamic>>[]; // fields ที่มี rules
   final fieldsWithoutRules = <Map<String, dynamic>>[]; // fields ที่ไม่มี rules
 
   // วนลูปตรวจสอบแต่ละ widget ใน manifest
@@ -510,7 +509,6 @@ Future<void> _processManifest(
     if ((widgetType.startsWith('TextField') ||
             widgetType.startsWith('TextFormField')) &&
         key.isNotEmpty) {
-
       // ดึง metadata ของ widget
       // metadata มีข้อมูลเช่น maxLength, inputFormatters, validatorRules
       final meta =
@@ -518,8 +516,7 @@ Future<void> _processManifest(
 
       // ดึง validation rules จาก metadata
       // rules เป็น list ของ maps ที่มี condition และ message
-      final rules =
-          (meta['validatorRules'] as List?)?.cast<Map>() ?? const [];
+      final rules = (meta['validatorRules'] as List?)?.cast<Map>() ?? const [];
 
       // เตรียมข้อมูล field สำหรับส่งไป process
       final fieldData = {
@@ -811,7 +808,7 @@ Future<Map<String, dynamic>> _callGeminiForDatasets(
     // === STYLE: รูปแบบ output ===
     '=== (STYLE) ===',
     '- JSON only (no markdown, no comments)', // ไม่ใส่ markdown
-    '- Realistic values (not "value1")',      // ค่าต้อง realistic
+    '- Realistic values (not "value1")', // ค่าต้อง realistic
     '- String arrays only',
     '- Remember: invalid data MUST be typeable (respect inputFormatters)',
   ].join('\n'); // รวมทุกบรรทัดด้วย newline
@@ -832,8 +829,10 @@ Future<Map<String, dynamic>> _callGeminiForDatasets(
       {
         'role': 'user', // role ของ message
         'parts': [
-          {'text': instructions},                              // prompt หลัก
-          {'text': 'Input Data (JSON):\n${jsonEncode(context)}'}, // ข้อมูล input
+          {'text': instructions}, // prompt หลัก
+          {
+            'text': 'Input Data (JSON):\n${jsonEncode(context)}'
+          }, // ข้อมูล input
         ]
       }
     ]
@@ -863,8 +862,7 @@ Future<Map<String, dynamic>> _callGeminiForDatasets(
 
   // ตั้งค่า SSL certificate validation
   // return false = ไม่อนุญาต bad certificate (security best practice)
-  client.badCertificateCallback =
-      (cert, host, port) => false;
+  client.badCertificateCallback = (cert, host, port) => false;
 
   try {
     // ---------------------------------------------------------------------------
@@ -950,7 +948,6 @@ Future<Map<String, dynamic>> _callGeminiForDatasets(
     final parsed = jsonDecode(cleaned) as Map<String, dynamic>;
 
     return parsed;
-
   } finally {
     // ---------------------------------------------------------------------------
     // STEP 7: ปิด HTTP client
@@ -1110,15 +1107,13 @@ class FieldConstraints {
 ///   FieldConstraints - object ที่เก็บ constraints ทั้งหมด
 FieldConstraints _analyzeConstraintsFromMeta(
     String key, Map<String, dynamic> meta) {
-
   // ---------------------------------------------------------------------------
   // ดึงข้อมูลพื้นฐานจาก metadata
   // ---------------------------------------------------------------------------
 
   // inputFormatters เป็น list ของ formatter objects
   // แต่ละ formatter มี type และ pattern (ถ้ามี)
-  final inputFormatters =
-      (meta['inputFormatters'] as List?) ?? const [];
+  final inputFormatters = (meta['inputFormatters'] as List?) ?? const [];
 
   // maxLength จาก TextField.maxLength property
   // default = 50 ถ้าไม่ได้กำหนด
@@ -1129,9 +1124,9 @@ FieldConstraints _analyzeConstraintsFromMeta(
   // ---------------------------------------------------------------------------
 
   String pattern = '[a-zA-Z0-9]'; // default: alphanumeric only
-  bool hasSpecialChars = false;   // default: ไม่มีอักขระพิเศษ
-  bool isEmail = false;           // default: ไม่ใช่ email
-  bool isDigitsOnly = false;      // default: ไม่ใช่ digits only
+  bool hasSpecialChars = false; // default: ไม่มีอักขระพิเศษ
+  bool isEmail = false; // default: ไม่ใช่ email
+  bool isDigitsOnly = false; // default: ไม่ใช่ digits only
 
   // ---------------------------------------------------------------------------
   // วิเคราะห์จาก inputFormatters (Priority สูงสุด)
@@ -1291,8 +1286,8 @@ String _generateValidData(String key, FieldConstraints c) {
       return 'test@example.com'; // 16 characters
     } else {
       // maxLength มาก -> สร้าง email แบบสุ่ม
-      final local = 'user${random.nextInt(99)}';  // user0-user98
-      final domain = 'test${random.nextInt(9)}';  // test0-test8
+      final local = 'user${random.nextInt(99)}'; // user0-user98
+      final domain = 'test${random.nextInt(9)}'; // test0-test8
       return '$local@$domain.com';
     }
   }

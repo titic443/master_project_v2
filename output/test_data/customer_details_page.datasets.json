@@ -12,7 +12,7 @@
       "customer_03_phone_textfield": [
         {
           "valid": "0123456789",
-          "invalid": "012345678",
+          "invalid": "123456789",
           "invalidRuleMessages": "Phone number must be exactly 10 digits"
         },
         {
@@ -22,7 +22,7 @@
         },
         {
           "valid": "0123456789",
-          "invalid": "000000000",
+          "invalid": "987654321",
           "invalidRuleMessages": "0"
         }
       ],
