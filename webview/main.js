@@ -30,6 +30,7 @@ const clearConstraintsBtn = document.getElementById('clearConstraintsBtn');
 // State
 let isGenerating = false;
 let generatedTestScript = null;
+let hasValidWidgets = false;  // Track ว่าไฟล์มี widgets หรือไม่
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -221,7 +222,9 @@ function validateForm() {
     const hasInput = inputFileInput.value.trim().length > 0;
     const hasOutput = outputFileInput.value.trim().length > 0;
 
-    generateBtn.disabled = !hasInput || !hasOutput || isGenerating;
+    // Generate button: ต้องมี input, output, widgets, และไม่กำลัง generating
+    // ถ้าไม่มี widgets → ปุ่มยัง disabled
+    generateBtn.disabled = !hasInput || !hasOutput || !hasValidWidgets || isGenerating;
 
     // Enable run buttons if we have a test script path
     const testScriptExists = outputFileInput.value.trim().length > 0;
@@ -234,6 +237,7 @@ async function scanWidgets(filePath) {
     if (!filePath) return;
 
     widgetInfo.classList.add('hidden');
+    hasValidWidgets = false;  // Reset state
 
     try {
         const response = await fetch(`${API_BASE}/scan`, {
@@ -245,11 +249,32 @@ async function scanWidgets(filePath) {
         const data = await response.json();
 
         if (data.success) {
-            widgetCount.textContent = `Found ${data.widgetCount} widgets in manifest`;
-            widgetInfo.classList.remove('hidden');
+            // ตรวจสอบว่าเจอ widgets หรือไม่
+            hasValidWidgets = data.hasWidgets !== false && data.widgetCount > 0;
+
+            // Get icon element
+            const iconEl = widgetInfo.querySelector('.icon');
+
+            if (hasValidWidgets) {
+                // มี widgets → แสดงสีเขียว + checkmark
+                widgetCount.textContent = `Found ${data.widgetCount} widgets in manifest`;
+                widgetInfo.classList.remove('hidden');
+                widgetInfo.classList.remove('error');
+                if (iconEl) iconEl.textContent = '\u2713';  // ✓ checkmark
+            } else {
+                // ไม่มี widgets → แสดงสีแดง + X mark
+                widgetCount.textContent = data.warning || `No widgets found in file`;
+                widgetInfo.classList.remove('hidden');
+                widgetInfo.classList.add('error');
+                if (iconEl) iconEl.textContent = '\u2717';  // ✗ X mark
+            }
+
+            // Update button states หลังจาก scan
+            validateForm();
         }
     } catch (error) {
         // Silent fail
+        hasValidWidgets = false;
     }
 }
 
