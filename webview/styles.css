@@ -231,6 +231,20 @@ button {
     font-weight: bold;
 }
 
+/* Info Box - Error State (ไม่เจอ widgets) */
+.info-box.error {
+    background: rgba(211, 47, 47, 0.1);
+    border-color: var(--accent-error);
+}
+
+.info-box.error .icon {
+    color: var(--accent-error);
+}
+
+.info-box.error #widgetCount {
+    color: var(--accent-error);
+}
+
 /* File List */
 .file-list-section {
     margin-top: 12px;

@@ -387,11 +387,17 @@ Future<void> handleScan(HttpRequest request) async {
       }
     }
 
+    // ตรวจสอบว่าเจอ widgets หรือไม่
+    final hasWidgets = widgetCount > 0;
+
     // ส่ง success response
+    // hasWidgets: false เมื่อไม่เจอ widget → frontend จะ disable ปุ่ม Generate
     request.response.write(jsonEncode({
       'success': true,
       'widgetCount': widgetCount,
+      'hasWidgets': hasWidgets,
       'manifestPath': manifestPath,
+      if (!hasWidgets) 'warning': 'No widgets found in file. Cannot generate test script.',
     }));
   } else {
     // ล้มเหลว - ส่ง error message
