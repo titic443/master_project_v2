@@ -103,47 +103,39 @@ Future<String?> generateDatasetsFromManifest(
   String? apiKey,
   bool localOnly = false,
 }) async {
-  // try-catch block สำหรับจัดการ error
-  try {
-    // เรียก _processManifest() ซึ่งเป็น function หลักในการประมวลผล
-    // function นี้จะ:
-    // 1. อ่านไฟล์ manifest
-    // 2. วิเคราะห์ fields และ validation rules
-    // 3. เรียก AI หรือ local generation
-    // 4. เขียน output file
-    await _processManifest(manifestPath, model, apiKey, localOnly);
+  // เรียก _processManifest() ซึ่งเป็น function หลักในการประมวลผล
+  // function นี้จะ:
+  // 1. อ่านไฟล์ manifest
+  // 2. วิเคราะห์ fields และ validation rules
+  // 3. เรียก AI หรือ local generation
+  // 4. เขียน output file
+  //
+  // Returns: true = success, false = skipped (no text fields)
+  final success = await _processManifest(manifestPath, model, apiKey, localOnly);
 
-    // คำนวณ output path จาก input path โดยใช้ string manipulation
-    // Step 1: ลบ prefix 'output/manifest/' ออก
-    // Step 2: ลบ suffix '.manifest.json' ออก (ใช้ RegExp)
-    // Step 3: เพิ่ม prefix 'output/test_data/' และ suffix '.datasets.json'
-    //
-    // ตัวอย่าง:
-    //   Input:  output/manifest/demos/page.manifest.json
-    //   Step 1: demos/page.manifest.json
-    //   Step 2: demos/page
-    //   Output: output/test_data/demos/page.datasets.json
-    final base = manifestPath
-        .replaceAll('output/manifest/', '') // ลบ prefix folder
-        .replaceAll(
-            RegExp(r'\.manifest\.json$'), ''); // ลบ suffix extension ด้วย regex
-
-    // return path ของไฟล์ที่สร้าง
-    return 'output/test_data/$base.datasets.json';
-  } on Exception catch (e) {
-    // จับ Exception ที่เกิดขึ้น
-
-    // กรณีพิเศษ: ถ้าไม่พบ TextField ในไฟล์ manifest
-    // ไม่ถือว่าเป็น error เพราะบาง page อาจไม่มี text input fields
-    // (เช่น page ที่มีแค่ปุ่มหรือ checkbox)
-    if (e.toString().contains('No TextField/TextFormField widgets found')) {
-      return null; // return null เพื่อบอกว่าข้ามไฟล์นี้
-    }
-
-    // ถ้าเป็น error ประเภทอื่น (เช่น API error, file not found)
-    // ให้ rethrow เพื่อให้ caller จัดการ
-    rethrow;
+  // ถ้าไม่พบ TextField ในไฟล์ manifest
+  // return null เพื่อบอกว่าข้ามไฟล์นี้
+  if (!success) {
+    return null;
   }
+
+  // คำนวณ output path จาก input path โดยใช้ string manipulation
+  // Step 1: ลบ prefix 'output/manifest/' ออก
+  // Step 2: ลบ suffix '.manifest.json' ออก (ใช้ RegExp)
+  // Step 3: เพิ่ม prefix 'output/test_data/' และ suffix '.datasets.json'
+  //
+  // ตัวอย่าง:
+  //   Input:  output/manifest/demos/page.manifest.json
+  //   Step 1: demos/page.manifest.json
+  //   Step 2: demos/page
+  //   Output: output/test_data/demos/page.datasets.json
+  final base = manifestPath
+      .replaceAll('output/manifest/', '') // ลบ prefix folder
+      .replaceAll(
+          RegExp(r'\.manifest\.json$'), ''); // ลบ suffix extension ด้วย regex
+
+  // return path ของไฟล์ที่สร้าง
+  return 'output/test_data/$base.datasets.json';
 }
 
 // =============================================================================
@@ -263,26 +255,21 @@ void main(List<String> args) async {
       // (ถ้าไฟล์หนึ่ง error ไม่ให้กระทบไฟล์อื่น)
       try {
         // เรียก function หลักในการประมวลผล
-        await _processManifest(path, model, apiKey, localOnly);
-        successCount++; // เพิ่มตัวนับสำเร็จ
-      } catch (e) {
-        // แปลง error เป็น string เพื่อตรวจสอบประเภท
-        final errorMsg = e.toString();
+        // return true = success, false = skipped (no text fields)
+        final success = await _processManifest(path, model, apiKey, localOnly);
 
-        // แยกประเภท error:
-        // 1. Skip - ไม่มี text fields (ไม่ถือเป็น error จริง)
-        // 2. Fail - error จริงๆ (API error, parsing error, etc.)
-        if (errorMsg.contains('No TextField/TextFormField widgets found')) {
-          // กรณี skip: ไม่มี text fields
-          skipCount++; // เพิ่มตัวนับ skip
-          skipped.add(path); // เก็บชื่อไฟล์
-          stdout.writeln('  ⊘ Skipped: No text fields found\n');
+        if (success) {
+          successCount++; // เพิ่มตัวนับสำเร็จ
         } else {
-          // กรณี fail: error จริง
-          failCount++; // เพิ่มตัวนับ fail
-          failures.add(path); // เก็บชื่อไฟล์
-          stderr.writeln('  ✗ Failed: $e\n'); // แสดง error message
+          // กรณี skip: ไม่มี text fields
+          skipCount++;
+          skipped.add(path);
         }
+      } catch (e) {
+        // กรณี fail: error จริงๆ (API error, parsing error, etc.)
+        failCount++; // เพิ่มตัวนับ fail
+        failures.add(path); // เก็บชื่อไฟล์
+        stderr.writeln('  ✗ Failed: $e\n'); // แสดง error message
       }
     }
 
@@ -403,9 +390,13 @@ Future<List<String>> _scanManifestFolder() async {
 ///   5. สร้าง datasets (local หรือ AI)
 ///   6. เขียน output file
 ///
+/// Returns:
+///   Future<bool> - true ถ้าสร้าง datasets สำเร็จ
+///                  false ถ้าไม่พบ text fields (skip)
+///
 /// Throws:
 ///   Exception - ถ้าไฟล์ไม่พบ, ไม่มี API key, หรือ error อื่นๆ
-Future<void> _processManifest(
+Future<bool> _processManifest(
   String manifestPath,
   String model,
   String? apiKey,
@@ -539,10 +530,11 @@ Future<void> _processManifest(
   // STEP 6: ตรวจสอบว่าพบ text fields หรือไม่
   // ---------------------------------------------------------------------------
 
-  // ถ้าไม่พบ text fields เลย ให้ throw exception
-  // เพื่อให้ caller รู้ว่าไฟล์นี้ไม่มี fields ที่ต้องสร้าง datasets
+  // ถ้าไม่พบ text fields เลย ให้ print และ return false (skip)
+  // ไม่ throw exception เพราะไม่ถือเป็น error
   if (fieldsWithRules.isEmpty && fieldsWithoutRules.isEmpty) {
-    throw Exception('No TextField/TextFormField widgets found in manifest');
+    stdout.writeln('  ⊘ Skipped: No TextField/TextFormField widgets found');
+    return false;
   }
 
   // ---------------------------------------------------------------------------
@@ -699,6 +691,8 @@ Future<void> _processManifest(
 
   // แสดง success message
   stdout.writeln('  ✓ Generated: $outPath');
+
+  return true; // สำเร็จ
 }
 
 // =============================================================================
