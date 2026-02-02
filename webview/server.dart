@@ -231,13 +231,13 @@ Future<void> handleGetFiles(HttpRequest request) async {
   await request.response.close();
 }
 
-/// GET /test-scripts - ดึงรายการ test scripts ใน integration_test/
+/// GET /test-scripts - ดึงรายการ test scripts ใน test/
 ///
 /// Response:
-///   { "files": ["integration_test/page1_flow_test.dart", ...] }
+///   { "files": ["test/page1_flow_test.dart", ...] }
 Future<void> handleGetTestScripts(HttpRequest request) async {
   // กำหนด directory ที่จะ scan
-  final testDir = Directory('integration_test');
+  final testDir = Directory('test');
   final files = <String>[];
 
   // ตรวจสอบว่า directory มีอยู่หรือไม่
@@ -684,7 +684,7 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
   if (result.exitCode == 0) {
     // คำนวณ test script path
     final baseName = testData.split('/').last.replaceAll('.testdata.json', '');
-    final testScriptPath = 'integration_test/${baseName}_flow_test.dart';
+    final testScriptPath = 'test/${baseName}_flow_test.dart';
 
     request.response.write(jsonEncode({
       'success': true,
@@ -951,7 +951,7 @@ Future<void> handleGenerateAll(HttpRequest request) async {
   }
 
   // นับ test scripts ที่สร้าง
-  final testDir = Directory('integration_test');
+  final testDir = Directory('test');
   if (await testDir.exists()) {
     await for (final entity in testDir.list()) {
       if (entity is File && entity.path.endsWith('_flow_test.dart')) {
