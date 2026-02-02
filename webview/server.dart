@@ -753,6 +753,43 @@ Future<void> handleRunTests(HttpRequest request) async {
   final failedMatch = RegExp(r'(\d+) tests? failed').firstMatch(output);
 
   // ---------------------------------------------------------------------------
+  // Parse test case names จาก output
+  // Flutter test output format: "00:00 +N: Test Case Name"
+  // หรือ "00:00 +N -M: Test Case Name" (เมื่อมี failures)
+  // ---------------------------------------------------------------------------
+
+  final testCases = <Map<String, dynamic>>[];
+
+  // Pattern จับชื่อ test case จาก output
+  // ตัวอย่าง: "00:01 +1: Case 1: Submit with valid data"
+  // ไม่รวม "loading", "All tests passed" และบรรทัดสรุป
+  final testCaseRegex = RegExp(r'^\d{2}:\d{2}\s+\+(\d+)(?:\s+-(\d+))?:\s+(.+)$', multiLine: true);
+
+  for (final match in testCaseRegex.allMatches(output)) {
+    final testName = match.group(3)?.trim() ?? '';
+
+    // กรองออก: loading, All tests passed, Some tests failed, และบรรทัดที่ไม่ใช่ชื่อ test
+    if (testName.isNotEmpty &&
+        !testName.startsWith('loading') &&
+        !testName.contains('All tests passed') &&
+        !testName.contains('Some tests failed')) {
+
+      // ตรวจสอบว่าเป็น test ที่ fail หรือไม่
+      final failCount = match.group(2);
+      final isFailed = failCount != null && int.tryParse(failCount) != null && int.parse(failCount) > 0;
+
+      // หลีกเลี่ยงการเพิ่ม test ซ้ำ (เพราะ output แสดง test name หลายครั้ง)
+      final exists = testCases.any((tc) => tc['name'] == testName);
+      if (!exists) {
+        testCases.add({
+          'name': testName,
+          'status': isFailed ? 'failed' : 'passed',
+        });
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // Step 2: Generate HTML coverage report (ถ้า coverage enabled)
   // ---------------------------------------------------------------------------
 
@@ -818,6 +855,8 @@ Future<void> handleRunTests(HttpRequest request) async {
     'success': result.exitCode == 0,
     'passed': passedMatch != null ? int.parse(passedMatch.group(1)!) : 0,
     'failed': failedMatch != null ? int.parse(failedMatch.group(1)!) : 0,
+    'testCases': testCases,
+    'totalTests': testCases.length,
     'output': output,
     'error': result.stderr.toString(),
     'coverageHtmlPath': coverageHtmlPath,
