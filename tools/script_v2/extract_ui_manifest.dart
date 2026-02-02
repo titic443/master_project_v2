@@ -594,8 +594,6 @@ int _matchParen(String s, int openIdx) {
   int depth = 0; // Track parenthesis nesting level
   bool inS = false; // อยู่ใน single-quoted string '...'
   bool inD = false; // อยู่ใน double-quoted string "..."
-  // ignore: unused_local_variable
-  bool inRawStr = false; // Reserved สำหรับ raw strings (ยังไม่ได้ใช้)
 
   for (int i = openIdx; i < s.length; i++) {
     final c = s[i];
@@ -642,8 +640,6 @@ int _matchBrace(String s, int openIdx) {
   int depth = 0; // Track brace nesting level
   bool inS = false; // อยู่ใน single-quoted string '...'
   bool inD = false; // อยู่ใน double-quoted string "..."
-  // ignore: unused_local_variable
-  bool inRawStr = false; // Reserved สำหรับ raw strings (ยังไม่ได้ใช้)
 
   for (int i = openIdx; i < s.length; i++) {
     final c = s[i];
@@ -799,273 +795,8 @@ String? _extractOnTapMethod(String args) {
   return null; // ไม่พบ onTap หรือไม่ใช่ pattern ที่รองรับ
 }
 
-/// ============================================================================
-/// BLOC/CUBIT WRAPPER DETECTION (UNUSED - Reserved for future)
-/// ============================================================================
 
-/// ตรวจหา BLoC wrapper widgets ที่ครอบ widget ที่ตำแหน่งนั้น
-///
-/// ใช้สำหรับ detect context ของ widget ว่าอยู่ใน BlocBuilder/BlocListener หรือไม่
-///
-/// [src] - source code ทั้งหมด
-/// [pos] - ตำแหน่งของ widget ที่ต้องการตรวจ
-///
-/// Returns: List ของ wrapper types ที่พบ
-///
-/// หมายเหตุ: Function นี้ยังไม่ได้ใช้งานใน version ปัจจุบัน
-/// @deprecated Reserved for future use
-// ignore: unused_element
-List<String> _detectWrappers(String src, int pos) {
-  // ดูย้อนหลังไป 500 characters เพื่อหา wrapper
-  final start = (pos - 500).clamp(0, src.length);
-  final ctx = src.substring(start, pos);
 
-  final w = <String>[];
-  if (ctx.contains('BlocListener<')) w.add('BlocListener');
-  if (ctx.contains('BlocBuilder<')) w.add('BlocBuilder');
-  if (ctx.contains('BlocSelector<')) w.add('BlocSelector');
-  return w;
-}
-
-/// ============================================================================
-/// ACTION EXTRACTION (UNUSED - Reserved for future)
-/// ============================================================================
-
-/// Extract event handlers และ method calls จาก widget arguments
-///
-/// Scan หา event callbacks (onPressed, onChanged, onTap, etc.)
-/// และ extract method calls ที่อยู่ใน callback
-///
-/// [type] - widget type (เช่น TextField, ElevatedButton)
-/// [generics] - generic type parameters (เช่น <String>)
-/// [args] - argument string ของ widget
-/// [cubitType] - ชื่อ Cubit class สำหรับ resolve method targets
-/// [fullSource] - source code ทั้งหมด สำหรับ lookup method bodies
-///
-/// Returns: List ของ action objects พร้อม event name และ method calls
-///
-/// ตัวอย่าง output:
-/// ```json
-/// [
-///   {
-///     "event": "onPressed",
-///     "argType": "void",
-///     "calls": [{"target": "CustomerCubit", "method": "submit"}]
-///   }
-/// ]
-/// ```
-///
-/// หมายเหตุ: Function นี้ยังไม่ได้ใช้งานใน version ปัจจุบัน
-/// @deprecated Reserved for future use
-// ignore: unused_element
-List<Map<String, dynamic>> _extractActions(
-    String type, String? generics, String args,
-    {String? cubitType, String? fullSource}) {
-  // Event types ที่ต้องการ capture
-  final events = <String>[
-    'onPressed',
-    'onChanged',
-    'onTap',
-    'onSubmitted',
-    'onFieldSubmitted',
-    'onSaved'
-  ];
-  final out = <Map<String, dynamic>>[];
-
-  for (final e in events) {
-    // หา event handler ใน arguments
-    final m = RegExp('\\b$e\\s*:\\s*([^,]+)').firstMatch(args);
-    if (m == null) continue;
-
-    final expr = m.group(1)!.trim();
-
-    // Extract method calls จาก expression
-    final calls =
-        _extractCalls(expr, cubitType: cubitType, fullSource: fullSource);
-
-    // Guess argument type based on widget และ event type
-    final argType = _guessArgType(type, generics, e);
-
-    // Filter out internal FormField calls (formState.didChange)
-    // เพราะเป็น internal calls ไม่ใช่ user-facing actions
-    final meaningfulCalls = calls
-        .where((call) =>
-            call['target'] != 'formState' || call['method'] != 'didChange')
-        .toList();
-
-    // Skip actions ที่ไม่มี meaningful calls สำหรับ FormField
-    if (meaningfulCalls.isEmpty && type == 'FormField') continue;
-
-    out.add({
-      'event': e,
-      if (argType != null) 'argType': argType,
-      'calls': meaningfulCalls,
-    });
-  }
-  return out;
-}
-
-/// ============================================================================
-/// METHOD CALL EXTRACTION
-/// ============================================================================
-
-/// Extract method calls จาก expression string
-///
-/// Analyze expression (เช่น event handler body) และหา method calls ทั้งหมด
-/// รองรับ patterns หลายแบบ:
-/// - Direct method call: object.method()
-/// - Context.read pattern: context.read<Cubit>().method()
-/// - Navigator pattern: Navigator.of(context).push()
-/// - Ternary expressions: condition ? methodA() : methodB()
-/// - Method reference (tear-off): _handleSubmit
-///
-/// [expr] - expression string ที่ต้องการ analyze
-/// [cubitType] - ชื่อ Cubit class สำหรับ resolve _cubit references
-/// [fullSource] - source code ทั้งหมด สำหรับ lookup method bodies (tear-off)
-///
-/// Returns: List ของ maps {target: '...', method: '...'}
-///
-/// ตัวอย่าง:
-/// ```dart
-/// final expr = "context.read<CustomerCubit>().submit()";
-/// final calls = _extractCalls(expr, cubitType: 'CustomerCubit');
-/// // [{'target': 'CustomerCubit', 'method': 'submit'}]
-/// ```
-List<Map<String, String>> _extractCalls(String expr,
-    {String? cubitType, String? fullSource}) {
-  final out = <Map<String, String>>[];
-  final seen = <String>{}; // Deduplicate calls
-
-  // Helper: เพิ่ม call ถ้ายังไม่เจอ
-  void addCall(String target, String method) {
-    final k = '$target::$method';
-    if (seen.add(k)) out.add({'target': target, 'method': method});
-  }
-
-  // ----- Pattern 1: Ternary Expression -----
-  // condition ? methodA() : methodB()
-  // ต้อง handle ทั้ง true และ false branches
-  final ternaryMatch = RegExp(r'([^?]+)\?([^:]+):(.+)').firstMatch(expr.trim());
-  if (ternaryMatch != null && fullSource != null) {
-    final trueBranch = ternaryMatch.group(2)!.trim();
-    final falseBranch = ternaryMatch.group(3)!.trim();
-
-    // Process false branch (ปกติเป็น method call, true branch เป็น null)
-    if (falseBranch != 'null') {
-      final nestedCalls = _extractCalls(falseBranch,
-          cubitType: cubitType, fullSource: fullSource);
-      for (final call in nestedCalls) {
-        addCall(call['target']!, call['method']!);
-      }
-    }
-
-    // Process true branch ถ้าไม่ใช่ null
-    if (trueBranch != 'null' && trueBranch != falseBranch) {
-      final nestedCalls = _extractCalls(trueBranch,
-          cubitType: cubitType, fullSource: fullSource);
-      for (final call in nestedCalls) {
-        addCall(call['target']!, call['method']!);
-      }
-    }
-
-    if (out.isNotEmpty) return out;
-  }
-
-  // ----- Pattern 2: Method Reference (Tear-off) -----
-  // onPressed: _handleSubmit  (ไม่มี parentheses)
-  // ต้องไปหา body ของ method แล้ว extract calls
-  if (fullSource != null && RegExp(r'^[A-Za-z_]\w*$').hasMatch(expr.trim())) {
-    final methodName = expr.trim();
-    final methodBody = _findMethodBody(fullSource, methodName);
-    if (methodBody != null) {
-      // Recursive extract จาก method body
-      // ส่ง fullSource: null เพื่อป้องกัน infinite recursion
-      final nestedCalls =
-          _extractCalls(methodBody, cubitType: cubitType, fullSource: null);
-      for (final call in nestedCalls) {
-        addCall(call['target']!, call['method']!);
-      }
-      return out;
-    }
-  }
-
-  // ----- Pattern 3: Navigator Pattern -----
-  // Navigator.of(context).pop() / push() / pushNamed() / etc.
-  final navChain = RegExp(
-      r'Navigator\.of\([^)]*\)\.(pop|maybePop|push(?:Named|Replacement|ReplacementNamed)?|pushAndRemoveUntil)\s*\(');
-  final navM = navChain.firstMatch(expr);
-  if (navM != null) {
-    addCall('Navigator', navM.group(1)!);
-  }
-
-  // ----- Pattern 4: Property Access (Generic Method Call) -----
-  // object.method() หรือ object.property.method()
-  // ตัวอย่าง: _cubit.submit() / this._cubit.updateName()
-  final m1 = RegExp(r'([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\.([A-Za-z_]\w*)\s*\(')
-      .allMatches(expr);
-  for (final m in m1) {
-    var target = m.group(1)!;
-    final method = m.group(2)!;
-
-    // Skip Navigator.of ถ้าจับ nav action ไปแล้ว
-    if (target.startsWith('Navigator') && method == 'of') continue;
-
-    // Resolve _cubit references เป็น actual Cubit type
-    if (cubitType != null) {
-      if (target == '_cubit' || target == 'this._cubit') target = cubitType;
-    }
-    addCall(target, method);
-  }
-
-  // ----- Pattern 5: Context.read Pattern -----
-  // context.read<CustomerCubit>().submit()
-  // context.of<CustomerCubit>().submit()
-  final m2 =
-      RegExp(r'context\.(?:read|of)<\s*(\w+)\s*>\(\)\.([A-Za-z_]\w*)\s*\(')
-          .allMatches(expr);
-  for (final m in m2) {
-    final t = m.group(1)!;
-    addCall(cubitType ?? t, m.group(2)!);
-  }
-
-  return out;
-}
-
-/// หา body ของ method จากชื่อ
-///
-/// ใช้สำหรับ resolve method references (tear-offs)
-/// เมื่อ event handler เป็นแค่ชื่อ method ไม่มี call
-///
-/// [src] - source code ทั้งหมด
-/// [methodName] - ชื่อ method ที่ต้องการหา
-///
-/// Returns: body ของ method (ไม่รวม braces), หรือ null ถ้าไม่พบ
-///
-/// ตัวอย่าง:
-/// ```dart
-/// final src = "void _handleSubmit() { _cubit.submit(); }";
-/// final body = _findMethodBody(src, '_handleSubmit');
-/// // body = " _cubit.submit(); "
-/// ```
-String? _findMethodBody(String src, String methodName) {
-  // Pattern: returnType methodName(params) { body }
-  // ตัวอย่าง: void _handleSubmit() { ... }
-  // ตัวอย่าง: Future<void> _handleSubmit() async { ... }
-  final methodPattern = RegExp(r'\b' + methodName + r'\s*\([^)]*\)\s*\{');
-  final match = methodPattern.firstMatch(src);
-  if (match == null) return null;
-
-  // หา opening brace
-  final openBrace = src.indexOf('{', match.start);
-  if (openBrace == -1) return null;
-
-  // หา matching closing brace
-  final closeBrace = _matchBrace(src, openBrace);
-  if (closeBrace == -1 || closeBrace <= openBrace) return null;
-
-  // Return body ระหว่าง { และ }
-  return src.substring(openBrace + 1, closeBrace);
-}
 
 /// ============================================================================
 /// TEXT WIDGET EXTRACTION
@@ -1137,50 +868,6 @@ Map<String, dynamic> _maybeTextLiteral(String args) {
   if (m2 != null) return {'textLiteral': m2.group(1)};
 
   return const {}; // ไม่พบ literal text
-}
-
-/// ============================================================================
-/// TYPE INFERENCE
-/// ============================================================================
-
-/// Guess argument type สำหรับ event callback
-///
-/// ใช้สำหรับ determine ว่า callback function รับ argument type อะไร
-/// based on widget type และ event name
-///
-/// [type] - widget type (เช่น TextField, Radio)
-/// [generics] - generic type parameters (เช่น <String>)
-/// [event] - event name (เช่น onChanged, onPressed)
-///
-/// Returns: inferred type string หรือ null
-///
-/// ตัวอย่าง:
-/// ```dart
-/// _guessArgType('TextField', null, 'onChanged');  // 'String'
-/// _guessArgType('Radio', '<bool>', 'onChanged');  // 'bool'
-/// _guessArgType('ElevatedButton', null, 'onPressed');  // 'void'
-/// ```
-String? _guessArgType(String type, String? generics, String event) {
-  // TextField/TextFormField: text-related events รับ String
-  if (type == 'TextField' || type == 'TextFormField') {
-    if (event == 'onChanged' ||
-        event == 'onSubmitted' ||
-        event == 'onFieldSubmitted') {
-      return 'String';
-    }
-  }
-
-  // Radio: ใช้ generic type parameter
-  if (type == 'Radio') {
-    final g = generics ?? '';
-    final m = RegExp(r'<\s*([\w\.]+)\s*>').firstMatch(g);
-    return m?.group(1) ?? 'dynamic';
-  }
-
-  // Button events: ไม่มี argument
-  if (event == 'onPressed' || event == 'onTap') return 'void';
-
-  return null;
 }
 
 /// ============================================================================
@@ -1772,22 +1459,7 @@ String? _findStateType(String src) {
   return null;
 }
 
-/// หา page route constant (ยังไม่ได้ใช้งาน)
-///
-/// Pattern: static const route = '/path';
-///
-/// [src] - source code ของ page
-///
-/// Returns: route path หรือ null
-///
-/// @deprecated Reserved for future use
-// ignore: unused_element
-String? _findPageRoute(String src) {
-  // Pattern: static const route = '/path';
-  final m =
-      RegExp(r"static\s+const\s+route\s*=\s*'([^']+)'\s*;").firstMatch(src);
-  return m?.group(1);
-}
+
 
 /// ============================================================================
 /// RADIO BUTTON EXTRACTION
