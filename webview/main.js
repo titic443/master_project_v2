@@ -9,7 +9,6 @@ const browseOutputBtn = document.getElementById('browseOutputBtn');
 const widgetInfo = document.getElementById('widgetInfo');
 const widgetCount = document.getElementById('widgetCount');
 const generateBtn = document.getElementById('generateBtn');
-const runTestBtn = document.getElementById('runTestBtn');
 const runCoverageBtn = document.getElementById('runCoverageBtn');
 const progressSection = document.getElementById('progressSection');
 const outputSection = document.getElementById('outputSection');
@@ -25,7 +24,6 @@ const useConstraintsCheckbox = document.getElementById('useConstraints');
 const constraintsPanel = document.getElementById('constraintsPanel');
 const constraintsText = document.getElementById('constraintsText');
 const loadConstraintsBtn = document.getElementById('loadConstraintsBtn');
-const clearConstraintsBtn = document.getElementById('clearConstraintsBtn');
 
 // State
 let isGenerating = false;
@@ -42,7 +40,6 @@ function setupEventListeners() {
     browseInputBtn.addEventListener('click', browseInputFile);
     browseOutputBtn.addEventListener('click', browseOutputFile);
     generateBtn.addEventListener('click', generateTests);
-    runTestBtn.addEventListener('click', runAutomateTest);
     runCoverageBtn.addEventListener('click', runCoverageTest);
     clearLogBtn.addEventListener('click', clearLog);
     viewCoverageBtn.addEventListener('click', viewCoverageReport);
@@ -58,9 +55,6 @@ function setupEventListeners() {
 
     // เมื่อกดปุ่ม "Load from file" -> เปิด file picker เพื่อโหลด constraints
     loadConstraintsBtn.addEventListener('click', loadConstraintsFile);
-
-    // เมื่อกดปุ่ม "Clear" -> ล้าง textarea
-    clearConstraintsBtn.addEventListener('click', clearConstraints);
 }
 
 // =============================================================================
@@ -71,7 +65,7 @@ function setupEventListeners() {
  * toggleConstraintsPanel - แสดง/ซ่อน constraints panel
  *
  * เมื่อ user เลือก "Use custom constraints" checkbox:
- * - checked: แสดง panel ให้กรอก constraints
+ * - checked: แสดง panel ให้โหลด constraints จากไฟล์
  * - unchecked: ซ่อน panel
  */
 function toggleConstraintsPanel() {
@@ -124,15 +118,6 @@ async function loadConstraintsFile() {
             log(`Error loading constraints: ${err.message}`, 'error');
         }
     }
-}
-
-/**
- * clearConstraints - ล้าง constraints textarea
- *
- * ใช้เมื่อ user ต้องการเริ่มเขียน constraints ใหม่
- */
-function clearConstraints() {
-    constraintsText.value = '';
 }
 
 // Check if File System Access API is available
@@ -226,9 +211,8 @@ function validateForm() {
     // ถ้าไม่มี widgets → ปุ่มยัง disabled
     generateBtn.disabled = !hasInput || !hasOutput || !hasValidWidgets || isGenerating;
 
-    // Enable run buttons if we have a test script path
+    // Enable run coverage button if we have a test script path
     const testScriptExists = outputFileInput.value.trim().length > 0;
-    runTestBtn.disabled = !testScriptExists || isGenerating;
     runCoverageBtn.disabled = !testScriptExists || isGenerating;
 }
 
@@ -357,7 +341,7 @@ async function generateTests() {
         log(`Test script: ${scriptResult.testScriptPath}`, 'success');
 
         // Step 5: Mark as skipped (user can run manually)
-        updateProgress(5, 'skipped', 'Click "Run Automate Test" to run');
+        updateProgress(5, 'skipped', 'Click "Run Coverage Test" to run');
 
         // Store generated test script path
         generatedTestScript = scriptResult.testScriptPath;
@@ -371,52 +355,10 @@ async function generateTests() {
         });
 
         log('\n=== Generation complete! ===', 'success');
-        log('Click "Run Automate Test" or "Run Coverage Test" to execute tests.', 'info');
+        log('Click "Run Coverage Test" to execute tests.', 'info');
 
     } catch (error) {
         log(`\nError: ${error.message}`, 'error');
-    } finally {
-        isGenerating = false;
-        updateButtonStates();
-    }
-}
-
-// Run automate test
-async function runAutomateTest() {
-    const testScript = outputFileInput.value.trim();
-    if (!testScript || isGenerating) return;
-
-    isGenerating = true;
-    updateButtonStates();
-    progressSection.classList.remove('hidden');
-    outputSection.classList.remove('hidden');
-    clearLog();
-
-    log('=== Running Automate Test ===\n', 'info');
-    updateProgress(5, 'running', 'Running tests...');
-
-    try {
-        const testResult = await runStep('run-tests', {
-            testScript: testScript,
-            withCoverage: false
-        });
-
-        if (testResult.success) {
-            updateProgress(5, 'complete', `${testResult.passed} passed`);
-            log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
-            log('\n=== Tests completed! ===', 'success');
-        } else {
-            updateProgress(5, 'error', testResult.error);
-            log(`Tests failed: ${testResult.error}`, 'error');
-        }
-
-        if (testResult.output) {
-            log('\n--- Test Output ---', 'info');
-            log(testResult.output, '');
-        }
-    } catch (error) {
-        updateProgress(5, 'error', error.message);
-        log(`Error: ${error.message}`, 'error');
     } finally {
         isGenerating = false;
         updateButtonStates();
@@ -449,6 +391,16 @@ async function runCoverageTest() {
             updateProgress(5, 'complete', `${testResult.passed} passed + coverage`);
             log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
 
+            // แสดงจำนวน test cases และรายชื่อ
+            if (testResult.testCases && testResult.testCases.length > 0) {
+                log(`\n--- Test Cases (${testResult.totalTests} cases) ---`, 'info');
+                testResult.testCases.forEach((tc, index) => {
+                    const statusIcon = tc.status === 'passed' ? '✓' : '✗';
+                    const statusClass = tc.status === 'passed' ? 'success' : 'error';
+                    log(`  ${statusIcon} ${index + 1}. ${tc.name}`, statusClass);
+                });
+            }
+
             // Check if HTML coverage was generated
             if (testResult.coverageHtmlPath) {
                 log('\nStep 2: Generated HTML coverage report', 'success');
@@ -456,7 +408,7 @@ async function runCoverageTest() {
                 log('\n=== Coverage test completed! ===', 'success');
 
                 // Show coverage section
-                showCoverageSection(testResult.passed, testResult.failed, testResult.coverageHtmlPath);
+                showCoverageSection(testResult.passed, testResult.failed, testResult.coverageHtmlPath, testResult.testCases);
             } else {
                 log('\nWarning: Could not generate HTML coverage report', 'error');
                 log('Make sure genhtml (lcov) is installed: brew install lcov', 'info');
@@ -464,10 +416,20 @@ async function runCoverageTest() {
         } else {
             updateProgress(5, 'error', testResult.error);
             log(`Tests failed: ${testResult.error}`, 'error');
+
+            // แสดง test cases ที่ fail
+            if (testResult.testCases && testResult.testCases.length > 0) {
+                log(`\n--- Test Cases (${testResult.totalTests} cases) ---`, 'info');
+                testResult.testCases.forEach((tc, index) => {
+                    const statusIcon = tc.status === 'passed' ? '✓' : '✗';
+                    const statusClass = tc.status === 'passed' ? 'success' : 'error';
+                    log(`  ${statusIcon} ${index + 1}. ${tc.name}`, statusClass);
+                });
+            }
         }
 
         if (testResult.output) {
-            log('\n--- Test Output ---', 'info');
+            log('\n--- Raw Test Output ---', 'info');
             log(testResult.output, '');
         }
     } catch (error) {
@@ -480,10 +442,13 @@ async function runCoverageTest() {
 }
 
 // Show coverage section with results
-function showCoverageSection(passed, failed, htmlPath) {
+function showCoverageSection(passed, failed, htmlPath, testCases) {
     coverageSection.classList.remove('hidden');
     const summary = document.getElementById('coverageSummary');
-    summary.textContent = `Coverage report generated! (${passed} passed, ${failed} failed)`;
+
+    // แสดงจำนวน test cases
+    const totalCases = testCases ? testCases.length : (passed + failed);
+    summary.textContent = `Coverage report generated! (${totalCases} test cases: ${passed} passed, ${failed} failed)`;
 
     // Update coverage path display
     const pathEl = document.querySelector('.coverage-path');

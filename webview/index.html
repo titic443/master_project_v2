@@ -42,18 +42,17 @@
                     <label for="useConstraints">Use custom constraints</label>
                 </div>
                 <div id="constraintsPanel" class="constraints-panel hidden">
-                    <textarea id="constraintsText" class="constraints-textarea" placeholder="# Enter PICT constraints here...
-# Example:
+                    <textarea id="constraintsText" class="constraints-textarea" readonly placeholder="# Constraints will be loaded from file...
+# Example syntax:
 # IF [submitButton] = &quot;enabled&quot; THEN [username] &lt;&gt; &quot;empty&quot;;
-# IF [dropdown] = &quot;option1&quot; THEN [checkbox] = &quot;checked&quot;;"></textarea>
+# IF [dropdown] = &quot;option1&quot; THEN [checkbox] = &quot;checked&quot;;">
+# Example constraints (read-only):
+# IF [submitButton] = "enabled" THEN [username] <> "empty";
+# IF [dropdown] = "option1" THEN [checkbox] = "checked";</textarea>
                     <div class="constraints-actions">
                         <button type="button" id="loadConstraintsBtn" class="btn-secondary btn-small">
                             <span class="btn-icon">&#128196;</span>
                             Load from file...
-                        </button>
-                        <button type="button" id="clearConstraintsBtn" class="btn-secondary btn-small">
-                            <span class="btn-icon">&#128465;</span>
-                            Clear
                         </button>
                         <a href="https://github.com/microsoft/pict/blob/main/doc/pict.md#constraints" target="_blank" class="btn-link btn-small">
                             <span class="btn-icon">&#128214;</span>
@@ -86,10 +85,6 @@
                     <button type="button" id="generateBtn" class="btn-primary btn-action" disabled>
                         <span class="btn-icon">&#9881;</span>
                         <span class="btn-text">Generate Test Script</span>
-                    </button>
-                    <button type="button" id="runTestBtn" class="btn-secondary btn-action" disabled>
-                        <span class="btn-icon">&#9654;</span>
-                        <span class="btn-text">Run Automate Test</span>
                     </button>
                     <button type="button" id="runCoverageBtn" class="btn-secondary btn-action" disabled>
                         <span class="btn-icon">&#9733;</span>
