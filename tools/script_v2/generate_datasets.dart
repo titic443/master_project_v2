@@ -14,7 +14,6 @@
 // Options:
 //   --model=<model_name>  : เลือก AI model (default: gemini-2.5-flash)
 //   --api-key=<key>       : ระบุ API key โดยตรง
-//   --local-only          : ใช้ local generation เท่านั้น (ไม่เรียก AI)
 //
 // Environment Variables:
 //   GEMINI_API_KEY  : API key สำหรับ Gemini API
@@ -81,8 +80,6 @@ const String hardcodedApiKey = 'AIzaSyCC2NXlV1ZOfbRRfA_L4VnHh4zu7MNAnbs';
 ///                 ตัวเลือกอื่น: gemini-1.5-pro, gemini-1.0-pro
 ///   [apiKey]    - API key สำหรับ Gemini (optional)
 ///                 ถ้าไม่ระบุ จะหาจาก .env หรือ environment variable
-///   [localOnly] - ถ้า true จะใช้ local generation แทนการเรียก AI
-///                 เหมาะสำหรับ offline testing หรือ CI/CD
 ///
 /// Returns:
 ///   Future<String?> - path ของ output file ที่สร้าง
@@ -101,17 +98,16 @@ Future<String?> generateDatasetsFromManifest(
   String manifestPath, {
   String model = 'gemini-2.5-flash',
   String? apiKey,
-  bool localOnly = false,
 }) async {
   // เรียก _processManifest() ซึ่งเป็น function หลักในการประมวลผล
   // function นี้จะ:
   // 1. อ่านไฟล์ manifest
   // 2. วิเคราะห์ fields และ validation rules
-  // 3. เรียก AI หรือ local generation
+  // 3. เรียก AI เพื่อ generate datasets
   // 4. เขียน output file
   //
   // Returns: true = success, false = skipped (no text fields)
-  final success = await _processManifest(manifestPath, model, apiKey, localOnly);
+  final success = await _processManifest(manifestPath, model, apiKey);
 
   // ถ้าไม่พบ TextField ในไฟล์ manifest
   // return null เพื่อบอกว่าข้ามไฟล์นี้
@@ -169,25 +165,11 @@ void main(List<String> args) async {
   // null = จะหาจาก .env file หรือ environment variable
   String? apiKey;
 
-  // flag สำหรับบังคับใช้ local generation (ไม่เรียก AI)
-  // ใช้เมื่อต้องการ offline mode หรือ testing
-  bool localOnly = false;
-
   // ---------------------------------------------------------------------------
   // Parse Command Line Arguments
   // วนลูปอ่าน arguments ทีละตัวและจัดการตามประเภท
   // ---------------------------------------------------------------------------
   for (final a in args) {
-    // ตรวจสอบ flag --local-only (และ aliases)
-    // ถ้าเจอ flag นี้จะบังคับใช้ local generation แทน AI
-    if (a == '--local-only' || a == '--no-ai' || a == '--force-fallback') {
-      localOnly = true; // set flag เป็น true
-    }
-    // flags ที่ deprecated แล้ว (เก็บไว้เพื่อ backward compatibility)
-    // AI เป็น required by default ไม่จำเป็นต้องใช้ flag เหล่านี้
-    else if (a == '--ai-required' || a == '--strict-ai') {
-      // ไม่ทำอะไร - deprecated
-    }
     // ตรวจสอบ flag --model=xxx
     // ใช้ระบุชื่อ AI model ที่ต้องการใช้
     else if (a.startsWith('--model=')) {
@@ -256,7 +238,7 @@ void main(List<String> args) async {
       try {
         // เรียก function หลักในการประมวลผล
         // return true = success, false = skipped (no text fields)
-        final success = await _processManifest(path, model, apiKey, localOnly);
+        final success = await _processManifest(path, model, apiKey);
 
         if (success) {
           successCount++; // เพิ่มตัวนับสำเร็จ
@@ -323,7 +305,7 @@ void main(List<String> args) async {
 
   // เรียก function หลักในการประมวลผล
   // ถ้าเกิด error จะ throw และ script จะ exit ด้วย error
-  await _processManifest(manifestPath, model, apiKey, localOnly);
+  await _processManifest(manifestPath, model, apiKey);
 }
 
 // =============================================================================
@@ -380,14 +362,13 @@ Future<List<String>> _scanManifestFolder() async {
 ///   [manifestPath] - path ของไฟล์ manifest.json ที่จะประมวลผล
 ///   [model]        - ชื่อ AI model ที่จะใช้ (เช่น gemini-2.5-flash)
 ///   [apiKey]       - API key สำหรับ Gemini (nullable - จะหาเองถ้าไม่ระบุ)
-///   [localOnly]    - true = บังคับใช้ local generation, false = ใช้ AI
 ///
 /// การทำงาน:
 ///   1. ตรวจสอบว่าไฟล์มีอยู่จริง
-///   2. หา API key (ถ้าต้องใช้ AI)
+///   2. หา API key
 ///   3. อ่านและ parse manifest file
-///   4. แยก fields ตามประเภท (มี/ไม่มี validation rules)
-///   5. สร้าง datasets (local หรือ AI)
+///   4. รวบรวม TextField/TextFormField ทั้งหมด
+///   5. เรียก AI เพื่อสร้าง datasets
 ///   6. เขียน output file
 ///
 /// Returns:
@@ -400,7 +381,6 @@ Future<bool> _processManifest(
   String manifestPath,
   String model,
   String? apiKey,
-  bool localOnly,
 ) async {
   // ---------------------------------------------------------------------------
   // STEP 1: ตรวจสอบว่าไฟล์มีอยู่จริง
@@ -437,14 +417,11 @@ Future<bool> _processManifest(
   }
 
   // ---------------------------------------------------------------------------
-  // STEP 3: ตรวจสอบ mode และ API key
+  // STEP 3: ตรวจสอบ API key
   // ---------------------------------------------------------------------------
 
-  if (localOnly) {
-    // Local-only mode: ไม่ต้องใช้ API key
-    // จะใช้ local generation สำหรับทุก fields
-  } else if ((apiKey == null || apiKey.isEmpty)) {
-    // AI mode แต่ไม่มี API key = error
+  if (apiKey == null || apiKey.isEmpty) {
+    // ไม่มี API key = error
     // throw Exception พร้อมคำแนะนำวิธีตั้งค่า API key
     throw Exception('GEMINI_API_KEY not set. Please set it in one of:\n'
         '  1. Hardcode in script: const hardcodedApiKey = "your_key"\n'
@@ -475,14 +452,12 @@ Future<bool> _processManifest(
   final widgets = (manifest['widgets'] as List?) ?? const [];
 
   // ---------------------------------------------------------------------------
-  // STEP 5: แยก fields เป็น 2 กลุ่ม
-  // กลุ่ม 1: fieldsWithRules - มี validation rules (ต้องใช้ AI)
-  // กลุ่ม 2: fieldsWithoutRules - ไม่มี rules (generate locally ได้)
+  // STEP 5: รวบรวม TextField/TextFormField ทั้งหมด
+  // ส่งทุก field ไป AI เพื่อให้ได้ข้อมูลที่ realistic ที่สุด
   // ---------------------------------------------------------------------------
 
-  // สร้าง Lists สำหรับเก็บ fields แต่ละกลุ่ม
-  final fieldsWithRules = <Map<String, dynamic>>[]; // fields ที่มี rules
-  final fieldsWithoutRules = <Map<String, dynamic>>[]; // fields ที่ไม่มี rules
+  // สร้าง List สำหรับเก็บ fields ทั้งหมด
+  final allTextFields = <Map<String, dynamic>>[];
 
   // วนลูปตรวจสอบแต่ละ widget ใน manifest
   for (final w in widgets) {
@@ -505,24 +480,11 @@ Future<bool> _processManifest(
       final meta =
           (w['meta'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
 
-      // ดึง validation rules จาก metadata
-      // rules เป็น list ของ maps ที่มี condition และ message
-      final rules = (meta['validatorRules'] as List?)?.cast<Map>() ?? const [];
-
-      // เตรียมข้อมูล field สำหรับส่งไป process
-      final fieldData = {
+      // เตรียมข้อมูล field สำหรับส่งไป AI
+      allTextFields.add({
         'key': key,
         'meta': meta,
-      };
-
-      // แยก field ตาม rules
-      if (rules.isNotEmpty) {
-        // มี rules -> ต้องใช้ AI เพื่อวิเคราะห์และสร้าง valid/invalid pairs
-        fieldsWithRules.add(fieldData);
-      } else {
-        // ไม่มี rules -> สามารถ generate locally ได้
-        fieldsWithoutRules.add(fieldData);
-      }
+      });
     }
   }
 
@@ -532,131 +494,88 @@ Future<bool> _processManifest(
 
   // ถ้าไม่พบ text fields เลย ให้ print และ return false (skip)
   // ไม่ throw exception เพราะไม่ถือเป็น error
-  if (fieldsWithRules.isEmpty && fieldsWithoutRules.isEmpty) {
+  if (allTextFields.isEmpty) {
     stdout.writeln('  ⊘ Skipped: No TextField/TextFormField widgets found');
     return false;
   }
 
   // ---------------------------------------------------------------------------
-  // STEP 7: สร้าง result map สำหรับเก็บ datasets
+  // STEP 7: เรียก AI เพื่อสร้าง datasets สำหรับทุก fields
+  // ส่งทุก field ไป AI ไม่ว่าจะมี validation rules หรือไม่
+  // เพื่อให้ได้ข้อมูล valid/invalid ที่ realistic ที่สุด
   // ---------------------------------------------------------------------------
 
-  // byKey จะเก็บ datasets โดยใช้ field key เป็น key ของ map
-  // เช่น { "email": {...}, "password": {...} }
-  final byKey = <String, dynamic>{};
+  Map<String, dynamic>? aiResult;
 
-  // ---------------------------------------------------------------------------
-  // STEP 8: ประมวลผล Fields ที่ไม่มี rules (LOCAL GENERATION)
-  // Fields เหล่านี้ไม่มี validation rules จึงสร้าง valid value ได้ง่าย
-  // ไม่จำเป็นต้องสร้าง invalid value เพราะไม่มี rules ที่จะ fail
-  // ---------------------------------------------------------------------------
-
-  for (final f in fieldsWithoutRules) {
-    // ดึง key ของ field
-    final k = f['key'] as String;
-
-    // ดึง metadata
-    final meta = (f['meta'] as Map<String, dynamic>?) ?? <String, dynamic>{};
-
-    // วิเคราะห์ constraints จาก metadata
-    // เช่น maxLength, inputFormatters, etc.
-    final constraints = _analyzeConstraintsFromMeta(k, meta);
-
-    // สร้างค่า valid โดยใช้ constraints
-    final validValue = _generateValidData(k, constraints);
-
-    // บันทึกผลลัพธ์: มี valid 1 ค่า, invalid เป็น empty list
-    byKey[k] = {
-      'valid': [validValue],
-      'invalid': <String>[],
-    };
+  try {
+    // ส่ง API key, model name, source file, และ list ของ fields ทั้งหมด
+    aiResult =
+        await _callGeminiForDatasets(apiKey, model, uiFile, allTextFields);
+  } catch (e) {
+    // wrap error ด้วย context message
+    throw Exception('Gemini call failed: $e');
   }
 
   // ---------------------------------------------------------------------------
-  // STEP 9: ประมวลผล Fields ที่มี rules (AI GENERATION)
-  // Fields เหล่านี้มี validation rules ที่ต้องวิเคราะห์
-  // ต้องใช้ AI เพื่อสร้าง valid/invalid pairs ที่สมเหตุสมผล
+  // STEP 9: ประมวลผลผลลัพธ์จาก AI
   // ---------------------------------------------------------------------------
 
-  if (fieldsWithRules.isNotEmpty) {
-    // ตัวแปรเก็บผลลัพธ์จาก AI
-    Map<String, dynamic>? aiResult;
+  // byKey จะเก็บ datasets โดยใช้ field key เป็น key ของ map
+  final byKey = <String, dynamic>{};
 
-    // ตรวจสอบว่ามี API key หรือไม่
-    if (apiKey == null || apiKey.isEmpty) {
-      // ไม่มี API key แต่มี fields ที่ต้องใช้ AI = error
-      throw Exception('AI datasets generation requires API key. '
-          'Fields with validation rules cannot use local generation.');
-    }
+  // ดึง datasets จาก AI response
+  // AI return format: {datasets: {byKey: {...}}}
+  final aiByKey =
+      (aiResult['datasets']?['byKey'] as Map?)?.cast<String, dynamic>() ??
+          <String, dynamic>{};
 
-    // เรียก Gemini API เพื่อสร้าง datasets
-    try {
-      // ส่ง API key, model name, source file, และ list ของ fields
-      aiResult =
-          await _callGeminiForDatasets(apiKey, model, uiFile, fieldsWithRules);
-    } catch (e) {
-      // wrap error ด้วย context message
-      throw Exception('Gemini call failed: $e');
-    }
+  // วนลูป fields ที่ส่งไป AI
+  for (final f in allTextFields) {
+    final k = f['key'] as String;
+    final meta = (f['meta'] as Map<String, dynamic>?) ?? <String, dynamic>{};
 
-    // ---------------------------------------------------------------------------
-    // STEP 10: รวมผลลัพธ์จาก AI เข้ากับ byKey
-    // ---------------------------------------------------------------------------
+    // ดึงผลลัพธ์จาก AI สำหรับ field นี้
+    final aiEntry = aiByKey[k];
 
-    // ดึง datasets จาก AI response
-    // AI return format: {datasets: {byKey: {...}}}
-    final aiByKey =
-        (aiResult['datasets']?['byKey'] as Map?)?.cast<String, dynamic>() ??
-            <String, dynamic>{};
+    // AI return array of pairs: [{valid, invalid, invalidRuleMessages}, ...]
+    if (aiEntry is List) {
+      // ดึง maxLength constraint (default 50)
+      final maxLen = meta['maxLength'] as int? ?? 50;
 
-    // วนลูป fields ที่ส่งไป AI
-    for (final f in fieldsWithRules) {
-      final k = f['key'] as String;
-      final meta = (f['meta'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+      // สร้าง list เก็บ pairs ที่ processed แล้ว
+      final pairs = <Map<String, dynamic>>[];
 
-      // ดึงผลลัพธ์จาก AI สำหรับ field นี้
-      final aiEntry = aiByKey[k];
+      // วนลูปแต่ละ pair จาก AI
+      for (final pair in aiEntry) {
+        // ข้าม entry ที่ไม่ใช่ Map
+        if (pair is! Map) continue;
 
-      // AI return array of pairs: [{valid, invalid, invalidRuleMessages}, ...]
-      if (aiEntry is List) {
-        // ดึง maxLength constraint (default 50)
-        final maxLen = meta['maxLength'] as int? ?? 50;
+        // ดึงค่า valid และ invalid
+        var validVal = (pair['valid'] ?? '').toString();
+        var invalidVal = (pair['invalid'] ?? '').toString();
 
-        // สร้าง list เก็บ pairs ที่ processed แล้ว
-        final pairs = <Map<String, dynamic>>[];
+        // ดึง rule message ที่ invalid value จะ trigger
+        final msg = (pair['invalidRuleMessages'] ?? '').toString();
 
-        // วนลูปแต่ละ pair จาก AI
-        for (final pair in aiEntry) {
-          // ข้าม entry ที่ไม่ใช่ Map
-          if (pair is! Map) continue;
-
-          // ดึงค่า valid และ invalid
-          var validVal = (pair['valid'] ?? '').toString();
-          var invalidVal = (pair['invalid'] ?? '').toString();
-
-          // ดึง rule message ที่ invalid value จะ trigger
-          final msg = (pair['invalidRuleMessages'] ?? '').toString();
-
-          // ตรวจสอบ maxLength constraint สำหรับ valid value
-          // valid value ต้องไม่เกิน maxLength
-          if (validVal.length > maxLen) {
-            validVal = validVal.substring(0, maxLen); // ตัดให้พอดี
-          }
-
-          // หมายเหตุ: invalid value ไม่ตัด
-          // เพราะอาจต้องการทดสอบกรณี exceed maxLength
-
-          // เพิ่ม pair ลง list
-          pairs.add({
-            'valid': validVal,
-            'invalid': invalidVal,
-            'invalidRuleMessages': msg,
-          });
+        // ตรวจสอบ maxLength constraint สำหรับ valid value
+        // valid value ต้องไม่เกิน maxLength
+        if (validVal.length > maxLen) {
+          validVal = validVal.substring(0, maxLen); // ตัดให้พอดี
         }
 
-        // บันทึกผลลัพธ์
-        byKey[k] = pairs;
+        // หมายเหตุ: invalid value ไม่ตัด
+        // เพราะอาจต้องการทดสอบกรณี exceed maxLength
+
+        // เพิ่ม pair ลง list
+        pairs.add({
+          'valid': validVal,
+          'invalid': invalidVal,
+          'invalidRuleMessages': msg,
+        });
       }
+
+      // บันทึกผลลัพธ์
+      byKey[k] = pairs;
     }
   }
 
@@ -766,43 +685,59 @@ Future<Map<String, dynamic>> _callGeminiForDatasets(
 
     // === TARGET: กลุ่มเป้าหมาย ===
     '=== (TARGET) ===',
-    'QA engineers need realistic test data for happy path and errors.',
+    'QA engineers need REALISTIC test data for happy path and errors.',
     '',
 
     // === OBJECTIVE: วัตถุประสงค์ ===
     '=== (OBJECTIVE) ===',
-    '1. Analyze constraints (maxLength, inputFormatters, validatorRules)',
-    '2. FILTER OUT isEmpty/null rules (tested separately)', // ข้าม rules ที่เช็ค empty
-    '3. Generate valid/invalid pairs ONLY for non-empty rules',
-    '4. CRITICAL: Invalid values MUST pass inputFormatters but FAIL validators',
-    '5. Output valid JSON',
+    '1. Analyze field key name to understand field purpose (e.g., "firstname" → person name)',
+    '2. Analyze constraints (maxLength, inputFormatters, validatorRules)',
+    '3. Generate REALISTIC valid/invalid pairs for ALL fields',
+    '4. For fields WITH validatorRules: generate pairs based on rules (skip isEmpty/null rules)',
+    '5. For fields WITHOUT validatorRules: generate 1 realistic valid + 1 common invalid',
+    '6. CRITICAL: Invalid values MUST pass inputFormatters but represent bad data',
+    '7. Output valid JSON',
     '',
 
     // === EXECUTION: ขั้นตอนการทำงาน ===
     '=== (EXECUTION) ===',
-    '1. For each field, count ALL non-empty rules (SKIP ONLY "isEmpty"/"== null")',
-    '2. Count EVERY rule even if duplicate → Let N = total non-empty rule count',
-    '3. For each non-empty rule, generate 1 valid + 1 invalid pair',
-    '4. CRITICAL: Create N pairs (total N valid + N invalid)',
-    '5. Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}',
-    '6. Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"rule message"}',
+    'For fields WITH validatorRules:',
+    '  1. Count non-empty rules (SKIP "isEmpty"/"== null") → N rules',
+    '  2. Generate N pairs (1 per rule)',
+    '  3. Each pair: valid value that passes, invalid value that fails that specific rule',
+    '',
+    'For fields WITHOUT validatorRules:',
+    '  1. Infer field type from key name (firstname→name, phone→phone number, email→email)',
+    '  2. Generate 1 pair with realistic valid value',
+    '  3. Generate common invalid value (e.g., too short, wrong format)',
+    '  4. Use "general" as invalidRuleMessages',
+    '',
+    'Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}',
+    'Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"..."}',
     '',
 
     // === EXAMPLE: ตัวอย่าง ===
-    'Example 1 (N=1):',
-    'Input: {"file":"lib/page.dart","fields":[{"key":"firstname","validatorRules":[',
-    '  {"condition":"value == null || value.isEmpty","message":"Required"},',
-    '  {"condition":"!RegExp(r\'^[a-zA-Z]{2,}\\\$\').hasMatch(value)","message":"Min 2"}]}]}',
-    'Non-empty rules: 1 (SKIP isEmpty) → N=1 pair',
-    'Output: {"file":"lib/page.dart","datasets":{"byKey":{"firstname":[',
-    '  {"valid":"Alice","invalid":"J","invalidRuleMessages":"Min 2"}',
-    ']}}}',
+    'Example 1 (field with rules):',
+    'Input: {"key":"firstname","meta":{"validatorRules":[',
+    '  {"condition":"value.isEmpty","message":"Required"},',
+    '  {"condition":"value.length < 2","message":"Min 2 chars"}]}}',
+    'Output: {"firstname":[{"valid":"Alice","invalid":"J","invalidRuleMessages":"Min 2 chars"}]}',
+    '',
+    'Example 2 (field without rules):',
+    'Input: {"key":"phone_textfield","meta":{"inputFormatters":[{"type":"digitsOnly"}]}}',
+    'Output: {"phone_textfield":[{"valid":"0812345678","invalid":"081","invalidRuleMessages":"general"}]}',
+    '',
+    'Example 3 (name field without rules):',
+    'Input: {"key":"nickname_textfield","meta":{}}',
+    'Output: {"nickname_textfield":[{"valid":"Johnny","invalid":"X","invalidRuleMessages":"general"}]}',
     '',
 
     // === STYLE: รูปแบบ output ===
     '=== (STYLE) ===',
-    '- JSON only (no markdown, no comments)', // ไม่ใส่ markdown
-    '- Realistic values (not "value1")', // ค่าต้อง realistic
+    '- JSON only (no markdown, no comments)',
+    '- REALISTIC values based on field purpose (Thai names for Thai app, etc.)',
+    '- Valid values should look like real user input',
+    '- Invalid values should be common mistakes users make',
     '- String arrays only',
     '- Remember: invalid data MUST be typeable (respect inputFormatters)',
   ].join('\n'); // รวมทุกบรรทัดด้วย newline
@@ -1040,366 +975,14 @@ String _stripCodeFences(String s) {
 }
 
 // =============================================================================
-// FIELD CONSTRAINTS CLASS
+// NOTE: Local generation functions removed
 // =============================================================================
-
-/// Class เก็บข้อมูล constraints ของ field
-/// ใช้สำหรับ local generation เพื่อสร้างค่าที่ถูกต้องตาม constraints
-///
-/// Fields:
-///   [pattern]         - regex pattern ที่อนุญาต (เช่น "[a-zA-Z0-9]")
-///   [maxLength]       - ความยาวสูงสุดที่อนุญาต
-///   [hasSpecialChars] - true ถ้า pattern อนุญาตอักขระพิเศษ
-///   [isEmail]         - true ถ้าเป็น email field
-///   [isDigitsOnly]    - true ถ้ารับเฉพาะตัวเลข
-class FieldConstraints {
-  /// Regex pattern ที่กำหนดว่า characters อะไรที่อนุญาต
-  /// เช่น [a-zA-Z0-9] หมายถึงอนุญาต letters และ numbers
-  final String pattern;
-
-  /// ความยาวสูงสุดที่ field รับได้
-  /// มาจาก maxLength property ของ TextField
-  final int maxLength;
-
-  /// true ถ้า pattern อนุญาตอักขระพิเศษ เช่น @, #, $, !, etc.
-  final bool hasSpecialChars;
-
-  /// true ถ้า field นี้เป็น email field
-  /// (detect จากชื่อ key หรือ pattern)
-  final bool isEmail;
-
-  /// true ถ้า field รับเฉพาะตัวเลข
-  /// (มาจาก FilteringTextInputFormatter.digitsOnly)
-  final bool isDigitsOnly;
-
-  /// Constructor - รับค่าทุก fields
-  FieldConstraints({
-    required this.pattern,
-    required this.maxLength,
-    required this.hasSpecialChars,
-    required this.isEmail,
-    required this.isDigitsOnly,
-  });
-}
-
-// =============================================================================
-// ANALYZE CONSTRAINTS FROM META
-// =============================================================================
-
-/// วิเคราะห์ constraints จาก metadata ของ field
-///
-/// Function นี้จะดูข้อมูลจากหลายแหล่ง:
-/// 1. inputFormatters - มี priority สูงสุด (กำหนดว่า user พิมพ์อะไรได้)
-/// 2. validatorMessages - ใช้เป็น hint ถ้าไม่มี inputFormatters
-/// 3. key name - ใช้เป็น hint (เช่น ชื่อมี "email" = email field)
-///
-/// Parameters:
-///   [key]  - ชื่อ/key ของ field (ใช้เป็น hint)
-///   [meta] - metadata จาก manifest
-///
-/// Returns:
-///   FieldConstraints - object ที่เก็บ constraints ทั้งหมด
-FieldConstraints _analyzeConstraintsFromMeta(
-    String key, Map<String, dynamic> meta) {
-  // ---------------------------------------------------------------------------
-  // ดึงข้อมูลพื้นฐานจาก metadata
-  // ---------------------------------------------------------------------------
-
-  // inputFormatters เป็น list ของ formatter objects
-  // แต่ละ formatter มี type และ pattern (ถ้ามี)
-  final inputFormatters = (meta['inputFormatters'] as List?) ?? const [];
-
-  // maxLength จาก TextField.maxLength property
-  // default = 50 ถ้าไม่ได้กำหนด
-  final maxLength = (meta['maxLength'] as int?) ?? 50;
-
-  // ---------------------------------------------------------------------------
-  // กำหนดค่าเริ่มต้น
-  // ---------------------------------------------------------------------------
-
-  String pattern = '[a-zA-Z0-9]'; // default: alphanumeric only
-  bool hasSpecialChars = false; // default: ไม่มีอักขระพิเศษ
-  bool isEmail = false; // default: ไม่ใช่ email
-  bool isDigitsOnly = false; // default: ไม่ใช่ digits only
-
-  // ---------------------------------------------------------------------------
-  // วิเคราะห์จาก inputFormatters (Priority สูงสุด)
-  // inputFormatters กำหนดว่า user พิมพ์อะไรได้บ้าง
-  // ---------------------------------------------------------------------------
-
-  for (final formatter in inputFormatters) {
-    // ข้าม entry ที่ไม่ใช่ Map
-    if (formatter is! Map) continue;
-
-    // ดึง type ของ formatter
-    final type = (formatter['type'] ?? '').toString();
-
-    if (type == 'allow') {
-      // FilteringTextInputFormatter.allow(RegExp(pattern))
-      // อนุญาตเฉพาะ characters ที่ match pattern
-      pattern = (formatter['pattern'] ?? pattern).toString();
-    } else if (type == 'digitsOnly') {
-      // FilteringTextInputFormatter.digitsOnly
-      // อนุญาตเฉพาะตัวเลข 0-9
-      isDigitsOnly = true;
-      pattern = '[0-9]';
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // วิเคราะห์จาก validatorMessages (ถ้าไม่มี inputFormatters)
-  // ใช้เป็น hint เพิ่มเติม
-  // ---------------------------------------------------------------------------
-
-  if (inputFormatters.isEmpty) {
-    // ดึง validator messages
-    final msgs = (meta['validatorMessages'] as List?)
-            ?.map((e) => e.toString())
-            .toList() ??
-        const [];
-
-    // หา message ที่มีลักษณะเป็น regex pattern
-    // เช่น "^[a-zA-Z0-9]+$" หรือ "[a-z@.-]"
-    final regexLike = msgs.firstWhere(
-      (m) => RegExp(r'^[\^\[]?[a-zA-Z0-9@#\\\$%\^&\+=!\*\-_.\[\]\(\)]+')
-          .hasMatch(m),
-      orElse: () => '', // return empty string ถ้าไม่พบ
-    );
-
-    if (regexLike.isNotEmpty) {
-      // ตรวจสอบว่าเป็น email pattern หรือไม่
-      // email pattern มักมี @ และ character class
-      if (regexLike.contains('@') && regexLike.contains('[')) {
-        isEmail = true;
-        pattern = '[a-zA-Z0-9@.-]';
-      }
-      // ตรวจสอบว่าเป็น standard character class
-      else if (regexLike.contains('a-z') ||
-          regexLike.contains('A-Z') ||
-          regexLike.contains('0-9')) {
-        pattern = regexLike;
-      }
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // วิเคราะห์จากชื่อ key (Hint)
-  // ชื่อ field อาจบอกประเภทของข้อมูล
-  // ---------------------------------------------------------------------------
-
-  // แปลงเป็น lowercase เพื่อ compare แบบ case-insensitive
-  final keyLower = key.toLowerCase();
-
-  // ถ้าชื่อ key มี "email" ถือว่าเป็น email field
-  if (keyLower.contains('email')) {
-    isEmail = true;
-    pattern = '[a-zA-Z0-9@.-]'; // email allowed characters
-  }
-
-  // ---------------------------------------------------------------------------
-  // ตรวจสอบว่ามีอักขระพิเศษใน pattern หรือไม่
-  // ---------------------------------------------------------------------------
-
-  // วนเช็คแต่ละ special character
-  if (pattern.contains('@') ||
-      pattern.contains('#') ||
-      pattern.contains(r'$') ||
-      pattern.contains('%') ||
-      pattern.contains('^') ||
-      pattern.contains('&') ||
-      pattern.contains('+') ||
-      pattern.contains('=') ||
-      pattern.contains('!') ||
-      pattern.contains('*') ||
-      pattern.contains('-') ||
-      pattern.contains('_') ||
-      pattern.contains('.')) {
-    hasSpecialChars = true;
-  }
-
-  // ---------------------------------------------------------------------------
-  // สร้างและ return FieldConstraints object
-  // ---------------------------------------------------------------------------
-
-  return FieldConstraints(
-    pattern: pattern,
-    maxLength: maxLength,
-    hasSpecialChars: hasSpecialChars,
-    isEmail: isEmail,
-    isDigitsOnly: isDigitsOnly,
-  );
-}
-
-// =============================================================================
-// GENERATE VALID DATA
-// =============================================================================
-
-/// สร้างค่า valid data สำหรับ field
-/// ใช้สำหรับ local generation (ไม่ต้องเรียก AI)
-///
-/// Parameters:
-///   [key] - ชื่อ/key ของ field (ใช้เป็น hint)
-///   [c]   - FieldConstraints ที่วิเคราะห์ได้
-///
-/// Returns:
-///   String - valid value ที่สร้างขึ้น
-///
-/// Logic:
-///   1. ถ้า digits only -> สร้างตัวเลข
-///   2. ถ้า email -> สร้าง email address
-///   3. ถ้า username -> สร้าง username
-///   4. ถ้า password -> สร้าง password
-///   5. อื่นๆ -> สร้างจาก pattern
-String _generateValidData(String key, FieldConstraints c) {
-  // แปลง key เป็น lowercase สำหรับ comparison
-  final keyLower = key.toLowerCase();
-
-  // สร้าง Random instance ด้วย seed คงที่
-  // seed = 42 ทำให้ได้ค่าเดิมทุกครั้งที่รัน (reproducible)
-  final random = Random(42);
-
-  // ---------------------------------------------------------------------------
-  // CASE 1: Digits Only (เช่น เบอร์โทร, รหัส, จำนวน)
-  // ---------------------------------------------------------------------------
-  if (c.isDigitsOnly) {
-    // สร้างเลข 3 หลัก (100-999)
-    // nextInt(900) = 0-899, + 100 = 100-999
-    return (random.nextInt(900) + 100).toString();
-  }
-
-  // ---------------------------------------------------------------------------
-  // CASE 2: Email Field
-  // ---------------------------------------------------------------------------
-  if (c.isEmail) {
-    // สร้าง email ที่มีความยาวเหมาะสมกับ maxLength
-    if (c.maxLength <= 15) {
-      // maxLength น้อยมาก -> ใช้ email สั้นๆ
-      return 'a@co.com'; // 8 characters
-    } else if (c.maxLength <= 25) {
-      // maxLength ปานกลาง -> ใช้ email ทั่วไป
-      return 'test@example.com'; // 16 characters
-    } else {
-      // maxLength มาก -> สร้าง email แบบสุ่ม
-      final local = 'user${random.nextInt(99)}'; // user0-user98
-      final domain = 'test${random.nextInt(9)}'; // test0-test8
-      return '$local@$domain.com';
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // CASE 3: Username Field
-  // ---------------------------------------------------------------------------
-  if (keyLower.contains('username')) {
-    // ตรวจสอบว่า pattern อนุญาต letters และ numbers
-    if (c.pattern.contains('a-z') && c.pattern.contains('0-9')) {
-      // กำหนดความยาว: ไม่น้อยกว่า 5, ไม่เกิน 8, และไม่เกิน maxLength
-      final len = c.maxLength.clamp(5, 8).clamp(1, c.maxLength);
-
-      // characters ที่ใช้สร้าง username
-      final chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-
-      // สร้าง string โดยสุ่มเลือก characters
-      return String.fromCharCodes(List.generate(
-          len, (_) => chars.codeUnitAt(random.nextInt(chars.length))));
-    }
-  }
-
-  // ---------------------------------------------------------------------------
-  // CASE 4: Password Field
-  // ---------------------------------------------------------------------------
-  if (keyLower.contains('password')) {
-    // ถ้าอนุญาต special chars -> ใช้ password ที่มี special char
-    // ไม่งั้นใช้ password ธรรมดา
-    return c.hasSpecialChars ? 'Pass1!' : 'pass123';
-  }
-
-  // ---------------------------------------------------------------------------
-  // CASE 5: General Case - สร้างจาก pattern
-  // ---------------------------------------------------------------------------
-  return _genFromPattern(c.pattern, c.maxLength, random);
-}
-
-// =============================================================================
-// GENERATE FROM PATTERN
-// =============================================================================
-
-/// สร้าง string จาก regex pattern
-///
-/// Parameters:
-///   [pattern]   - regex pattern ที่กำหนด allowed characters
-///   [maxLength] - ความยาวสูงสุด
-///   [random]    - Random instance สำหรับสุ่ม
-///
-/// Returns:
-///   String - random string ที่ match กับ pattern
-///
-/// ตัวอย่าง:
-///   pattern = "[a-zA-Z0-9]", maxLength = 10
-///   output อาจเป็น "aBc123XyZ"
-String _genFromPattern(String pattern, int maxLength, Random random) {
-  // สร้าง list เก็บ characters ที่อนุญาต
-  final chars = <String>[];
-
-  // ---------------------------------------------------------------------------
-  // เพิ่ม characters ตาม pattern
-  // ---------------------------------------------------------------------------
-
-  // ตรวจสอบ a-z (lowercase letters)
-  if (pattern.contains('a-z')) {
-    // split string เป็น list ของ single characters
-    chars.addAll('abcdefghijklmnopqrstuvwxyz'.split(''));
-  }
-
-  // ตรวจสอบ A-Z (uppercase letters)
-  if (pattern.contains('A-Z')) {
-    chars.addAll('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
-  }
-
-  // ตรวจสอบ 0-9 หรือ \d (digits)
-  if (pattern.contains('0-9') || pattern.contains('\\d')) {
-    chars.addAll('0123456789'.split(''));
-  }
-
-  // เพิ่ม special characters ที่มีใน pattern
-  // วนเช็คทีละตัว
-  for (final ch in '@#\$%^&+=!*-_.'.split('')) {
-    if (pattern.contains(ch)) chars.add(ch);
-  }
-
-  // ถ้าไม่มี characters เลย ใช้ default set
-  if (chars.isEmpty) chars.addAll('abc123'.split(''));
-
-  // ---------------------------------------------------------------------------
-  // กำหนดความยาวของ output
-  // ---------------------------------------------------------------------------
-
-  // clamp = จำกัดค่าให้อยู่ในช่วง
-  // ความยาว = min(8, maxLength) แต่อย่างน้อย 1
-  final length = maxLength.clamp(1, 8).clamp(1, maxLength);
-
-  // ---------------------------------------------------------------------------
-  // สุ่มสร้าง string
-  // ---------------------------------------------------------------------------
-
-  // List.generate สร้าง list ขนาด length
-  // แต่ละ element สุ่มเลือก character จาก chars
-  // join('') รวม list เป็น string
-  return List.generate(length, (_) => chars[random.nextInt(chars.length)])
-      .join('');
-}
-
-// =============================================================================
-// REMOVED FUNCTIONS (เก็บไว้เป็น reference)
-// =============================================================================
-// Functions เหล่านี้ถูกลบออกหรือย้ายไป utils.dart:
+// Functions เหล่านี้ถูกลบออกเพราะเปลี่ยนมาใช้ AI-only generation:
+// - FieldConstraints class
+// - _analyzeConstraintsFromMeta()
+// - _generateValidData()
+// - _genFromPattern()
 //
-// - _basename, _basenameWithoutExtension, _readApiKeyFromEnv
-//   -> ย้ายไป utils.dart เพื่อใช้ร่วมกับ scripts อื่น
-//
-// - _localGenerateDatasets, _generateDatasetForField, _samplesFromRule,
-//   _minimalValidForConstraints, _repeatCharFor, _generateInvalidData,
-//   _genInvalidFromPattern
-//   -> ลบออก เพราะเปลี่ยนมาใช้ AI-only dataset generation
-//      การ generate invalid data ที่ดีต้องเข้าใจ semantic ของ validation rules
-//      ซึ่ง AI ทำได้ดีกว่า rule-based approach
+// เหตุผล: AI สามารถ generate ข้อมูลที่ realistic และเหมาะสมกว่า
+// โดยเข้าใจ context จากชื่อ field และ validation rules
 // =============================================================================
