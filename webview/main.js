@@ -29,6 +29,7 @@ const loadConstraintsBtn = document.getElementById('loadConstraintsBtn');
 let isGenerating = false;
 let generatedTestScript = null;
 let hasValidWidgets = false;  // Track ว่าไฟล์มี widgets หรือไม่
+let testScriptGenerated = false;  // Track ว่า test script ถูก generate แล้วหรือไม่
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -129,6 +130,10 @@ function checkFileSystemAccess() {
 
 // Browse for input file using native file picker
 async function browseInputFile() {
+    // Reset state เมื่อเลือกไฟล์ใหม่
+    testScriptGenerated = false;
+    generatedTestScript = null;
+
     try {
         const [fileHandle] = await window.showOpenFilePicker({
             types: [{
@@ -211,9 +216,9 @@ function validateForm() {
     // ถ้าไม่มี widgets → ปุ่มยัง disabled
     generateBtn.disabled = !hasInput || !hasOutput || !hasValidWidgets || isGenerating;
 
-    // Enable run coverage button if we have a test script path
-    const testScriptExists = outputFileInput.value.trim().length > 0;
-    runCoverageBtn.disabled = !testScriptExists || isGenerating;
+    // Run Coverage button: ต้อง generate test script เสร็จก่อน
+    // จะ enable เฉพาะเมื่อ testScriptGenerated = true
+    runCoverageBtn.disabled = !testScriptGenerated || isGenerating;
 }
 
 // Scan widgets
@@ -345,6 +350,7 @@ async function generateTests() {
 
         // Store generated test script path
         generatedTestScript = scriptResult.testScriptPath;
+        testScriptGenerated = true;  // Enable "Run Coverage Test" button
 
         // Show results
         showResults({
@@ -382,11 +388,10 @@ async function runCoverageTest() {
     updateProgress(5, 'running', 'Running tests with coverage...');
 
     try {
-        const useDevice = document.getElementById('useDevice').checked;
         const testResult = await runStep('run-tests', {
             testScript: testScript,
             withCoverage: true,
-            useDevice: useDevice
+            useDevice: true  // Always run on device/emulator for integration test
         });
 
         if (testResult.success) {
