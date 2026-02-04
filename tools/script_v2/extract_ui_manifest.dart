@@ -84,36 +84,18 @@ String processUiFile(String path) {
 /// Entry point ของ script
 ///
 /// Usage:
-///   dart run tools/script_v2/extract_ui_manifest.dart [file1.dart] [file2.dart] ...
+///   dart run tools/script_v2/extract_ui_manifest.dart <file1.dart> [file2.dart] ...
 ///
-/// ถ้าไม่มี arguments:
-///   - Scan หาไฟล์ *_page.dart และ *.page.dart ทั้งหมดใน lib/
-///   - Process ทุกไฟล์ที่พบ
-///
-/// ถ้ามี arguments:
-///   - Process เฉพาะไฟล์ที่ระบุ
+/// ต้องระบุไฟล์อย่างน้อย 1 ไฟล์
 void main(List<String> args) {
   if (args.isEmpty) {
-    // ไม่มี arguments → Scan หา page files ทั้งหมดใน lib/
-    // Pattern: *_page.dart หรือ *.page.dart
-    final pages = utils
-        .listFiles(
-            'lib', (p) => p.endsWith('_page.dart') || p.endsWith('.page.dart'))
-        .toList();
-
-    if (pages.isEmpty) {
-      stderr.writeln('No page files found under lib/**');
-      exit(1);
-    }
-
-    // Process ทุก page ที่พบ
-    for (final p in pages) {
-      _processOne(p);
-    }
-    return;
+    stderr.writeln('Error: No file specified');
+    stderr.writeln('Usage: dart run tools/script_v2/extract_ui_manifest.dart <file.dart>');
+    stderr.writeln('Example: dart run tools/script_v2/extract_ui_manifest.dart lib/demos/buttons_page.dart');
+    exit(1);
   }
 
-  // มี arguments → Process เฉพาะไฟล์ที่ระบุ
+  // Process เฉพาะไฟล์ที่ระบุ
   for (final p in args) {
     _processOne(p);
   }
