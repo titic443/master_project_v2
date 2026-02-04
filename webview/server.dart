@@ -709,7 +709,7 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
 ///
 /// Request body:
 ///   {
-///     "testScript": "integration_test/page_flow_test.dart",
+///     "testScript": "test/page_flow_test.dart",
 ///     "withCoverage": true,
 ///     "useDevice": true  // true = integration test บน emulator
 ///   }
