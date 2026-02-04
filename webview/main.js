@@ -382,9 +382,11 @@ async function runCoverageTest() {
     updateProgress(5, 'running', 'Running tests with coverage...');
 
     try {
+        const useDevice = document.getElementById('useDevice').checked;
         const testResult = await runStep('run-tests', {
             testScript: testScript,
-            withCoverage: true
+            withCoverage: true,
+            useDevice: useDevice
         });
 
         if (testResult.success) {

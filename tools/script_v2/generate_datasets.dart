@@ -63,7 +63,7 @@ import 'utils.dart' as utils;
 
 // ค่าคงที่สำหรับเก็บ API key แบบ hardcode (ใช้เป็น fallback)
 // SECURITY WARNING: ไม่ควรใช้ในโปรดักชัน ควรใช้ environment variable แทน
-const String hardcodedApiKey = 'AIzaSyCC2NXlV1ZOfbRRfA_L4VnHh4zu7MNAnbs';
+const String hardcodedApiKey = 'AIzaSyC0oZLaHEwVbFE-Bs2wZxMeuygMcToYpnk';
 
 // =============================================================================
 // PUBLIC API FUNCTION
@@ -172,7 +172,7 @@ void main(List<String> args) async {
   for (final a in args) {
     // ตรวจสอบ flag --model=xxx
     // ใช้ระบุชื่อ AI model ที่ต้องการใช้
-    else if (a.startsWith('--model=')) {
+    if (a.startsWith('--model=')) {
       // ดึงค่าหลัง '=' ออกมา
       // เช่น '--model=gemini-1.5-pro' -> 'gemini-1.5-pro'
       model = a.substring('--model='.length);

@@ -16,7 +16,7 @@
 //
 // API Endpoints:
 //   GET  /files              - รายการ Dart files ใน lib/demos/
-//   GET  /test-scripts       - รายการ test scripts ใน integration_test/
+//   GET  /test-scripts       - รายการ test scripts ใน test/
 //   POST /find-file          - หา file path จาก filename
 //   POST /scan               - scan widgets ใน file
 //   POST /extract-manifest   - สร้าง UI manifest
@@ -231,13 +231,13 @@ Future<void> handleGetFiles(HttpRequest request) async {
   await request.response.close();
 }
 
-/// GET /test-scripts - ดึงรายการ test scripts ใน test/
+/// GET /test-scripts - ดึงรายการ test scripts ใน integration_test/
 ///
 /// Response:
-///   { "files": ["test/page1_flow_test.dart", ...] }
+///   { "files": ["integration_test/page1_flow_test.dart", ...] }
 Future<void> handleGetTestScripts(HttpRequest request) async {
   // กำหนด directory ที่จะ scan
-  final testDir = Directory('test');
+  final testDir = Directory('integration_test');
   final files = <String>[];
 
   // ตรวจสอบว่า directory มีอยู่หรือไม่
@@ -684,7 +684,7 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
   if (result.exitCode == 0) {
     // คำนวณ test script path
     final baseName = testData.split('/').last.replaceAll('.testdata.json', '');
-    final testScriptPath = 'test/${baseName}_flow_test.dart';
+    final testScriptPath = 'integration_test/${baseName}_flow_test.dart';
 
     request.response.write(jsonEncode({
       'success': true,
@@ -708,7 +708,11 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
 /// POST /run-tests - รัน Flutter tests (optional with coverage)
 ///
 /// Request body:
-///   { "testScript": "integration_test/page_flow_test.dart", "withCoverage": true }
+///   {
+///     "testScript": "integration_test/page_flow_test.dart",
+///     "withCoverage": true,
+///     "useDevice": true  // true = integration test บน emulator
+///   }
 ///
 /// Response:
 ///   { "success": true, "passed": 5, "failed": 0, "output": "...", "coverageHtmlPath": "..." }
@@ -716,6 +720,7 @@ Future<void> handleRunTests(HttpRequest request) async {
   final body = await readBody(request);
   final testScript = body['testScript'] as String?;
   final withCoverage = body['withCoverage'] as bool? ?? false;
+  final useDevice = body['useDevice'] as bool? ?? false;
 
   // Validate input
   if (testScript == null) {
@@ -735,11 +740,56 @@ Future<void> handleRunTests(HttpRequest request) async {
     args.add('--coverage');  // เพิ่ม flag เพื่อสร้าง coverage data
   }
 
+  // ---------------------------------------------------------------------------
+  // Integration test: หา device/emulator ที่รันอยู่
+  // ---------------------------------------------------------------------------
+
+  String? deviceId;
+  if (useDevice) {
+    // รัน flutter devices เพื่อหา emulator
+    final devicesResult = await Process.run('flutter', ['devices', '--machine']);
+    if (devicesResult.exitCode == 0) {
+      try {
+        final devices = jsonDecode(devicesResult.stdout.toString()) as List;
+        // หา emulator ก่อน ถ้าไม่มีค่อยใช้ device อื่น
+        for (final device in devices) {
+          if (device is Map) {
+            final isEmulator = device['emulator'] == true;
+            final isSupported = device['isSupported'] == true;
+            final id = device['id'] as String?;
+            // ข้าม web และ desktop devices
+            final targetPlatform = device['targetPlatform'] as String? ?? '';
+            final isMobile = targetPlatform.contains('android') || targetPlatform.contains('ios');
+
+            if (isSupported && isMobile && id != null) {
+              deviceId = id;
+              if (isEmulator) break;  // prefer emulator
+            }
+          }
+        }
+      } catch (e) {
+        print('  ✗ Failed to parse devices: $e');
+      }
+    }
+
+    if (deviceId != null) {
+      args.addAll(['-d', deviceId]);
+      print('  > Using device: $deviceId');
+    } else {
+      print('  ⚠ No mobile device/emulator found, running on VM');
+    }
+  }
+
   // Log command
   print('  > flutter ${args.join(' ')}');
 
-  // รัน flutter test
-  final result = await Process.run('flutter', args);
+  // รัน flutter test (ใช้ timeout นานขึ้นสำหรับ integration test)
+  final timeout = useDevice ? 600 : 300;  // 10 นาที สำหรับ device, 5 นาที สำหรับ VM
+  final result = await Process.run('flutter', args,
+    workingDirectory: Directory.current.path,
+  ).timeout(Duration(seconds: timeout), onTimeout: () {
+    return ProcessResult(0, -1, '', 'Test timeout after $timeout seconds');
+  });
 
   // ---------------------------------------------------------------------------
   // Parse test results จาก output
@@ -790,18 +840,44 @@ Future<void> handleRunTests(HttpRequest request) async {
   }
 
   // ---------------------------------------------------------------------------
-  // Step 2: Generate HTML coverage report (ถ้า coverage enabled)
+  // Step 2: Generate HTML coverage report (ถ้า coverage enabled และ test สำเร็จ)
   // ---------------------------------------------------------------------------
 
   String? coverageHtmlPath;
   String coverageOutput = '';
 
-  if (withCoverage) {
-    print('  > Checking coverage/lcov.info...');
+  // เงื่อนไข: ต้อง enable coverage และ test ต้องผ่าน (exitCode == 0)
+  // ถ้า test fail จะไม่ render HTML เพราะ coverage data อาจไม่สมบูรณ์
+  if (withCoverage && result.exitCode == 0) {
+    print('  > Waiting for coverage/lcov.info...');
     final lcovFile = File('coverage/lcov.info');
 
-    // ตรวจสอบว่า lcov.info ถูกสร้างหรือไม่
-    if (await lcovFile.exists()) {
+    // -------------------------------------------------------------------------
+    // Retry loop: รอให้ lcov.info ถูกสร้างและมี content
+    // บางครั้ง flutter test เสร็จแล้วแต่ไฟล์ยังเขียนไม่เสร็จ
+    // -------------------------------------------------------------------------
+
+    int retries = 0;
+    const maxRetries = 10;           // ลองสูงสุด 10 ครั้ง
+    const retryDelay = Duration(milliseconds: 500);  // รอ 500ms ต่อครั้ง
+    bool lcovReady = false;
+
+    while (retries < maxRetries) {
+      if (await lcovFile.exists()) {
+        final content = await lcovFile.readAsString();
+        if (content.isNotEmpty) {
+          lcovReady = true;
+          break;  // lcov.info พร้อมแล้ว
+        }
+      }
+      // รอแล้วลองใหม่
+      await Future.delayed(retryDelay);
+      retries++;
+      print('  ... waiting for lcov.info (${retries}/${maxRetries})');
+    }
+
+    // ตรวจสอบว่า lcov.info พร้อมหรือไม่
+    if (lcovReady) {
       print('  ✓ Found lcov.info');
 
       // -------------------------------------------------------------------------
@@ -843,8 +919,13 @@ Future<void> handleRunTests(HttpRequest request) async {
         print('  ✗ genhtml failed: ${genHtmlResult.stderr}');
       }
     } else {
-      print('  ✗ lcov.info not found - coverage may not have been generated');
+      print('  ✗ lcov.info not found or empty after ${maxRetries} retries');
+      coverageOutput = 'Coverage file not ready after waiting';
     }
+  } else if (withCoverage && result.exitCode != 0) {
+    // Test failed - ไม่ render HTML
+    print('  ⊘ Skipping coverage HTML: test failed (exitCode=${result.exitCode})');
+    coverageOutput = 'Coverage HTML skipped: test failed';
   }
 
   // ---------------------------------------------------------------------------

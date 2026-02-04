@@ -16,7 +16,7 @@
 //   - output/test_data/<page>.datasets.json (optional, จาก generate_datasets.dart)
 //
 // Output:
-//   - test/<page>_flow_test.dart
+//   - integration_test/<page>_flow_test.dart
 //
 // Features:
 //   - สร้าง integration tests สำหรับ Flutter
@@ -65,7 +65,7 @@ import 'utils.dart' as utils;
 ///
 /// Returns:
 ///   String - path ของ integration test file ที่สร้าง
-///            เช่น "test/login_page_flow_test.dart"
+///            เช่น "integration_test/login_page_flow_test.dart"
 ///
 /// Example:
 ///   final outputPath = generateTestScriptFromTestData(
@@ -79,18 +79,18 @@ String generateTestScriptFromTestData(String testDataPath) {
   // คำนวณ output path จาก input path
   // Step 1: ลบ prefix 'output/test_data/' ออก
   // Step 2: ลบ suffix '.testdata.json' ออก (ใช้ RegExp)
-  // Step 3: เพิ่ม prefix 'test/' และ suffix '_flow_test.dart'
+  // Step 3: เพิ่ม prefix 'integration_test/' และ suffix '_flow_test.dart'
   //
   // ตัวอย่าง:
   //   Input:  output/test_data/login_page.testdata.json
   //   Step 1: login_page.testdata.json
   //   Step 2: login_page
-  //   Output: test/login_page_flow_test.dart
+  //   Output: integration_test/login_page_flow_test.dart
   final base = testDataPath
       .replaceAll('output/test_data/', '')
       .replaceAll(RegExp(r'\.testdata\.json$'), '');
 
-  return 'test/${base}_flow_test.dart';
+  return 'integration_test/${base}_flow_test.dart';
 }
 
 // =============================================================================
@@ -1450,7 +1450,7 @@ void _generateIntegrationTests(
 
   // กำหนด output path
   final integPath =
-      'test/${utils.basenameWithoutExtension(uiFile)}_flow_test.dart';
+      'integration_test/${utils.basenameWithoutExtension(uiFile)}_flow_test.dart';
 
   // สร้าง directory ถ้ายังไม่มี
   File(integPath).createSync(recursive: true);
