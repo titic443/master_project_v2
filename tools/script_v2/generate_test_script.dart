@@ -16,7 +16,7 @@
 //   - output/test_data/<page>.datasets.json (optional, จาก generate_datasets.dart)
 //
 // Output:
-//   - integration_test/<page>_flow_test.dart
+//   - test/<page>_flow_test.dart
 //
 // Features:
 //   - สร้าง integration tests สำหรับ Flutter
@@ -65,7 +65,7 @@ import 'utils.dart' as utils;
 ///
 /// Returns:
 ///   String - path ของ integration test file ที่สร้าง
-///            เช่น "integration_test/login_page_flow_test.dart"
+///            เช่น "test/login_page_flow_test.dart"
 ///
 /// Example:
 ///   final outputPath = generateTestScriptFromTestData(
@@ -85,7 +85,7 @@ String generateTestScriptFromTestData(String testDataPath) {
   //   Input:  output/test_data/login_page.testdata.json
   //   Step 1: login_page.testdata.json
   //   Step 2: login_page
-  //   Output: integration_test/login_page_flow_test.dart
+  //   Output: test/login_page_flow_test.dart
   final base = testDataPath
       .replaceAll('output/test_data/', '')
       .replaceAll(RegExp(r'\.testdata\.json$'), '');
