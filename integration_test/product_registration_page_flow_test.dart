@@ -18,7 +18,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -26,7 +26,7 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -61,7 +61,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -69,10 +69,10 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'S-1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABC');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -98,7 +98,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -106,10 +106,10 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
@@ -139,7 +139,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -147,7 +147,7 @@ void main() {
         await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'S-1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABC');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -178,7 +178,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -186,10 +186,10 @@ void main() {
         await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -220,7 +220,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -228,7 +228,7 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'S-1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABC');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -258,7 +258,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -266,10 +266,10 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
@@ -296,7 +296,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -304,7 +304,7 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'S-1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABC');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -340,7 +340,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -348,7 +348,7 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -381,7 +381,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -389,7 +389,7 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'S-1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABC');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -423,7 +423,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -431,7 +431,7 @@ void main() {
         await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -465,7 +465,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -473,10 +473,10 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'S-1');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'ABC');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -506,7 +506,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SW');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'TV');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -514,7 +514,7 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '0');
@@ -548,7 +548,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -556,10 +556,10 @@ void main() {
         await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -589,7 +589,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -597,10 +597,10 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -627,7 +627,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -635,10 +635,10 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
@@ -668,7 +668,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -676,10 +676,10 @@ void main() {
         await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
@@ -706,7 +706,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -714,10 +714,10 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
@@ -744,7 +744,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -752,10 +752,10 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -782,7 +782,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -790,10 +790,10 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_0_100_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_0_100_radio')));
@@ -823,7 +823,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -831,10 +831,10 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
@@ -864,7 +864,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -872,10 +872,10 @@ void main() {
         await tester.tap(find.text('Clothing'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
@@ -902,7 +902,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -910,10 +910,10 @@ void main() {
         await tester.tap(find.text('Food'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_100_500_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_100_500_radio')));
@@ -940,7 +940,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -948,10 +948,10 @@ void main() {
         await tester.tap(find.text('Electronics'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));
@@ -981,7 +981,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ProductRegistrationPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.product_02_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'SuperWidget Pro');
+        await tester.enterText(find.byKey(const Key('product_02_name_textfield')), 'Smart Washing Machine');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_03_category_dropdown')));
         await tester.tap(find.byKey(const Key('product_03_category_dropdown')));
@@ -989,10 +989,10 @@ void main() {
         await tester.tap(find.text('Books'));
         await tester.pump();
         // dataset: byKey.product_04_sku_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC123');
+        await tester.enterText(find.byKey(const Key('product_04_sku_textfield')), 'PROD-ABC-12345');
         await tester.pump();
         // dataset: byKey.product_05_quantity_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '10');
+        await tester.enterText(find.byKey(const Key('product_05_quantity_textfield')), '100');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('product_06_price_500_plus_radio')));
         await tester.tap(find.byKey(const Key('product_06_price_500_plus_radio')));

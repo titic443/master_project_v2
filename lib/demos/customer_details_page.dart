@@ -100,12 +100,11 @@ class _CustomerDetailsFormState extends State<_CustomerDetailsForm> {
             final isLoading = state.status == CustomerStatus.loading;
             return Form(
               key: _formKey,
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('XXXXXX', key: const Key('customer_99_XXXX_text')),
                     // Title - Dropdown
                     DropdownButtonFormField<String>(
                       key: const Key('customer_01_title_dropdown'),
