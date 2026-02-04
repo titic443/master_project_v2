@@ -840,15 +840,14 @@ Future<void> handleRunTests(HttpRequest request) async {
   }
 
   // ---------------------------------------------------------------------------
-  // Step 2: Generate HTML coverage report (ถ้า coverage enabled และ test สำเร็จ)
+  // Step 2: Generate HTML coverage report (ถ้า coverage enabled)
+  // Generate แม้ test fail เพราะ coverage data ยังมีประโยชน์สำหรับ debug
   // ---------------------------------------------------------------------------
 
   String? coverageHtmlPath;
   String coverageOutput = '';
 
-  // เงื่อนไข: ต้อง enable coverage และ test ต้องผ่าน (exitCode == 0)
-  // ถ้า test fail จะไม่ render HTML เพราะ coverage data อาจไม่สมบูรณ์
-  if (withCoverage && result.exitCode == 0) {
+  if (withCoverage) {
     print('  > Waiting for coverage/lcov.info...');
     final lcovFile = File('coverage/lcov.info');
 
@@ -873,7 +872,7 @@ Future<void> handleRunTests(HttpRequest request) async {
       // รอแล้วลองใหม่
       await Future.delayed(retryDelay);
       retries++;
-      print('  ... waiting for lcov.info (${retries}/${maxRetries})');
+      print('  ... waiting for lcov.info ($retries/$maxRetries)');
     }
 
     // ตรวจสอบว่า lcov.info พร้อมหรือไม่
@@ -894,23 +893,30 @@ Future<void> handleRunTests(HttpRequest request) async {
       if (genHtmlResult.exitCode == 0) {
         coverageHtmlPath = 'coverage/html/index.html';
         coverageOutput = genHtmlResult.stdout.toString();
-        print('  ✓ Coverage HTML generated: $coverageHtmlPath');
+
+        // แสดง warning ถ้า test failed
+        if (result.exitCode != 0) {
+          print('  ⚠ Coverage HTML generated (but some tests failed)');
+        } else {
+          print('  ✓ Coverage HTML generated: $coverageHtmlPath');
+        }
 
         // -----------------------------------------------------------------------
-        // Step 3: เปิด coverage report ใน browser
-        // ใช้ command ที่เหมาะกับ platform
+        // Step 3: เปิด coverage report ใน browser ผ่าน server URL
+        // ใช้ server URL แทน local file เพื่อให้ CSS/JS ทำงานถูกต้อง
         // -----------------------------------------------------------------------
 
-        print('  > open coverage/html/index.html');
+        const coverageUrl = 'http://localhost:8080/coverage/index.html';
+        print('  > open $coverageUrl');
         if (Platform.isMacOS) {
           // macOS: ใช้ 'open' command
-          await Process.run('open', ['coverage/html/index.html']);
+          await Process.run('open', [coverageUrl]);
         } else if (Platform.isWindows) {
           // Windows: ใช้ 'start' command (ต้อง runInShell)
-          await Process.run('start', ['coverage/html/index.html'], runInShell: true);
+          await Process.run('start', [coverageUrl], runInShell: true);
         } else if (Platform.isLinux) {
           // Linux: ใช้ 'xdg-open' command
-          await Process.run('xdg-open', ['coverage/html/index.html']);
+          await Process.run('xdg-open', [coverageUrl]);
         }
         print('  ✓ Opened coverage report in browser');
       } else {
@@ -919,13 +925,9 @@ Future<void> handleRunTests(HttpRequest request) async {
         print('  ✗ genhtml failed: ${genHtmlResult.stderr}');
       }
     } else {
-      print('  ✗ lcov.info not found or empty after ${maxRetries} retries');
+      print('  ✗ lcov.info not found or empty after $maxRetries retries');
       coverageOutput = 'Coverage file not ready after waiting';
     }
-  } else if (withCoverage && result.exitCode != 0) {
-    // Test failed - ไม่ render HTML
-    print('  ⊘ Skipping coverage HTML: test failed (exitCode=${result.exitCode})');
-    coverageOutput = 'Coverage HTML skipped: test failed';
   }
 
   // ---------------------------------------------------------------------------
@@ -962,74 +964,114 @@ Future<void> handleGenerateAll(HttpRequest request) async {
   int testsGenerated = 0;
 
   // ---------------------------------------------------------------------------
-  // Step 1: Extract all manifests
-  // รัน extract_ui_manifest.dart โดยไม่มี arguments = batch mode
+  // Step 1: Extract all manifests (วนลูป specific file แทน batch mode)
   // ---------------------------------------------------------------------------
 
-  var result = await runDartScript(
-    'tools/script_v2/extract_ui_manifest.dart',
-    [],  // empty args = process all files
-  );
-  if (result.exitCode != 0) {
-    request.response.write(jsonEncode({
-      'success': false,
-      'error': 'Failed to extract manifests',
-    }));
-    await request.response.close();
-    return;
+  // หา page files ทั้งหมดใน lib/
+  final libDir = Directory('lib');
+  final pageFiles = <String>[];
+  if (await libDir.exists()) {
+    await for (final entity in libDir.list(recursive: true)) {
+      if (entity is File &&
+          (entity.path.endsWith('_page.dart') || entity.path.endsWith('.page.dart'))) {
+        pageFiles.add(entity.path);
+      }
+    }
+  }
+
+  // วนลูป extract manifest ทีละไฟล์
+  ProcessResult result;
+  for (final pageFile in pageFiles) {
+    result = await runDartScript(
+      'tools/script_v2/extract_ui_manifest.dart',
+      [pageFile],
+    );
+    if (result.exitCode != 0) {
+      request.response.write(jsonEncode({
+        'success': false,
+        'error': 'Failed to extract manifest for: $pageFile',
+      }));
+      await request.response.close();
+      return;
+    }
   }
 
   // ---------------------------------------------------------------------------
-  // Step 2: Generate datasets (ถ้าไม่ skip)
+  // หา manifest files ทั้งหมด (ใช้ใน Step 2 และ Step 3)
+  // ---------------------------------------------------------------------------
+
+  final manifestDir = Directory('output/manifest');
+  final manifestFiles = <String>[];
+  if (await manifestDir.exists()) {
+    await for (final entity in manifestDir.list(recursive: true)) {
+      if (entity is File && entity.path.endsWith('.manifest.json')) {
+        manifestFiles.add(entity.path);
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Step 2: Generate datasets (วนลูป specific file แทน batch mode)
   // ---------------------------------------------------------------------------
 
   if (!skipDatasets) {
+    for (final manifestPath in manifestFiles) {
+      result = await runDartScript(
+        'tools/script_v2/generate_datasets.dart',
+        [manifestPath],
+      );
+      // ไม่ check exit code เพราะอาจจะ skip ได้ถ้าไม่มี text fields
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Step 3: Generate test data (วนลูป specific file แทน batch mode)
+  // ---------------------------------------------------------------------------
+
+  for (final manifestPath in manifestFiles) {
     result = await runDartScript(
-      'tools/script_v2/generate_datasets.dart',
-      [],
+      'tools/script_v2/generate_test_data.dart',
+      [manifestPath],
     );
-    // ไม่ check exit code เพราะอาจจะ skip ได้ถ้าไม่มี text fields
+    if (result.exitCode != 0) {
+      request.response.write(jsonEncode({
+        'success': false,
+        'error': 'Failed to generate test data for: $manifestPath',
+      }));
+      await request.response.close();
+      return;
+    }
   }
 
   // ---------------------------------------------------------------------------
-  // Step 3: Generate test data
+  // Step 4: Generate test scripts (วนลูป specific file แทน batch mode)
   // ---------------------------------------------------------------------------
 
-  result = await runDartScript(
-    'tools/script_v2/generate_test_data.dart',
-    [],
-  );
-  if (result.exitCode != 0) {
-    request.response.write(jsonEncode({
-      'success': false,
-      'error': 'Failed to generate test data',
-    }));
-    await request.response.close();
-    return;
+  // หา testdata files ทั้งหมด
+  final testDataDir = Directory('output/test_data');
+  final testDataFiles = <String>[];
+  if (await testDataDir.exists()) {
+    await for (final entity in testDataDir.list()) {
+      if (entity is File && entity.path.endsWith('.testdata.json')) {
+        testDataFiles.add(entity.path);
+      }
+    }
   }
 
-  // ---------------------------------------------------------------------------
-  // Step 4: Generate test scripts
-  // ---------------------------------------------------------------------------
-
-  result = await runDartScript(
-    'tools/script_v2/generate_test_script.dart',
-    [],
-  );
+  // วนลูป generate test script ทีละไฟล์
+  for (final testDataPath in testDataFiles) {
+    result = await runDartScript(
+      'tools/script_v2/generate_test_script.dart',
+      [testDataPath],
+    );
+    // ไม่ check exit code เพราะบางไฟล์อาจไม่มี test cases
+  }
 
   // ---------------------------------------------------------------------------
   // นับจำนวนไฟล์ที่ประมวลผล
   // ---------------------------------------------------------------------------
 
-  // นับ manifest files
-  final manifestDir = Directory('output/manifest');
-  if (await manifestDir.exists()) {
-    await for (final entity in manifestDir.list(recursive: true)) {
-      if (entity is File && entity.path.endsWith('.manifest.json')) {
-        filesProcessed++;
-      }
-    }
-  }
+  filesProcessed = manifestFiles.length;
 
   // นับ test scripts ที่สร้าง
   final testDir = Directory('test');

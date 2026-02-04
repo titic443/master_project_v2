@@ -101,60 +101,25 @@ String generateTestScriptFromTestData(String testDataPath) {
 ///
 /// Parameter:
 ///   [args] - List ของ command line arguments
-///            ถ้าว่าง = batch mode (ประมวลผลทุกไฟล์)
-///            ถ้ามี = ประมวลผลเฉพาะไฟล์ที่ระบุ
+///            ต้องระบุ testdata file อย่างน้อย 1 ไฟล์
 void main(List<String> args) {
-  // สร้าง List เก็บ paths ของไฟล์ที่จะประมวลผล
-  final inputs = <String>[];
-
   // ---------------------------------------------------------------------------
-  // กรณีไม่มี arguments: Batch Mode
-  // หาไฟล์ .testdata.json ทั้งหมดใน output/test_data/
+  // Validate: ต้องระบุ testdata file
   // ---------------------------------------------------------------------------
   if (args.isEmpty) {
-    // สร้าง Directory object ชี้ไปยัง folder
-    final dir = Directory('output/test_data');
-
-    // ตรวจสอบว่า folder มีอยู่หรือไม่
-    if (!dir.existsSync()) {
-      stderr.writeln('No output/test_data directory');
-      exit(1); // exit code 1 = error
-    }
-
-    // วนลูปหาไฟล์ .testdata.json
-    // listSync() return List ของ FileSystemEntity
-    // whereType<File>() กรองเอาเฉพาะที่เป็น File
-    for (final f in dir.listSync().whereType<File>()) {
-      // ตรวจสอบ extension
-      if (f.path.endsWith('.testdata.json')) {
-        inputs.add(f.path); // เพิ่มลง list
-      }
-    }
-
-    // ตรวจสอบว่าพบไฟล์หรือไม่
-    if (inputs.isEmpty) {
-      stderr.writeln('No *.testdata.json files under output/test_data');
-      exit(1);
-    }
-  }
-  // ---------------------------------------------------------------------------
-  // กรณีมี arguments: Single/Multiple File Mode
-  // ประมวลผลเฉพาะไฟล์ที่ระบุ
-  // ---------------------------------------------------------------------------
-  else {
-    inputs.addAll(args); // เพิ่มทุก arguments ลง list
+    stderr.writeln('Error: No testdata file specified');
+    stderr.writeln('Usage: dart run tools/script_v2/generate_test_script.dart <testdata.json>');
+    stderr.writeln('Example: dart run tools/script_v2/generate_test_script.dart output/test_data/buttons_page.testdata.json');
+    exit(1);
   }
 
   // ---------------------------------------------------------------------------
   // วนลูปประมวลผลแต่ละไฟล์
   // ---------------------------------------------------------------------------
-  for (final path in inputs) {
+  for (final path in args) {
     try {
-      // เรียก function หลักในการประมวลผล
       _processOne(path);
     } catch (e, st) {
-      // จับ error และแสดง message พร้อม stack trace
-      // ไม่ให้ error ของไฟล์หนึ่งกระทบไฟล์อื่น
       stderr.writeln('! Failed to process $path: $e\n$st');
     }
   }
