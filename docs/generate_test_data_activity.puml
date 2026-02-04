@@ -1,0 +1,156 @@
+@startuml generate_test_data_activity
+!theme plain
+title Activity Diagram: generate_test_data.dart
+
+start
+
+:Parse Command Line Arguments;
+note right
+  - manifest files (.manifest.json)
+  - --constraints-file <path>
+  - --verbose
+end note
+
+if (มี --constraints-file?) then (yes)
+  :Load Constraints from File;
+  if (file exists?) then (yes)
+    :Read constraints content;
+  else (no)
+    :Warning: file not found;
+  endif
+else (no)
+endif
+
+if (มี manifest files ใน arguments?) then (yes)
+  :ใช้ไฟล์ที่ระบุ;
+else (no)
+  :Scan output/manifest/ folder;
+  if (folder exists?) then (yes)
+    :Find .manifest.json files (recursive);
+    if (พบไฟล์?) then (yes)
+      :เก็บ paths ใน inputs list;
+    else (no)
+      #pink:Error: No manifest files found;
+      stop
+    endif
+  else (no)
+    #pink:Error: No manifest directory;
+    stop
+  endif
+endif
+
+:Initialize counters\n(successCount, errorCount);
+
+partition "Loop: Process Each Manifest File" {
+  repeat
+    :Get next manifest path;
+
+    partition "_processOne() Function" #LightBlue {
+
+      #LightYellow:== Step 1: Read Manifest ==
+      Read manifest JSON file
+      Extract source.file (UI file path)
+      Extract source.pageClass;
+
+      #LightYellow:== Step 2: Create PICT Model ==
+      _tryWritePictModelFromManifestForUi();
+      note right
+        สร้างไฟล์:
+        - .full.model.txt
+        - .full.result.txt
+        - .valid.model.txt
+        - .valid.result.txt
+      end note
+
+      #LightYellow:== Step 3: Load External Datasets ==;
+      if (datasets.json exists?) then (yes)
+        :Parse datasets JSON;
+        :Merge byKey into datasets;
+        :hasExternalDatasets = true;
+      else (no)
+        :Use empty datasets;
+      endif
+
+      #LightYellow:== Step 4: Identify Widget Types ==;
+      fork
+        :Collect textKeys\n(TextField, TextFormField);
+      fork again
+        :Collect radioKeys\n(Radio buttons);
+      fork again
+        :Collect checkboxKeys\n(Checkbox, CheckboxListTile);
+      fork again
+        :Collect dropdownKeys\n(DropdownButtonFormField);
+      fork again
+        :Collect datePickerKeys\n& timePickerKeys;
+      fork again
+        :Collect primaryButtons;
+      end fork
+
+      #LightYellow:== Step 5: Find End Button ==
+      _findHighestSequenceButton()
+      หา Button ที่มี sequence number สูงสุด;
+
+      #LightYellow:== Step 6: Detect Required Checkboxes ==
+      Scan FormField<bool> widgets
+      Check validatorRules for "!value"
+      Store in requiredCheckboxValidation;
+
+      #LightYellow:== Step 7: Extract Dropdown Options ==
+      Find DropdownButtonFormField widgets
+      Extract items from dropdownItems
+      Build value-to-text mapping;
+
+      #LightYellow:== Step 8: Generate PICT Combinations ==;
+      if (pairwiseUsePict?) then (yes)
+        :Read PICT result files;
+        :Parse combinations;
+      else (no)
+        :Use internal pairwise algorithm;
+      endif
+
+      :Generate pairwise_valid_invalid_cases;
+      note right
+        ผสม valid + invalid values
+        จาก datasets
+      end note
+
+      :Generate pairwise_valid_cases;
+      note right
+        ใช้เฉพาะ valid values
+      end note
+
+      #LightYellow:== Step 9: Generate Edge Cases ==
+      Create edge_cases_empty_all_fields
+      (ทดสอบกรณีไม่กรอกข้อมูล);
+
+      #LightYellow:== Step 10: Build Test Cases ==
+      Combine all cases into groups:
+      - pairwise_valid_invalid_cases
+      - pairwise_valid_cases
+      - edge_cases;
+
+      #LightYellow:== Step 11: Write Output ==
+      Create output directory
+      Write .testdata.json
+      Print success message;
+    }
+
+    :successCount++;
+
+  repeat while (มีไฟล์เหลือ?) is (yes) not (no)
+}
+
+if (inputs.length > 1?) then (yes)
+  :Print Summary\n(success/failed count);
+else (no)
+endif
+
+if (errorCount > 0?) then (yes)
+  #pink:exit(1);
+  stop
+else (no)
+  #lightgreen:exit(0);
+  stop
+endif
+
+@enduml
