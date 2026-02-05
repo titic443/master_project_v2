@@ -16,6 +16,9 @@ const outputLog = document.getElementById('outputLog');
 const clearLogBtn = document.getElementById('clearLogBtn');
 const resultsSection = document.getElementById('resultsSection');
 const coverageSection = document.getElementById('coverageSection');
+const testSummarySection = document.getElementById('testSummarySection');
+const summaryOverview = document.getElementById('summaryOverview');
+const summaryTableBody = document.getElementById('summaryTableBody');
 const viewCoverageBtn = document.getElementById('viewCoverageBtn');
 const openCoverageFolderBtn = document.getElementById('openCoverageFolderBtn');
 
@@ -278,6 +281,7 @@ async function generateTests() {
     progressSection.classList.remove('hidden');
     outputSection.classList.remove('hidden');
     resultsSection.classList.add('hidden');
+    testSummarySection.classList.add('hidden');
     resetProgress();
     clearLog();
 
@@ -344,6 +348,12 @@ async function generateTests() {
         if (!scriptResult.success) throw new Error(scriptResult.error);
         updateProgress(4, 'complete', scriptResult.testScriptPath);
         log(`Test script: ${scriptResult.testScriptPath}`, 'success');
+
+        // Show test case summary
+        if (scriptResult.summary) {
+            showTestSummary(scriptResult.summary);
+            log(`Test cases: ${scriptResult.summary.totalCases} total`, 'info');
+        }
 
         // Step 5: Mark as skipped (user can run manually)
         updateProgress(5, 'skipped', 'Click "Run Coverage Test" to run');
@@ -567,6 +577,131 @@ function log(message, type = '') {
 function clearLog() {
     outputLog.innerHTML = '';
 }
+
+// Show test case summary
+function showTestSummary(summary) {
+    if (!summary) {
+        testSummarySection.classList.add('hidden');
+        return;
+    }
+
+    // Overview badges: total + group breakdown
+    let badgesHtml = `<div class="summary-badge"><strong>${summary.totalCases}</strong> Total Cases</div>`;
+    for (const g of summary.groups) {
+        badgesHtml += `<div class="summary-badge"><strong>${g.count}</strong> ${g.name}</div>`;
+    }
+    summaryOverview.innerHTML = badgesHtml;
+
+    // Table rows
+    let rowsHtml = '';
+    summary.cases.forEach((c, i) => {
+        rowsHtml += `<tr>
+            <td>${i + 1}</td>
+            <td>${c.tc}</td>
+            <td>${c.group}</td>
+            <td><button class="btn-run-case" data-tc="${c.tc}" data-group="${c.group}">Run</button></td>
+            <td class="result-cell" data-tc="${c.tc}"><span class="result-status">-</span></td>
+        </tr>
+        <tr class="log-row hidden" data-log-for="${c.tc}">
+            <td colspan="5"><pre class="case-log"></pre></td>
+        </tr>`;
+    });
+    summaryTableBody.innerHTML = rowsHtml;
+
+    testSummarySection.classList.remove('hidden');
+}
+
+// Run a single test case by name
+async function runSingleTestCase(btn, tcName) {
+    if (!generatedTestScript) {
+        log('No test script generated yet.', 'error');
+        return;
+    }
+
+    // Find result cell and log row for this case
+    const resultCell = summaryTableBody.querySelector(`.result-cell[data-tc="${tcName}"]`);
+    const logRow = summaryTableBody.querySelector(`.log-row[data-log-for="${tcName}"]`);
+    const statusEl = resultCell?.querySelector('.result-status');
+
+    // Disable button and show spinner
+    btn.disabled = true;
+    btn.textContent = '...';
+    btn.classList.remove('passed', 'failed');
+
+    // Update result cell to running state
+    if (statusEl) {
+        statusEl.textContent = 'Running...';
+        statusEl.className = 'result-status running';
+    }
+
+    outputSection.classList.remove('hidden');
+    log(`\n--- Running: ${tcName} ---`, 'info');
+
+    try {
+        const result = await runStep('run-tests', {
+            testScript: generatedTestScript,
+            testName: tcName,
+            useDevice: true
+        });
+
+        if (result.success) {
+            btn.textContent = 'Pass';
+            btn.classList.add('passed');
+            if (statusEl) {
+                statusEl.innerHTML = '<span class="result-passed">PASSED</span>';
+                statusEl.className = 'result-status';
+            }
+            log(`Result: ${tcName} - PASSED`, 'success');
+        } else {
+            btn.textContent = 'Fail';
+            btn.classList.add('failed');
+            if (statusEl) {
+                statusEl.innerHTML = '<span class="result-failed">FAILED</span>';
+                statusEl.className = 'result-status';
+            }
+            log(`Result: ${tcName} - FAILED`, 'error');
+        }
+
+        // Show log in the expandable row
+        if (logRow) {
+            const logPre = logRow.querySelector('.case-log');
+            logPre.textContent = result.output || result.error || 'No output';
+            logRow.classList.remove('hidden');
+
+            // Add toggle button to result cell
+            if (statusEl && !resultCell.querySelector('.btn-toggle-log')) {
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'btn-toggle-log';
+                toggleBtn.textContent = 'Hide Log';
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = logRow.classList.toggle('hidden');
+                    toggleBtn.textContent = isHidden ? 'Show Log' : 'Hide Log';
+                });
+                resultCell.appendChild(toggleBtn);
+            }
+        }
+    } catch (error) {
+        btn.textContent = 'Fail';
+        btn.classList.add('failed');
+        if (statusEl) {
+            statusEl.innerHTML = '<span class="result-failed">ERROR</span>';
+            statusEl.className = 'result-status';
+        }
+        log(`Error running ${tcName}: ${error.message}`, 'error');
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+// Event delegation for Run buttons in summary table
+summaryTableBody.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-run-case');
+    if (!btn || btn.disabled) return;
+    const tcName = btn.dataset.tc;
+    if (tcName) {
+        runSingleTestCase(btn, tcName);
+    }
+});
 
 // Show results
 function showResults(results) {
