@@ -880,14 +880,36 @@ Future<void> handleRunTests(HttpRequest request) async {
       print('  ✓ Found lcov.info');
 
       // -------------------------------------------------------------------------
+      // กรอง cubit/state files ออก เพื่อให้ coverage focus เฉพาะ UI layer
+      // ใช้ lcov --remove เพื่อตัด files ที่อยู่ใน */cubit/* ออก
+      // -------------------------------------------------------------------------
+
+      print('  > lcov --remove coverage/lcov.info */cubit/* -o coverage/lcov_ui_only.info');
+      final lcovFilterResult = await Process.run(
+        'lcov',
+        ['--remove', 'coverage/lcov.info', '*/cubit/*', '-o', 'coverage/lcov_ui_only.info'],
+      );
+
+      // เลือกใช้ไฟล์ที่กรองแล้ว ถ้า filter สำเร็จ หรือ fallback ใช้ไฟล์เดิม
+      final lcovForHtml = lcovFilterResult.exitCode == 0
+          ? 'coverage/lcov_ui_only.info'
+          : 'coverage/lcov.info';
+
+      if (lcovFilterResult.exitCode == 0) {
+        print('  ✓ Filtered cubit files from coverage (UI-only)');
+      } else {
+        print('  ⚠ lcov filter failed, using unfiltered coverage');
+      }
+
+      // -------------------------------------------------------------------------
       // รัน genhtml เพื่อแปลง lcov.info เป็น HTML report
       // genhtml เป็น tool จาก lcov package
       // -------------------------------------------------------------------------
 
-      print('  > genhtml coverage/lcov.info -o coverage/html');
+      print('  > genhtml $lcovForHtml -o coverage/html');
       final genHtmlResult = await Process.run(
         'genhtml',
-        ['coverage/lcov.info', '-o', 'coverage/html'],
+        [lcovForHtml, '-o', 'coverage/html'],
       );
 
       if (genHtmlResult.exitCode == 0) {
