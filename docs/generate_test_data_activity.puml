@@ -108,20 +108,80 @@ partition "Loop: Process Each Manifest File" {
         :Use internal pairwise algorithm;
       endif
 
+      #LightYellow:== Step 8.1: Build Test Steps ==;
+      :For each combination:;
+      note right
+        **Widget Type → Test Action:**
+        - TextFormField: enterText + pump
+        - Dropdown: tap → scrollAndTapText
+        - Radio: tap + pump
+        - Checkbox: tap + pump (ถ้า checked)
+        - DatePicker: tap → selectDate
+        - TimePicker: tap → selectTime
+        - Button (end): tap + pumpAndSettle
+      end note
+
+      :สร้าง stepsByKey map;
+      note right
+        เก็บ steps แยกตาม widget key
+      end note
+
+      :**Sort widgets by key**\n(alphabetical order);
+
+      :Add steps ตามลำดับ sorted keys;
+
       :Generate pairwise_valid_invalid_cases;
       note right
         ผสม valid + invalid values
         จาก datasets
+        กำหนด kind: success/failed
       end note
+
+      #LightYellow:== Step 8.2: Generate Asserts (valid_invalid) ==;
+      if (hasInvalidData?) then (yes)
+        :kind = "failed";
+        :Collect asserts:;
+        note right
+          **Sources:**
+          1. datasets.invalidRuleMessages
+             (TextFormField)
+          2. requiredCheckboxValidation
+             (Checkbox)
+          3. expectedFailKeys
+             (*_expected_fail)
+        end note
+      else (no)
+        :kind = "success";
+        :Assert: expectedSuccessKeys;
+        note right
+          *_expected_success keys
+        end note
+      endif
 
       :Generate pairwise_valid_cases;
       note right
         ใช้เฉพาะ valid values
+        kind: success เสมอ
+        Assert: expectedSuccessKeys
       end note
 
-      #LightYellow:== Step 9: Generate Edge Cases ==
-      Create edge_cases_empty_all_fields
-      (ทดสอบกรณีไม่กรอกข้อมูล);
+      #LightYellow:== Step 9: Generate Edge Cases ==;
+      :Create edge_cases_empty_all_fields;
+      note right
+        ทดสอบกรณีไม่กรอกข้อมูล
+        kind: failed
+      end note
+
+      :Collect validation messages;
+      note right
+        **Sources:**
+        1. validatorRules[].message
+           (condition = empty check)
+        2. validatorMessages[]
+           (fallback)
+        **Output:**
+        asserts with count
+      end note
 
       #LightYellow:== Step 10: Build Test Cases ==
       Combine all cases into groups:
