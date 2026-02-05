@@ -768,7 +768,6 @@ Future<void> handleRunTests(HttpRequest request) async {
   final testScript = body['testScript'] as String?;
   final withCoverage = body['withCoverage'] as bool? ?? false;
   final useDevice = body['useDevice'] as bool? ?? false;
-  final testName = body['testName'] as String?;
 
   // Validate input
   if (testScript == null) {
@@ -826,14 +825,6 @@ Future<void> handleRunTests(HttpRequest request) async {
     } else {
       print('  ⚠ No mobile device/emulator found, running on VM');
     }
-  }
-
-  // Filter by test name (single case run)
-  // ใช้ RegExp.escape + $ anchor เพื่อ match เฉพาะ test case เดียว
-  // เช่น "case_1$" จะไม่ match "case_10", "case_11" ฯลฯ
-  if (testName != null && testName.isNotEmpty) {
-    final escapedName = '${RegExp.escape(testName)}\$';
-    args.addAll(['--name', escapedName]);
   }
 
   // Log command

@@ -450,7 +450,7 @@ async function runCoverageTest() {
 
         // Update summary table with coverage results
         if (testResult.testCases && testResult.testCases.length > 0) {
-            updateSummaryFromCoverage(testResult.testCases, testResult.output || '');
+            updateSummaryFromCoverage(testResult.testCases);
         }
 
         if (testResult.output) {
@@ -463,7 +463,6 @@ async function runCoverageTest() {
     } finally {
         isGenerating = false;
         updateButtonStates();
-        resetSummaryButtons();
     }
 }
 
@@ -608,11 +607,7 @@ function showTestSummary(summary) {
             <td>${i + 1}</td>
             <td>${c.tc}</td>
             <td>${c.group}</td>
-            <td><button class="btn-run-case" data-tc="${c.tc}" data-group="${c.group}">Run</button></td>
             <td class="result-cell" data-tc="${c.tc}"><span class="result-status">-</span></td>
-        </tr>
-        <tr class="log-row hidden" data-log-for="${c.tc}">
-            <td colspan="5"><pre class="case-log"></pre></td>
         </tr>`;
     });
     summaryTableBody.innerHTML = rowsHtml;
@@ -620,172 +615,34 @@ function showTestSummary(summary) {
     testSummarySection.classList.remove('hidden');
 }
 
-// Run a single test case by name
-async function runSingleTestCase(btn, tcName) {
-    if (!generatedTestScript) {
-        log('No test script generated yet.', 'error');
-        return;
-    }
-
-    // Find result cell and log row for this case
-    const resultCell = summaryTableBody.querySelector(`.result-cell[data-tc="${tcName}"]`);
-    const logRow = summaryTableBody.querySelector(`.log-row[data-log-for="${tcName}"]`);
-    const statusEl = resultCell?.querySelector('.result-status');
-
-    // Disable button and show spinner
-    btn.disabled = true;
-    btn.textContent = '...';
-    btn.classList.remove('passed', 'failed');
-
-    // Update result cell to running state
-    if (statusEl) {
-        statusEl.textContent = 'Running...';
-        statusEl.className = 'result-status running';
-    }
-
-    outputSection.classList.remove('hidden');
-    log(`\n--- Running: ${tcName} ---`, 'info');
-
-    try {
-        const result = await runStep('run-tests', {
-            testScript: generatedTestScript,
-            testName: tcName,
-            useDevice: true
-        });
-
-        if (result.success) {
-            btn.textContent = 'Pass';
-            btn.classList.add('passed');
-            if (statusEl) {
-                statusEl.innerHTML = '<span class="result-passed">PASSED</span>';
-                statusEl.className = 'result-status';
-            }
-            log(`Result: ${tcName} - PASSED`, 'success');
-        } else {
-            btn.textContent = 'Fail';
-            btn.classList.add('failed');
-            if (statusEl) {
-                statusEl.innerHTML = '<span class="result-failed">FAILED</span>';
-                statusEl.className = 'result-status';
-            }
-            log(`Result: ${tcName} - FAILED`, 'error');
-        }
-
-        // Show log in the expandable row
-        if (logRow) {
-            const logPre = logRow.querySelector('.case-log');
-            logPre.textContent = result.output || result.error || 'No output';
-            logRow.classList.remove('hidden');
-
-            // Add toggle button to result cell
-            if (statusEl && !resultCell.querySelector('.btn-toggle-log')) {
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'btn-toggle-log';
-                toggleBtn.textContent = 'Hide Log';
-                toggleBtn.addEventListener('click', () => {
-                    const isHidden = logRow.classList.toggle('hidden');
-                    toggleBtn.textContent = isHidden ? 'Show Log' : 'Hide Log';
-                });
-                resultCell.appendChild(toggleBtn);
-            }
-        }
-    } catch (error) {
-        btn.textContent = 'Fail';
-        btn.classList.add('failed');
-        if (statusEl) {
-            statusEl.innerHTML = '<span class="result-failed">ERROR</span>';
-            statusEl.className = 'result-status';
-        }
-        log(`Error running ${tcName}: ${error.message}`, 'error');
-    } finally {
-        btn.disabled = false;
-    }
-}
-
 // Set all summary rows to "Running..." state before coverage test
 function setSummaryRunningState() {
-    const allBtns = summaryTableBody.querySelectorAll('.btn-run-case');
-    allBtns.forEach(btn => {
-        btn.disabled = true;
-        btn.textContent = '...';
-        btn.classList.remove('passed', 'failed');
-    });
-    const allStatus = summaryTableBody.querySelectorAll('.result-status');
-    allStatus.forEach(el => {
+    summaryTableBody.querySelectorAll('.result-status').forEach(el => {
         el.textContent = 'Running...';
         el.className = 'result-status running';
     });
 }
 
-// Re-enable all Run buttons (called after coverage completes)
-function resetSummaryButtons() {
-    const allBtns = summaryTableBody.querySelectorAll('.btn-run-case');
-    allBtns.forEach(btn => { btn.disabled = false; });
-}
-
-// Update summary table Action & Result columns from coverage test results
-function updateSummaryFromCoverage(testCases, fullOutput) {
-    // หา btn-run-case ทั้งหมดในตาราง
-    const allBtns = summaryTableBody.querySelectorAll('.btn-run-case');
-
-    allBtns.forEach(btn => {
-        const tcName = btn.dataset.tc;
+// Update summary table Result column from coverage test results
+function updateSummaryFromCoverage(testCases) {
+    summaryTableBody.querySelectorAll('.result-cell').forEach(cell => {
+        const tcName = cell.dataset.tc;
         if (!tcName) return;
 
         // Match: server ส่งชื่อเต็ม (รวม group prefix) แต่ตารางใช้ tc สั้น
-        // ใช้ endsWith เพื่อ match "...group pairwise_valid_cases_1" กับ "pairwise_valid_cases_1"
         const matched = testCases.find(tc => tc.name === tcName || tc.name.endsWith(tcName));
         if (!matched) return;
 
-        const passed = matched.status === 'passed';
-
-        // Update Action button
-        btn.textContent = passed ? 'Pass' : 'Fail';
-        btn.classList.remove('passed', 'failed');
-        btn.classList.add(passed ? 'passed' : 'failed');
-
-        // Update Result cell
-        const resultCell = summaryTableBody.querySelector(`.result-cell[data-tc="${tcName}"]`);
-        if (resultCell) {
-            const statusEl = resultCell.querySelector('.result-status');
-            if (statusEl) {
-                statusEl.innerHTML = passed
-                    ? '<span class="result-passed">PASSED</span>'
-                    : '<span class="result-failed">FAILED</span>';
-                statusEl.className = 'result-status';
-            }
-
-            // Show full output in log row + add toggle button
-            const logRow = summaryTableBody.querySelector(`.log-row[data-log-for="${tcName}"]`);
-            if (logRow) {
-                const logPre = logRow.querySelector('.case-log');
-                logPre.textContent = fullOutput;
-                // log row ยังซ่อนไว้ ให้ user กด toggle เอง
-
-                if (!resultCell.querySelector('.btn-toggle-log')) {
-                    const toggleBtn = document.createElement('button');
-                    toggleBtn.className = 'btn-toggle-log';
-                    toggleBtn.textContent = 'Show Log';
-                    toggleBtn.addEventListener('click', () => {
-                        const isHidden = logRow.classList.toggle('hidden');
-                        toggleBtn.textContent = isHidden ? 'Show Log' : 'Hide Log';
-                    });
-                    resultCell.appendChild(toggleBtn);
-                }
-            }
+        const statusEl = cell.querySelector('.result-status');
+        if (matched.status === 'passed') {
+            statusEl.textContent = 'Passed';
+            statusEl.className = 'result-status passed';
+        } else {
+            statusEl.textContent = 'Failed';
+            statusEl.className = 'result-status failed';
         }
     });
 }
-
-// Event delegation for Run buttons in summary table
-summaryTableBody.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn-run-case');
-    if (!btn || btn.disabled) return;
-    const tcName = btn.dataset.tc;
-    if (tcName) {
-        runSingleTestCase(btn, tcName);
-    }
-});
 
 // Show results
 function showResults(results) {
