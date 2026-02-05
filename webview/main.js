@@ -397,6 +397,9 @@ async function runCoverageTest() {
     log('Step 1: Running flutter test with --coverage...', 'info');
     updateProgress(5, 'running', 'Running tests with coverage...');
 
+    // Set all summary rows to "Running..." state
+    setSummaryRunningState();
+
     try {
         const testResult = await runStep('run-tests', {
             testScript: testScript,
@@ -445,6 +448,11 @@ async function runCoverageTest() {
             }
         }
 
+        // Update summary table with coverage results
+        if (testResult.testCases && testResult.testCases.length > 0) {
+            updateSummaryFromCoverage(testResult.testCases, testResult.output || '');
+        }
+
         if (testResult.output) {
             log('\n--- Raw Test Output ---', 'info');
             log(testResult.output, '');
@@ -455,6 +463,7 @@ async function runCoverageTest() {
     } finally {
         isGenerating = false;
         updateButtonStates();
+        resetSummaryButtons();
     }
 }
 
@@ -691,6 +700,81 @@ async function runSingleTestCase(btn, tcName) {
     } finally {
         btn.disabled = false;
     }
+}
+
+// Set all summary rows to "Running..." state before coverage test
+function setSummaryRunningState() {
+    const allBtns = summaryTableBody.querySelectorAll('.btn-run-case');
+    allBtns.forEach(btn => {
+        btn.disabled = true;
+        btn.textContent = '...';
+        btn.classList.remove('passed', 'failed');
+    });
+    const allStatus = summaryTableBody.querySelectorAll('.result-status');
+    allStatus.forEach(el => {
+        el.textContent = 'Running...';
+        el.className = 'result-status running';
+    });
+}
+
+// Re-enable all Run buttons (called after coverage completes)
+function resetSummaryButtons() {
+    const allBtns = summaryTableBody.querySelectorAll('.btn-run-case');
+    allBtns.forEach(btn => { btn.disabled = false; });
+}
+
+// Update summary table Action & Result columns from coverage test results
+function updateSummaryFromCoverage(testCases, fullOutput) {
+    // หา btn-run-case ทั้งหมดในตาราง
+    const allBtns = summaryTableBody.querySelectorAll('.btn-run-case');
+
+    allBtns.forEach(btn => {
+        const tcName = btn.dataset.tc;
+        if (!tcName) return;
+
+        // Match: server ส่งชื่อเต็ม (รวม group prefix) แต่ตารางใช้ tc สั้น
+        // ใช้ endsWith เพื่อ match "...group pairwise_valid_cases_1" กับ "pairwise_valid_cases_1"
+        const matched = testCases.find(tc => tc.name === tcName || tc.name.endsWith(tcName));
+        if (!matched) return;
+
+        const passed = matched.status === 'passed';
+
+        // Update Action button
+        btn.textContent = passed ? 'Pass' : 'Fail';
+        btn.classList.remove('passed', 'failed');
+        btn.classList.add(passed ? 'passed' : 'failed');
+
+        // Update Result cell
+        const resultCell = summaryTableBody.querySelector(`.result-cell[data-tc="${tcName}"]`);
+        if (resultCell) {
+            const statusEl = resultCell.querySelector('.result-status');
+            if (statusEl) {
+                statusEl.innerHTML = passed
+                    ? '<span class="result-passed">PASSED</span>'
+                    : '<span class="result-failed">FAILED</span>';
+                statusEl.className = 'result-status';
+            }
+
+            // Show full output in log row + add toggle button
+            const logRow = summaryTableBody.querySelector(`.log-row[data-log-for="${tcName}"]`);
+            if (logRow) {
+                const logPre = logRow.querySelector('.case-log');
+                logPre.textContent = fullOutput;
+                // log row ยังซ่อนไว้ ให้ user กด toggle เอง
+
+                if (!resultCell.querySelector('.btn-toggle-log')) {
+                    const toggleBtn = document.createElement('button');
+                    toggleBtn.className = 'btn-toggle-log';
+                    toggleBtn.textContent = 'Show Log';
+                    toggleBtn.addEventListener('click', () => {
+                        const isHidden = logRow.classList.toggle('hidden');
+                        toggleBtn.textContent = isHidden ? 'Show Log' : 'Hide Log';
+                    });
+                    resultCell.appendChild(toggleBtn);
+                }
+            }
+        }
+    });
 }
 
 // Event delegation for Run buttons in summary table
