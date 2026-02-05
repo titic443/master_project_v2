@@ -686,9 +686,56 @@ Future<void> handleGenerateTestScript(HttpRequest request) async {
     final baseName = testData.split('/').last.replaceAll('.testdata.json', '');
     final testScriptPath = 'integration_test/${baseName}_flow_test.dart';
 
+    // -----------------------------------------------------------------------
+    // สร้าง summary จาก testdata.json
+    // -----------------------------------------------------------------------
+    Map<String, dynamic>? summary;
+    try {
+      final testDataFile = File(testData);
+      if (testDataFile.existsSync()) {
+        final testDataJson =
+            jsonDecode(testDataFile.readAsStringSync()) as Map<String, dynamic>;
+        final cases = testDataJson['cases'] as List<dynamic>? ?? [];
+
+        // สร้าง group breakdown
+        final groupCounts = <String, int>{};
+        final caseDetails = <Map<String, dynamic>>[];
+
+        for (final c in cases) {
+          final caseMap = c as Map<String, dynamic>;
+          final group = caseMap['group'] as String? ?? 'unknown';
+          groupCounts[group] = (groupCounts[group] ?? 0) + 1;
+
+          final steps = caseMap['steps'] as List<dynamic>? ?? [];
+          final asserts = caseMap['asserts'] as List<dynamic>? ?? [];
+
+          caseDetails.add({
+            'tc': caseMap['tc'] ?? '',
+            'kind': caseMap['kind'] ?? '',
+            'group': group,
+            'steps': steps.length,
+            'asserts': asserts.length,
+          });
+        }
+
+        final groups = groupCounts.entries
+            .map((e) => {'name': e.key, 'count': e.value})
+            .toList();
+
+        summary = {
+          'totalCases': cases.length,
+          'groups': groups,
+          'cases': caseDetails,
+        };
+      }
+    } catch (_) {
+      // ถ้า parse ไม่ได้ ก็ไม่ส่ง summary (ไม่ block response)
+    }
+
     request.response.write(jsonEncode({
       'success': true,
       'testScriptPath': testScriptPath,
+      if (summary != null) 'summary': summary,
       'output': result.stdout,
     }));
   } else {
@@ -721,6 +768,7 @@ Future<void> handleRunTests(HttpRequest request) async {
   final testScript = body['testScript'] as String?;
   final withCoverage = body['withCoverage'] as bool? ?? false;
   final useDevice = body['useDevice'] as bool? ?? false;
+  final testName = body['testName'] as String?;
 
   // Validate input
   if (testScript == null) {
@@ -778,6 +826,14 @@ Future<void> handleRunTests(HttpRequest request) async {
     } else {
       print('  ⚠ No mobile device/emulator found, running on VM');
     }
+  }
+
+  // Filter by test name (single case run)
+  // ใช้ RegExp.escape + $ anchor เพื่อ match เฉพาะ test case เดียว
+  // เช่น "case_1$" จะไม่ match "case_10", "case_11" ฯลฯ
+  if (testName != null && testName.isNotEmpty) {
+    final escapedName = '${RegExp.escape(testName)}\$';
+    args.addAll(['--name', escapedName]);
   }
 
   // Log command
