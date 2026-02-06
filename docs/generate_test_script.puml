@@ -1,0 +1,309 @@
+@startuml generate_test_script_activity
+!theme plain
+title Activity Diagram: generate_test_script.dart
+
+start
+
+:Parse Command Line Arguments;
+note right
+  - testdata files (.testdata.json)
+  - รองรับหลายไฟล์พร้อมกัน
+end note
+
+if (มี arguments?) then (yes)
+  :ใช้ไฟล์ที่ระบุ;
+else (no)
+  #pink:Error: No testdata file specified;
+  stop
+endif
+
+partition "Loop: Process Each Testdata File" {
+  repeat
+    :Get next testdata path;
+
+    partition "_processOne(planPath)" #LightBlue {
+
+      #LightYellow:== Step 1: Read & Parse Testdata ==
+      File(planPath).readAsStringSync()
+      jsonDecode(raw) as Map;
+
+      #LightYellow:== Step 2: Extract Source Info ==
+      ดึง uiFile, pageClass,
+      cubitClass, stateClass
+      จาก source section;
+
+      #LightYellow:== Step 3: Build Providers List ==
+      สร้าง providers list จาก cubitClass
+      ใช้สำหรับ BlocProvider wrapping;
+
+      #LightYellow:== Step 4: Extract Validation Counts ==
+      **_extractValidationCountsFromPlan(cases)**;
+      note right
+        ดึง text to count mapping
+        จาก asserts ใน cases
+        เช่น "Email is required" = 2
+        ใช้กำหนด findsNWidgets()
+      end note
+
+      #LightYellow:== Step 5: Load Datasets ==;
+      if (external .datasets.json exists?) then (yes)
+        :Parse external datasets;
+        :ใช้ external datasets;
+      else (no)
+        :ใช้ embedded datasets\nจาก testdata JSON;
+      endif
+
+      #LightYellow:== Step 6: Read Package Name ==
+      readPackageName() จาก pubspec.yaml;
+
+      #LightYellow:== Step 7: Normalize UI File Path ==
+      แปลง absolute path to relative path
+      เช่น /Users/.../lib/xxx.dart to lib/xxx.dart;
+
+      #LightYellow:== Step 8: Find Provider Files ==
+      **findDeclFile()** หาไฟล์ที่มี
+      class declaration ของ Cubit
+      (ลงท้ายด้วย _cubit.dart);
+
+      #LightYellow:== Step 9: Get Primary Cubit Type ==
+      **_getPrimaryCubitType()**
+      หา Cubit แรกที่ไม่ใช่ private;
+
+      #LightYellow:== Step 10: Build sampleByKey Map ==
+      ดึงค่า valid ตัวแรกของแต่ละ field
+      สำหรับใช้เป็น fallback value;
+      note right
+        รองรับ 2 formats:
+        - Array: [valid, invalid, ...]
+        - Map: valid: [...], invalid: [...]
+      end note
+
+      ' ── Code Generation Phase ─────────────────
+
+      #LightYellow:== Step 11: Start StringBuffer ==
+      สร้าง imports:
+      - flutter/material.dart
+      - flutter_test/flutter_test.dart
+      - dart:io;
+
+      #LightYellow:== Step 12: Add Provider Imports ==
+      **_getStateFilePathFromCubit()**
+      เพิ่ม imports:
+      - flutter_bloc
+      - cubit files
+      - state file
+      - UI page file;
+
+      #LightYellow:== Step 13: Generate Stub Classes ==;
+      if (primaryCubitType != null?) then (yes)
+        fork
+          :Generate **_SuccessCubit** stub;
+          note right
+            extends real Cubit
+            stubResp: ApiResponse?
+            shouldSucceed: true
+            override onEndButton()
+            override callApi()
+            emit response
+          end note
+        fork again
+          :Generate **_FailCubit** stub;
+          note left
+            extends real Cubit
+            code: int
+            shouldSucceed: false
+            override onEndButton()
+            override callApi()
+            emit exception
+          end note
+        end fork
+      else (no)
+      endif
+
+      #LightYellow:== Step 14: Generate _wrap() Helper ==
+      สร้าง function สำหรับ wrap widget;
+      note right
+        Parameters:
+        - child: Widget
+        - success: bool
+        - response: Map? (optional)
+        - failureCode: int? (optional)
+
+        Returns: MaterialApp
+          with MultiBlocProvider
+          with child
+      end note
+
+      #LightYellow:== Step 15: Group Cases by 'group' ==
+      จัดกลุ่ม cases ตาม group field
+      preserve insertion order;
+
+      #LightYellow:== Step 16: Write main() Structure ==
+      void main() with group('uiFile flow');
+
+      ' ── Per Test Case Generation ──────────────
+
+      #LightYellow:== Step 17: Loop Groups & Cases ==;
+
+      repeat
+        :Get next group and case;
+        :Determine success/fail stub;
+        note right
+          cubitStub == 'success'
+          หรือ kind == 'success'
+        end note
+
+        if (setup.response มี?) then (yes)
+          :สร้าง responseArg\nด้วย _dartMapLiteral();
+        else (no)
+        endif
+
+        :Infer failureCode จาก asserts;
+        note right
+          ตรวจ status_400, status_500
+          จาก byKey ใน asserts
+        end note
+
+        :Write testWidgets() header;
+        :Write _wrap() call;
+
+        partition "Generate Steps" {
+          repeat
+            :Get next step;
+
+            if (enterText?) then (yes)
+              :Resolve text value;
+              note right
+                1. ใช้ text โดยตรง
+                2. Resolve จาก dataset path
+                3. Fallback: sampleByKey
+              end note
+              :tester.enterText(byKey, text);
+              :pump() ถ้า step ถัดไปไม่ใช่ pump;
+            elseif (tap?) then (yes)
+              :tester.ensureVisible(byKey);
+              :tester.tap(byKey);
+            elseif (tapText?) then (yes)
+              :tester.tap(find.text(txt));
+            elseif (scrollAndTapText?) then (yes)
+              :tester.scrollUntilVisible(txt);
+              :tester.tap(find.text(txt));
+            elseif (selectDate?) then (yes)
+              :Handle DatePicker;
+              note right
+                null/cancel: ปิด dialog
+                DD/MM/YYYY: navigate
+                year, month, day, tap OK
+              end note
+            elseif (selectTime?) then (yes)
+              :Handle TimePicker;
+              note right
+                null/cancel: ปิด dialog
+                HH:MM: tap hour,
+                minute, tap OK
+              end note
+            elseif (pumpAndSettle?) then (yes)
+              :tester.pumpAndSettle();
+            elseif (pump?) then (yes)
+              :tester.pump();
+            else (skip)
+            endif
+
+          repeat while (more steps?) is (yes) not (no)
+        }
+
+        partition "Generate Asserts" {
+          repeat
+            :Get next assert;
+
+            if (byKey + exists?) then (yes)
+              :expect(find.byKey(),\nfindsOneWidget / findsNothing);
+            elseif (byKey + textEquals?) then (yes)
+              :widget Text:\nexpect data == text;
+            elseif (byKey + textContains?) then (yes)
+              :widget Text:\nexpect data.contains();
+            elseif (text + exists?) then (yes)
+              :Determine finder expression;
+              note right
+                ลำดับการหา count:
+                1. explicit count จาก assert
+                2. validationCounts จาก plan
+                3. default: findsOneWidget
+              end note
+              :expect(find.text(), finderExpr);
+            else (skip)
+            endif
+
+          repeat while (more asserts?) is (yes) not (no)
+        }
+
+        if (success + respJson?) then (yes)
+          :Verify ApiResponse in Cubit state;
+          note right
+            BlocProvider.of(Cubit)
+            expect code, message
+          end note
+        else (no)
+        endif
+
+        :Close testWidgets;
+
+      repeat while (more cases?) is (yes) not (no)
+
+      ' ── Integration Test Generation ───────────
+
+      #LightYellow:== Step 18: _generateIntegrationTests() ==;
+
+      partition "_generateIntegrationTests()" #LightCyan {
+
+        :สร้าง StringBuffer สำหรับ integration test;
+        :เพิ่ม imports;
+        note right
+          - flutter/material.dart
+          - flutter_test/flutter_test.dart
+          - integration_test/integration_test.dart
+          - flutter_bloc (ถ้ามี providers)
+          - cubit files, state file, UI file
+        end note
+
+        :Write main() with\nIntegrationTestWidgetsFlutterBinding;
+
+        repeat
+          :Generate test case;
+          note right
+            ใช้ **real providers** (ไม่ใช่ stubs)
+            - enterText, tap, tapText,
+              scrollAndTapText
+            - selectDate (พร้อม scroll logic)
+            - selectTime
+            - pump, pumpAndSettle
+          end note
+
+          if (null/cancel date/time?) then (yes)
+            :Skip tap + selection\n(ไม่เปิด dialog);
+          else (no)
+            :Execute full selection flow;
+          endif
+
+          :Generate asserts (OR logic);
+          note right
+            expectAny pattern:
+            expected.any() check
+            อย่างน้อย 1 element ต้อง exist
+          end note
+
+        repeat while (more cases?) is (yes) not (no)
+
+        :Write to integration_test/\npage_flow_test.dart;
+        #lightgreen:Done: integration full flow tests;
+      }
+
+    }
+
+  repeat while (มีไฟล์เหลือ?) is (yes) not (no)
+}
+
+#lightgreen:Done;
+stop
+
+@enduml

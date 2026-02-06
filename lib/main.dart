@@ -4,9 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'cubit/customer_cubit.dart';
 import 'cubit/product_cubit.dart';
 import 'cubit/employee_cubit.dart';
+import 'cubit/rider_cubit.dart';
+import 'cubit/linkedin_cubit.dart';
 import 'demos/customer_details_page.dart';
 import 'demos/product_registration_page.dart';
 import 'demos/employee_survey_page.dart';
+import 'demos/rider_registration_page.dart';
+import 'demos/linkedin_profile_page.dart';
 import 'widgets/switch_demo_page.dart';
 import 'widgets/slider_demo_page.dart';
 import 'widgets/segmented_button_demo_page.dart';
@@ -102,6 +106,36 @@ class HomePage extends StatelessWidget {
                   BlocProvider(
                     create: (_) => EmployeeCubit(),
                     child: const EmployeeSurveyPage(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFormCard(
+                context,
+                title: '4. Rider Registration Form',
+                description: 'Register as a delivery rider',
+                icon: Icons.delivery_dining,
+                color: Colors.teal,
+                onTap: () => _navigateToPage(
+                  context,
+                  BlocProvider(
+                    create: (_) => RiderCubit(),
+                    child: const RiderRegistrationPage(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFormCard(
+                context,
+                title: '5. LinkedIn Profile Registration',
+                description: 'Register your professional profile',
+                icon: Icons.work,
+                color: Colors.indigo,
+                onTap: () => _navigateToPage(
+                  context,
+                  BlocProvider(
+                    create: (_) => LinkedinCubit(),
+                    child: const LinkedinProfilePage(),
                   ),
                 ),
               ),

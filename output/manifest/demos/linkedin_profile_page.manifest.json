@@ -1,0 +1,265 @@
+{
+  "source": {
+    "file": "lib/demos/linkedin_profile_page.dart",
+    "pageClass": "LinkedinProfilePage",
+    "cubitClass": "LinkedinCubit",
+    "stateClass": "LinkedinState",
+    "fileCubit": "lib/cubit/linkedin_cubit.dart",
+    "fileState": "lib/cubit/linkedin_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "Checkbox",
+      "key": "linkedin_10_agree_terms_checkbox",
+      "meta": {
+        "valueBinding": "state.agreeTerms"
+      }
+    },
+    {
+      "widgetType": "SnackBar",
+      "key": "linkedin_01_expected_success"
+    },
+    {
+      "widgetType": "Radio<int>",
+      "key": "linkedin_08_education_bachelor_radio",
+      "meta": {
+        "valueExpr": "1",
+        "groupValueBinding": "state.educationLevel"
+      }
+    },
+    {
+      "widgetType": "SnackBar",
+      "key": "linkedin_01_expected_fail"
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "linkedin_02_fullname_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "allow",
+            "pattern": "[a-zA-Z\\s]"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 100
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Full name is required"
+          },
+          {
+            "condition": "value.trim().length < 2",
+            "message": "Full name must be at least 2 characters"
+          },
+          {
+            "condition": "!RegExp(r'^[a-zA-Z\\s]+$').hasMatch(value)",
+            "message": "Full name must contain only letters and spaces"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Radio<int>",
+      "key": "linkedin_08_education_master_radio",
+      "meta": {
+        "valueExpr": "2",
+        "groupValueBinding": "state.educationLevel"
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "linkedin_03_email_textfield",
+      "meta": {
+        "keyboardType": "emailAddress",
+        "inputFormatters": [
+          {
+            "type": "lengthLimit",
+            "max": 50
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Email is required"
+          },
+          {
+            "condition": "!RegExp(r'^[\\w\\.\\-]+@[\\w\\.\\-]+\\.\\w{2,}$')\n                              .hasMatch(value)",
+            "message": "Please enter a valid email address"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "linkedin_04_position_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "lengthLimit",
+            "max": 100
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Position is required"
+          },
+          {
+            "condition": "value.trim().length < 2",
+            "message": "Position must be at least 2 characters"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Radio<int>",
+      "key": "linkedin_08_education_phd_radio",
+      "meta": {
+        "valueExpr": "3",
+        "groupValueBinding": "state.educationLevel"
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "linkedin_05_company_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "lengthLimit",
+            "max": 100
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Company is required"
+          },
+          {
+            "condition": "value.trim().length < 2",
+            "message": "Company must be at least 2 characters"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "linkedin_06_experience_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 2
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Years of experience is required"
+          },
+          {
+            "condition": "years == null || years < 0",
+            "message": "Years must be 0 or greater"
+          },
+          {
+            "condition": "years > 50",
+            "message": "Years cannot exceed 50"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "linkedin_07_employment_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "Please select an employment type"
+          }
+        ],
+        "options": [
+          {
+            "value": "Full-time",
+            "text": "Full-time"
+          },
+          {
+            "value": "Part-time",
+            "text": "Part-time"
+          },
+          {
+            "value": "Contract",
+            "text": "Contract"
+          },
+          {
+            "value": "Freelance",
+            "text": "Freelance"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "FormField<int>",
+      "key": "linkedin_08_education_formfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "value == null",
+            "message": "Please select an education level"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "linkedin_09_university_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "lengthLimit",
+            "max": 100
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "value == null || value.isEmpty",
+            "message": "University is required"
+          },
+          {
+            "condition": "value.trim().length < 2",
+            "message": "University must be at least 2 characters"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "FormField<bool>",
+      "key": "linkedin_10_agree_terms_formfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "value == null || !value",
+            "message": "You must agree to terms"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Checkbox",
+      "key": "linkedin_11_open_to_work_checkbox",
+      "meta": {
+        "valueBinding": "state.openToWork"
+      }
+    },
+    {
+      "widgetType": "ElevatedButton",
+      "key": "linkedin_12_end_button"
+    }
+  ]
+}
