@@ -1,0 +1,13 @@
+employee_07_recommend_checkbox	state.satisfactionRating	employee_02_id_textfield	employee_03_department_dropdown	employee_04_email_textfield	employee_05_years_textfield	employee_08_training_checkbox
+checked	rating_poor_radio	valid	Sales	valid	valid	checked
+checked	rating_poor_radio	valid	Engineering	valid	valid	unchecked
+checked	rating_fair_radio	valid	Engineering	valid	valid	checked
+checked	rating_excellent_radio	valid	Sales	valid	valid	unchecked
+checked	rating_fair_radio	valid	Marketing	valid	valid	unchecked
+checked	rating_poor_radio	valid	HR	valid	valid	unchecked
+checked	rating_poor_radio	valid	Marketing	valid	valid	checked
+checked	rating_excellent_radio	valid	HR	valid	valid	checked
+checked	rating_fair_radio	valid	Sales	valid	valid	unchecked
+checked	rating_fair_radio	valid	HR	valid	valid	unchecked
+checked	rating_excellent_radio	valid	Engineering	valid	valid	checked
+checked	rating_excellent_radio	valid	Marketing	valid	valid	checked

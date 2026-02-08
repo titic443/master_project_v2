@@ -1,0 +1,13 @@
+linkedin_10_agree_terms_checkbox	state.educationLevel	linkedin_02_fullname_textfield	linkedin_03_email_textfield	linkedin_04_position_textfield	linkedin_05_company_textfield	linkedin_06_experience_textfield	linkedin_07_employment_dropdown	linkedin_09_university_textfield	linkedin_11_open_to_work_checkbox
+checked	education_bachelor_radio	valid	valid	valid	valid	valid	Contract	valid	checked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Full-time	valid	unchecked
+checked	education_bachelor_radio	valid	valid	valid	valid	valid	Part-time	valid	unchecked
+checked	education_master_radio	valid	valid	valid	valid	valid	Freelance	valid	checked
+checked	education_master_radio	valid	valid	valid	valid	valid	Part-time	valid	checked
+checked	education_master_radio	valid	valid	valid	valid	valid	Full-time	valid	checked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Part-time	valid	checked
+checked	education_bachelor_radio	valid	valid	valid	valid	valid	Freelance	valid	unchecked
+checked	education_master_radio	valid	valid	valid	valid	valid	Contract	valid	unchecked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Contract	valid	checked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Freelance	valid	unchecked
+checked	education_bachelor_radio	valid	valid	valid	valid	valid	Full-time	valid	checked

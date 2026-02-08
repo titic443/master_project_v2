@@ -1,39 +1,34 @@
 {
   "source": {
-    "file": "lib/demos/product_registration_page.dart",
-    "pageClass": "ProductRegistrationPage",
-    "cubitClass": "ProductCubit",
-    "stateClass": "ProductState",
-    "fileCubit": "lib/cubit/product_cubit.dart",
-    "fileState": "lib/cubit/product_state.dart"
+    "file": "lib/demos/employee_survey_page.dart",
+    "pageClass": "EmployeeSurveyPage",
+    "cubitClass": "EmployeeCubit",
+    "stateClass": "EmployeeState",
+    "fileCubit": "lib/cubit/employee_cubit.dart",
+    "fileState": "lib/cubit/employee_state.dart"
   },
   "datasets": {
     "defaults": {},
     "byKey": {
-      "product_02_name_textfield": [
+      "employee_02_id_textfield": [
         {
-          "valid": "SuperWidget Pro",
-          "invalid": "SW",
-          "invalidRuleMessages": "Product name must be at least 3 characters"
+          "valid": "EMP-78901",
+          "invalid": "EMP-1234",
+          "invalidRuleMessages": "Employee ID must match format: EMP-12345"
         }
       ],
-      "product_04_sku_textfield": [
+      "employee_04_email_textfield": [
         {
-          "valid": "PROD-ABC123",
-          "invalid": "S-1",
-          "invalidRuleMessages": "SKU must be uppercase alphanumeric with dash (min 5 chars)"
+          "valid": "john.doe@techcorp.com",
+          "invalid": "john.doe@techcorp",
+          "invalidRuleMessages": "Please enter a valid email address"
         }
       ],
-      "product_05_quantity_textfield": [
+      "employee_05_years_textfield": [
         {
-          "valid": "10",
-          "invalid": "0",
-          "invalidRuleMessages": "Quantity must be at least 1"
-        },
-        {
-          "valid": "123456",
-          "invalid": "999999",
-          "invalidRuleMessages": "Quantity cannot exceed 999999"
+          "valid": "15",
+          "invalid": "51",
+          "invalidRuleMessages": "Years cannot exceed 50"
         }
       ]
     }
@@ -46,8 +41,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -55,22 +50,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -78,8 +73,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -87,7 +82,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -95,7 +90,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -103,7 +98,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -111,7 +106,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -120,15 +115,15 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -140,8 +135,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -149,22 +144,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "HR"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
           }
         },
         {
@@ -172,8 +167,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -181,7 +176,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -189,7 +184,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -198,15 +193,15 @@
       ],
       "asserts": [
         {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -218,8 +213,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -227,22 +222,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "HR"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -250,8 +245,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -259,7 +254,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -267,7 +262,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -275,7 +270,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -283,7 +278,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -292,7 +287,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -304,8 +299,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -313,22 +308,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Sales"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
           }
         },
         {
@@ -336,8 +331,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -345,7 +340,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -353,7 +348,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -362,23 +357,23 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -390,8 +385,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -399,22 +394,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Sales"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -422,8 +417,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -431,7 +426,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -439,7 +434,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -447,7 +442,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -455,7 +450,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -464,11 +459,11 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -480,8 +475,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -489,22 +484,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
           }
         },
         {
@@ -512,8 +507,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -521,7 +516,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -529,7 +524,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -538,19 +533,19 @@
       ],
       "asserts": [
         {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -562,8 +557,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -571,22 +566,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Marketing"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -594,8 +589,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -603,7 +598,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -611,7 +606,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -619,7 +614,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -628,7 +623,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -640,8 +635,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -649,22 +644,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "HR"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
           }
         },
         {
@@ -672,8 +667,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -681,7 +676,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -689,7 +684,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -697,7 +692,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -705,7 +700,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -714,19 +709,19 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -738,8 +733,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -747,22 +742,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -770,8 +765,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -779,7 +774,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -787,7 +782,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -795,7 +790,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -804,19 +799,19 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -828,8 +823,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -837,22 +832,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Marketing"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
           }
         },
         {
@@ -860,8 +855,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -869,7 +864,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -877,7 +872,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -885,7 +880,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -894,23 +889,23 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -922,8 +917,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -931,22 +926,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Sales"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -954,8 +949,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -963,7 +958,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -971,7 +966,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -979,7 +974,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -987,7 +982,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -996,11 +991,11 @@
       ],
       "asserts": [
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -1012,8 +1007,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -1021,22 +1016,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].invalid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].invalid"
           }
         },
         {
@@ -1044,8 +1039,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1053,7 +1048,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -1061,7 +1056,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1069,7 +1064,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1078,19 +1073,19 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "SKU must be uppercase alphanumeric with dash (min 5 chars)",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -1102,8 +1097,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].invalid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].invalid"
           }
         },
         {
@@ -1111,22 +1106,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Marketing"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1134,8 +1129,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].invalid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].invalid"
           }
         },
         {
@@ -1143,7 +1138,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -1151,7 +1146,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1159,7 +1154,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1168,15 +1163,15 @@
       ],
       "asserts": [
         {
-          "text": "Product name must be at least 3 characters",
+          "text": "Employee ID must match format: EMP-12345",
           "exists": true
         },
         {
-          "text": "Quantity must be at least 1",
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
-          "byKey": "product_01_expected_fail",
+          "byKey": "employee_01_expected_fail",
           "exists": true
         }
       ]
@@ -1188,8 +1183,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1197,22 +1192,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Sales"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1220,8 +1215,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1229,7 +1224,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -1237,7 +1232,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1245,7 +1240,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1253,7 +1248,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1262,7 +1257,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1274,8 +1269,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1283,22 +1278,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1306,8 +1301,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1315,7 +1310,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -1323,7 +1318,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1331,7 +1326,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1340,7 +1335,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1352,8 +1347,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1361,22 +1356,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1384,8 +1379,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1393,7 +1388,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -1401,7 +1396,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1409,7 +1404,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1417,7 +1412,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1426,7 +1421,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1438,8 +1433,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1447,22 +1442,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Sales"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1470,8 +1465,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1479,7 +1474,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -1487,7 +1482,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1495,7 +1490,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1504,7 +1499,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1516,8 +1511,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1525,22 +1520,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Marketing"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1548,8 +1543,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1557,7 +1552,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -1565,7 +1560,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1573,7 +1568,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1582,7 +1577,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1594,8 +1589,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1603,22 +1598,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "HR"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1626,8 +1621,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1635,7 +1630,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -1643,7 +1638,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1651,7 +1646,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1660,7 +1655,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1672,8 +1667,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1681,22 +1676,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Marketing"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1704,8 +1699,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1713,7 +1708,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_0_100_radio"
+            "byKey": "employee_06_rating_poor_radio"
           }
         },
         {
@@ -1721,7 +1716,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1729,7 +1724,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1737,7 +1732,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1746,7 +1741,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1758,8 +1753,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1767,22 +1762,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "HR"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1790,8 +1785,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1799,7 +1794,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -1807,7 +1802,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1815,7 +1810,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -1823,7 +1818,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1832,7 +1827,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1844,8 +1839,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1853,22 +1848,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Clothing"
+          "tapText": "Sales"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1876,8 +1871,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1885,7 +1880,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -1893,7 +1888,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1901,7 +1896,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1910,7 +1905,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -1922,8 +1917,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -1931,22 +1926,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Food"
+          "tapText": "HR"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -1954,8 +1949,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -1963,7 +1958,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_100_500_radio"
+            "byKey": "employee_06_rating_fair_radio"
           }
         },
         {
@@ -1971,7 +1966,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -1979,7 +1974,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -1988,7 +1983,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -2000,8 +1995,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -2009,22 +2004,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Electronics"
+          "tapText": "Engineering"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -2032,8 +2027,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -2041,7 +2036,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -2049,7 +2044,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -2057,7 +2052,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -2065,7 +2060,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -2074,7 +2069,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -2086,8 +2081,8 @@
       "steps": [
         {
           "enterText": {
-            "byKey": "product_02_name_textfield",
-            "dataset": "byKey.product_02_name_textfield[0].valid"
+            "byKey": "employee_02_id_textfield",
+            "dataset": "byKey.employee_02_id_textfield[0].valid"
           }
         },
         {
@@ -2095,22 +2090,22 @@
         },
         {
           "tap": {
-            "byKey": "product_03_category_dropdown"
+            "byKey": "employee_03_department_dropdown"
           }
         },
         {
           "pump": true
         },
         {
-          "tapText": "Books"
+          "tapText": "Marketing"
         },
         {
           "pump": true
         },
         {
           "enterText": {
-            "byKey": "product_04_sku_textfield",
-            "dataset": "byKey.product_04_sku_textfield[0].valid"
+            "byKey": "employee_04_email_textfield",
+            "dataset": "byKey.employee_04_email_textfield[0].valid"
           }
         },
         {
@@ -2118,8 +2113,8 @@
         },
         {
           "enterText": {
-            "byKey": "product_05_quantity_textfield",
-            "dataset": "byKey.product_05_quantity_textfield[0].valid"
+            "byKey": "employee_05_years_textfield",
+            "dataset": "byKey.employee_05_years_textfield[0].valid"
           }
         },
         {
@@ -2127,7 +2122,7 @@
         },
         {
           "tap": {
-            "byKey": "product_06_price_500_plus_radio"
+            "byKey": "employee_06_rating_excellent_radio"
           }
         },
         {
@@ -2135,7 +2130,7 @@
         },
         {
           "tap": {
-            "byKey": "product_07_instock_checkbox"
+            "byKey": "employee_07_recommend_checkbox"
           }
         },
         {
@@ -2143,7 +2138,7 @@
         },
         {
           "tap": {
-            "byKey": "product_08_featured_checkbox"
+            "byKey": "employee_08_training_checkbox"
           }
         },
         {
@@ -2151,7 +2146,7 @@
         },
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -2160,7 +2155,7 @@
       ],
       "asserts": [
         {
-          "byKey": "product_01_expected_success",
+          "byKey": "employee_01_expected_success",
           "exists": true
         }
       ]
@@ -2172,7 +2167,7 @@
       "steps": [
         {
           "tap": {
-            "byKey": "product_09_end_button"
+            "byKey": "employee_09_end_button"
           }
         },
         {
@@ -2181,32 +2176,32 @@
       ],
       "asserts": [
         {
-          "text": "Product name is required",
+          "text": "Employee ID is required",
           "exists": true,
           "count": 1
         },
         {
-          "text": "Please select a category",
+          "text": "Please select a department",
           "exists": true,
           "count": 1
         },
         {
-          "text": "SKU is required",
+          "text": "Email is required",
           "exists": true,
           "count": 1
         },
         {
-          "text": "Quantity is required",
+          "text": "Years of service is required",
           "exists": true,
           "count": 1
         },
         {
-          "text": "Please select a price range",
+          "text": "Please select a satisfaction rating",
           "exists": true,
           "count": 1
         },
         {
-          "text": "Product must be in stock to register",
+          "text": "You must recommend the company to proceed",
           "exists": true,
           "count": 1
         }

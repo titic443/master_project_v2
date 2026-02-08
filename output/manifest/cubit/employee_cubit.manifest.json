@@ -1,7 +1,0 @@
-{
-  "source": {
-    "file": "lib/cubit/employee_cubit.dart",
-    "pageClass": "employee_cubit"
-  },
-  "widgets": []
-}

@@ -4,31 +4,26 @@
     "byKey": {
       "customer_02_firstname_textfield": [
         {
-          "valid": "Alice",
-          "invalid": "A",
+          "valid": "Nattapong",
+          "invalid": "N",
           "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)"
         }
       ],
       "customer_03_phone_textfield": [
         {
-          "valid": "0123456789",
-          "invalid": "123456789",
+          "valid": "0812345678",
+          "invalid": "0812345",
           "invalidRuleMessages": "Phone number must be exactly 10 digits"
         },
         {
-          "valid": "0123456789",
+          "valid": "0987654321",
           "invalid": "1234567890",
           "invalidRuleMessages": "Phone number must start with 0"
-        },
-        {
-          "valid": "0123456789",
-          "invalid": "987654321",
-          "invalidRuleMessages": "0"
         }
       ],
       "customer_04_lastname_textfield": [
         {
-          "valid": "Smith",
+          "valid": "Srisakul",
           "invalid": "S",
           "invalidRuleMessages": "Last name must contain only letters (minimum 2 characters)"
         }
