@@ -1316,9 +1316,9 @@ Future<void> _processOne(String path,
               {
                 'tap': {'byKey': factorName}
               }, // เปิด dropdown
-              {'pump': true},
-              {'tapText': textToTap}, // เลือก option
-              {'pump': true}
+              {'pumpAndSettle': true}, // รอ dropdown popup เปิด
+              {'scrollAndTapText': textToTap}, // scroll หา option แล้ว tap
+              {'pumpAndSettle': true} // รอ dropdown ปิด
             ];
           }
           // -----------------------------------------------------------------
@@ -1751,9 +1751,9 @@ Future<void> _processOne(String path,
               {
                 'tap': {'byKey': factorName}
               },
-              {'pump': true},
-              {'tapText': textToTap},
-              {'pump': true}
+              {'pumpAndSettle': true}, // รอ dropdown popup เปิด
+              {'scrollAndTapText': textToTap}, // scroll หา option แล้ว tap
+              {'pumpAndSettle': true} // รอ dropdown ปิด
             ];
           }
           // Checkbox

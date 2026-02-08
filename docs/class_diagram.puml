@@ -1,0 +1,136 @@
+@startuml Class Diagram - webview/server.dart
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+title แผนภาพคลาสของเครื่องมือสร้างเทสต์สคริปต์อัตโนมัติ\n(Class Diagram — webview/server.dart)
+
+' ═══════════════════════════════════════════
+' View
+' ═══════════════════════════════════════════
+
+package "View" {
+
+  class IndexPage {
+    - inputFileInput
+    - outputFileInput
+    - generateBtn
+    - runCoverageBtn
+    - progressSection
+    - outputLog
+    - testSummarySection
+    - coverageSection
+    - constraintsPanel
+  }
+
+  class StyleSheet {
+    - layout
+    - progressBar
+    - logPanel
+    - summaryTable
+    - coveragePanel
+  }
+
+  class MainController {
+    - isGenerating : bool
+    - generatedTestScript : String
+    - hasValidWidgets : bool
+    + setupEventListeners()
+    + browseInputFile()
+    + browseOutputFile()
+    + scanWidgets()
+    + generateTests()
+    + runCoverageTest()
+    + viewCoverageReport()
+    + openCoverageFolder()
+    + showTestSummary()
+    + showCoverageSection()
+    - validateForm()
+    - updateProgress()
+    - log()
+    - runStep()
+  }
+
+  IndexPage <-- MainController : binds DOM
+  StyleSheet <-- IndexPage : styles
+
+}
+
+' ═══════════════════════════════════════════
+' Domain
+' ═══════════════════════════════════════════
+
+package "Domain" {
+
+  ' ── Controller ──
+  package "Controller" {
+
+    class Server {
+      + main()
+      + handleRequest()
+    }
+
+  }
+
+  ' ── Handler ──
+  package "Handler" {
+
+    class FileHandler {
+      + handleGetFiles()
+      + handleGetTestScripts()
+      + handleFindFile()
+    }
+
+    class PipelineHandler {
+      + handleScan()
+      + handleExtractManifest()
+      + handleGenerateDatasets()
+      + handleGenerateTestData()
+      + handleGenerateTestScript()
+      + handleGenerateAll()
+    }
+
+    class TestHandler {
+      + handleRunTests()
+    }
+
+    class CoverageHandler {
+      + handleOpenCoverage()
+      + serveCoverageFile()
+    }
+
+  }
+
+}
+
+' ═══════════════════════════════════════════
+' Utils
+' ═══════════════════════════════════════════
+
+package "Utils" {
+
+  class ServerUtils {
+    + readBody()
+    + runDartScript()
+    + serveStaticFile()
+  }
+
+}
+
+' ═══════════════════════════════════════════
+' Relationships
+' ═══════════════════════════════════════════
+
+MainController ..> Server : HTTP request
+
+Server --> FileHandler
+Server --> PipelineHandler
+Server --> TestHandler
+Server --> CoverageHandler
+
+FileHandler ..> ServerUtils
+PipelineHandler ..> ServerUtils
+TestHandler ..> ServerUtils
+CoverageHandler ..> ServerUtils
+
+@enduml

@@ -1,0 +1,211 @@
+@startuml Package Diagram - Test Script Generator Tool
+!theme plain
+
+skinparam package {
+  BackgroundColor<<external>> #f0f0f0
+  BorderColor<<external>> #999999
+}
+
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+title แผนภาพแพ็คเกจของเครื่องมือสร้างเทสต์สคริปต์อัตโนมัติ\n(Package Diagram - Automated Test Script Generator)
+
+' ── External ──
+package "External" <<external>> {
+  package "Google Gemini API" as gemini {
+    class "Gemini REST API" as GeminiAPI
+  }
+
+  package "PICT Binary" as pictbin {
+    class "pict" as PictBin
+  }
+
+  package "Flutter Test Runner" as runner {
+    class "flutter test" as FlutterTest
+  }
+}
+
+' ── Flutter Application (Input) ──
+package "Flutter Application\n(lib/)" as app {
+  package "demos" as demos {
+    class "customer_details_page" as CustomerPage
+    class "employee_survey_page" as EmployeePage
+    class "linkedin_profile_page" as LinkedInPage
+    class "product_registration_page" as ProductPage
+    class "rider_registration_page" as RiderPage
+  }
+
+  package "cubit" as cubit {
+    class "customer_cubit / customer_state" as CustomerCubit
+    class "employee_cubit / employee_state" as EmployeeCubit
+    class "linkedin_cubit / linkedin_state" as LinkedInCubit
+    class "product_cubit / product_state" as ProductCubit
+    class "rider_cubit / rider_state" as RiderCubit
+  }
+
+  demos ..> cubit : uses
+}
+
+' ══════════════════════════════════════════
+' ── Test Script Generator Tool (tools/script_v2/) ──
+' ══════════════════════════════════════════
+package "Test Script Generator Tool\n(tools/script_v2/)" as tool {
+
+  ' ── Utils ──
+  package "Utils" as pkg_utils {
+    class "utils.dart" as Utils {
+      + basename(path): String
+      + basenameWithoutExtension(path): String
+      + pkgImport(package, libPath): String
+      + readPackageName(): String
+      + camelToSnake(input): String
+      + dartEscape(s): String
+      + listFiles(root, pred): List<String>
+      + findDeclFile(classRx): String?
+      + readApiKeyFromEnv(): String?
+    }
+  }
+
+  ' ── Extractor ──
+  package "Extractor" as pkg_extractor {
+    class "extract_ui_manifest.dart" as ExtractUI {
+      + processUiFile(path): void
+      - _findPageClass(src): String?
+      - _scanWidgets(src, ...): List
+      - _extractKey(args): String?
+      - _extractTextFieldMeta(args): Map
+      - _extractValidationMeta(type, args): Map
+      - _findCubitType(src): String?
+      - _findStateType(src): String?
+      - _scanDateTimePickers(src): List
+      - _extractRadioMeta(args): Map
+    }
+  }
+
+  ' ── Generator ──
+  package "Generator" as pkg_generator {
+
+    package "DatasetGenerator" as pkg_dataset {
+      class "generate_datasets.dart" as GenDatasets {
+        + generateDatasetsFromManifest(path, ...): void
+        - _processManifest(path, model, apiKey): void
+        - _callGeminiForDatasets(apiKey, model, uiFile, fields): Map
+        - _extractTextFromGemini(response): String
+        - _stripCodeFences(s): String
+      }
+    }
+
+    package "PairwiseGenerator" as pkg_pairwise {
+      class "generator_pict.dart" as GenPict {
+        + generatePairwiseFromManifest(...): PairwiseResult
+        + generatePictModel(factors, ...): String
+        + generateValidOnlyPictModel(factors, ...): String
+        + parsePictResult(content): List
+        + parsePictModel(content): Map
+        + writePictModelFiles(...): void
+        + generatePairwiseInternal(factors): List
+        - _executePictToFile(pictBin, model, output): void
+      }
+      class "FactorExtractionResult" as FactorResult {
+        + factors: Map<String, List<String>>
+        + requiredCheckboxes: List<String>
+      }
+      class "PairwiseResult" as PairwiseRes {
+        + combinations: List<Map>
+        + metadata: Map
+      }
+
+      GenPict --> FactorResult : creates
+      GenPict --> PairwiseRes : creates
+    }
+
+    package "TestDataGenerator" as pkg_testdata {
+      class "generate_test_data.dart" as GenTestData {
+        + generateTestDataFromManifest(path, ...): void
+        - _processOne(path, ...): void
+        - _optionsFromMeta(raw): List<String>
+      }
+    }
+
+    package "TestScriptGenerator" as pkg_testscript {
+      class "generate_test_script.dart" as GenTestScript {
+        + generateTestScriptFromTestData(path): void
+        - _processOne(planPath): void
+        - _generateIntegrationTests(...): String
+        - _getPrimaryCubitType(types): String
+        - _getStateFilePathFromCubit(cubitType): String
+        - _resolveDataset(root, rawPath): Map
+      }
+    }
+  }
+
+  ' ── Maintenance ──
+  package "Maintenance" as pkg_maint {
+    class "clear_manifest.dart" as ClearManifest {
+      + main(): void
+    }
+  }
+}
+
+' ── Output Artifacts ──
+package "Output Artifacts\n(output/)" as output {
+  package "manifest" as out_manifest {
+    class "*.manifest.json" as ManifestJSON
+  }
+  package "model_pairwise" as out_pairwise {
+    class "*.model.txt" as ModelTxt
+    class "*.result.txt" as ResultTxt
+  }
+  package "test_data" as out_testdata {
+    class "*.datasets.json" as DatasetsJSON
+    class "*.testdata.json" as TestDataJSON
+  }
+}
+
+package "Integration Tests\n(integration_test/)" as out_tests {
+  class "*_flow_test.dart" as TestScript
+}
+
+' ══════════════════════════════════════════
+' ── Dependencies ──
+' ══════════════════════════════════════════
+
+' Extractor
+ExtractUI ..> Utils : imports
+ExtractUI ..> demos : reads source
+ExtractUI ..> cubit : reads source
+ExtractUI ..> ManifestJSON : generates
+
+' DatasetGenerator
+GenDatasets ..> Utils : imports
+GenDatasets ..> ManifestJSON : reads
+GenDatasets ..> GeminiAPI : calls
+GenDatasets ..> DatasetsJSON : generates
+
+' PairwiseGenerator
+GenPict ..> Utils : imports
+GenPict ..> PictBin : executes
+GenPict ..> ModelTxt : generates
+GenPict ..> ResultTxt : generates
+
+' TestDataGenerator
+GenTestData ..> Utils : imports
+GenTestData ..> GenPict : imports
+GenTestData ..> ManifestJSON : reads
+GenTestData ..> DatasetsJSON : reads
+GenTestData ..> ResultTxt : reads
+GenTestData ..> TestDataJSON : generates
+
+' TestScriptGenerator
+GenTestScript ..> Utils : imports
+GenTestScript ..> TestDataJSON : reads
+GenTestScript ..> TestScript : generates
+
+' Test Runner
+FlutterTest ..> TestScript : runs
+
+' Maintenance
+ClearManifest ..> output : deletes all
+
+@enduml

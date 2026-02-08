@@ -1,0 +1,28 @@
+{
+  "file": "lib/demos/employee_survey_page.dart",
+  "datasets": {
+    "byKey": {
+      "employee_02_id_textfield": [
+        {
+          "valid": "EMP-78901",
+          "invalid": "EMP-1234",
+          "invalidRuleMessages": "Employee ID must match format: EMP-12345"
+        }
+      ],
+      "employee_04_email_textfield": [
+        {
+          "valid": "john.doe@techcorp.com",
+          "invalid": "john.doe@techcorp",
+          "invalidRuleMessages": "Please enter a valid email address"
+        }
+      ],
+      "employee_05_years_textfield": [
+        {
+          "valid": "15",
+          "invalid": "51",
+          "invalidRuleMessages": "Years cannot exceed 50"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "file": "lib/demos/linkedin_profile_page.dart",
+  "datasets": {
+    "byKey": {
+      "linkedin_02_fullname_textfield": [
+        {
+          "valid": "Nuttaporn Sripol",
+          "invalid": "N",
+          "invalidRuleMessages": "Full name must be at least 2 characters"
+        }
+      ],
+      "linkedin_03_email_textfield": [
+        {
+          "valid": "nuttaporn.s@example.com",
+          "invalid": "nuttaporn.s@invalid",
+          "invalidRuleMessages": "Please enter a valid email address"
+        }
+      ],
+      "linkedin_04_position_textfield": [
+        {
+          "valid": "Product Manager",
+          "invalid": "P",
+          "invalidRuleMessages": "Position must be at least 2 characters"
+        }
+      ],
+      "linkedin_05_company_textfield": [
+        {
+          "valid": "Innovative Solutions Co., Ltd.",
+          "invalid": "I",
+          "invalidRuleMessages": "Company must be at least 2 characters"
+        }
+      ],
+      "linkedin_06_experience_textfield": [
+        {
+          "valid": "10",
+          "invalid": "51",
+          "invalidRuleMessages": "Years cannot exceed 50"
+        }
+      ],
+      "linkedin_09_university_textfield": [
+        {
+          "valid": "Thammasat University",
+          "invalid": "T",
+          "invalidRuleMessages": "University must be at least 2 characters"
+        }
+      ]
+    }
+  }
+}

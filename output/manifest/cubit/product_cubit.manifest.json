@@ -1,7 +1,0 @@
-{
-  "source": {
-    "file": "lib/cubit/product_cubit.dart",
-    "pageClass": "product_cubit"
-  },
-  "widgets": []
-}

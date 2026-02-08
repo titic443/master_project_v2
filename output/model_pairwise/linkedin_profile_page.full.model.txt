@@ -1,0 +1,10 @@
+linkedin_10_agree_terms_checkbox: checked, unchecked
+state.educationLevel: education_bachelor_radio, education_master_radio, education_phd_radio
+linkedin_02_fullname_textfield: valid, invalid
+linkedin_03_email_textfield: valid, invalid
+linkedin_04_position_textfield: valid, invalid
+linkedin_05_company_textfield: valid, invalid
+linkedin_06_experience_textfield: valid, invalid
+linkedin_07_employment_dropdown: Full-time, Part-time, Contract, Freelance
+linkedin_09_university_textfield: valid, invalid
+linkedin_11_open_to_work_checkbox: checked, unchecked
