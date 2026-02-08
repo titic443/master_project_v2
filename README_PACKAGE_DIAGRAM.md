@@ -50,21 +50,25 @@
 │  │ - _testScriptGenerator        │   └─────────────────────────┘│
 │  │ + handleRequest()             │                               │
 │  │ + handleScan()                │   ┌─Generator────────────────┐│
-│  │ + handleExtractManifest()     │──▶│ TestDataGenerator         ││
-│  │ + handleGenerateDatasets()    │   │  (generate_test_data)     ││
-│  │ + handleGenerateTestData()    │   │ + generateTestData()      ││
-│  │ + handleGenerateTestScript()  │   │                           ││
-│  │ + handleRunTests()            │   │ GeneratorPict             ││
-│  │ + handleGenerateAll()         │   │  (generator_pict)         ││
-│  │ + handleFindFile()            │   │ + executePict()           ││
-│  │ + handleOpenCoverage()        │   │ + generatePairwise()      ││
+│  │ + handleExtractManifest()     │   │ DatasetGenerator          ││
+│  │ + handleGenerateDatasets()    │──▶│  (generate_datasets)      ││
+│  │ + handleGenerateTestData()    │   │ - model / - apiKey        ││
+│  │ + handleGenerateTestScript()  │   │ + generateDatasets()      ││
+│  │ + handleRunTests()            │   │                           ││
+│  │ + handleGenerateAll()         │   │ TestDataGenerator         ││
+│  │ + handleFindFile()            │   │  (generate_test_data)     ││
+│  │ + handleOpenCoverage()        │   │ + generateTestData()      ││
 │  │                               │   │                           ││
-│  │ DatasetGenerator              │   │ TestScriptGenerator       ││
-│  │  (generate_datasets)          │   │  (generate_test_script)   ││
-│  │ - model                       │   │ + generateScript()        ││
-│  │ - apiKey                      │   │ - _processOne()           ││
-│  │ + generateDatasets()          │   └───────────────────────────┘│
-│  └───────────────┬───────────────┘                               │
+│  └───────────────┬───────────────┘   │ GeneratorPict             ││
+│                  │                   │  (generator_pict)         ││
+│                  │                   │ + executePict()           ││
+│                  │                   │ + generatePairwise()      ││
+│                  │                   │                           ││
+│                  │                   │ TestScriptGenerator       ││
+│                  │                   │  (generate_test_script)   ││
+│                  │                   │ + generateScript()        ││
+│                  │                   │ - _processOne()           ││
+│                  │                   └───────────────────────────┘│
 └──────────────────┼───────────────────────────────────────────────┘
                    │
 ┌──────────────────┼───────────────────────────────────────────────┐
@@ -162,11 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
 | ไฟล์ | Class | หน้าที่ |
 |---|---|---|
 | `webview/server.dart` | `PipelineController` | HTTP Server + Request Router + Pipeline orchestrator |
-| `tools/script_v2/generate_datasets.dart` | `DatasetGenerator` | สร้าง test datasets โดยเรียก Gemini AI API |
 
 #### Class: PipelineController
 
-Orchestrate การทำงานระหว่าง Extractor, Generator, และ DatasetGenerator
+Orchestrate การทำงานระหว่าง Extractor และ Generator
 
 | Field | Type | หน้าที่ |
 |---|---|---|
@@ -188,19 +191,6 @@ Orchestrate การทำงานระหว่าง Extractor, Generator, 
 | `handleFindFile()` | `createJFileChooser()` |
 | `handleOpenCoverage()` | - (feature เพิ่มเติม) |
 
-#### Class: DatasetGenerator
-
-ควบคุมการสร้าง test datasets — เรียก Gemini AI API ภายใน (Connection layer)
-
-| Field | Type | หน้าที่ |
-|---|---|---|
-| `model` | `String` | ชื่อ AI model (default: `gemini-2.5-flash`) |
-| `apiKey` | `String?` | API key สำหรับ Gemini |
-
-| Method | เทียบกับ Reference (InputPanelAction) |
-|---|---|
-| `generateDatasets(manifestPath)` | `setConnectionStatus()` — เรียก external service |
-
 ---
 
 ### 2.2 Sub-package Extractor
@@ -213,13 +203,26 @@ Orchestrate การทำงานระหว่าง Extractor, Generator, 
 |---|---|---|
 | `tools/script_v2/extract_ui_manifest.dart` | `UiManifestExtractor` | Static Code Analyzer — วิเคราะห์ Flutter source code แล้วสกัด widgets ออกมาเป็น JSON manifest |
 
-#### Methods
+#### Class: UiManifestExtractor
 
-| Method | เทียบกับ Reference (JavaScriptExtractor) |
+| Visibility | Method | หน้าที่ | เทียบกับ Reference |
+|---|---|---|---|
+| `public` | `extractManifest(path)` | entry point — อ่านไฟล์ + สร้าง manifest JSON | `extractJavaScriptFile()` |
+| `private` | `_processOne(path)` | core processing: strip comments → find metadata → scan widgets → write JSON | `extractHtmlElement()` |
+
+#### Internal Functions (เรียกจาก `_processOne`)
+
+| Function | หน้าที่ |
 |---|---|
-| `processUiFile(path)` | `extractJavaScriptFile()` |
-| `_processOne()` — scan widgets, สกัด key, type, meta | `extractHtmlElement()` |
-| อ่าน Dart source → parse widget tree | `setJavaScriptFilePath()` + `verifyJavaScriptFile()` |
+| `_stripComments(src)` | ลบ `//` และ `/* */` comments โดยไม่ลบ strings |
+| `_findPageClass(src)` | หาชื่อ Widget class ที่ `extends StatefulWidget/StatelessWidget` |
+| `_findCubitType(src)` | หา Cubit class จาก `BlocBuilder<XxxCubit, ...>` |
+| `_findStateType(src)` | หา State class จาก generic parameter ตัวที่สอง |
+| `_scanWidgets(src)` | scan target widgets ทั้งหมด (TextFormField, Radio, Button, Dropdown, ...) แล้ว extract key + meta |
+| `_extractKey(args)` | ดึง key จาก `Key('...')`, `ValueKey(...)`, `ObjectKey(...)` + resolve `${}` interpolation |
+| `_extractTextFieldMeta(args)` | extract keyboardType, obscureText, maxLength, inputFormatters |
+| `_extractValidationMeta(type, args)` | extract validator rules, dropdown options, checkbox/radio bindings |
+| `_scanDateTimePickers(src)` | scan `showDatePicker` / `showTimePicker` calls แล้ว link กับ onTap method |
 
 #### Input / Output
 
@@ -236,39 +239,127 @@ Orchestrate การทำงานระหว่าง Extractor, Generator, 
 
 | ไฟล์ | Class | หน้าที่ | เทียบกับ Reference |
 |---|---|---|---|
+| `tools/script_v2/generate_datasets.dart` | `DatasetGenerator` | สร้าง test datasets โดยเรียก Gemini AI API | **DatabaseConnection** (เชื่อมต่อ external service) |
 | `tools/script_v2/generate_test_data.dart` | `TestDataGenerator` | สร้าง test plan ด้วย pairwise combinatorial testing | **TestDataGenerator** |
 | `tools/script_v2/generator_pict.dart` | `GeneratorPict` (+ `PairwiseResult`, `FactorExtractionResult`) | PICT algorithm module (สร้าง pairwise combinations) | ส่วนหนึ่งของ TestDataGenerator |
 | `tools/script_v2/generate_test_script.dart` | `TestScriptGenerator` | แปลง test plan JSON เป็น Flutter integration test code | **RobotGenerator** |
 
-#### TestDataGenerator
+#### Class: DatasetGenerator
 
-| Method | เทียบกับ Reference |
+สร้าง test datasets จาก manifest โดยเรียก Gemini AI API ภายใน (Connection layer)
+
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `model` | `String` | ชื่อ AI model (default: `gemini-2.5-flash`) |
+| `apiKey` | `String?` | API key สำหรับ Gemini |
+
+| Visibility | Method | หน้าที่ | เทียบกับ Reference |
+|---|---|---|---|
+| `public` | `generateDatasets(manifestPath)` | entry point — สร้าง datasets จาก manifest | `connectToolDatabase()` |
+
+##### Internal Functions (เรียกจาก `generateDatasets`)
+
+| Function | หน้าที่ |
 |---|---|
-| `generateTestData(manifestPath)` | `createTestData()` |
-| `_processOne()` — สร้าง pairwise combinations, edge cases | `generateTestDataWithRBVT()` |
-| เขียน `.testdata.json` | `writeCsvFile()` |
+| `_processManifest(path, model, apiKey)` | core processing: อ่าน manifest → หา text fields → เรียก AI → เขียน output |
+| `_callGeminiForDatasets(apiKey, model, uiFile, fields)` | ส่ง HTTP request ไปยัง Gemini API พร้อม prompt |
+| `_extractTextFromGemini(response)` | ดึง text content จาก Gemini response JSON |
+| `_stripCodeFences(s)` | ลบ markdown code fences (` ```json `) จาก AI response |
 
-#### GeneratorPict (internal module)
+##### Input / Output
 
-| Method | หน้าที่ |
+- **Input**: `output/manifest/demos/<page>.manifest.json`
+- **Output**: `output/test_data/<page>.datasets.json`
+- **External**: Gemini AI API
+
+---
+
+#### Class: TestDataGenerator
+
+สร้าง test plan ด้วย pairwise combinatorial testing
+
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `pictBin` | `String` | path ของ PICT binary (default: `./pict`) |
+
+| Visibility | Method | หน้าที่ | เทียบกับ Reference |
+|---|---|---|---|
+| `public` | `generateTestData(manifestPath, {constraints})` | entry point — สร้าง test plan จาก manifest | `createTestData()` |
+
+##### Internal Functions (เรียกจาก `generateTestData`)
+
+| Function | หน้าที่ |
 |---|---|
-| `generatePictModel()` | สร้าง PICT model file จาก factors |
-| `executePict()` | รัน PICT binary เพื่อสร้าง combinations |
-| `generatePairwiseInternal()` | Fallback algorithm เมื่อไม่มี PICT binary |
-| `parsePictResult()` | Parse ผลลัพธ์จาก PICT |
+| `_processOne(path, {pairwiseMerge, planSummary, pairwiseUsePict, pictBin, constraints})` | core processing: อ่าน manifest → สร้าง factors → PICT → สร้าง test cases → เขียน JSON |
+| `_tryWritePictModelFromManifestForUi(uiFile, widgets, ...)` | สร้าง PICT model files จาก manifest widgets |
 
-#### TestScriptGenerator
+> `_processOne` ภายในทำงาน 7 ขั้นตอน: parse manifest → สร้าง PICT model → โหลด datasets → ระบุ widget types → สร้าง pairwise combinations → สร้าง edge cases → เขียน `.testdata.json`
 
-| Method | เทียบกับ Reference |
+##### Input / Output
+
+- **Input**: `.manifest.json` + `.datasets.json` (optional)
+- **Output**: `output/test_data/<page>.testdata.json`
+
+---
+
+#### GeneratorPict (top-level functions ใน generator_pict.dart)
+
+PICT algorithm module — สร้าง pairwise test combinations
+
+##### Data Classes
+
+| Class | หน้าที่ |
 |---|---|
-| `generateScript(testDataPath)` | `createTestScript()` |
-| `_processOne()` — สร้าง Flutter test code | `createSeleniumKeyword()` |
-| เขียน `_flow_test.dart` | `writeRobotFile()` |
+| `FactorExtractionResult` | ผลจาก `extractFactorsFromManifest()`: factors map + widget metadata |
+| `PairwiseResult` | ผลจาก `generatePairwiseFromManifest()`: combinations + factor info |
 
-#### Input / Output
+##### Public Functions
 
-- **TestDataGenerator**: Input: `.manifest.json` + `.datasets.json` → Output: `.testdata.json`
-- **TestScriptGenerator**: Input: `.testdata.json` → Output: `integration_test/<page>_flow_test.dart`
+| Function | หน้าที่ |
+|---|---|
+| `generatePictModel(factors, {constraints})` | สร้าง PICT model text จาก factors map |
+| `generateValidOnlyPictModel(factors, ...)` | สร้าง PICT model เฉพาะ valid values (ไม่รวม `invalid`/`unchecked`) |
+| `executePict(factors, {pictBin, constraints})` | รัน PICT binary เพื่อสร้าง pairwise combinations |
+| `extractFactorsFromManifest(widgets)` | ดึง factors จาก manifest widgets → `FactorExtractionResult` |
+| `generatePairwiseFromManifest({widgets, pictBin, constraints})` | end-to-end: extract factors → run PICT → return `PairwiseResult` |
+| `writePictModelFiles({widgets, pictBin, ...})` | เขียน PICT model files ลง disk |
+
+##### Internal Functions
+
+| Function | หน้าที่ |
+|---|---|
+| `_formatValuesForModel(factorName, values)` | format values สำหรับ PICT syntax (quote dropdown values) |
+| `_executePictToFile(pictBin, modelPath, outputPath)` | รัน PICT binary แล้วเขียน output ลงไฟล์ |
+| `_extractRadioGroupName(radioKey)` | สกัดชื่อ radio group จาก key |
+| `_factorNameForRadioGroupKey(key)` | แปลง radio key เป็น factor name สำหรับ PICT |
+| `_extractRadioOptionLabel(radioKey)` | ดึง label ของ radio option จาก key |
+
+---
+
+#### Class: TestScriptGenerator
+
+แปลง test plan JSON เป็น Flutter integration test code
+
+| Visibility | Method | หน้าที่ | เทียบกับ Reference |
+|---|---|---|---|
+| `public` | `generateTestScript(testDataPath)` | entry point — สร้าง test script จาก test data | `createTestScript()` |
+
+##### Internal Functions (เรียกจาก `generateTestScript`)
+
+| Function | หน้าที่ |
+|---|---|
+| `_processOne(planPath)` | core processing: parse test data → สร้าง stub classes → สร้าง test cases → เขียน test file |
+| `_generateIntegrationTests(uiFile, pageClass, ...)` | สร้าง integration test file แยก (ใช้ real providers แทน stubs) |
+| `_extractValidationCountsFromPlan(cases)` | นับจำนวน validation fields ต่อ group จาก test plan |
+| `_resolveDataset(root, rawPath)` | resolve dataset path เช่น `byKey.email_textfield[0].valid` → ค่าจริง |
+| `_getStateFilePathFromCubit(cubitType)` | แปลง `CustomerCubit` → `lib/cubit/customer_state.dart` |
+
+> `_processOne` ภายในทำงาน 6 ขั้นตอน: parse test data → ดึง source metadata → โหลด datasets → สร้าง stub Cubit classes → สร้าง test cases ตาม groups → เขียน `_flow_test.dart`
+
+##### Input / Output
+
+- **Input**: `output/test_data/<page>.testdata.json`
+- **Output**: `integration_test/<page>_flow_test.dart`
 
 ---
 
@@ -276,7 +367,7 @@ Orchestrate การทำงานระหว่าง Extractor, Generator, 
 
 > เชื่อมต่อ External Service - เทียบกับ **DatabaseConnection** + **DatabaseConstants** ใน reference
 >
-> Logic การเชื่อมต่ออยู่ภายใน `generate_datasets.dart` เป็น private functions ที่ `DatasetGenerator` (Controller) เรียกใช้
+> Logic การเชื่อมต่ออยู่ภายใน `generate_datasets.dart` เป็น private functions ที่ `DatasetGenerator` (Generator) เรียกใช้
 
 #### Internal Functions (ใน generate_datasets.dart)
 
@@ -295,8 +386,8 @@ Orchestrate การทำงานระหว่าง Extractor, Generator, 
 | Gemini API endpoint URL | `databaseUndertestConstant` |
 
 > หมายเหตุ: ระบบ reference ใช้ Database เป็น external service หลัก แต่ระบบของเราใช้ **Gemini AI API** แทน
-> `DatasetGenerator` class อยู่ใน Controller เพราะทำหน้าที่ orchestrate การสร้าง datasets
-> ส่วน Connection layer คือ private functions ที่จัดการ HTTP call + response parsing ไปยัง Gemini API โดยเฉพาะ
+> `DatasetGenerator` class อยู่ใน Generator เพราะทำหน้าที่ generate test datasets
+> ส่วน Connection layer คือ private functions ภายในไฟล์เดียวกันที่จัดการ HTTP call + response parsing ไปยัง Gemini API โดยเฉพาะ
 
 #### External Service
 
@@ -321,8 +412,8 @@ Orchestrate การทำงานระหว่าง Extractor, Generator, 
 |---|---|---|---|
 | **View** | - | `webview/index.html`, `webview/styles.css`, `webview/main.js` | `WebUI` |
 | **Domain** | Controller | `webview/server.dart` | `PipelineController` |
-| **Domain** | Controller | `tools/script_v2/generate_datasets.dart` | `DatasetGenerator` |
 | **Domain** | Extractor | `tools/script_v2/extract_ui_manifest.dart` | `UiManifestExtractor` |
+| **Domain** | Generator | `tools/script_v2/generate_datasets.dart` | `DatasetGenerator` |
 | **Domain** | Generator | `tools/script_v2/generate_test_data.dart` | `TestDataGenerator` |
 | **Domain** | Generator | `tools/script_v2/generator_pict.dart` | `GeneratorPict`, `PairwiseResult`, `FactorExtractionResult` |
 | **Domain** | Generator | `tools/script_v2/generate_test_script.dart` | `TestScriptGenerator` |
@@ -345,7 +436,7 @@ User (Browser)
   ├──1──▶ [Extractor] UiManifestExtractor.processUiFile()
   │         lib/demos/page.dart → output/manifest/demos/page.manifest.json
   │
-  ├──2──▶ [Controller] DatasetGenerator.generateDatasets()
+  ├──2──▶ [Generator] DatasetGenerator.generateDatasets()
   │         │
   │         └──▶ [Connection] _callGeminiForDatasets() ──▶ Gemini AI API
   │              manifest.json ──▶ page.datasets.json
