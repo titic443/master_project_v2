@@ -14,7 +14,8 @@
       "Bash(find:*)",
       "Bash(./tools/check_coverage_gaps.sh:*)",
       "Bash(./tools/show_test_gaps.sh:*)",
-      "Bash(./bin/flutter_test_gen:*)"
+      "Bash(./bin/flutter_test_gen:*)",
+      "Bash(dart format:*)"
     ],
     "deny": [],
     "ask": []

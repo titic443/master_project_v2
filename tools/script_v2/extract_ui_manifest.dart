@@ -32,52 +32,6 @@ import 'dart:io';
 import 'utils.dart' as utils;
 
 /// ============================================================================
-/// PUBLIC API
-/// ============================================================================
-
-/// Public API สำหรับเรียกจากโปรแกรมภายนอก (เช่น VS Code extension)
-///
-/// [path] - path ไปยังไฟล์ .dart ที่ต้องการ process
-///
-/// Returns: path ของไฟล์ manifest ที่สร้าง
-///
-/// Example:
-/// ```dart
-/// String manifestPath = processUiFile('lib/demos/my_page.dart');
-/// // → 'output/manifest/demos/my_page.manifest.json'
-/// ```
-String processUiFile(String path) {
-  // ตรวจสอบว่าไฟล์มีอยู่จริง
-  if (!File(path).existsSync()) {
-    throw Exception('File not found: $path');
-  }
-
-  // เรียก internal function เพื่อ process ไฟล์
-  _processOne(path);
-
-  // คำนวณและ return path ของ output file
-  // แปลง backslash เป็น forward slash (Windows compatibility)
-  final normalizedPath = path.replaceAll('\\', '/');
-  String subfolderPath = '';
-
-  // สกัด subfolder path จาก input path
-  // เช่น lib/demos/page.dart → demos
-  if (normalizedPath.startsWith('lib/')) {
-    final pathAfterLib = normalizedPath.substring(4); // ตัด 'lib/' ออก
-    final lastSlash = pathAfterLib.lastIndexOf('/');
-    if (lastSlash > 0) {
-      subfolderPath = pathAfterLib.substring(0, lastSlash);
-    }
-  }
-
-  // สร้าง output directory path
-  final outDir = subfolderPath.isNotEmpty
-      ? Directory('output/manifest/$subfolderPath')
-      : Directory('output/manifest');
-  return '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
-}
-
-/// ============================================================================
 /// MAIN ENTRY POINT
 /// ============================================================================
 
@@ -90,165 +44,227 @@ String processUiFile(String path) {
 void main(List<String> args) {
   if (args.isEmpty) {
     stderr.writeln('Error: No file specified');
-    stderr.writeln('Usage: dart run tools/script_v2/extract_ui_manifest.dart <file.dart>');
-    stderr.writeln('Example: dart run tools/script_v2/extract_ui_manifest.dart lib/demos/buttons_page.dart');
+    stderr.writeln(
+        'Usage: dart run tools/script_v2/extract_ui_manifest.dart <file.dart>');
+    stderr.writeln(
+        'Example: dart run tools/script_v2/extract_ui_manifest.dart lib/demos/buttons_page.dart');
     exit(1);
   }
 
-  // Process เฉพาะไฟล์ที่ระบุ
+  final extractor = UiManifestExtractor();
   for (final p in args) {
-    _processOne(p);
+    extractor.extractManifest(p);
   }
 }
 
 /// ============================================================================
-/// CORE PROCESSING FUNCTION
+/// PUBLIC API (backward-compatible top-level function)
 /// ============================================================================
 
-/// Process ไฟล์ .dart หนึ่งไฟล์และสร้าง manifest JSON
-///
-/// ขั้นตอนการทำงาน:
-/// 1. อ่านไฟล์และลบ comments
-/// 2. หา page metadata (class name, cubit, state)
-/// 3. Scan หา widgets และ extract metadata
-/// 4. Filter และ sort widgets
-/// 5. เขียน manifest JSON
-void _processOne(String path) {
-  // ===== STEP 1: อ่านไฟล์ =====
-  if (!File(path).existsSync()) {
-    stderr.writeln('File not found: $path');
-    return;
-  }
+/// Backward-compatible wrapper — delegates to [UiManifestExtractor].
+String processUiFile(String path) =>
+    const UiManifestExtractor().extractManifest(path);
 
-  // อ่าน source code ทั้งหมด
-  final rawSrc = File(path).readAsStringSync();
+/// ============================================================================
+/// UiManifestExtractor CLASS
+/// ============================================================================
 
-  // ลบ comments (// และ /* */) เพื่อไม่ให้จับ widgets ใน commented code
-  final src = _stripComments(rawSrc);
+class UiManifestExtractor {
+  const UiManifestExtractor();
 
-  // เก็บ const string declarations สำหรับ resolve key interpolations
-  // เช่น const prefix = 'customer'; → Key('${prefix}_name')
-  final consts = _collectStringConsts(src);
+  /// Public API สำหรับเรียกจากโปรแกรมภายนอก (เช่น VS Code extension, server.dart)
+  ///
+  /// [path] - path ไปยังไฟล์ .dart ที่ต้องการ process
+  ///
+  /// Returns: path ของไฟล์ manifest ที่สร้าง
+  ///
+  /// Example:
+  /// ```dart
+  /// final extractor = UiManifestExtractor();
+  /// String manifestPath = extractor.extractManifest('lib/demos/my_page.dart');
+  /// // → 'output/manifest/demos/my_page.manifest.json'
+  /// ```
+  String extractManifest(String path) {
+    // ตรวจสอบว่าไฟล์มีอยู่จริง
+    if (!File(path).existsSync()) {
+      throw Exception('File not found: $path');
+    }
 
-  // ===== STEP 2: หา Page Metadata =====
+    // เรียก internal method เพื่อ process ไฟล์
+    _processOne(path);
 
-  // หาชื่อ Widget class (extends StatefulWidget/StatelessWidget)
-  final pageClass = _findPageClass(src) ?? utils.basenameWithoutExtension(path);
+    // คำนวณและ return path ของ output file
+    // แปลง backslash เป็น forward slash (Windows compatibility)
+    final normalizedPath = path.replaceAll('\\', '/');
+    String subfolderPath = '';
 
-  // หา Cubit/Bloc type จาก BlocBuilder/BlocListener
-  final cubitType = _findCubitType(src);
-
-  // หา State type จาก generic parameter
-  final stateType = _findStateType(src);
-
-  // หา file paths ของ cubit และ state จาก import statements
-  final cubitFilePath = _findCubitFilePath(src, cubitType);
-  final stateFilePath = _findStateFilePath(src, stateType);
-
-  // ===== STEP 3: Scan Widgets =====
-
-  // Scan หา target widgets ทั้งหมดและ extract metadata
-  final widgets = _scanWidgets(src, consts: consts, cubitType: cubitType);
-
-  // Scan หา showDatePicker/showTimePicker calls
-  // ใช้ rawSrc เพราะต้องการหา method bodies ด้วย
-  final pickers = _scanDateTimePickers(rawSrc);
-
-  // ===== STEP 4: Filter และ Deduplicate =====
-
-  final seen = <String>{}; // เก็บ keys ที่เจอแล้ว
-  final widgetsWithKeys = <Map<String, dynamic>>[];
-
-  for (final w in widgets) {
-    final key = w['key'];
-
-    // ข้าม widgets ที่ไม่มี key
-    if (key != null && key is String && key.isNotEmpty) {
-      // Deduplicate: เก็บเฉพาะ widget แรกที่มี key ซ้ำ
-      if (seen.add(key)) {
-        // Link picker metadata ถ้า widget มี onTap ที่เรียก picker method
-        final onTap = w['onTap'];
-        if (onTap != null && onTap is String && pickers.containsKey(onTap)) {
-          w['pickerMetadata'] = pickers[onTap];
-        }
-        widgetsWithKeys.add(w);
+    // สกัด subfolder path จาก input path
+    // เช่น lib/demos/page.dart → demos
+    if (normalizedPath.startsWith('lib/')) {
+      final pathAfterLib = normalizedPath.substring(4); // ตัด 'lib/' ออก
+      final lastSlash = pathAfterLib.lastIndexOf('/');
+      if (lastSlash > 0) {
+        subfolderPath = pathAfterLib.substring(0, lastSlash);
       }
     }
+
+    // สร้าง output directory path
+    final outDir = subfolderPath.isNotEmpty
+        ? Directory('output/manifest/$subfolderPath')
+        : Directory('output/manifest');
+    return '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
   }
 
-  // ===== STEP 5: Sort Widgets =====
+  /// ============================================================================
+  /// CORE PROCESSING FUNCTION
+  /// ============================================================================
 
-  // เรียงตาม SEQUENCE ใน key ก่อน แล้วตาม source order
-  // Pattern: {SEQUENCE}_*_{WIDGET} (เช่น "1_customer_firstname_textfield")
-  widgetsWithKeys.sort((a, b) {
-    final keyA = (a['key'] as String?) ?? '';
-    final keyB = (b['key'] as String?) ?? '';
-
-    // สกัด SEQUENCE number จาก key (ตัวเลขก่อน underscore แรก)
-    final seqA = _extractSequence(keyA);
-    final seqB = _extractSequence(keyB);
-
-    // Priority 1: Widgets ที่มี SEQUENCE มาก่อน เรียงตาม SEQUENCE
-    if (seqA != null && seqB != null) {
-      return seqA.compareTo(seqB);
+  /// Process ไฟล์ .dart หนึ่งไฟล์และสร้าง manifest JSON
+  ///
+  /// ขั้นตอนการทำงาน:
+  /// 1. อ่านไฟล์และลบ comments
+  /// 2. หา page metadata (class name, cubit, state)
+  /// 3. Scan หา widgets และ extract metadata
+  /// 4. Filter และ sort widgets
+  /// 5. เขียน manifest JSON
+  void _processOne(String path) {
+    // ===== STEP 1: อ่านไฟล์ =====
+    if (!File(path).existsSync()) {
+      stderr.writeln('File not found: $path');
+      return;
     }
-    if (seqA != null) return -1; // A มี sequence, B ไม่มี → A มาก่อน
-    if (seqB != null) return 1; // B มี sequence, A ไม่มี → B มาก่อน
 
-    // Priority 2: Widgets ที่ไม่มี SEQUENCE เรียงตาม source order
-    final orderA = (a['sourceOrder'] as int?) ?? 0;
-    final orderB = (b['sourceOrder'] as int?) ?? 0;
-    return orderA.compareTo(orderB);
-  });
+    // อ่าน source code ทั้งหมด
+    final rawSrc = File(path).readAsStringSync();
 
-  // ลบ sourceOrder ออกจาก output (ใช้เฉพาะสำหรับ sorting)
-  for (final w in widgetsWithKeys) {
-    w.remove('sourceOrder');
-  }
+    // ลบ comments (// และ /* */) เพื่อไม่ให้จับ widgets ใน commented code
+    final src = _stripComments(rawSrc);
 
-  // ===== STEP 6: สร้าง Manifest Object =====
+    // เก็บ const string declarations สำหรับ resolve key interpolations
+    // เช่น const prefix = 'customer'; → Key('${prefix}_name')
+    final consts = _collectStringConsts(src);
 
-  final ir = {
-    'source': {
-      'file': path,
-      'pageClass': pageClass,
-      if (cubitType != null) 'cubitClass': cubitType,
-      if (stateType != null) 'stateClass': stateType,
-      if (cubitFilePath != null) 'fileCubit': cubitFilePath,
-      if (stateFilePath != null) 'fileState': stateFilePath,
-    },
-    'widgets': widgetsWithKeys,
-  };
+    // ===== STEP 2: หา Page Metadata =====
 
-  // ===== STEP 7: คำนวณ Output Path =====
+    // หาชื่อ Widget class (extends StatefulWidget/StatelessWidget)
+    final pageClass =
+        _findPageClass(src) ?? utils.basenameWithoutExtension(path);
 
-  // สกัด subfolder structure จาก input path
-  // เช่น lib/demos/register_page.dart → output/manifest/demos/register_page.manifest.json
-  final normalizedPath = path.replaceAll('\\', '/');
-  String subfolderPath = '';
+    // หา Cubit/Bloc type จาก BlocBuilder/BlocListener
+    final cubitType = _findCubitType(src);
 
-  // ตัด lib/ prefix ออก
-  if (normalizedPath.startsWith('lib/')) {
-    final pathAfterLib = normalizedPath.substring(4); // ตัด 'lib/'
-    final lastSlash = pathAfterLib.lastIndexOf('/');
-    if (lastSlash > 0) {
-      subfolderPath = pathAfterLib.substring(0, lastSlash);
+    // หา State type จาก generic parameter
+    final stateType = _findStateType(src);
+
+    // หา file paths ของ cubit และ state จาก import statements
+    final cubitFilePath = _findCubitFilePath(src, cubitType);
+    final stateFilePath = _findStateFilePath(src, stateType);
+
+    // ===== STEP 3: Scan Widgets =====
+
+    // Scan หา target widgets ทั้งหมดและ extract metadata
+    final widgets = _scanWidgets(src, consts: consts, cubitType: cubitType);
+
+    // Scan หา showDatePicker/showTimePicker calls
+    // ใช้ rawSrc เพราะต้องการหา method bodies ด้วย
+    final pickers = _scanDateTimePickers(rawSrc);
+
+    // ===== STEP 4: Filter และ Deduplicate =====
+
+    final seen = <String>{}; // เก็บ keys ที่เจอแล้ว
+    final widgetsWithKeys = <Map<String, dynamic>>[];
+
+    for (final w in widgets) {
+      final key = w['key'];
+
+      // ข้าม widgets ที่ไม่มี key
+      if (key != null && key is String && key.isNotEmpty) {
+        // Deduplicate: เก็บเฉพาะ widget แรกที่มี key ซ้ำ
+        if (seen.add(key)) {
+          // Link picker metadata ถ้า widget มี onTap ที่เรียก picker method
+          final onTap = w['onTap'];
+          if (onTap != null && onTap is String && pickers.containsKey(onTap)) {
+            w['pickerMetadata'] = pickers[onTap];
+          }
+          widgetsWithKeys.add(w);
+        }
+      }
     }
+
+    // ===== STEP 5: Sort Widgets =====
+
+    // เรียงตาม SEQUENCE ใน key ก่อน แล้วตาม source order
+    // Pattern: {SEQUENCE}_*_{WIDGET} (เช่น "1_customer_firstname_textfield")
+    widgetsWithKeys.sort((a, b) {
+      final keyA = (a['key'] as String?) ?? '';
+      final keyB = (b['key'] as String?) ?? '';
+
+      // สกัด SEQUENCE number จาก key (ตัวเลขก่อน underscore แรก)
+      final seqA = _extractSequence(keyA);
+      final seqB = _extractSequence(keyB);
+
+      // Priority 1: Widgets ที่มี SEQUENCE มาก่อน เรียงตาม SEQUENCE
+      if (seqA != null && seqB != null) {
+        return seqA.compareTo(seqB);
+      }
+      if (seqA != null) return -1; // A มี sequence, B ไม่มี → A มาก่อน
+      if (seqB != null) return 1; // B มี sequence, A ไม่มี → B มาก่อน
+
+      // Priority 2: Widgets ที่ไม่มี SEQUENCE เรียงตาม source order
+      final orderA = (a['sourceOrder'] as int?) ?? 0;
+      final orderB = (b['sourceOrder'] as int?) ?? 0;
+      return orderA.compareTo(orderB);
+    });
+
+    // ลบ sourceOrder ออกจาก output (ใช้เฉพาะสำหรับ sorting)
+    for (final w in widgetsWithKeys) {
+      w.remove('sourceOrder');
+    }
+
+    // ===== STEP 6: สร้าง Manifest Object =====
+
+    final ir = {
+      'source': {
+        'file': path,
+        'pageClass': pageClass,
+        if (cubitType != null) 'cubitClass': cubitType,
+        if (stateType != null) 'stateClass': stateType,
+        if (cubitFilePath != null) 'fileCubit': cubitFilePath,
+        if (stateFilePath != null) 'fileState': stateFilePath,
+      },
+      'widgets': widgetsWithKeys,
+    };
+
+    // ===== STEP 7: คำนวณ Output Path =====
+
+    // สกัด subfolder structure จาก input path
+    // เช่น lib/demos/register_page.dart → output/manifest/demos/register_page.manifest.json
+    final normalizedPath = path.replaceAll('\\', '/');
+    String subfolderPath = '';
+
+    // ตัด lib/ prefix ออก
+    if (normalizedPath.startsWith('lib/')) {
+      final pathAfterLib = normalizedPath.substring(4); // ตัด 'lib/'
+      final lastSlash = pathAfterLib.lastIndexOf('/');
+      if (lastSlash > 0) {
+        subfolderPath = pathAfterLib.substring(0, lastSlash);
+      }
+    }
+
+    // สร้าง output directory
+    final outDir = subfolderPath.isNotEmpty
+        ? Directory('output/manifest/$subfolderPath')
+        : Directory('output/manifest');
+    outDir.createSync(recursive: true);
+
+    // ===== STEP 8: เขียน Manifest File =====
+
+    final outPath =
+        '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
+    File(outPath).writeAsStringSync(
+        const JsonEncoder.withIndent('  ').convert(ir) + '\n');
+    stdout.writeln('✓ Manifest written: $outPath');
   }
-
-  // สร้าง output directory
-  final outDir = subfolderPath.isNotEmpty
-      ? Directory('output/manifest/$subfolderPath')
-      : Directory('output/manifest');
-  outDir.createSync(recursive: true);
-
-  // ===== STEP 8: เขียน Manifest File =====
-
-  final outPath =
-      '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
-  File(outPath)
-      .writeAsStringSync(const JsonEncoder.withIndent('  ').convert(ir) + '\n');
-  stdout.writeln('✓ Manifest written: $outPath');
 }
 
 /// ============================================================================
@@ -776,9 +792,6 @@ String? _extractOnTapMethod(String args) {
 
   return null; // ไม่พบ onTap หรือไม่ใช่ pattern ที่รองรับ
 }
-
-
-
 
 /// ============================================================================
 /// TEXT WIDGET EXTRACTION
@@ -1440,8 +1453,6 @@ String? _findStateType(String src) {
   }
   return null;
 }
-
-
 
 /// ============================================================================
 /// RADIO BUTTON EXTRACTION

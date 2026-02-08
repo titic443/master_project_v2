@@ -52,45 +52,40 @@ import 'dart:io';
 import 'utils.dart' as utils;
 
 // =============================================================================
-// PUBLIC API FUNCTION
+// BACKWARD-COMPATIBLE TOP-LEVEL FUNCTION
 // =============================================================================
 
-/// Function สาธารณะสำหรับเรียกใช้จาก script อื่น (เช่น flutter_test_generator.dart)
-///
-/// สร้าง Flutter test script จาก test data file
-///
-/// Parameter:
-///   [testDataPath] - path ของไฟล์ .testdata.json
-///                    เช่น "output/test_data/login_page.testdata.json"
-///
-/// Returns:
-///   String - path ของ integration test file ที่สร้าง
-///            เช่น "test/login_page_flow_test.dart"
-///
-/// Example:
-///   final outputPath = generateTestScriptFromTestData(
-///     'output/test_data/login_page.testdata.json'
-///   );
-///   print('Generated: $outputPath');
-String generateTestScriptFromTestData(String testDataPath) {
-  // เรียก function หลักในการประมวลผล
-  _processOne(testDataPath);
+/// Backward-compatible wrapper — delegates to [TestScriptGenerator].
+String generateTestScriptFromTestData(String testDataPath) =>
+    const TestScriptGenerator().generateTestScript(testDataPath);
 
-  // คำนวณ output path จาก input path
-  // Step 1: ลบ prefix 'output/test_data/' ออก
-  // Step 2: ลบ suffix '.testdata.json' ออก (ใช้ RegExp)
-  // Step 3: เพิ่ม prefix 'integration_test/' และ suffix '_flow_test.dart'
-  //
-  // ตัวอย่าง:
-  //   Input:  output/test_data/login_page.testdata.json
-  //   Step 1: login_page.testdata.json
-  //   Step 2: login_page
-  //   Output: test/login_page_flow_test.dart
-  final base = testDataPath
-      .replaceAll('output/test_data/', '')
-      .replaceAll(RegExp(r'\.testdata\.json$'), '');
+// =============================================================================
+// TestScriptGenerator CLASS
+// =============================================================================
 
-  return 'integration_test/${base}_flow_test.dart';
+class TestScriptGenerator {
+  const TestScriptGenerator();
+
+  /// สร้าง Flutter test script จาก test data file
+  ///
+  /// Parameter:
+  ///   [testDataPath] - path ของไฟล์ .testdata.json
+  ///                    เช่น "output/test_data/login_page.testdata.json"
+  ///
+  /// Returns:
+  ///   String - path ของ integration test file ที่สร้าง
+  ///            เช่น "integration_test/login_page_flow_test.dart"
+  String generateTestScript(String testDataPath) {
+    // เรียก function หลักในการประมวลผล
+    _processOne(testDataPath);
+
+    // คำนวณ output path จาก input path
+    final base = testDataPath
+        .replaceAll('output/test_data/', '')
+        .replaceAll(RegExp(r'\.testdata\.json$'), '');
+
+    return 'integration_test/${base}_flow_test.dart';
+  }
 }
 
 // =============================================================================
@@ -108,17 +103,20 @@ void main(List<String> args) {
   // ---------------------------------------------------------------------------
   if (args.isEmpty) {
     stderr.writeln('Error: No testdata file specified');
-    stderr.writeln('Usage: dart run tools/script_v2/generate_test_script.dart <testdata.json>');
-    stderr.writeln('Example: dart run tools/script_v2/generate_test_script.dart output/test_data/buttons_page.testdata.json');
+    stderr.writeln(
+        'Usage: dart run tools/script_v2/generate_test_script.dart <testdata.json>');
+    stderr.writeln(
+        'Example: dart run tools/script_v2/generate_test_script.dart output/test_data/buttons_page.testdata.json');
     exit(1);
   }
 
   // ---------------------------------------------------------------------------
   // วนลูปประมวลผลแต่ละไฟล์
   // ---------------------------------------------------------------------------
+  final generator = TestScriptGenerator();
   for (final path in args) {
     try {
-      _processOne(path);
+      generator.generateTestScript(path);
     } catch (e, st) {
       stderr.writeln('! Failed to process $path: $e\n$st');
     }
@@ -182,7 +180,9 @@ void _processOne(String planPath) {
   // ถ้ามี cubitClass ให้สร้าง list ของ providers
   // ใช้สำหรับ wrap widget ด้วย BlocProvider
   final providers = cubitClass != null
-      ? [{'type': cubitClass}]
+      ? [
+          {'type': cubitClass}
+        ]
       : <Map<String, dynamic>>[];
 
   // ดึง list ของ test cases
@@ -534,9 +534,8 @@ void _processOne(String planPath) {
 
       // กำหนดว่าใช้ success stub หรือไม่
       // true ถ้า cubitStub == 'success' หรือ kind == 'success'
-      bool successStub =
-          (setup['cubitStub'] ?? '').toString() == 'success' ||
-              kind == 'success';
+      bool successStub = (setup['cubitStub'] ?? '').toString() == 'success' ||
+          kind == 'success';
 
       // ดึง steps และ asserts
       final steps =
@@ -1214,7 +1213,8 @@ void _generateIntegrationTests(
                   "          await tester.pumpAndSettle(const Duration(milliseconds: 500));");
               ib.writeln(
                   "          // Find and tap the year in header (e.g., '202x') to open year picker");
-              ib.writeln("          final yearInHeader = find.byWidgetPredicate(");
+              ib.writeln(
+                  "          final yearInHeader = find.byWidgetPredicate(");
               ib.writeln(
                   "            (widget) => widget is Text && (widget.data ?? '').contains('202'),");
               ib.writeln("          );");
@@ -1230,7 +1230,8 @@ void _generateIntegrationTests(
                   "            await tester.pump(const Duration(milliseconds: 50));");
               ib.writeln(
                   "            // Check if year picker has loaded by finding any 4-digit year");
-              ib.writeln("            final yearItems = find.byWidgetPredicate(");
+              ib.writeln(
+                  "            final yearItems = find.byWidgetPredicate(");
               ib.writeln(
                   "              (w) => w is Text && RegExp(r'^\\d{4}\$').hasMatch(w.data ?? ''),");
               ib.writeln("            );");
@@ -1247,7 +1248,8 @@ void _generateIntegrationTests(
                   "          bool scrollingUp = true; // Start by scrolling up");
               ib.writeln(
                   "          while (!tester.any(find.text('$year')) && scrollAttempts < 30) {");
-              ib.writeln("            final scrollable = find.byType(Scrollable);");
+              ib.writeln(
+                  "            final scrollable = find.byType(Scrollable);");
               ib.writeln("            if (tester.any(scrollable)) {");
               ib.writeln(
                   "              // Try scrolling up first (for older years), then down");
