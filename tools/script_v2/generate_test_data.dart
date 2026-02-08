@@ -63,74 +63,47 @@ import 'generator_pict.dart' as pict;
 import 'utils.dart' as utils;
 
 // =============================================================================
-// PUBLIC API FUNCTION
+// BACKWARD-COMPATIBLE TOP-LEVEL FUNCTION
 // =============================================================================
 
-/// Function สาธารณะสำหรับเรียกใช้จาก script อื่น (เช่น flutter_test_generator.dart)
-///
-/// สร้าง test data (test plan) จาก manifest file โดยใช้ pairwise testing
-///
-/// Parameters:
-///   [manifestPath] - path ของไฟล์ .manifest.json
-///                    เช่น "output/manifest/demos/login_page.manifest.json"
-///   [pictBin]      - path ของ PICT binary (default: './pict')
-///   [constraints]  - PICT constraints string (optional)
-///                    เช่น "IF [field1] = 'invalid' THEN [field2] = 'valid';"
-///
-/// Returns:
-///   Future<String> - path ของ test data file ที่สร้าง
-///                    เช่น "output/test_data/login_page.testdata.json"
-///
-/// Example:
-///   final outputPath = await generateTestDataFromManifest(
-///     'output/manifest/demos/login_page.manifest.json',
-///     pictBin: './pict',
-///   );
-///   print('Generated: $outputPath');
+/// Backward-compatible wrapper — delegates to [TestDataGenerator].
 Future<String> generateTestDataFromManifest(
   String manifestPath, {
   String pictBin = './pict',
   String? constraints,
-}) async {
-  // DEBUG: ตรวจสอบว่า constraints ถูกส่งมาหรือไม่ (uncomment เพื่อ debug)
-  // stderr.writeln('[DEBUG] generateTestDataFromManifest - constraints: ${constraints == null ? "NULL" : "\"${constraints.substring(0, constraints.length.clamp(0, 50))}...\""}');
+}) =>
+    TestDataGenerator(pictBin: pictBin)
+        .generateTestData(manifestPath, constraints: constraints);
 
-  // ---------------------------------------------------------------------------
-  // อ่าน manifest file เพื่อดึง UI file path
-  // ---------------------------------------------------------------------------
+// =============================================================================
+// TestDataGenerator CLASS
+// =============================================================================
 
-  // อ่านเนื้อหา manifest ทั้งไฟล์เป็น string
-  final raw = File(manifestPath).readAsStringSync();
+class TestDataGenerator {
+  final String pictBin;
+  const TestDataGenerator({this.pictBin = './pict'});
 
-  // แปลง JSON string เป็น Map
-  final j = jsonDecode(raw) as Map<String, dynamic>;
+  /// สร้าง test data (test plan) จาก manifest file โดยใช้ pairwise testing
+  ///
+  /// Returns: path ของ test data file ที่สร้าง
+  Future<String> generateTestData(String manifestPath,
+      {String? constraints}) async {
+    final raw = File(manifestPath).readAsStringSync();
+    final j = jsonDecode(raw) as Map<String, dynamic>;
+    final source = (j['source'] as Map<String, dynamic>?) ?? const {};
+    final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
 
-  // ดึง source section (ถ้าไม่มีใช้ empty map)
-  final source = (j['source'] as Map<String, dynamic>?) ?? const {};
+    await _processOne(
+      manifestPath,
+      pairwiseMerge: true,
+      planSummary: false,
+      pairwiseUsePict: true,
+      pictBin: pictBin,
+      constraints: constraints,
+    );
 
-  // ดึง path ของ UI file จาก source
-  final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
-
-  // ---------------------------------------------------------------------------
-  // เรียก _processOne เพื่อสร้าง test data
-  // ---------------------------------------------------------------------------
-
-  await _processOne(
-    manifestPath,
-    pairwiseMerge: true, // ใช้ pairwise mode เสมอ
-    planSummary: false, // ไม่แสดง plan summary
-    pairwiseUsePict: true, // ใช้ PICT tool
-    pictBin: pictBin, // path ของ PICT binary
-    constraints: constraints, // PICT constraints
-  );
-
-  // ---------------------------------------------------------------------------
-  // คำนวณและ return output path
-  // ---------------------------------------------------------------------------
-
-  // สร้าง output path จากชื่อ UI file
-  // ตัวอย่าง: lib/demos/login_page.dart -> output/test_data/login_page.testdata.json
-  return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+    return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+  }
 }
 
 // =============================================================================
@@ -149,10 +122,6 @@ void main(List<String> args) async {
   // Default Settings - ค่าคงที่สำหรับการประมวลผล
   // ---------------------------------------------------------------------------
 
-  const bool pairwiseMerge =
-      true; // ใช้ pairwise mode เสมอ (ลดจำนวน test cases)
-  const bool planSummary = false; // ไม่แสดง plan summary
-  const bool pairwiseUsePict = true; // ใช้ PICT tool แทน internal algorithm
   const String pictBin =
       './pict'; // path ของ PICT binary (relative to project root)
 
@@ -227,8 +196,10 @@ void main(List<String> args) async {
 
   if (inputs.isEmpty) {
     stderr.writeln('Error: No manifest file specified');
-    stderr.writeln('Usage: dart run tools/script_v2/generate_test_data.dart <manifest.json>');
-    stderr.writeln('Example: dart run tools/script_v2/generate_test_data.dart output/manifest/demos/buttons_page.manifest.json');
+    stderr.writeln(
+        'Usage: dart run tools/script_v2/generate_test_data.dart <manifest.json>');
+    stderr.writeln(
+        'Example: dart run tools/script_v2/generate_test_data.dart output/manifest/demos/buttons_page.manifest.json');
     exit(1);
   }
 
@@ -240,16 +211,14 @@ void main(List<String> args) async {
   int successCount = 0; // จำนวนที่สำเร็จ
   int errorCount = 0; // จำนวนที่ล้มเหลว
 
+  final generator = TestDataGenerator(pictBin: pictBin);
+
   // วนลูปประมวลผลแต่ละไฟล์
   for (final path in inputs) {
     try {
-      // เรียก _processOne เพื่อประมวลผล manifest
-      await _processOne(
+      // เรียก generateTestData เพื่อประมวลผล manifest
+      await generator.generateTestData(
         path,
-        pairwiseMerge: pairwiseMerge,
-        planSummary: planSummary,
-        pairwiseUsePict: pairwiseUsePict,
-        pictBin: pictBin,
         constraints: constraints,
       );
       successCount++; // เพิ่มตัวนับถ้าสำเร็จ
@@ -323,7 +292,6 @@ Future<void> _processOne(String path,
 
   // ดึง path ของ UI file
   final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
-
 
   // ---------------------------------------------------------------------------
   // STEP 2: สร้าง PICT model จาก manifest

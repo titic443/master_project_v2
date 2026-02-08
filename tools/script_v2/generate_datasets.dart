@@ -62,75 +62,6 @@ import 'utils.dart' as utils;
 const String hardcodedApiKey = 'AIzaSyDRherAvdWe-TtjWWda1pbSSWmKhQLhjJg';
 
 // =============================================================================
-// PUBLIC API FUNCTION
-// =============================================================================
-
-/// Function สาธารณะสำหรับเรียกใช้จาก script อื่น (เช่น flutter_test_generator.dart)
-///
-/// Parameter:
-///   [manifestPath] - path ของไฟล์ manifest.json ที่ต้องการประมวลผล
-///                    เช่น "output/manifest/demos/login_page.manifest.json"
-///
-/// Named Parameters:
-///   [model]     - ชื่อ AI model ที่จะใช้ (default: gemini-2.5-flash)
-///                 ตัวเลือกอื่น: gemini-1.5-pro, gemini-1.0-pro
-///   [apiKey]    - API key สำหรับ Gemini (optional)
-///                 ถ้าไม่ระบุ จะหาจาก .env หรือ environment variable
-///
-/// Returns:
-///   Future<String?> - path ของ output file ที่สร้าง
-///                     หรือ null ถ้าไม่พบ text fields ใน manifest
-///
-/// Throws:
-///   Exception - ถ้าเกิด error (API issues, file not found, parsing error, etc.)
-///
-/// Example:
-///   final outputPath = await generateDatasetsFromManifest(
-///     'output/manifest/demos/login.manifest.json',
-///     model: 'gemini-2.5-flash',
-///   );
-///   print('Generated: $outputPath');
-Future<String?> generateDatasetsFromManifest(
-  String manifestPath, {
-  String model = 'gemini-2.5-flash',
-  String? apiKey,
-}) async {
-  // เรียก _processManifest() ซึ่งเป็น function หลักในการประมวลผล
-  // function นี้จะ:
-  // 1. อ่านไฟล์ manifest
-  // 2. วิเคราะห์ fields และ validation rules
-  // 3. เรียก AI เพื่อ generate datasets
-  // 4. เขียน output file
-  //
-  // Returns: true = success, false = skipped (no text fields)
-  final success = await _processManifest(manifestPath, model, apiKey);
-
-  // ถ้าไม่พบ TextField ในไฟล์ manifest
-  // return null เพื่อบอกว่าข้ามไฟล์นี้
-  if (!success) {
-    return null;
-  }
-
-  // คำนวณ output path จาก input path โดยใช้ string manipulation
-  // Step 1: ลบ prefix 'output/manifest/' ออก
-  // Step 2: ลบ suffix '.manifest.json' ออก (ใช้ RegExp)
-  // Step 3: เพิ่ม prefix 'output/test_data/' และ suffix '.datasets.json'
-  //
-  // ตัวอย่าง:
-  //   Input:  output/manifest/demos/page.manifest.json
-  //   Step 1: demos/page.manifest.json
-  //   Step 2: demos/page
-  //   Output: output/test_data/demos/page.datasets.json
-  final base = manifestPath
-      .replaceAll('output/manifest/', '') // ลบ prefix folder
-      .replaceAll(
-          RegExp(r'\.manifest\.json$'), ''); // ลบ suffix extension ด้วย regex
-
-  // return path ของไฟล์ที่สร้าง
-  return 'output/test_data/$base.datasets.json';
-}
-
-// =============================================================================
 // MAIN FUNCTION - Entry Point
 // =============================================================================
 
@@ -189,7 +120,48 @@ void main(List<String> args) async {
   }
 
   // เรียก function หลักในการประมวลผล
-  await _processManifest(manifestPath, model, apiKey);
+  final generator = DatasetGenerator(model: model, apiKey: apiKey);
+  await generator.generateDatasets(manifestPath);
+}
+
+// =============================================================================
+// BACKWARD-COMPATIBLE TOP-LEVEL FUNCTION
+// =============================================================================
+
+/// Backward-compatible wrapper — delegates to [DatasetGenerator].
+Future<String?> generateDatasetsFromManifest(
+  String manifestPath, {
+  String model = 'gemini-2.5-flash',
+  String? apiKey,
+}) =>
+    DatasetGenerator(model: model, apiKey: apiKey)
+        .generateDatasets(manifestPath);
+
+// =============================================================================
+// DatasetGenerator CLASS
+// =============================================================================
+
+class DatasetGenerator {
+  final String model;
+  final String? apiKey;
+  const DatasetGenerator({this.model = 'gemini-2.5-flash', this.apiKey});
+
+  /// สร้าง datasets จาก manifest file โดยใช้ Gemini AI
+  ///
+  /// Returns: path ของ output file ที่สร้าง หรือ null ถ้าไม่พบ text fields
+  Future<String?> generateDatasets(String manifestPath) async {
+    final success = await _processManifest(manifestPath, model, apiKey);
+
+    if (!success) {
+      return null;
+    }
+
+    final base = manifestPath
+        .replaceAll('output/manifest/', '')
+        .replaceAll(RegExp(r'\.manifest\.json$'), '');
+
+    return 'output/test_data/$base.datasets.json';
+  }
 }
 
 // =============================================================================
