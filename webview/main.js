@@ -229,9 +229,6 @@ class WebUI {
         this.#log(`Test cases: ${scriptResult.summary.totalCases} total`, 'info');
       }
 
-      // Step 5: Mark as skipped (user can run manually)
-      this.#updateProgress(5, 'skipped', 'Click "Run Coverage Test" to run');
-
       // Store generated test script path and set as default for coverage
       this.generatedTestScript = scriptResult.testScriptPath;
       this.#testScriptGenerated = true;
@@ -263,14 +260,12 @@ class WebUI {
 
     this.#isGenerating = true;
     this.#updateButtonStates();
-    this.#el.progressSection.classList.remove('hidden');
     this.#el.outputSection.classList.remove('hidden');
     this.#el.coverageSection.classList.add('hidden');
     this.#clearLog();
 
     this.#log('=== Running Coverage Test ===\n', 'info');
-    this.#log('Step 1: Running flutter test with --coverage...', 'info');
-    this.#updateProgress(5, 'running', 'Running tests with coverage...');
+    this.#log('Running flutter test with --coverage...', 'info');
 
     // Set all summary rows to "Running..." state
     this.#setSummaryRunningState();
@@ -283,7 +278,6 @@ class WebUI {
       });
 
       if (testResult.success) {
-        this.#updateProgress(5, 'complete', `${testResult.passed} passed + coverage`);
         this.#log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
 
         if (testResult.testCases && testResult.testCases.length > 0) {
@@ -306,7 +300,6 @@ class WebUI {
           this.#log('Make sure genhtml (lcov) is installed: brew install lcov', 'info');
         }
       } else {
-        this.#updateProgress(5, 'error', testResult.error);
         this.#log(`Tests failed: ${testResult.error}`, 'error');
 
         if (testResult.testCases && testResult.testCases.length > 0) {
@@ -329,7 +322,6 @@ class WebUI {
         this.#log(testResult.output, '');
       }
     } catch (error) {
-      this.#updateProgress(5, 'error', error.message);
       this.#log(`Error: ${error.message}`, 'error');
     } finally {
       this.#isGenerating = false;

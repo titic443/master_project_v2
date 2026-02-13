@@ -275,6 +275,13 @@ button {
     background: var(--input-bg);
 }
 
+/* Progress Panel (inside Generate section) */
+.progress-panel {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
 /* Progress */
 .progress-list {
     display: flex;

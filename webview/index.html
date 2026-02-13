@@ -75,11 +75,11 @@
                 <p id="outputFileHint" class="input-hint">Output file: <strong id="outputFileName">-</strong></p>
             </section>
 
-            <!-- Step 4: Actions -->
+            <!-- Step 4: Generate Test Script -->
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">4</span>
-                    <h2>Actions</h2>
+                    <h2>Generate Test Script</h2>
                 </div>
                 <div class="action-buttons">
                     <button type="button" id="generateBtn" class="btn-primary btn-action" disabled>
@@ -87,49 +87,44 @@
                         <span class="btn-text">Generate Test Script</span>
                     </button>
                 </div>
+                <div id="progressSection" class="progress-panel hidden">
+                    <div class="progress-list">
+                        <div class="progress-item" data-step="1">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Extract UI manifest</span>
+                            <span class="progress-status"></span>
+                        </div>
+                        <div class="progress-item" data-step="2">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Generate datasets (AI)</span>
+                            <span class="progress-status"></span>
+                        </div>
+                        <div class="progress-item" data-step="3">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Generate test plan (PICT)</span>
+                            <span class="progress-status"></span>
+                        </div>
+                        <div class="progress-item" data-step="4">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Generate test script</span>
+                            <span class="progress-status"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                <div class="coverage-section-divider"></div>
-
+            <!-- Step 5: Run Coverage Test -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">5</span>
+                    <h2>Run Coverage Test</h2>
+                </div>
                 <label class="coverage-label">Test Script: <strong id="testScriptFile">-</strong></label>
                 <div class="action-buttons" style="margin-top: 8px;">
                     <button type="button" id="runCoverageBtn" class="btn-secondary btn-action" disabled>
                         <span class="btn-icon">&#9733;</span>
                         <span class="btn-text">Run Coverage Test</span>
                     </button>
-                </div>
-            </section>
-
-            <!-- Progress -->
-            <section id="progressSection" class="form-section hidden">
-                <div class="section-header">
-                    <h2>Progress</h2>
-                </div>
-                <div class="progress-list">
-                    <div class="progress-item" data-step="1">
-                        <span class="progress-icon">&#9675;</span>
-                        <span class="progress-label">Extract UI manifest</span>
-                        <span class="progress-status"></span>
-                    </div>
-                    <div class="progress-item" data-step="2">
-                        <span class="progress-icon">&#9675;</span>
-                        <span class="progress-label">Generate datasets (AI)</span>
-                        <span class="progress-status"></span>
-                    </div>
-                    <div class="progress-item" data-step="3">
-                        <span class="progress-icon">&#9675;</span>
-                        <span class="progress-label">Generate test plan (PICT)</span>
-                        <span class="progress-status"></span>
-                    </div>
-                    <div class="progress-item" data-step="4">
-                        <span class="progress-icon">&#9675;</span>
-                        <span class="progress-label">Generate test script</span>
-                        <span class="progress-status"></span>
-                    </div>
-                    <div class="progress-item" data-step="5">
-                        <span class="progress-icon">&#9675;</span>
-                        <span class="progress-label">Run tests</span>
-                        <span class="progress-status"></span>
-                    </div>
                 </div>
             </section>
 
