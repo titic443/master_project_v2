@@ -777,6 +777,18 @@ class PipelineController {
     }
 
     // ---------------------------------------------------------------------------
+    // Step 0: ลบ coverage folder เก่าออกก่อน เพื่อกันสับสนระหว่างผลเก่า/ใหม่
+    // ---------------------------------------------------------------------------
+
+    if (withCoverage) {
+      final coverageDir = Directory('coverage');
+      if (await coverageDir.exists()) {
+        await coverageDir.delete(recursive: true);
+        print('  ✓ Cleared old coverage data');
+      }
+    }
+
+    // ---------------------------------------------------------------------------
     // Step 1: รัน flutter test
     // ---------------------------------------------------------------------------
 
