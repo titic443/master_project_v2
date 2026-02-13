@@ -163,6 +163,10 @@ class PipelineController {
         // POST /find-file - หา file path
         await handleFindFile(request);
         break;
+      case '/find-test-script':
+        // POST /find-test-script - หา test script path
+        await handleFindTestScript(request);
+        break;
       case '/scan':
         // POST /scan - scan widgets
         await handleScan(request);
@@ -335,6 +339,48 @@ class PipelineController {
       }));
     }
 
+    await request.response.close();
+  }
+
+  /// POST /find-test-script - หา test script path จาก filename
+  ///
+  /// Request body:
+  ///   { "fileName": "page_flow_test.dart" }
+  ///
+  /// Response:
+  ///   { "success": true, "filePath": "integration_test/page_flow_test.dart" }
+  Future<void> handleFindTestScript(HttpRequest request) async {
+    final body = await _readBody(request);
+    final fileName = body['fileName'] as String?;
+
+    if (fileName == null) {
+      request.response.statusCode = 400;
+      request.response.write(jsonEncode({'error': 'fileName required'}));
+      await request.response.close();
+      return;
+    }
+
+    // ค้นหาใน integration_test/ และ test/
+    for (final dirName in ['integration_test', 'test']) {
+      final dir = Directory(dirName);
+      if (await dir.exists()) {
+        await for (final entity in dir.list(recursive: true)) {
+          if (entity is File && entity.path.endsWith(fileName)) {
+            request.response.write(jsonEncode({
+              'success': true,
+              'filePath': entity.path,
+            }));
+            await request.response.close();
+            return;
+          }
+        }
+      }
+    }
+
+    request.response.write(jsonEncode({
+      'success': false,
+      'error': 'Test script not found',
+    }));
     await request.response.close();
   }
 
