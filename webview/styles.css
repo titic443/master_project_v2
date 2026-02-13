@@ -755,3 +755,112 @@ input[type="text"][readonly]:focus {
 .btn-small .btn-icon {
     margin-right: 4px;
 }
+
+/* Dialog Overlay */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: dialogFadeIn 0.2s ease;
+}
+
+@keyframes dialogFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.dialog-box {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 32px;
+    width: 90%;
+    max-width: 440px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: dialogSlideIn 0.25s ease;
+}
+
+@keyframes dialogSlideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.dialog-icon-wrap {
+    margin-bottom: 16px;
+}
+
+.dialog-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    font-size: 28px;
+}
+
+.dialog-icon.success {
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--accent-success);
+}
+
+.dialog-icon.warning {
+    background: rgba(245, 124, 0, 0.1);
+    color: var(--accent-warning);
+}
+
+.dialog-icon.error {
+    background: rgba(211, 47, 47, 0.1);
+    color: var(--accent-error);
+}
+
+.dialog-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.dialog-message {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    white-space: pre-line;
+}
+
+.dialog-close-btn {
+    min-width: 120px;
+    padding: 10px 24px;
+}
+
+.dialog-close-btn.success {
+    background: var(--accent-success);
+}
+
+.dialog-close-btn.success:hover {
+    background: #1b5e20;
+}
+
+.dialog-close-btn.warning {
+    background: var(--accent-warning);
+}
+
+.dialog-close-btn.warning:hover {
+    background: #e65100;
+}
+
+.dialog-close-btn.error {
+    background: var(--accent-error);
+}
+
+.dialog-close-btn.error:hover {
+    background: #b71c1c;
+}

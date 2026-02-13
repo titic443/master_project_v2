@@ -347,8 +347,10 @@ class PipelineController {
   /// Request body:
   ///   { "file": "lib/demos/page.dart" }
   ///
-  /// Response:
-  ///   { "success": true, "widgetCount": 10, "manifestPath": "..." }
+  /// Response (3 กรณี):
+  ///   1. สำเร็จ:       { "success": true,  "resultType": "success",    "widgetCount": 10, ... }
+  ///   2. ไม่พบ widgets: { "success": true,  "resultType": "no_widgets", "warning": "..." }
+  ///   3. ไม่ใช่ Dart:   { "success": false, "resultType": "not_dart",   "error": "..." }
   Future<void> handleScan(HttpRequest request) async {
     // อ่าน request body
     final body = await _readBody(request);
@@ -360,6 +362,38 @@ class PipelineController {
       request.response.write(jsonEncode({'error': 'File path required'}));
       await request.response.close();
       return;
+    }
+
+    // ---------------------------------------------------------------------------
+    // กรณีที่ 3: ตรวจสอบว่าไฟล์เป็นภาษา Dart หรือไม่
+    // ---------------------------------------------------------------------------
+
+    if (!file.endsWith('.dart')) {
+      request.response.write(jsonEncode({
+        'success': false,
+        'resultType': 'not_dart',
+        'error': 'The imported file is not a Dart file (.dart)',
+      }));
+      await request.response.close();
+      return;
+    }
+
+    // ตรวจสอบเนื้อหาว่ามี Dart syntax พื้นฐาน (import/class/Widget)
+    final dartFile = File(file);
+    if (await dartFile.exists()) {
+      final content = await dartFile.readAsString();
+      final hasDartSyntax = content.contains('import ') ||
+          content.contains('class ') ||
+          content.contains('Widget');
+      if (!hasDartSyntax) {
+        request.response.write(jsonEncode({
+          'success': false,
+          'resultType': 'not_dart',
+          'error': 'No valid Dart syntax found in file',
+        }));
+        await request.response.close();
+        return;
+      }
     }
 
     // ---------------------------------------------------------------------------
@@ -383,17 +417,23 @@ class PipelineController {
 
       final hasWidgets = widgetCount > 0;
 
+      // ---------------------------------------------------------------------------
+      // กรณีที่ 1 (สำเร็จ) หรือ กรณีที่ 2 (ไม่พบ widgets)
+      // ---------------------------------------------------------------------------
+
       request.response.write(jsonEncode({
         'success': true,
+        'resultType': hasWidgets ? 'success' : 'no_widgets',
         'widgetCount': widgetCount,
         'hasWidgets': hasWidgets,
         'manifestPath': manifestPath,
         if (!hasWidgets)
-          'warning': 'No widgets found in file. Cannot generate test script.',
+          'warning': 'No supported widgets found in this file',
       }));
     } catch (e) {
       request.response.write(jsonEncode({
         'success': false,
+        'resultType': 'not_dart',
         'error': e.toString(),
       }));
     }

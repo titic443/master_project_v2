@@ -16,6 +16,7 @@ class WebUI {
   #isGenerating = false;
   #hasValidWidgets = false;
   #testScriptGenerated = false;
+  #dialogType = '';
 
   // ----- DOM References (cached) -----
   #el = {};
@@ -32,29 +33,34 @@ class WebUI {
 
   #initElements() {
     this.#el = {
-      inputFile:             document.getElementById('inputFile'),
-      outputFile:            document.getElementById('outputFile'),
-      browseInputBtn:        document.getElementById('browseInputBtn'),
-      browseOutputBtn:       document.getElementById('browseOutputBtn'),
-      widgetInfo:            document.getElementById('widgetInfo'),
-      widgetCount:           document.getElementById('widgetCount'),
-      generateBtn:           document.getElementById('generateBtn'),
-      runCoverageBtn:        document.getElementById('runCoverageBtn'),
-      progressSection:       document.getElementById('progressSection'),
-      outputSection:         document.getElementById('outputSection'),
-      outputLog:             document.getElementById('outputLog'),
-      clearLogBtn:           document.getElementById('clearLogBtn'),
-      resultsSection:        document.getElementById('resultsSection'),
-      coverageSection:       document.getElementById('coverageSection'),
-      testSummarySection:    document.getElementById('testSummarySection'),
-      summaryOverview:       document.getElementById('summaryOverview'),
-      summaryTableBody:      document.getElementById('summaryTableBody'),
-      viewCoverageBtn:       document.getElementById('viewCoverageBtn'),
+      inputFile: document.getElementById('inputFile'),
+      outputFile: document.getElementById('outputFile'),
+      browseInputBtn: document.getElementById('browseInputBtn'),
+      browseOutputBtn: document.getElementById('browseOutputBtn'),
+      widgetInfo: document.getElementById('widgetInfo'),
+      widgetCount: document.getElementById('widgetCount'),
+      generateBtn: document.getElementById('generateBtn'),
+      runCoverageBtn: document.getElementById('runCoverageBtn'),
+      progressSection: document.getElementById('progressSection'),
+      outputSection: document.getElementById('outputSection'),
+      outputLog: document.getElementById('outputLog'),
+      clearLogBtn: document.getElementById('clearLogBtn'),
+      resultsSection: document.getElementById('resultsSection'),
+      coverageSection: document.getElementById('coverageSection'),
+      testSummarySection: document.getElementById('testSummarySection'),
+      summaryOverview: document.getElementById('summaryOverview'),
+      summaryTableBody: document.getElementById('summaryTableBody'),
+      viewCoverageBtn: document.getElementById('viewCoverageBtn'),
       openCoverageFolderBtn: document.getElementById('openCoverageFolderBtn'),
-      useConstraints:        document.getElementById('useConstraints'),
-      constraintsPanel:      document.getElementById('constraintsPanel'),
-      constraintsTextArea:   document.getElementById('constraintsText'),
-      loadConstraintsBtn:    document.getElementById('loadConstraintsBtn'),
+      useConstraints: document.getElementById('useConstraints'),
+      constraintsPanel: document.getElementById('constraintsPanel'),
+      constraintsTextArea: document.getElementById('constraintsText'),
+      loadConstraintsBtn: document.getElementById('loadConstraintsBtn'),
+      dialogOverlay: document.getElementById('dialogOverlay'),
+      dialogIcon: document.getElementById('dialogIcon'),
+      dialogTitle: document.getElementById('dialogTitle'),
+      dialogMessage: document.getElementById('dialogMessage'),
+      dialogCloseBtn: document.getElementById('dialogCloseBtn'),
     };
   }
 
@@ -68,6 +74,10 @@ class WebUI {
     this.#el.openCoverageFolderBtn.addEventListener('click', () => this.#openCoverageFolder());
     this.#el.useConstraints.addEventListener('change', () => this.#toggleConstraintsPanel());
     this.#el.loadConstraintsBtn.addEventListener('click', () => this.#loadConstraintsFile());
+    this.#el.dialogCloseBtn.addEventListener('click', () => this.#closeDialog());
+    this.#el.dialogOverlay.addEventListener('click', (e) => {
+      if (e.target === this.#el.dialogOverlay) this.#closeDialog();
+    });
   }
 
   // ===========================================================================
@@ -369,8 +379,21 @@ class WebUI {
       const file = await fileHandle.getFile();
       const content = await file.text();
 
+      // Validate PICT constraint syntax
+      const syntaxError = this.#validateConstraintsSyntax(content);
+      if (syntaxError) {
+        this.#showDialog('error', 'Invalid Constraint Syntax');
+        // this.#showDialog('error', 'Invalid Constraint Syntax', syntaxError);
+        return;
+      }
+
       this.#el.constraintsTextArea.value = content;
       this.#log(`Loaded constraints from: ${file.name}`, 'info');
+
+      this.#showDialog(
+        'success',
+        'Constraints Imported Successfully',
+      );
     } catch (err) {
       if (err.name !== 'AbortError') {
         this.#log(`Error loading constraints: ${err.message}`, 'error');
@@ -392,28 +415,169 @@ class WebUI {
       });
 
       const data = await response.json();
+      const iconEl = this.#el.widgetInfo.querySelector('.icon');
 
+      // Case 3: File is not a valid Dart file
+      if (data.resultType === 'not_dart') {
+        this.#hasValidWidgets = false;
+        this.#el.widgetCount.textContent = data.error || 'Not a valid Dart file';
+        this.#el.widgetInfo.classList.remove('hidden');
+        this.#el.widgetInfo.classList.add('error');
+        if (iconEl) iconEl.textContent = '\u2717';
+
+        this.#showDialog(
+          'error',
+          'Import Failed',
+          data.error || 'The imported file is not a Dart file (.dart)'
+        );
+        this.#validateForm();
+        return;
+      }
+
+      // Case 2: No supported widgets found
+      if (data.resultType === 'no_widgets') {
+        this.#hasValidWidgets = false;
+
+        this.#showDialog(
+          'warning',
+          'No Widgets Found',
+          data.warning || 'No supported widgets found in this file'
+        );
+        this.#validateForm();
+        return;
+      }
+
+      // Case 1: Import successful
+      if (data.resultType === 'success' && data.hasWidgets) {
+        this.#hasValidWidgets = true;
+        this.#el.widgetCount.textContent = `Found ${data.widgetCount} widgets in manifest`;
+        this.#el.widgetInfo.classList.remove('hidden');
+        this.#el.widgetInfo.classList.remove('error');
+        if (iconEl) iconEl.textContent = '\u2713';
+
+        this.#showDialog(
+          'success',
+          'File Imported Successfully',
+          `Found ${data.widgetCount} widgets — ready to generate tests`
+        );
+        this.#validateForm();
+        return;
+      }
+
+      // Fallback: กรณีอื่นๆ
       if (data.success) {
         this.#hasValidWidgets = data.hasWidgets !== false && data.widgetCount > 0;
-
-        const iconEl = this.#el.widgetInfo.querySelector('.icon');
-
         if (this.#hasValidWidgets) {
           this.#el.widgetCount.textContent = `Found ${data.widgetCount} widgets in manifest`;
           this.#el.widgetInfo.classList.remove('hidden');
           this.#el.widgetInfo.classList.remove('error');
           if (iconEl) iconEl.textContent = '\u2713';
         } else {
-          this.#el.widgetCount.textContent = data.warning || `No widgets found in file`;
+          this.#el.widgetCount.textContent = data.warning || 'No widgets found in file';
           this.#el.widgetInfo.classList.remove('hidden');
           this.#el.widgetInfo.classList.add('error');
           if (iconEl) iconEl.textContent = '\u2717';
         }
-
-        this.#validateForm();
       }
+
+      this.#validateForm();
     } catch (error) {
       this.#hasValidWidgets = false;
+    }
+  }
+
+  // ===========================================================================
+  // Dialog Methods
+  // ===========================================================================
+
+  /**
+   * Validate PICT constraint syntax line-by-line.
+   * @param {string} content - raw file content
+   * @returns {string|null} error message or null if valid
+   */
+  #validateConstraintsSyntax(content) {
+    const lines = content.split('\n');
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+
+      // Skip empty lines and comments
+      if (!line || line.startsWith('#')) continue;
+
+      const lineNum = i + 1;
+
+      // Must contain IF and THEN
+      if (!/\bIF\b/.test(line) || !/\bTHEN\b/.test(line)) {
+        return `Line ${lineNum}: Missing IF or THEN keyword\n"${line}"`;
+      }
+
+      // Split into IF-part and THEN-part
+      const thenIndex = line.indexOf('THEN');
+      const ifPart = line.substring(0, thenIndex);
+      const thenPart = line.substring(thenIndex);
+
+      // IF-part must have parameter in [...]
+      if (!/\[.+?\]/.test(ifPart)) {
+        return `Line ${lineNum}: IF parameter must be in [brackets]\n"${line}"`;
+      }
+
+      // THEN-part must have parameter in [...]
+      if (!/\[.+?\]/.test(thenPart)) {
+        return `Line ${lineNum}: THEN parameter must be in [brackets]\n"${line}"`;
+      }
+
+      // IF-part must have value in "..."
+      if (!/".+?"/.test(ifPart)) {
+        return `Line ${lineNum}: IF value must be in "quotes"\n"${line}"`;
+      }
+
+      // THEN-part must have value in "..."
+      if (!/".+?"/.test(thenPart)) {
+        return `Line ${lineNum}: THEN value must be in "quotes"\n"${line}"`;
+      }
+
+      // Must end with ;
+      if (!line.endsWith(';')) {
+        return `Line ${lineNum}: Constraint must end with ;\n"${line}"`;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * แสดง dialog แจ้งผลลัพธ์การนำเข้าไฟล์
+   * @param {'success'|'warning'|'error'} type - ประเภท dialog
+   * @param {string} title - หัวข้อ dialog
+   * @param {string} message - ข้อความรายละเอียด
+   */
+  #showDialog(type, title, message) {
+    // กำหนด icon ตาม type
+    const icons = {
+      success: '\u2713',  // checkmark
+      warning: '\u26A0',  // warning sign
+      error: '\u2717',    // cross mark
+    };
+
+    this.#el.dialogIcon.textContent = icons[type] || '\u2139';
+    this.#el.dialogIcon.className = `dialog-icon ${type}`;
+    this.#el.dialogTitle.textContent = title;
+    this.#el.dialogMessage.textContent = message;
+    this.#el.dialogCloseBtn.className = `btn-primary dialog-close-btn ${type}`;
+    this.#dialogType = type;
+    this.#el.dialogOverlay.classList.remove('hidden');
+  }
+
+  #closeDialog() {
+    this.#el.dialogOverlay.classList.add('hidden');
+
+    // Clear input fields when closing error/warning dialogs
+    if (this.#dialogType === 'error' || this.#dialogType === 'warning') {
+      this.#el.inputFile.value = '';
+      this.#el.outputFile.value = '';
+      this.#el.widgetInfo.classList.add('hidden');
+      this.#hasValidWidgets = false;
+      this.#validateForm();
     }
   }
 
