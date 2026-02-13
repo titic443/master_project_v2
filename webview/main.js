@@ -5,7 +5,7 @@
 class WebUI {
   // ----- Fields (Package Diagram) -----
   inputFile = '';
-  outputFile = '';
+  outputDir = '';
   constraintsText = '';
   generatedTestScript = null;
 
@@ -17,6 +17,7 @@ class WebUI {
   #hasValidWidgets = false;
   #testScriptGenerated = false;
   #dialogType = '';
+  #dialogContext = '';  // 'scan' | 'constraints' — tracks which step triggered the dialog
 
   // ----- DOM References (cached) -----
   #el = {};
@@ -34,7 +35,9 @@ class WebUI {
   #initElements() {
     this.#el = {
       inputFile: document.getElementById('inputFile'),
-      outputFile: document.getElementById('outputFile'),
+      outputDir: document.getElementById('outputDir'),
+      outputFileName: document.getElementById('outputFileName'),
+      testScriptFile: document.getElementById('testScriptFile'),
       browseInputBtn: document.getElementById('browseInputBtn'),
       browseOutputBtn: document.getElementById('browseOutputBtn'),
       widgetInfo: document.getElementById('widgetInfo'),
@@ -66,9 +69,10 @@ class WebUI {
 
   #setupEventListeners() {
     this.#el.browseInputBtn.addEventListener('click', () => this.browseInputFile());
-    this.#el.browseOutputBtn.addEventListener('click', () => this.browseOutputFile());
+    this.#el.browseOutputBtn.addEventListener('click', () => this.browseOutputDir());
     this.#el.generateBtn.addEventListener('click', () => this.generateTests());
     this.#el.runCoverageBtn.addEventListener('click', () => this.runCoverageTest());
+    this.#el.outputDir.addEventListener('input', () => this.#updateOutputFileName());
     this.#el.clearLogBtn.addEventListener('click', () => this.#clearLog());
     this.#el.viewCoverageBtn.addEventListener('click', () => this.#viewCoverageReport());
     this.#el.openCoverageFolderBtn.addEventListener('click', () => this.#openCoverageFolder());
@@ -121,9 +125,11 @@ class WebUI {
       if (data.success && data.filePath) {
         this.#el.inputFile.value = data.filePath;
 
-        // Auto-generate output path
-        const baseName = fileName.replace('.dart', '');
-        this.#el.outputFile.value = `integration_test/${baseName}_flow_test.dart`;
+        // Auto-set default output directory
+        if (!this.#el.outputDir.value.trim()) {
+          this.#el.outputDir.value = 'integration_test/';
+        }
+        this.#updateOutputFileName();
 
         // Scan widgets
         this.#scanWidgets(data.filePath);
@@ -140,26 +146,16 @@ class WebUI {
     }
   }
 
-  // Browse for output file location
-  async browseOutputFile() {
+  // Browse for output directory
+  async browseOutputDir() {
     try {
-      const fileHandle = await window.showSaveFilePicker({
-        types: [{
-          description: 'Dart Test Files',
-          accept: { 'text/plain': ['.dart'] }
-        }],
-        suggestedName: 'test_flow_test.dart'
-      });
-
-      // Get the suggested file name
-      const fileName = fileHandle.name;
-      this.#el.outputFile.value = `integration_test/${fileName}`;
-      this.#el.outputFile.dataset.fileHandle = 'set';
-
+      const dirHandle = await window.showDirectoryPicker();
+      this.#el.outputDir.value = dirHandle.name + '/';
+      this.#updateOutputFileName();
       this.#validateForm();
     } catch (err) {
       if (err.name !== 'AbortError') {
-        this.#log(`Error selecting output location: ${err.message}`, 'error');
+        this.#log(`Error selecting output directory: ${err.message}`, 'error');
       }
     }
   }
@@ -167,7 +163,7 @@ class WebUI {
   // Generate tests
   async generateTests() {
     const filePath = this.#el.inputFile.value.trim();
-    const outputPath = this.#el.outputFile.value.trim();
+    const outputPath = this.#getOutputFilePath();
     if (!filePath || !outputPath || this.#isGenerating) return;
 
     this.#isGenerating = true;
@@ -236,9 +232,10 @@ class WebUI {
       // Step 5: Mark as skipped (user can run manually)
       this.#updateProgress(5, 'skipped', 'Click "Run Coverage Test" to run');
 
-      // Store generated test script path
+      // Store generated test script path and set as default for coverage
       this.generatedTestScript = scriptResult.testScriptPath;
       this.#testScriptGenerated = true;
+      this.#el.testScriptFile.textContent = scriptResult.testScriptPath;
 
       // Show results
       this.#showResults({
@@ -261,7 +258,7 @@ class WebUI {
 
   // Run coverage test
   async runCoverageTest() {
-    const testScript = this.#el.outputFile.value.trim();
+    const testScript = this.#el.testScriptFile.textContent.trim();
     if (!testScript || this.#isGenerating) return;
 
     this.#isGenerating = true;
@@ -352,10 +349,30 @@ class WebUI {
 
   #validateForm() {
     const hasInput = this.#el.inputFile.value.trim().length > 0;
-    const hasOutput = this.#el.outputFile.value.trim().length > 0;
+    const hasOutputDir = this.#el.outputDir.value.trim().length > 0;
+    const testScriptText = this.#el.testScriptFile.textContent.trim();
+    const hasTestScript = testScriptText.length > 0 && testScriptText !== '-';
 
-    this.#el.generateBtn.disabled = !hasInput || !hasOutput || !this.#hasValidWidgets || this.#isGenerating;
-    this.#el.runCoverageBtn.disabled = !this.#testScriptGenerated || this.#isGenerating;
+    this.#el.generateBtn.disabled = !hasInput || !hasOutputDir || !this.#hasValidWidgets || this.#isGenerating;
+    this.#el.runCoverageBtn.disabled = !hasTestScript || this.#isGenerating;
+  }
+
+  // Compute output file path from directory + input filename
+  #getOutputFilePath() {
+    const inputPath = this.#el.inputFile.value.trim();
+    const dir = this.#el.outputDir.value.trim();
+    if (!inputPath || !dir) return '';
+
+    const inputName = inputPath.split('/').pop().replace('.dart', '');
+    const dirPath = dir.endsWith('/') ? dir : dir + '/';
+    return `${dirPath}${inputName}_flow_test.dart`;
+  }
+
+  // Update the output filename hint
+  #updateOutputFileName() {
+    const path = this.#getOutputFilePath();
+    this.#el.outputFileName.textContent = path || '-';
+    this.#validateForm();
   }
 
   #toggleConstraintsPanel() {
@@ -382,8 +399,7 @@ class WebUI {
       // Validate PICT constraint syntax
       const syntaxError = this.#validateConstraintsSyntax(content);
       if (syntaxError) {
-        this.#showDialog('error', 'Invalid Constraint Syntax');
-        // this.#showDialog('error', 'Invalid Constraint Syntax', syntaxError);
+        this.#showDialog('error', 'Invalid Constraint Syntax', '', 'constraints');
         return;
       }
 
@@ -393,6 +409,8 @@ class WebUI {
       this.#showDialog(
         'success',
         'Constraints Imported Successfully',
+        '',
+        'constraints'
       );
     } catch (err) {
       if (err.name !== 'AbortError') {
@@ -428,7 +446,8 @@ class WebUI {
         this.#showDialog(
           'error',
           'Import Failed',
-          data.error || 'The imported file is not a Dart file (.dart)'
+          data.error || 'The imported file is not a Dart file (.dart)',
+          'scan'
         );
         this.#validateForm();
         return;
@@ -441,7 +460,8 @@ class WebUI {
         this.#showDialog(
           'warning',
           'No Widgets Found',
-          data.warning || 'No supported widgets found in this file'
+          data.warning || 'No supported widgets found in this file',
+          'scan'
         );
         this.#validateForm();
         return;
@@ -458,7 +478,8 @@ class WebUI {
         this.#showDialog(
           'success',
           'File Imported Successfully',
-          `Found ${data.widgetCount} widgets — ready to generate tests`
+          `Found ${data.widgetCount} widgets — ready to generate tests`,
+          'scan'
         );
         this.#validateForm();
         return;
@@ -551,12 +572,11 @@ class WebUI {
    * @param {string} title - หัวข้อ dialog
    * @param {string} message - ข้อความรายละเอียด
    */
-  #showDialog(type, title, message) {
-    // กำหนด icon ตาม type
+  #showDialog(type, title, message, context = '') {
     const icons = {
-      success: '\u2713',  // checkmark
-      warning: '\u26A0',  // warning sign
-      error: '\u2717',    // cross mark
+      success: '\u2713',
+      warning: '\u26A0',
+      error: '\u2717',
     };
 
     this.#el.dialogIcon.textContent = icons[type] || '\u2139';
@@ -565,16 +585,19 @@ class WebUI {
     this.#el.dialogMessage.textContent = message;
     this.#el.dialogCloseBtn.className = `btn-primary dialog-close-btn ${type}`;
     this.#dialogType = type;
+    this.#dialogContext = context;
     this.#el.dialogOverlay.classList.remove('hidden');
   }
 
   #closeDialog() {
     this.#el.dialogOverlay.classList.add('hidden');
 
-    // Clear input fields when closing error/warning dialogs
-    if (this.#dialogType === 'error' || this.#dialogType === 'warning') {
+    // Clear input fields only when closing scan (Step 1) error/warning dialogs
+    if (this.#dialogContext === 'scan' &&
+        (this.#dialogType === 'error' || this.#dialogType === 'warning')) {
       this.#el.inputFile.value = '';
-      this.#el.outputFile.value = '';
+      this.#el.outputDir.value = 'integration_test/';
+      this.#el.outputFileName.textContent = '-';
       this.#el.widgetInfo.classList.add('hidden');
       this.#hasValidWidgets = false;
       this.#validateForm();

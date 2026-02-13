@@ -631,6 +631,20 @@ footer {
     opacity: 0.5;
 }
 
+/* Coverage Section Divider */
+.coverage-section-divider {
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0 16px;
+}
+
+.coverage-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
 /* Read-only input styling */
 input[type="text"][readonly] {
     background: var(--bg-tertiary);

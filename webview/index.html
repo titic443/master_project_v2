@@ -62,17 +62,17 @@
                 </div>
             </section>
 
-            <!-- Step 3: Output File Selection -->
+            <!-- Step 3: Output Directory Selection -->
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">3</span>
-                    <h2>Select Output Test Script</h2>
+                    <h2>Select Output Directory</h2>
                 </div>
                 <div class="input-group">
-                    <input type="text" id="outputFile" placeholder="Select output location..." readonly>
+                    <input type="text" id="outputDir" placeholder="e.g. integration_test/" value="integration_test/">
                     <button type="button" id="browseOutputBtn" class="btn-secondary">Browse...</button>
                 </div>
-                <p class="input-hint">Choose where to save the generated test script</p>
+                <p id="outputFileHint" class="input-hint">Output file: <strong id="outputFileName">-</strong></p>
             </section>
 
             <!-- Step 4: Actions -->
@@ -86,6 +86,12 @@
                         <span class="btn-icon">&#9881;</span>
                         <span class="btn-text">Generate Test Script</span>
                     </button>
+                </div>
+
+                <div class="coverage-section-divider"></div>
+
+                <label class="coverage-label">Test Script: <strong id="testScriptFile">-</strong></label>
+                <div class="action-buttons" style="margin-top: 8px;">
                     <button type="button" id="runCoverageBtn" class="btn-secondary btn-action" disabled>
                         <span class="btn-icon">&#9733;</span>
                         <span class="btn-text">Run Coverage Test</span>
