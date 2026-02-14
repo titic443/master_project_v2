@@ -1,0 +1,219 @@
+@startuml Test Generation Pipeline - Sequence Diagram
+
+title Flutter Test Generator - Sequence Diagram\n(extract_ui_manifest → generate_datasets → generate_test_data → generate_test_script)
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #333
+skinparam sequenceLifeLineBorderColor #999
+skinparam noteBorderColor #ccc
+skinparam noteBackgroundColor #FFFFCC
+
+' ============================================================================
+' PARTICIPANTS
+' ============================================================================
+
+actor       User             as user
+participant "WebUI\n(server.dart)"  as server  #LightBlue
+participant "ManifestExtractor\n(extract_ui_manifest.dart)" as manifest #LightGreen
+participant "DatasetGenerator\n(generate_datasets.dart)"    as datasets #LightGreen
+participant "TestDataGenerator\n(generate_test_data.dart)"  as testdata #LightGreen
+participant "GeneratorPict\n(generator_pict.dart)"          as pict     #LightYellow
+participant "TestScriptGenerator\n(generate_test_script.dart)" as script #LightGreen
+database    "File System"    as fs       #WhiteSmoke
+entity      "PICT Binary\n(./pict)"     as pictbin  #Pink
+cloud       "Gemini AI\n(Google API)"   as gemini   #LightCoral
+
+' ============================================================================
+' STEP 1: Extract UI Manifest
+' ============================================================================
+
+user -> server : Click "Generate Test Script"\n(filePath, outputDir, constraints?)
+activate server
+
+server -> manifest : extractManifest(dartFilePath)
+activate manifest
+
+manifest -> fs : Read Dart source file\n(lib/demos/xxx_page.dart)
+fs --> manifest : source code string
+
+note right of manifest
+  **Source Code Analysis:**
+  1. Strip comments
+  2. Detect Cubit/State types
+  3. Find widget Key() declarations
+  4. Extract widget metadata:
+     - TextFormField: maxLength,\n       inputFormatters, validatorRules
+     - DropdownButton: options
+     - Radio: groupValue, value
+     - Checkbox/Switch: valueBinding
+     - DatePicker/TimePicker: constraints
+  5. Sort widgets by sequence number
+end note
+
+manifest -> fs : Write manifest JSON\n(output/manifest/demos/xxx_page.manifest.json)
+manifest --> server : manifestPath
+deactivate manifest
+
+' ============================================================================
+' STEP 2: Generate Datasets (AI)
+' ============================================================================
+
+server -> datasets : generateDatasets(manifestPath)
+activate datasets
+
+datasets -> fs : Read manifest JSON
+fs --> datasets : manifest (widgets[], source)
+
+datasets -> datasets : Extract TextField/TextFormField\nwidgets with metadata
+
+alt No text fields found
+    datasets --> server : return null (skipped)
+else Has text fields
+    datasets -> gemini : POST /generateContent\n(fields metadata + prompt)
+    activate gemini
+
+    note right of gemini
+      **AI Prompt includes:**
+      - Field key names (infer purpose)
+      - Validation rules (maxLength,\n  inputFormatters, validatorRules)
+      - Instructions to generate\n  realistic valid/invalid pairs
+    end note
+
+    gemini --> datasets : JSON response\n{datasets: {byKey: {...}}}
+    deactivate gemini
+
+    datasets -> datasets : Process AI response:\n- Apply maxLength to valid values\n- Build {valid, invalid,\n  invalidRuleMessages} pairs
+
+    datasets -> fs : Write datasets JSON\n(output/test_data/xxx_page.datasets.json)
+    datasets --> server : datasetsPath
+end
+deactivate datasets
+
+' ============================================================================
+' STEP 3: Generate Test Data (PICT)
+' ============================================================================
+
+server -> testdata : generateTestData(manifestPath, constraints?)
+activate testdata
+
+testdata -> testdata : _processOne(manifestPath, constraints)
+
+' --- Sub-step: Write PICT Model ---
+group Write PICT Model Files
+    testdata -> pict : extractFactorsFromManifest(widgets)
+    activate pict
+    pict --> testdata : factors, requiredCheckboxes
+    deactivate pict
+
+    note right of testdata
+      **Factors extracted:**
+      - TextFormField → valid, invalid
+      - Radio → option1_radio, option2_radio, ...
+      - Dropdown → "Option1", "Option2", ...
+      - Checkbox → checked, unchecked
+      - DatePicker → date values
+      - TimePicker → time values
+    end note
+
+    testdata -> pict : writePictModelFiles(factors,\npageBaseName, constraints?)
+    activate pict
+
+    pict -> pict : generatePictModel(factors, constraints)\n→ full model content
+    pict -> pict : generateValidOnlyPictModel(factors,\nrequiredCheckboxes, constraints)\n→ valid-only model content
+
+    pict -> fs : Write xxx_page.full.model.txt\n(output/model_pairwise/)
+    pict -> fs : Write xxx_page.valid.model.txt\n(output/model_pairwise/)
+
+    pict -> pictbin : Execute PICT on full model
+    activate pictbin
+    pictbin --> pict : tab-separated combinations
+    deactivate pictbin
+    pict -> fs : Write xxx_page.full.result.txt
+
+    pict -> pictbin : Execute PICT on valid model
+    activate pictbin
+    pictbin --> pict : tab-separated combinations
+    deactivate pictbin
+    pict -> fs : Write xxx_page.valid.result.txt
+
+    pict --> testdata
+    deactivate pict
+end
+
+' --- Sub-step: Load Data & Build Test Cases ---
+group Load External Data
+    testdata -> fs : Read datasets JSON\n(output/test_data/xxx_page.datasets.json)
+    fs --> testdata : datasets {byKey: {...}}
+
+    testdata -> fs : Read PICT result files\n(full.result.txt, valid.result.txt)
+    fs --> testdata : extCombos, extValidCombos
+end
+
+group Build Test Cases
+    note right of testdata
+      **Test Case Groups:**
+      1. **pairwise_valid_invalid_cases**
+         - Uses full PICT combinations
+         - Mix of valid + invalid data
+         - Asserts: validation error messages
+      2. **pairwise_valid_cases**
+         - Uses valid-only PICT combinations
+         - All valid data
+         - Asserts: success keys
+      3. **edge_cases**
+         - Empty all fields test
+         - Asserts: required field messages
+    end note
+
+    testdata -> testdata : Build pairwise_valid_invalid_cases\n(from extCombos)
+    testdata -> testdata : Build pairwise_valid_cases\n(from extValidCombos)
+    testdata -> testdata : Build edge_cases\n(empty all fields)
+end
+
+testdata -> fs : Write test data JSON\n(output/test_data/xxx_page.testdata.json)
+testdata --> server : testDataPath
+deactivate testdata
+
+' ============================================================================
+' STEP 4: Generate Test Script
+' ============================================================================
+
+server -> script : generateTestScript(testDataPath, outputPath)
+activate script
+
+script -> fs : Read test data JSON\n(output/test_data/xxx_page.testdata.json)
+fs --> script : {source, datasets, cases[]}
+
+note right of script
+  **Code Generation:**
+  1. Resolve package name (pubspec.yaml)
+  2. Generate import statements
+  3. Create Cubit stubs (mock API)
+  4. For each test case group:
+     - Generate testWidgets() function
+     - Convert steps to tester actions:
+       · enterText → tester.enterText()
+       · tap → tester.tap()
+       · selectDate → DatePicker interaction
+       · selectTime → TimePicker interaction
+       · scrollAndTapText → scroll + tap
+     - Convert asserts to expect() calls
+  5. Generate integration test variant
+end note
+
+script -> fs : Read pubspec.yaml (for package name)
+fs --> script : package name
+
+script -> script : Build widget test code\n(StringBuffer)
+script -> script : Build integration test code\n(StringBuffer)
+
+script -> fs : Write widget test\n(test/generated/xxx_page_flow_test.dart)
+script -> fs : Write integration test\n(integration_test/xxx_page_flow_test.dart)
+
+script --> server : testScriptPath, summary
+deactivate script
+
+server --> user : Generation complete!\n(manifest, datasets, testData,\ntestScript paths + summary)
+deactivate server
+
+@enduml
