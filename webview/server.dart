@@ -637,6 +637,8 @@ class PipelineController {
               ? constraints
               : null;
 
+      print('[DEBUG] handleGenerateTestData - constraints: '
+          '${effectiveConstraints == null ? "NULL" : "present (${effectiveConstraints.length} chars)"}');
       if (effectiveConstraints != null) {
         print('Using custom PICT constraints');
       }

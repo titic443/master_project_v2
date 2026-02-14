@@ -49,6 +49,7 @@ import 'dart:convert';
 import 'dart:io';
 
 // generator_pict.dart - module สำหรับ PICT (Pairwise Independent Combinatorial Testing)
+// - GeneratorPict class     : class หลักสำหรับ PICT operations
 // - executePict()           : รัน PICT binary เพื่อสร้าง combinations
 // - generatePairwiseInternal(): สร้าง pairwise combinations แบบ internal (ไม่ใช้ PICT)
 // - parsePictModel()        : parse PICT model file เพื่อดึง factors
@@ -88,6 +89,8 @@ class TestDataGenerator {
   /// Returns: path ของ test data file ที่สร้าง
   Future<String> generateTestData(String manifestPath,
       {String? constraints}) async {
+    stderr.writeln('[DEBUG] generateTestData - constraints: '
+        '${constraints == null ? "NULL" : "present (${constraints.length} chars)"}');
     final raw = File(manifestPath).readAsStringSync();
     final j = jsonDecode(raw) as Map<String, dynamic>;
     final source = (j['source'] as Map<String, dynamic>?) ?? const {};
@@ -278,6 +281,11 @@ Future<void> _processOne(String path,
     String pictBin = './pict',
     String? constraints}) async {
   // ---------------------------------------------------------------------------
+  // สร้าง GeneratorPict instance สำหรับใช้ตลอด function นี้
+  // ---------------------------------------------------------------------------
+  final pictGen = pict.GeneratorPict(pictBin: pictBin);
+
+  // ---------------------------------------------------------------------------
   // STEP 1: อ่านและ parse manifest file
   // ---------------------------------------------------------------------------
 
@@ -298,6 +306,8 @@ Future<void> _processOne(String path,
   // ---------------------------------------------------------------------------
 
   // พยายามสร้าง PICT model files เพื่อใช้ในการ generate combinations
+  stderr.writeln('[DEBUG] _processOne - constraints: '
+      '${constraints == null ? "NULL" : "present (${constraints.length} chars)"}');
   try {
     await _tryWritePictModelFromManifestForUi(uiFile,
         pictBin: pictBin, constraints: constraints);
@@ -841,7 +851,7 @@ Future<void> _processOne(String path,
     // โหลด PICT model เพื่อดึง factor names และ widget mappings
     if (File(pageModelPath).existsSync()) {
       modelFactors =
-          pict.parsePictModel(File(pageModelPath).readAsStringSync());
+          pictGen.parsePictModel(File(pageModelPath).readAsStringSync());
     }
 
     // -------------------------------------------------------------------------
@@ -901,13 +911,13 @@ Future<void> _processOne(String path,
 
     // โหลด full pairwise combinations (valid + invalid)
     if (File(pageResultPath).existsSync()) {
-      extCombos = pict.parsePictResult(File(pageResultPath).readAsStringSync());
+      extCombos = pictGen.parsePictResult(File(pageResultPath).readAsStringSync());
     }
 
     // โหลด valid-only combinations
     if (File(pageValidResultPath).existsSync()) {
       extValidCombos =
-          pict.parsePictResult(File(pageValidResultPath).readAsStringSync());
+          pictGen.parsePictResult(File(pageValidResultPath).readAsStringSync());
     }
 
     // -------------------------------------------------------------------------
@@ -1080,16 +1090,16 @@ Future<void> _processOne(String path,
       if (pairwiseUsePict) {
         // ลองใช้ PICT tool ก่อน
         try {
-          combos = await pict.executePict(factors, pictBin: pictBin);
+          combos = await pictGen.executePict(factors);
         } catch (e) {
           // ถ้า PICT ล้มเหลว ใช้ internal algorithm แทน
           stderr.writeln(
               '! PICT failed ($e). Falling back to internal pairwise.');
-          combos = pict.generatePairwiseInternal(factors);
+          combos = pictGen.generatePairwiseInternal(factors);
         }
       } else {
         // ใช้ internal algorithm
-        combos = pict.generatePairwiseInternal(factors);
+        combos = pictGen.generatePairwiseInternal(factors);
       }
     }
 
@@ -2021,7 +2031,9 @@ Future<void> _tryWritePictModelFromManifestForUi(String uiFile,
   // ใช้ pict_generator module
   // ---------------------------------------------------------------------------
 
-  final extractionResult = pict.extractFactorsFromManifest(widgets);
+  final pictGen = pict.GeneratorPict(pictBin: pictBin);
+
+  final extractionResult = pictGen.extractFactorsFromManifest(widgets);
   final factors = extractionResult.factors;
   final requiredCheckboxes = extractionResult.requiredCheckboxes;
 
@@ -2032,11 +2044,14 @@ Future<void> _tryWritePictModelFromManifestForUi(String uiFile,
   // สร้างและเขียน PICT model files
   // ---------------------------------------------------------------------------
 
-  await pict.writePictModelFiles(
+  stderr.writeln('[DEBUG] _tryWritePictModelFromManifestForUi - constraints: '
+      '${constraints == null ? "NULL" : "present (${constraints.length} chars)"}, '
+      'factors: ${factors.length}');
+
+  await pictGen.writePictModelFiles(
     factors: factors,
     pageBaseName: base,
     requiredCheckboxes: requiredCheckboxes,
-    pictBin: pictBin,
     constraints: constraints,
   );
 }
