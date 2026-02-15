@@ -346,7 +346,11 @@ class WebUI {
     const testScriptText = this.#el.testScriptFile.textContent.trim();
     const hasTestScript = testScriptText.length > 0 && testScriptText !== '-';
 
-    this.#el.generateBtn.disabled = !hasInput || !hasOutputDir || !this.#hasValidWidgets || this.#isGenerating;
+    // ถ้า checkbox checked แต่ยังไม่ได้ import file → ไม่ให้ generate
+    const constraintsOk = !this.#el.useConstraints.checked
+        || this.#el.constraintsTextArea.value.trim().length > 0;
+
+    this.#el.generateBtn.disabled = !hasInput || !hasOutputDir || !this.#hasValidWidgets || !constraintsOk || this.#isGenerating;
     this.#el.runCoverageBtn.disabled = !hasTestScript || this.#isGenerating;
   }
 
@@ -374,6 +378,7 @@ class WebUI {
     } else {
       this.#el.constraintsPanel.classList.add('hidden');
     }
+    this.#validateForm();
   }
 
   async #loadConstraintsFile() {
@@ -399,6 +404,7 @@ class WebUI {
       this.#el.constraintsTextArea.value = content;
       this.#el.constraintsFile.value = file.name;
       this.#log(`Loaded constraints from: ${file.name}`, 'info');
+      this.#validateForm();
 
       this.#showDialog(
         'success',
