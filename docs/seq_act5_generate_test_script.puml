@@ -1,6 +1,6 @@
-@startuml seq_act7_generate_test_script
+@startuml seq_act5_generate_test_script
 
-title แผนภาพลำดับกิจกรรมที่ 7: การสร้างสคริปต์ทดสอบอัตโนมัติ
+title แผนภาพลำดับที่ 4.1.4.5: การสร้างสคริปต์ทดสอบอัตโนมัติ
 
 participant ":PipelineController" as ctrl
 participant ":TestScriptGenerator" as gen

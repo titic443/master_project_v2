@@ -1,0 +1,85 @@
+@startuml seq_act3_pairwise_test_cases
+
+title แผนภาพลำดับที่ 4.1.4.3: การสร้างกรณีทดสอบด้วยเทคนิคแพร์ไวส์
+
+participant ":PipelineController" as ctrl
+participant ":TestDataGenerator" as gen
+participant ":GeneratorPict" as pict
+participant ":PICT Binary" as bin
+participant ":FileSystem" as fs
+
+== ขั้นตอนที่ 1: การสกัดปัจจัยจากข้อมูลเมตา ==
+
+ctrl -> gen : 1 : generateTestData(manifestPath, constraints)
+gen -> fs : 2 : readManifestJson(manifestPath)
+fs --> gen : 3 : manifest {source, widgets[]}
+gen -> pict : 4 : extractFactorsFromManifest(widgets)
+
+loop [For each widget in manifest]
+    alt [TextFormField]
+        pict -> pict : 5.1 : factors[key] = [valid, invalid]
+    else [Radio]
+        pict -> pict : 5.2 : groupByBinding() — add option to group
+    else [Dropdown]
+        pict -> pict : 5.3 : extractOptionsFromMeta() — [opt1, opt2, ...]
+    else [Checkbox]
+        pict -> pict : 5.4 : factors[key] = [checked, unchecked]
+    else [DatePicker]
+        pict -> pict : 5.5 : generateDateValues(pickerMeta)
+    else [TimePicker]
+        pict -> pict : 5.6 : factors[key] = [09:00, 14:30, 18:00, null]
+    end
+end
+
+pict --> gen : 6 : FactorExtractionResult {factors, requiredCheckboxes}
+
+alt [Constraints file provided]
+    gen -> fs : 7 : readConstraintsFile(constraintsPath)
+    fs --> gen : 8 : constraint rules
+end
+
+gen -> pict : 9 : generatePictModel(factors, constraints)
+pict --> gen : 10 : fullModelContent
+gen -> pict : 11 : generateValidOnlyPictModel(factors, requiredCheckboxes)
+pict --> gen : 12 : validModelContent
+gen -> fs : 13 : writeModelFile(fullModelPath)
+gen -> fs : 14 : writeModelFile(validModelPath)
+fs --> gen : 15 : done
+
+== ขั้นตอนที่ 2: การสร้างชุดค่าผสมแพร์ไวส์ ==
+
+gen -> pict : 16 : writePictModelFiles(factors, pageBaseName)
+pict -> fs : 17 : readModelFile(fullModelPath)
+fs --> pict : 18 : fullModelContent
+pict -> bin : 19 : execute ./pict fullModelPath
+bin --> pict : 20 : tab-separated combinations
+pict -> fs : 21 : writeResultFile(fullResultPath)
+
+pict -> fs : 22 : readModelFile(validModelPath)
+fs --> pict : 23 : validModelContent
+pict -> bin : 24 : execute ./pict validModelPath
+bin --> pict : 25 : tab-separated combinations
+pict -> fs : 26 : writeResultFile(validResultPath)
+pict --> gen : 27 : done
+
+gen -> fs : 28 : readResultFile(fullResultPath)
+fs --> gen : 29 : fullResultContent
+gen -> pict : 30 : parsePictResult(fullResultContent)
+pict --> gen : 31 : extCombos [List<Map>]
+
+gen -> fs : 32 : readResultFile(validResultPath)
+fs --> gen : 33 : validResultContent
+gen -> pict : 34 : parsePictResult(validResultContent)
+pict --> gen : 35 : extValidCombos [List<Map>]
+
+alt [PICT binary not available]
+    gen -> pict : 36 : generatePairwiseInternal(factors)
+
+    loop [Until all pairs covered]
+        pict -> pict : 37 : findBestCase() — greedy set cover
+    end
+
+    pict --> gen : 38 : combinations (fallback)
+end
+
+@enduml

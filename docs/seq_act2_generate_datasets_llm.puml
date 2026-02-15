@@ -1,6 +1,6 @@
-@startuml seq_act3_generate_datasets_llm
+@startuml seq_act2_generate_datasets_llm
 
-title แผนภาพลำดับกิจกรรมที่ 3: การสร้างชุดข้อมูลจำลองด้วยโมเดลภาษาขนาดใหญ่
+title แผนภาพลำดับที่ 4.1.4.2: การสร้างชุดข้อมูลจำลองด้วยโมเดลภาษาขนาดใหญ่
 
 participant ":PipelineController" as ctrl
 participant ":DatasetGenerator" as gen
