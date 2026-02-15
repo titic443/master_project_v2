@@ -4,35 +4,35 @@
     "byKey": {
       "linkedin_02_fullname_textfield": [
         {
-          "valid": "Narumol Sritawan",
-          "invalid": "N",
+          "valid": "Alice Wonderland",
+          "invalid": "A",
           "invalidRuleMessages": "Full name must be at least 2 characters"
         }
       ],
       "linkedin_03_email_textfield": [
         {
-          "valid": "preeya.khun@example.com",
-          "invalid": "preeya@email",
+          "valid": "john.doe@example.com",
+          "invalid": "john.doe@example",
           "invalidRuleMessages": "Please enter a valid email address"
         }
       ],
       "linkedin_04_position_textfield": [
         {
-          "valid": "Senior Product Manager",
+          "valid": "Software Engineer",
           "invalid": "S",
           "invalidRuleMessages": "Position must be at least 2 characters"
         }
       ],
       "linkedin_05_company_textfield": [
         {
-          "valid": "Panyapiwat Institute of Management",
-          "invalid": "P",
+          "valid": "Google LLC",
+          "invalid": "G",
           "invalidRuleMessages": "Company must be at least 2 characters"
         }
       ],
       "linkedin_06_experience_textfield": [
         {
-          "valid": "5",
+          "valid": "45",
           "invalid": "51",
           "invalidRuleMessages": "Years cannot exceed 50"
         }

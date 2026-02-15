@@ -15,7 +15,12 @@
       "Bash(./tools/check_coverage_gaps.sh:*)",
       "Bash(./tools/show_test_gaps.sh:*)",
       "Bash(./bin/flutter_test_gen:*)",
-      "Bash(dart format:*)"
+      "Bash(dart format:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(git commit:*)",
+      "Bash(python3:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [],
     "ask": []

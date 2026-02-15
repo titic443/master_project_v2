@@ -302,9 +302,13 @@ Orchestrate การทำงานระหว่าง Extractor และ Ge
 
 ---
 
-#### GeneratorPict (top-level functions ใน generator_pict.dart)
+#### Class: GeneratorPict
 
 PICT algorithm module — สร้าง pairwise test combinations
+
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `pictBin` | `String` | path ของ PICT binary (default: `'./pict'`) |
 
 ##### Data Classes
 
@@ -313,26 +317,49 @@ PICT algorithm module — สร้าง pairwise test combinations
 | `FactorExtractionResult` | ผลจาก `extractFactorsFromManifest()`: factors map + widget metadata |
 | `PairwiseResult` | ผลจาก `generatePairwiseFromManifest()`: combinations + factor info |
 
-##### Public Functions
+##### Fields ของ FactorExtractionResult
 
-| Function | หน้าที่ |
-|---|---|
-| `generatePictModel(factors, {constraints})` | สร้าง PICT model text จาก factors map |
-| `generateValidOnlyPictModel(factors, ...)` | สร้าง PICT model เฉพาะ valid values (ไม่รวม `invalid`/`unchecked`) |
-| `executePict(factors, {pictBin, constraints})` | รัน PICT binary เพื่อสร้าง pairwise combinations |
-| `extractFactorsFromManifest(widgets)` | ดึง factors จาก manifest widgets → `FactorExtractionResult` |
-| `generatePairwiseFromManifest({widgets, pictBin, constraints})` | end-to-end: extract factors → run PICT → return `PairwiseResult` |
-| `writePictModelFiles({widgets, pictBin, ...})` | เขียน PICT model files ลง disk |
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `factors` | `Map<String, List<String>>` | mapping ระหว่าง factor name กับ list ของ possible values (เช่น `{"username": ["valid","invalid"]}`) |
+| `requiredCheckboxes` | `Set<String>` | เซตของ checkbox keys ที่เป็น required (ต้อง checked จึงจะ valid) |
 
-##### Internal Functions
+##### Fields ของ PairwiseResult
 
-| Function | หน้าที่ |
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `combinations` | `List<Map<String, String>>` | ผลลัพธ์ pairwise combinations ทั้งหมด (รวม valid + invalid cases) |
+| `validCombinations` | `List<Map<String, String>>` | เฉพาะ combinations ที่ทุก factor เป็น valid value เท่านั้น |
+| `factors` | `Map<String, List<String>>` | factors map ที่ใช้ในการ generate (เหมือน FactorExtractionResult.factors) |
+| `method` | `String` | วิธีที่ใช้ generate: `'pict'` (ใช้ PICT binary) หรือ `'internal'` (ใช้ built-in algorithm) |
+
+##### Public Methods
+
+| Visibility | Method | หน้าที่ |
+|---|---|---|
+| `public` | `generatePictModel(factors, {constraints})` | สร้าง PICT model text จาก factors map |
+| `public` | `generateValidOnlyPictModel(factors, ...)` | สร้าง PICT model เฉพาะ valid values (ไม่รวม `invalid`/`unchecked`) |
+| `public` | `executePict(factors, {constraints})` | รัน PICT binary เพื่อสร้าง pairwise combinations |
+| `public` | `parsePictResult(content)` | parse PICT result (tab-separated) เป็น List ของ Maps |
+| `public` | `parsePictModel(content)` | parse PICT model file เพื่อดึง factors |
+| `public` | `readFactorNamesFromModel(modelFilePath)` | อ่าน factor names จาก model file |
+| `public` | `extractFactorsFromManifest(widgets)` | ดึง factors จาก manifest widgets → `FactorExtractionResult` |
+| `public` | `writePictModelFiles({factors, pageBaseName, ...})` | เขียน PICT model files ลง disk |
+| `public` | `generatePairwiseInternal(factors)` | สร้าง pairwise combinations ด้วย internal algorithm |
+| `public` | `generatePairwiseFromManifest({manifestPath, ...})` | end-to-end: extract factors → run PICT → return `PairwiseResult` |
+
+##### Private Methods
+
+| Method | หน้าที่ |
 |---|---|
 | `_formatValuesForModel(factorName, values)` | format values สำหรับ PICT syntax (quote dropdown values) |
-| `_executePictToFile(pictBin, modelPath, outputPath)` | รัน PICT binary แล้วเขียน output ลงไฟล์ |
+| `_executePictToFile(modelPath, outputPath)` | รัน PICT binary แล้วเขียน output ลงไฟล์ |
 | `_extractRadioGroupName(radioKey)` | สกัดชื่อ radio group จาก key |
 | `_factorNameForRadioGroupKey(key)` | แปลง radio key เป็น factor name สำหรับ PICT |
+| `_extractRadioKeySuffix(radioKey)` | ดึง suffix ของ radio key โดยตัด prefix ออก |
 | `_extractRadioOptionLabel(radioKey)` | ดึง label ของ radio option จาก key |
+| `_generateDateValues(pickerMeta)` | สร้าง date values จาก DatePicker metadata |
+| `_extractOptionsFromMeta(raw)` | ดึง options จาก dropdown metadata |
 
 ---
 

@@ -1,0 +1,31 @@
+@startuml seq_act1_import_widget_metadata
+
+title แผนภาพลำดับกิจกรรมที่ 1: การนำเข้าและสกัดข้อมูลเมตาของวิดเจ็ต
+
+actor Tester
+participant ":WebUI" as webui
+participant ":PipelineController" as ctrl
+participant ":UiManifestExtractor" as ext
+
+Tester -> webui : 1 : Press the browse Dart file button
+webui -> ctrl : 2 : createFileChooser()
+ctrl --> webui : 3 : FileChooserPanel
+webui --> Tester : 4 : Show FileChooserPanel
+Tester -> webui : 5 : EnterDartFilePath()
+webui -> ctrl : 6 : getDartFilePath()
+ctrl -> ext : 7 : setDartFilePath()
+ext -> ext : 8 : verifyDartFile()
+
+alt [Valid DartFile]
+    ext --> ctrl : 8.1 : extractManifest(filePath)
+    ctrl -> ext : 9 : _processOne(path)
+    ext --> ctrl : 10 : return manifestPath
+    ctrl --> webui : 11 : show message "Found N widgets — ready to generate"
+    webui --> Tester : 12 : Show success dialog
+else [Invalid DartFile]
+    ext --> ctrl : 8.2 : return error
+    ctrl --> webui : 8.3 : show error message "The Dart file is invalid"
+    webui --> Tester : 8.4 : Show error dialog
+end
+
+@enduml

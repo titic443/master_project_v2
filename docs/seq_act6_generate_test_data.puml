@@ -1,0 +1,55 @@
+@startuml seq_act6_generate_test_data
+
+title แผนภาพลำดับกิจกรรมที่ 6: การสร้างข้อมูลทดสอบ
+
+participant ":TestDataGenerator" as gen
+participant ":GeneratorPict" as pict
+participant ":FileSystem" as fs
+
+gen -> fs : 1 : readDatasetsJson(datasetsPath)
+fs --> gen : 2 : datasets {byKey}
+gen -> gen : 3 : classifyWidgetsByType(widgets)
+gen -> gen : 4 : findEndButton(widgets)
+
+loop [For each combination from extCombos]
+    loop [For each factor in combination]
+        alt [TextField — valid]
+            gen -> gen : 5.1 : createEnterTextStep(key, datasetPath.valid)
+        else [TextField — invalid]
+            gen -> gen : 5.2 : createEnterTextStep(key, datasetPath.invalid)
+            gen -> gen : 5.3 : addValidationAssert(invalidRuleMessages)
+        else [Radio option]
+            gen -> gen : 5.4 : createTapStep(radioKey)
+        else [Dropdown option]
+            gen -> gen : 5.5 : createTapDropdownStep(key)
+            gen -> gen : 5.6 : createScrollAndTapTextStep(optionText)
+        else [Checkbox — checked]
+            gen -> gen : 5.7 : createTapStep(checkboxKey)
+        else [DatePicker]
+            gen -> gen : 5.8 : createSelectDateStep(key, dateValue)
+        else [TimePicker]
+            gen -> gen : 5.9 : createSelectTimeStep(key, timeValue)
+        end
+    end
+
+    gen -> gen : 6 : addTapEndButtonStep()
+
+    alt [Has invalid fields]
+        gen -> gen : 6.1 : setKind("failed")
+    else [All valid]
+        gen -> gen : 6.2 : setKind("success")
+    end
+end
+
+loop [For each combination from extValidCombos]
+    gen -> gen : 7 : buildValidOnlyCase() — kind = "success"
+end
+
+gen -> gen : 8 : buildEdgeCase() — empty all fields, kind = "failed"
+
+gen -> gen : 9 : buildFinalObject(source, datasets, cases)
+gen -> fs : 10 : writeTestDataJson(testDataPath)
+fs --> gen : 11 : done
+gen --> pict : 12 : return testDataPath
+
+@enduml
