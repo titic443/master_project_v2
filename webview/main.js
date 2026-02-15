@@ -725,7 +725,7 @@ class WebUI {
       rowsHtml += `<tr>
             <td>${i + 1}</td>
             <td>${c.tc}</td>
-            <td>${c.group}</td>
+            <td class="desc-cell">${c.description || ''}</td>
             <td class="result-cell" data-tc="${c.tc}"><span class="result-status">-</span></td>
         </tr>`;
     });

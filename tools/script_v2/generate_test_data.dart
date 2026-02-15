@@ -515,6 +515,53 @@ class TestDataGenerator {
     // Helper Functions สำหรับ Test Case Generation
     // ---------------------------------------------------------------------------
 
+    /// ย่อชื่อ field key ให้สั้นลง
+    String _shortFieldName(String key) {
+      if (key.startsWith('state.')) return key.substring(6);
+      return key
+          .replaceAll(RegExp(r'^[a-z]+_\d+_'), '')
+          .replaceAll('_textfield', '')
+          .replaceAll('_dropdown', '')
+          .replaceAll('_checkbox', '')
+          .replaceAll('_radio', '')
+          .replaceAll('_button', '');
+    }
+
+    /// ย่อ value ให้อ่านง่าย
+    /// เช่น "education_bachelor_radio" → "bachelor"
+    String _shortValue(String value) {
+      var v = value
+          .replaceAll(RegExp(r'_radio$'), '')
+          .replaceAll(RegExp(r'_dropdown$'), '');
+      final lastUnderscore = v.lastIndexOf('_');
+      if (lastUnderscore > 0 && lastUnderscore < v.length - 1) {
+        v = v.substring(lastUnderscore + 1);
+      }
+      return v;
+    }
+
+    /// สร้าง description สำหรับ test case
+    /// แสดงทุก field พร้อมค่าที่ใช้ test เช่น
+    ///   "fullname: valid, email: invalid, education: master, ..."
+    String _buildDescription(Map<String, String> combo, String kind,
+        List<String> invalidFields, List<String> uncheckedRequired,
+        List<Map<String, dynamic>> asserts) {
+      final parts = <String>[];
+      for (final e in combo.entries) {
+        final field = _shortFieldName(e.key);
+        final raw = e.value;
+        // ค่า valid/invalid/checked/unchecked ใช้ตรงๆ
+        // ค่าอื่น (radio/dropdown) ย่อให้สั้น
+        final value = (raw == 'valid' || raw == 'invalid' ||
+                raw == 'checked' || raw == 'unchecked')
+            ? raw
+            : _shortValue(raw);
+        parts.add('$field: $value');
+      }
+      if (parts.isEmpty) return kind == 'failed' ? 'expect failure' : 'all valid';
+      return parts.join(', ');
+    }
+
     /// ดึง metadata ของ widget จาก key
     /// ค้นหา widget ที่มี key ตรงกันและ return metadata
     Map<String, dynamic> _widgetMetaByKey(String key) {
@@ -1488,10 +1535,16 @@ class TestDataGenerator {
         // เพิ่ม Test Case ลง List
         // -----------------------------------------------------------------------
 
+        // สร้าง combo map (String→String) สำหรับ description
+        final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
+
         cases.add({
           'tc': id, // Test case ID
           'kind': caseKind, // success หรือ failed
           'group': 'pairwise_valid_invalid_cases', // Group name
+          'description': _buildDescription(
+              comboStr, caseKind, invalidFields,
+              uncheckedRequiredCheckboxes, asserts),
           'steps': st, // List ของ steps
           'asserts': asserts, // List ของ assertions
         });
@@ -1668,10 +1721,15 @@ class TestDataGenerator {
             asserts.add({'byKey': successKey, 'exists': true});
           }
 
+          // สร้าง combo map (String→String) สำหรับ description
+          final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
+
           cases.add({
             'tc': id,
             'kind': 'success',
             'group': 'pairwise_valid_cases',
+            'description': _buildDescription(
+                comboStr, 'success', const [], const [], asserts),
             'steps': st,
             'asserts': asserts,
           });
@@ -1783,6 +1841,8 @@ class TestDataGenerator {
       'tc': 'edge_cases_empty_all_fields', // Test case ID
       'kind': 'failed', // คาดหวังว่าจะ fail
       'group': 'edge_cases', // Group name
+      'description':
+          'submit with all fields empty → expect validation errors',
       'steps': emptySteps, // Steps (แค่กดปุ่ม submit)
       'asserts': emptyAsserts, // คาดหวังเห็น validation messages
     });

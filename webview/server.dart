@@ -713,6 +713,7 @@ class PipelineController {
             caseDetails.add({
               'tc': caseMap['tc'] ?? '',
               'kind': caseMap['kind'] ?? '',
+              'description': caseMap['description'] ?? '',
               'group': group,
               'steps': steps.length,
               'asserts': asserts.length,
