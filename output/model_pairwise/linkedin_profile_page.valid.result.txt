@@ -4,10 +4,10 @@ checked	education_phd_radio	valid	valid	valid	valid	valid	Full-time	valid	unchec
 checked	education_bachelor_radio	valid	valid	valid	valid	valid	Part-time	valid	unchecked
 checked	education_master_radio	valid	valid	valid	valid	valid	Freelance	valid	checked
 checked	education_master_radio	valid	valid	valid	valid	valid	Part-time	valid	checked
+checked	education_master_radio	valid	valid	valid	valid	valid	Full-time	valid	checked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Part-time	valid	checked
 checked	education_bachelor_radio	valid	valid	valid	valid	valid	Freelance	valid	unchecked
-checked	education_master_radio	valid	valid	valid	valid	valid	Full-time	valid	unchecked
-checked	education_phd_radio	valid	valid	valid	valid	valid	Freelance	valid	checked
-checked	education_phd_radio	valid	valid	valid	valid	valid	Contract	valid	unchecked
-checked	education_phd_radio	valid	valid	valid	valid	valid	Part-time	valid	unchecked
-checked	education_bachelor_radio	valid	valid	valid	valid	valid	Full-time	valid	unchecked
 checked	education_master_radio	valid	valid	valid	valid	valid	Contract	valid	unchecked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Contract	valid	checked
+checked	education_phd_radio	valid	valid	valid	valid	valid	Freelance	valid	unchecked
+checked	education_bachelor_radio	valid	valid	valid	valid	valid	Full-time	valid	checked
