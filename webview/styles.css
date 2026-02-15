@@ -12,6 +12,8 @@
     --border-color: #e0e0e0;
     --input-bg: #ffffff;
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', SFMono-Regular, 'Cascadia Code', 'Consolas', monospace;
 }
 
 * {
@@ -21,7 +23,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    font-family: var(--font-sans);
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -103,7 +105,7 @@ input[type="text"] {
     border-radius: 4px;
     color: var(--text-primary);
     font-size: 14px;
-    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    font-family: var(--font-mono);
 }
 
 input[type="text"]:focus {
@@ -121,6 +123,7 @@ button {
     cursor: pointer;
     border: none;
     border-radius: 4px;
+    font-family: inherit;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s;
@@ -262,7 +265,7 @@ button {
 .file-item {
     padding: 8px 12px;
     cursor: pointer;
-    font-family: 'SF Mono', Monaco, monospace;
+    font-family: var(--font-mono);
     font-size: 13px;
     border-bottom: 1px solid var(--border-color);
 }
@@ -345,7 +348,7 @@ button {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 12px;
-    font-family: 'SF Mono', Monaco, monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     max-height: 300px;
     overflow-y: auto;
@@ -391,7 +394,7 @@ button {
 }
 
 .result-path {
-    font-family: 'SF Mono', Monaco, monospace;
+    font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text-secondary);
     word-break: break-all;
@@ -410,7 +413,7 @@ button {
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 10px 16px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .summary-badge strong {
@@ -425,12 +428,12 @@ button {
 .summary-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .summary-table th,
 .summary-table td {
-    padding: 8px 12px;
+    padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
@@ -439,7 +442,7 @@ button {
     background: var(--bg-tertiary);
     font-weight: 600;
     color: var(--text-secondary);
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -463,13 +466,47 @@ button {
     font-weight: 500;
 }
 
+.kind-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.kind-badge.kind-failed {
+    background: rgba(211, 47, 47, 0.1);
+    color: var(--accent-error);
+}
+
+.kind-badge.kind-success {
+    background: rgba(46, 125, 50, 0.1);
+    color: var(--accent-success);
+}
+
+.kind-badge.kind-edge {
+    background: rgba(245, 124, 0, 0.1);
+    color: var(--accent-warning);
+}
+
+.desc-cell {
+    max-width: 400px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
 /* Result Status */
 .result-cell {
     white-space: nowrap;
 }
 
 .result-status {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-secondary);
 }
 
@@ -717,7 +754,7 @@ input[type="text"][readonly]:focus {
     margin-top: 16px;
     font-size: 12px;
     color: #666;
-    font-family: monospace;
+    font-family: var(--font-mono);
 }
 
 /* Optional Badge */
@@ -799,7 +836,7 @@ input[type="text"][readonly]:focus {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1.6;
     white-space: pre-wrap;

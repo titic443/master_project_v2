@@ -4,43 +4,53 @@
     "byKey": {
       "linkedin_02_fullname_textfield": [
         {
-          "valid": "Somchai Jaidee",
+          "valid": "Siriporn Chantra",
           "invalid": "S",
           "invalidRuleMessages": "Full name must be at least 2 characters"
+        },
+        {
+          "valid": "Pramote Saelao",
+          "invalid": "",
+          "invalidRuleMessages": "Full name must contain only letters and spaces"
         }
       ],
       "linkedin_03_email_textfield": [
         {
-          "valid": "somchai.j@example.co.th",
-          "invalid": "somchai@domain",
+          "valid": "somchai.p@thaicompany.co.th",
+          "invalid": "somchai@invalid",
           "invalidRuleMessages": "Please enter a valid email address"
         }
       ],
       "linkedin_04_position_textfield": [
         {
-          "valid": "Senior Software Engineer",
-          "invalid": "S",
+          "valid": "Cloud Solutions Architect",
+          "invalid": "C",
           "invalidRuleMessages": "Position must be at least 2 characters"
         }
       ],
       "linkedin_05_company_textfield": [
         {
-          "valid": "ACME Corp (Thailand)",
-          "invalid": "A",
+          "valid": "Tech Solutions Asia",
+          "invalid": "T",
           "invalidRuleMessages": "Company must be at least 2 characters"
         }
       ],
       "linkedin_06_experience_textfield": [
         {
-          "valid": "8",
+          "valid": "10",
+          "invalid": "",
+          "invalidRuleMessages": "Years must be 0 or greater"
+        },
+        {
+          "valid": "45",
           "invalid": "51",
           "invalidRuleMessages": "Years cannot exceed 50"
         }
       ],
       "linkedin_09_university_textfield": [
         {
-          "valid": "Chulalongkorn University",
-          "invalid": "C",
+          "valid": "Mahidol University",
+          "invalid": "M",
           "invalidRuleMessages": "University must be at least 2 characters"
         }
       ]
