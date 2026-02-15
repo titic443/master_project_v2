@@ -34,31 +34,26 @@
             <section class="form-section">
                 <div class="section-header">
                     <span class="step-badge">2</span>
-                    <h2>PICT Constraints</h2>
+                    <h2>PICT Constraints
+                        <span class="tooltip-wrap tooltip-inline">
+                            <span class="tooltip-trigger">&#9432;</span>
+                            <span class="tooltip-content">Example PICT Constraints:
+
+IF [submitButton] = "enabled" THEN [username] &lt;&gt; "empty";
+IF [dropdown] = "option1" THEN [checkbox] = "checked";
+IF [textField] = "empty" THEN [submitButton] = "disabled";</span>
+                        </span>
+                    </h2>
                     <span class="optional-badge">Optional</span>
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="useConstraints">
                     <label for="useConstraints">Use custom constraints</label>
                 </div>
-                <div id="constraintsPanel" class="constraints-panel hidden">
-                    <textarea id="constraintsText" class="constraints-textarea" readonly placeholder="# Constraints will be loaded from file...
-# Example syntax:
-# IF [submitButton] = &quot;enabled&quot; THEN [username] &lt;&gt; &quot;empty&quot;;
-# IF [dropdown] = &quot;option1&quot; THEN [checkbox] = &quot;checked&quot;;">
-# Example constraints (read-only):
-# IF [submitButton] = "enabled" THEN [username] <> "empty";
-# IF [dropdown] = "option1" THEN [checkbox] = "checked";</textarea>
-                    <div class="constraints-actions">
-                        <button type="button" id="loadConstraintsBtn" class="btn-secondary btn-small">
-                            <span class="btn-icon">&#128196;</span>
-                            Load from file...
-                        </button>
-                        <a href="https://github.com/microsoft/pict/blob/main/doc/pict.md#constraints" target="_blank" class="btn-link btn-small">
-                            <span class="btn-icon">&#128214;</span>
-                            Constraint syntax
-                        </a>
-                    </div>
+                <input type="hidden" id="constraintsText" value="">
+                <div id="constraintsPanel" class="input-group hidden">
+                    <input type="text" id="constraintsFile" placeholder="Select a constraints file (.txt, .pict)..." readonly>
+                    <button type="button" id="loadConstraintsBtn" class="btn-secondary">Browse...</button>
                 </div>
             </section>
 
@@ -159,7 +154,7 @@
             </section>
 
             <!-- Results -->
-            <section id="resultsSection" class="form-section hidden">
+            <!-- <section id="resultsSection" class="form-section hidden">
                 <div class="section-header">
                     <h2>Results</h2>
                 </div>
@@ -181,7 +176,7 @@
                         <p class="result-path"></p>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             <!-- Coverage Report -->
             <section id="coverageSection" class="form-section hidden">

@@ -58,6 +58,7 @@ class WebUI {
       useConstraints: document.getElementById('useConstraints'),
       constraintsPanel: document.getElementById('constraintsPanel'),
       constraintsTextArea: document.getElementById('constraintsText'),
+      constraintsFile: document.getElementById('constraintsFile'),
       loadConstraintsBtn: document.getElementById('loadConstraintsBtn'),
       dialogOverlay: document.getElementById('dialogOverlay'),
       dialogIcon: document.getElementById('dialogIcon'),
@@ -170,7 +171,7 @@ class WebUI {
     this.#updateButtonStates();
     this.#el.progressSection.classList.remove('hidden');
     this.#el.outputSection.classList.remove('hidden');
-    this.#el.resultsSection.classList.add('hidden');
+    this.#el.resultsSection?.classList.add('hidden');
     this.#el.testSummarySection.classList.add('hidden');
     this.#resetProgress();
     this.#clearLog();
@@ -203,15 +204,9 @@ class WebUI {
 
       const testDataParams = { manifest: manifestResult.manifestPath };
 
-      console.log('[DEBUG] useConstraints.checked:', this.#el.useConstraints.checked);
-      console.log('[DEBUG] constraintsTextArea.value length:', this.#el.constraintsTextArea.value.trim().length);
-
       if (this.#el.useConstraints.checked && this.#el.constraintsTextArea.value.trim()) {
         testDataParams.constraints = this.#el.constraintsTextArea.value.trim();
         this.#log('Using custom PICT constraints', 'info');
-        console.log('[DEBUG] Sending constraints:', testDataParams.constraints.substring(0, 100) + '...');
-      } else {
-        console.log('[DEBUG] Constraints NOT sent - checkbox:', this.#el.useConstraints.checked, 'textarea empty:', !this.#el.constraintsTextArea.value.trim());
       }
 
       const testDataResult = await this.#runStep('generate-test-data', testDataParams);
@@ -402,6 +397,7 @@ class WebUI {
       }
 
       this.#el.constraintsTextArea.value = content;
+      this.#el.constraintsFile.value = file.name;
       this.#log(`Loaded constraints from: ${file.name}`, 'info');
 
       this.#showDialog(
@@ -765,6 +761,7 @@ class WebUI {
   }
 
   #showResults(results) {
+    if (!this.#el.resultsSection) return;
     this.#el.resultsSection.classList.remove('hidden');
 
     document.querySelector('#manifestResult .result-path').textContent = results.manifest || '-';
