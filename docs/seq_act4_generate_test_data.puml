@@ -1,6 +1,6 @@
-@startuml seq_act6_generate_test_data
+@startuml seq_act4_generate_test_data
 
-title แผนภาพลำดับกิจกรรมที่ 6: การสร้างข้อมูลทดสอบ
+title แผนภาพลำดับที่ 4.1.4.4: การสร้างข้อมูลทดสอบ
 
 participant ":TestDataGenerator" as gen
 participant ":GeneratorPict" as pict

@@ -1,0 +1,68 @@
+@startuml seq_act1_import_extract_widget_metadata
+
+title แผนภาพลำดับที่ 4.1.4.1: การนำเข้าและสกัดข้อมูลเมตาของวิดเจ็ต
+
+actor Tester
+participant ":WebUI" as webui
+participant ":PipelineController" as ctrl
+participant ":UiManifestExtractor" as ext
+participant ":FileSystem" as fs
+
+== ขั้นตอนที่ 1: การนำเข้าไฟล์ ==
+
+Tester -> webui : 1 : Press the browse Dart file button
+webui -> ctrl : 2 : createFileChooser()
+ctrl --> webui : 3 : FileChooserPanel
+webui --> Tester : 4 : Show FileChooserPanel
+Tester -> webui : 5 : EnterDartFilePath()
+webui -> ctrl : 6 : getDartFilePath()
+ctrl -> ext : 7 : setDartFilePath()
+ext -> ext : 8 : verifyDartFile()
+
+alt [Valid DartFile]
+    ext --> ctrl : 8.1 : extractManifest(filePath)
+    ctrl -> ext : 9 : _processOne(path)
+else [Invalid DartFile]
+    ext --> ctrl : 8.2 : return error
+    ctrl --> webui : 8.3 : show error message "The Dart file is invalid"
+    webui --> Tester : 8.4 : Show error dialog
+end
+
+== ขั้นตอนที่ 2: การสกัดข้อมูลเมตาของวิดเจ็ต ==
+
+ext -> fs : 10 : readFileSync(filePath)
+fs --> ext : 11 : rawSource
+ext -> ext : 12 : _stripComments(rawSource)
+ext -> ext : 13 : _collectStringConsts(source)
+ext -> ext : 14 : _findPageClass(source)
+ext -> ext : 15 : _findCubitType(source)
+ext -> ext : 16 : _findStateType(source)
+ext -> ext : 17 : _scanWidgets(source, consts, cubitType)
+
+loop [For each widget match in source]
+    ext -> ext : 18 : _extractKey(args, consts)
+
+    alt [TextField / TextFormField]
+        ext -> ext : 18.1 : _extractTextFieldMeta(args)
+        ext -> ext : 18.2 : _extractValidationMeta(type, args)
+    else [DropdownButton]
+        ext -> ext : 18.3 : _extractValidationMeta() — extract options
+    else [Radio]
+        ext -> ext : 18.4 : _extractRadioMeta(args)
+    else [Checkbox / Switch]
+        ext -> ext : 18.5 : _extractValidationMeta() — extract binding
+    end
+end
+
+ext -> ext : 19 : _scanDateTimePickers(rawSource)
+ext -> ext : 20 : filterWidgetsWithKey()
+ext -> ext : 21 : deduplicateByKey()
+ext -> ext : 22 : linkPickerMetadata()
+ext -> ext : 23 : sortBySequenceNumber()
+ext -> fs : 24 : writeManifestJson(manifestPath)
+fs --> ext : 25 : done
+ext --> ctrl : 26 : return manifestPath
+ctrl --> webui : 27 : show message "Found N widgets — ready to generate"
+webui --> Tester : 28 : Show success dialog
+
+@enduml
