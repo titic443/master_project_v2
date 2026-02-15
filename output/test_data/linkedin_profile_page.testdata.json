@@ -12,43 +12,43 @@
     "byKey": {
       "linkedin_02_fullname_textfield": [
         {
-          "valid": "Alice Wonderland",
-          "invalid": "A",
+          "valid": "Somchai Jaidee",
+          "invalid": "S",
           "invalidRuleMessages": "Full name must be at least 2 characters"
         }
       ],
       "linkedin_03_email_textfield": [
         {
-          "valid": "john.doe@example.com",
-          "invalid": "john.doe@example",
+          "valid": "somchai.j@example.co.th",
+          "invalid": "somchai@domain",
           "invalidRuleMessages": "Please enter a valid email address"
         }
       ],
       "linkedin_04_position_textfield": [
         {
-          "valid": "Software Engineer",
+          "valid": "Senior Software Engineer",
           "invalid": "S",
           "invalidRuleMessages": "Position must be at least 2 characters"
         }
       ],
       "linkedin_05_company_textfield": [
         {
-          "valid": "Google LLC",
-          "invalid": "G",
+          "valid": "ACME Corp (Thailand)",
+          "invalid": "A",
           "invalidRuleMessages": "Company must be at least 2 characters"
         }
       ],
       "linkedin_06_experience_textfield": [
         {
-          "valid": "45",
+          "valid": "8",
           "invalid": "51",
           "invalidRuleMessages": "Years cannot exceed 50"
         }
       ],
       "linkedin_09_university_textfield": [
         {
-          "valid": "Mahidol University",
-          "invalid": "M",
+          "valid": "Chulalongkorn University",
+          "invalid": "C",
           "invalidRuleMessages": "University must be at least 2 characters"
         }
       ]
@@ -81,7 +81,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
           }
         },
         {
@@ -121,7 +121,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -131,6 +131,14 @@
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
             "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -152,6 +160,10 @@
         },
         {
           "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
@@ -198,7 +210,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
           }
         },
         {
@@ -238,7 +250,233 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_master_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "byKey": "linkedin_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_3",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Freelance"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_phd_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Position must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "text": "University must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
+          "exists": true
+        },
+        {
+          "byKey": "linkedin_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Part-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_phd_radio"
           }
         },
         {
@@ -280,11 +518,11 @@
       ],
       "asserts": [
         {
-          "text": "Position must be at least 2 characters",
+          "text": "Full name must be at least 2 characters",
           "exists": true
         },
         {
-          "text": "Years cannot exceed 50",
+          "text": "Company must be at least 2 characters",
           "exists": true
         },
         {
@@ -294,7 +532,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_3",
+      "tc": "pairwise_valid_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -368,15 +606,7 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
           }
         },
         {
@@ -397,13 +627,21 @@
           "exists": true
         },
         {
+          "text": "University must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
+          "exists": true
+        },
+        {
           "byKey": "linkedin_01_expected_fail",
           "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_4",
+      "tc": "pairwise_valid_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -411,139 +649,6 @@
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
             "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Freelance"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_master_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
-          "exists": true
-        },
-        {
-          "text": "University must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_5",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
           }
         },
         {
@@ -594,14 +699,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Part-time"
+          "scrollAndTapText": "Full-time"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -618,6 +723,14 @@
         },
         {
           "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
             "byKey": "linkedin_12_end_button"
           }
         },
@@ -626,10 +739,6 @@
         }
       ],
       "asserts": [
-        {
-          "text": "Full name must be at least 2 characters",
-          "exists": true
-        },
         {
           "text": "Position must be at least 2 characters",
           "exists": true
@@ -643,24 +752,20 @@
           "exists": true
         },
         {
-          "text": "You must agree to terms",
-          "exists": true
-        },
-        {
           "byKey": "linkedin_01_expected_fail",
           "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_6",
+      "tc": "pairwise_valid_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
         {
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
           }
         },
         {
@@ -718,7 +823,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_master_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -735,108 +840,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
-          "text": "University must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "You must agree to terms",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_7",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Full-time"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -857,11 +861,7 @@
           "exists": true
         },
         {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
@@ -904,7 +904,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
           }
         },
         {
@@ -913,7 +913,132 @@
         {
           "enterText": {
             "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Full-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_phd_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Position must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Company must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
+          "exists": true
+        },
+        {
+          "byKey": "linkedin_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_9",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
           }
         },
         {
@@ -944,7 +1069,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -986,7 +1111,11 @@
       ],
       "asserts": [
         {
-          "text": "Please enter a valid email address",
+          "text": "Position must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Company must be at least 2 characters",
           "exists": true
         },
         {
@@ -996,7 +1125,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_9",
+      "tc": "pairwise_valid_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -1022,6 +1151,244 @@
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
             "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Part-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_master_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Full name must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "text": "University must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "byKey": "linkedin_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_11",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Part-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_bachelor_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Position must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
+          "exists": true
+        },
+        {
+          "byKey": "linkedin_01_expected_fail",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_12",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
           }
         },
         {
@@ -1070,7 +1437,7 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
           }
         },
         {
@@ -1103,11 +1470,11 @@
       ],
       "asserts": [
         {
-          "text": "Full name must be at least 2 characters",
+          "text": "Please enter a valid email address",
           "exists": true
         },
         {
-          "text": "Please enter a valid email address",
+          "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
@@ -1119,17 +1486,13 @@
           "exists": true
         },
         {
-          "text": "University must be at least 2 characters",
-          "exists": true
-        },
-        {
           "byKey": "linkedin_01_expected_fail",
           "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_10",
+      "tc": "pairwise_valid_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -1145,120 +1508,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Full-time"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_11",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
           }
         },
         {
@@ -1285,7 +1535,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
           }
         },
         {
@@ -1324,14 +1574,6 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
@@ -1349,11 +1591,23 @@
       ],
       "asserts": [
         {
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
           "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
           "text": "Company must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "text": "You must agree to terms",
           "exists": true
         },
         {
@@ -1363,7 +1617,7 @@
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_12",
+      "tc": "pairwise_valid_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
       "steps": [
@@ -1388,7 +1642,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
           }
         },
         {
@@ -1397,7 +1651,7 @@
         {
           "enterText": {
             "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
           }
         },
         {
@@ -1406,7 +1660,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
           }
         },
         {
@@ -1453,14 +1707,6 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "linkedin_12_end_button"
           }
         },
@@ -1469,254 +1715,8 @@
         }
       ],
       "asserts": [
-        {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
-          "exists": true
-        },
         {
           "text": "University must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_13",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Part-time"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Full name must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "University must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_14",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Contract"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Full name must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "You must agree to terms",
           "exists": true
         },
         {
@@ -2333,14 +2333,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Freelance"
+          "scrollAndTapText": "Full-time"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -2358,6 +2358,14 @@
         {
           "tap": {
             "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -2438,14 +2446,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Full-time"
+          "scrollAndTapText": "Part-time"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_master_radio"
+            "byKey": "linkedin_08_education_phd_radio"
           }
         },
         {
@@ -2463,6 +2471,14 @@
         {
           "tap": {
             "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -2550,7 +2566,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -2568,14 +2584,6 @@
         {
           "tap": {
             "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -2663,7 +2671,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -2761,7 +2769,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Part-time"
+          "scrollAndTapText": "Contract"
         },
         {
           "pumpAndSettle": true
@@ -2786,6 +2794,14 @@
         {
           "tap": {
             "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -2866,14 +2882,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Full-time"
+          "scrollAndTapText": "Freelance"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_phd_radio"
           }
         },
         {
@@ -2971,14 +2987,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Contract"
+          "scrollAndTapText": "Full-time"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_master_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -2996,6 +3012,14 @@
         {
           "tap": {
             "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {

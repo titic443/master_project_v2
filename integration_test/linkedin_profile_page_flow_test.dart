@@ -18,30 +18,33 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'S');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        // dataset: byKey.linkedin_04_position_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'C');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -51,6 +54,7 @@ void main() {
         final expected = [
           find.text('Full name must be at least 2 characters'),
           find.text('Please enter a valid email address'),
+          find.text('Position must be at least 2 characters'),
           find.text('Company must be at least 2 characters'),
           find.text('University must be at least 2 characters'),
           find.text('You must agree to terms'),
@@ -67,171 +71,16 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
-        await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
-        await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
-        await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
-        await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('Position must be at least 2 characters'),
-          find.text('Years cannot exceed 50'),
-          find.byKey(const Key('linkedin_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_3', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
-        await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
-        await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
-        await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('Full name must be at least 2 characters'),
-          find.byKey(const Key('linkedin_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_4', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
-        await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example');
-        await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
-        await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
-        await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
-        await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('Please enter a valid email address'),
-          find.text('Position must be at least 2 characters'),
-          find.text('Company must be at least 2 characters'),
-          find.text('Years cannot exceed 50'),
-          find.text('University must be at least 2 characters'),
-          find.byKey(const Key('linkedin_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_5', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
-        await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
-        await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
-        await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
@@ -245,7 +94,110 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('Years cannot exceed 50'),
+          find.byKey(const Key('linkedin_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_3', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
+        await tester.pumpWidget(w);
+        // dataset: byKey.linkedin_02_fullname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
+        await tester.pump();
+        // dataset: byKey.linkedin_03_email_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
+        await tester.pump();
+        // dataset: byKey.linkedin_04_position_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
+        await tester.pump();
+        // dataset: byKey.linkedin_05_company_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
+        await tester.pump();
+        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.pump();
+        // dataset: byKey.linkedin_09_university_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'C');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('Please enter a valid email address'),
+          find.text('Position must be at least 2 characters'),
+          find.text('Years cannot exceed 50'),
+          find.text('University must be at least 2 characters'),
+          find.text('You must agree to terms'),
+          find.byKey(const Key('linkedin_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_4', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
+        await tester.pumpWidget(w);
+        // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'S');
+        await tester.pump();
+        // dataset: byKey.linkedin_03_email_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
+        await tester.pump();
+        // dataset: byKey.linkedin_04_position_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
+        await tester.pump();
+        // dataset: byKey.linkedin_05_company_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
+        await tester.pump();
+        // dataset: byKey.linkedin_06_experience_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.pump();
+        // dataset: byKey.linkedin_09_university_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -254,9 +206,53 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Full name must be at least 2 characters'),
-          find.text('Position must be at least 2 characters'),
           find.text('Company must be at least 2 characters'),
-          find.text('Years cannot exceed 50'),
+          find.byKey(const Key('linkedin_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_5', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
+        await tester.pumpWidget(w);
+        // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'S');
+        await tester.pump();
+        // dataset: byKey.linkedin_03_email_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
+        await tester.pump();
+        // dataset: byKey.linkedin_04_position_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
+        await tester.pump();
+        // dataset: byKey.linkedin_05_company_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
+        await tester.pump();
+        // dataset: byKey.linkedin_06_experience_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.pump();
+        // dataset: byKey.linkedin_09_university_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'C');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('Full name must be at least 2 characters'),
+          find.text('University must be at least 2 characters'),
           find.text('You must agree to terms'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
@@ -271,19 +267,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example');
+        // dataset: byKey.linkedin_03_email_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        // dataset: byKey.linkedin_04_position_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
         await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        // dataset: byKey.linkedin_05_company_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
         await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -293,8 +289,11 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
+        // dataset: byKey.linkedin_09_university_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -302,9 +301,9 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Please enter a valid email address'),
-          find.text('University must be at least 2 characters'),
-          find.text('You must agree to terms'),
+          find.text('Position must be at least 2 characters'),
+          find.text('Company must be at least 2 characters'),
+          find.text('Years cannot exceed 50'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -318,30 +317,33 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'S');
         await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        // dataset: byKey.linkedin_03_email_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
+        // dataset: byKey.linkedin_04_position_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        // dataset: byKey.linkedin_05_company_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'C');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -350,8 +352,7 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('Full name must be at least 2 characters'),
-          find.text('Position must be at least 2 characters'),
-          find.text('Company must be at least 2 characters'),
+          find.text('Please enter a valid email address'),
           find.text('University must be at least 2 characters'),
           find.text('You must agree to terms'),
           find.byKey(const Key('linkedin_01_expected_fail')),
@@ -367,19 +368,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        // dataset: byKey.linkedin_04_position_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
         await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        // dataset: byKey.linkedin_05_company_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
         await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -390,7 +391,59 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('Please enter a valid email address'),
+          find.text('Position must be at least 2 characters'),
+          find.text('Company must be at least 2 characters'),
+          find.text('Years cannot exceed 50'),
+          find.text('You must agree to terms'),
+          find.byKey(const Key('linkedin_01_expected_fail')),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
+      testWidgets('pairwise_valid_invalid_cases_9', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
+        await tester.pumpWidget(w);
+        // dataset: byKey.linkedin_02_fullname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
+        await tester.pump();
+        // dataset: byKey.linkedin_03_email_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
+        await tester.pump();
+        // dataset: byKey.linkedin_04_position_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
+        await tester.pump();
+        // dataset: byKey.linkedin_05_company_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
+        await tester.pump();
+        // dataset: byKey.linkedin_06_experience_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
+        await tester.pump();
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.pump();
+        // dataset: byKey.linkedin_09_university_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -404,30 +457,31 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Please enter a valid email address'),
+          find.text('Position must be at least 2 characters'),
+          find.text('Company must be at least 2 characters'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
       });
 
-      testWidgets('pairwise_valid_invalid_cases_9', (tester) async {
+      testWidgets('pairwise_valid_invalid_cases_10', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'S');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        // dataset: byKey.linkedin_05_company_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
@@ -441,13 +495,10 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'C');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -457,58 +508,8 @@ void main() {
         final expected = [
           find.text('Full name must be at least 2 characters'),
           find.text('Please enter a valid email address'),
-          find.text('Company must be at least 2 characters'),
           find.text('Years cannot exceed 50'),
           find.text('University must be at least 2 characters'),
-          find.byKey(const Key('linkedin_01_expected_fail')),
-        ];
-        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
-            reason: 'Expected at least one of the elements to exist');
-      });
-
-      testWidgets('pairwise_valid_invalid_cases_10', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<LinkedinCubit>(create: (_)=> LinkedinCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
-        await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
-        await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
-        await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
-        await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
-        await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
-        await tester.pump();
-        await tester.pumpAndSettle();
-        // Check if any expected element exists (OR logic)
-        final expected = [
-          find.text('Position must be at least 2 characters'),
-          find.text('Years cannot exceed 50'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -522,19 +523,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        // dataset: byKey.linkedin_03_email_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
         await tester.pump();
-        // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        // dataset: byKey.linkedin_05_company_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -545,10 +546,7 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
@@ -559,8 +557,9 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('Please enter a valid email address'),
           find.text('Position must be at least 2 characters'),
-          find.text('Company must be at least 2 characters'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -574,16 +573,16 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
-        // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        // dataset: byKey.linkedin_03_email_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
@@ -593,11 +592,11 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
+        // dataset: byKey.linkedin_09_university_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -611,10 +610,10 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
+          find.text('Please enter a valid email address'),
           find.text('Position must be at least 2 characters'),
           find.text('Company must be at least 2 characters'),
           find.text('Years cannot exceed 50'),
-          find.text('University must be at least 2 characters'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -627,34 +626,31 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
+        // dataset: byKey.linkedin_02_fullname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai@domain');
         await tester.pump();
-        // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        // dataset: byKey.linkedin_04_position_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'S');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'G');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'A');
         await tester.pump();
-        // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        // dataset: byKey.linkedin_06_experience_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '51');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'M');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        // dataset: byKey.linkedin_09_university_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
@@ -665,10 +661,11 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Full name must be at least 2 characters'),
           find.text('Please enter a valid email address'),
+          find.text('Position must be at least 2 characters'),
           find.text('Company must be at least 2 characters'),
-          find.text('University must be at least 2 characters'),
+          find.text('Years cannot exceed 50'),
+          find.text('You must agree to terms'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -681,20 +678,20 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.linkedin_02_fullname_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'A');
+        // dataset: byKey.linkedin_02_fullname_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -704,8 +701,11 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
-        // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        // dataset: byKey.linkedin_09_university_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'C');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -713,8 +713,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.text('Full name must be at least 2 characters'),
-          find.text('You must agree to terms'),
+          find.text('University must be at least 2 characters'),
           find.byKey(const Key('linkedin_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
@@ -730,19 +729,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -753,7 +752,7 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -780,19 +779,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -803,7 +802,7 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -827,19 +826,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -850,7 +849,7 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -874,19 +873,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -897,7 +896,7 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -924,19 +923,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -947,7 +946,7 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -974,33 +973,36 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -1021,33 +1023,36 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -1068,36 +1073,33 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
-        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -1118,30 +1120,30 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -1165,19 +1167,19 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
@@ -1188,10 +1190,13 @@ void main() {
         await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
@@ -1212,30 +1217,30 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_phd_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_phd_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
@@ -1259,33 +1264,36 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: LinkedinProfilePage()));
         await tester.pumpWidget(w);
         // dataset: byKey.linkedin_02_fullname_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Alice Wonderland');
+        await tester.enterText(find.byKey(const Key('linkedin_02_fullname_textfield')), 'Somchai Jaidee');
         await tester.pump();
         // dataset: byKey.linkedin_03_email_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'john.doe@example.com');
+        await tester.enterText(find.byKey(const Key('linkedin_03_email_textfield')), 'somchai.j@example.co.th');
         await tester.pump();
         // dataset: byKey.linkedin_04_position_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('linkedin_04_position_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.linkedin_05_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'Google LLC');
+        await tester.enterText(find.byKey(const Key('linkedin_05_company_textfield')), 'ACME Corp (Thailand)');
         await tester.pump();
         // dataset: byKey.linkedin_06_experience_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '45');
+        await tester.enterText(find.byKey(const Key('linkedin_06_experience_textfield')), '8');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.tap(find.byKey(const Key('linkedin_07_employment_dropdown')));
         await tester.pump();
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
-        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_master_radio')));
-        await tester.tap(find.byKey(const Key('linkedin_08_education_master_radio')));
+        await tester.ensureVisible(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
+        await tester.tap(find.byKey(const Key('linkedin_08_education_bachelor_radio')));
         await tester.pump();
         // dataset: byKey.linkedin_09_university_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Mahidol University');
+        await tester.enterText(find.byKey(const Key('linkedin_09_university_textfield')), 'Chulalongkorn University');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
         await tester.tap(find.byKey(const Key('linkedin_10_agree_terms_checkbox')));
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
+        await tester.tap(find.byKey(const Key('linkedin_11_open_to_work_checkbox')));
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('linkedin_12_end_button')));
         await tester.tap(find.byKey(const Key('linkedin_12_end_button')));
