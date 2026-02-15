@@ -70,16 +70,25 @@ package "Test Script Generator Tool\n(tools/script_v2/)" as tool {
   ' ── Extractor ──
   package "Extractor" as pkg_extractor {
     class "extract_ui_manifest.dart" as ExtractUI {
-      + processUiFile(path): void
+      + processUiFile(path): String
+      + extractManifest(path): String
+      - _processOne(path): void
+      - _stripComments(s): String
+      - _collectStringConsts(src): Map
+      - _collectRegexVars(src): Map
       - _findPageClass(src): String?
+      - _findCubitType(src): String?
+      - _findStateType(src): String?
       - _scanWidgets(src, ...): List
       - _extractKey(args): String?
       - _extractTextFieldMeta(args): Map
       - _extractValidationMeta(type, args): Map
-      - _findCubitType(src): String?
-      - _findStateType(src): String?
-      - _scanDateTimePickers(src): List
       - _extractRadioMeta(args): Map
+      - _scanDateTimePickers(src): Map
+      - _extractDatePickerParams(args): Map
+      - _extractTimePickerParams(args): Map
+      - _findCubitFilePath(src, cubitType): String?
+      - _findStateFilePath(src, stateType): String?
     }
   }
 
@@ -88,10 +97,10 @@ package "Test Script Generator Tool\n(tools/script_v2/)" as tool {
 
     package "DatasetGenerator" as pkg_dataset {
       class "generate_datasets.dart" as GenDatasets {
-        + generateDatasetsFromManifest(path, ...): void
-        - _processManifest(path, model, apiKey): void
+        + generateDatasetsFromManifest(path, ...): String?
+        - _processManifest(path, model, apiKey): bool
         - _callGeminiForDatasets(apiKey, model, uiFile, fields): Map
-        - _extractTextFromGemini(response): String
+        - _extractTextFromGemini(response): String?
         - _stripCodeFences(s): String
       }
     }
@@ -101,11 +110,17 @@ package "Test Script Generator Tool\n(tools/script_v2/)" as tool {
         + generatePairwiseFromManifest(...): PairwiseResult
         + generatePictModel(factors, ...): String
         + generateValidOnlyPictModel(factors, ...): String
+        + executePict(factors, ...): List
         + parsePictResult(content): List
         + parsePictModel(content): Map
+        + readFactorNamesFromModel(path): List
+        + extractFactorsFromManifest(widgets): FactorExtractionResult
         + writePictModelFiles(...): void
         + generatePairwiseInternal(factors): List
-        - _executePictToFile(pictBin, model, output): void
+        - _formatValuesForModel(name, values): String
+        - _executePictToFile(modelPath, outputPath): void
+        - _generateDateValues(pickerMeta): List
+        - _extractOptionsFromMeta(raw): List
       }
       class "FactorExtractionResult" as FactorResult {
         + factors: Map<String, List<String>>
@@ -122,20 +137,24 @@ package "Test Script Generator Tool\n(tools/script_v2/)" as tool {
 
     package "TestDataGenerator" as pkg_testdata {
       class "generate_test_data.dart" as GenTestData {
-        + generateTestDataFromManifest(path, ...): void
+        + generateTestDataFromManifest(path, ...): String
         - _processOne(path, ...): void
+        - _tryWritePictModelFromManifestForUi(uiFile, ...): void
+        - _findHighestSequenceButton(widgets): String?
         - _optionsFromMeta(raw): List<String>
       }
     }
 
     package "TestScriptGenerator" as pkg_testscript {
       class "generate_test_script.dart" as GenTestScript {
-        + generateTestScriptFromTestData(path): void
+        + generateTestScriptFromTestData(path): String
         - _processOne(planPath): void
-        - _generateIntegrationTests(...): String
-        - _getPrimaryCubitType(types): String
+        - _maybeLoadExternalDatasets(uiFile): Map
+        - _generateIntegrationTests(...): void
+        - _extractValidationCountsFromPlan(cases): Map
+        - _getPrimaryCubitType(types): String?
         - _getStateFilePathFromCubit(cubitType): String
-        - _resolveDataset(root, rawPath): Map
+        - _resolveDataset(root, rawPath): dynamic
       }
     }
   }
