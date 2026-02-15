@@ -1,0 +1,36 @@
+@startuml seq_act3_generate_datasets_llm
+
+title แผนภาพลำดับกิจกรรมที่ 3: การสร้างชุดข้อมูลจำลองด้วยโมเดลภาษาขนาดใหญ่
+
+participant ":PipelineController" as ctrl
+participant ":DatasetGenerator" as gen
+participant ":GeminiAPI" as api
+participant ":FileSystem" as fs
+
+ctrl -> gen : 1 : generateDatasets(manifestPath)
+gen -> fs : 2 : readManifestJson(manifestPath)
+fs --> gen : 3 : manifest {source, widgets[]}
+gen -> gen : 4 : resolveApiKey(flag, .env, envVar)
+gen -> gen : 5 : filterTextFields(widgets)
+
+alt [No text fields found]
+    gen --> ctrl : 5.1 : return null (skipped)
+else [Has text fields]
+    gen -> gen : 6 : buildPrompt(context, fields)
+    gen -> gen : 7 : buildPayload(instructions, inputData)
+    gen -> api : 8 : POST /generateContent(payload)
+    api --> gen : 9 : HTTP Response {candidates[]}
+    gen -> gen : 10 : _extractTextFromGemini(response)
+    gen -> gen : 11 : _stripCodeFences(text)
+    gen -> gen : 12 : jsonDecode(cleanedText)
+
+    loop [For each text field]
+        gen -> gen : 13 : applyMaxLengthConstraint(validValue)
+    end
+
+    gen -> fs : 14 : writeDatasetsJson(datasetsPath)
+    fs --> gen : 15 : done
+    gen --> ctrl : 16 : return datasetsPath
+end
+
+@enduml

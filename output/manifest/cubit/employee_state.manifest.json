@@ -1,0 +1,7 @@
+{
+  "source": {
+    "file": "lib/cubit/employee_state.dart",
+    "pageClass": "employee_state"
+  },
+  "widgets": []
+}

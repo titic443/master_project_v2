@@ -8,3 +8,15 @@ linkedin_06_experience_textfield: valid
 linkedin_07_employment_dropdown: Full-time, Part-time, Contract, Freelance
 linkedin_09_university_textfield: valid
 linkedin_11_open_to_work_checkbox: checked, unchecked
+
+# PICT Constraints for LinkedIn Profile Page
+# ============================================
+
+# If agree terms is unchecked, open_to_work is irrelevant
+IF [linkedin_10_agree_terms_checkbox] = "unchecked" THEN [linkedin_11_open_to_work_checkbox] = "unchecked";
+
+# Freelance workers should not select Full-time employment
+IF [linkedin_11_open_to_work_checkbox] = "checked" THEN [linkedin_07_employment_dropdown] <> "Full-time";
+
+# PhD requires valid experience
+IF [state.educationLevel] = "education_phd_radio" THEN [linkedin_06_experience_textfield] = "valid";

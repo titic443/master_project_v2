@@ -1,0 +1,63 @@
+@startuml seq_act7_generate_test_script
+
+title แผนภาพลำดับกิจกรรมที่ 7: การสร้างสคริปต์ทดสอบอัตโนมัติ
+
+participant ":PipelineController" as ctrl
+participant ":TestScriptGenerator" as gen
+participant ":FileSystem" as fs
+
+ctrl -> gen : 1 : generateTestScript(testDataPath)
+gen -> fs : 2 : readTestDataJson(testDataPath)
+fs --> gen : 3 : testData {source, datasets, cases[]}
+gen -> gen : 4 : extractSourceMetadata(source)
+gen -> fs : 5 : readPubspecYaml()
+fs --> gen : 6 : packageName
+gen -> gen : 7 : resolveImportPaths(packageName, uiFile)
+gen -> gen : 8 : findCubitSourceFiles(cubitType)
+
+gen -> fs : 9 : readDatasetsJson(datasetsPath)
+fs --> gen : 10 : datasets {byKey}
+gen -> gen : 11 : extractSampleValues(datasets)
+
+gen -> gen : 12 : generateImports(packageName, providers)
+gen -> gen : 13 : generateStubCubitClasses(cubitType)
+gen -> gen : 14 : generateWrapHelperFunction(providers)
+gen -> gen : 15 : groupCasesByGroup(cases)
+
+loop [For each test group]
+    loop [For each test case]
+        gen -> gen : 16 : determineSuccessOrFailure(case)
+
+        loop [For each step in case]
+            alt [enterText]
+                gen -> gen : 17.1 : resolveDataset(rawPath) — get actual value
+                gen -> gen : 17.2 : generateEnterTextCode(key, value)
+            else [tap]
+                gen -> gen : 17.3 : generateTapCode(key)
+            else [selectDate]
+                gen -> gen : 17.4 : generateDatePickerCode(key, date)
+            else [selectTime]
+                gen -> gen : 17.5 : generateTimePickerCode(key, time)
+            else [scrollAndTapText]
+                gen -> gen : 17.6 : generateScrollTapTextCode(text)
+            end
+        end
+
+        loop [For each assert in case]
+            alt [byKey + exists]
+                gen -> gen : 18.1 : generateExpectFindsByKey(key)
+            else [byKey + textContains]
+                gen -> gen : 18.2 : generateExpectTextContaining(text)
+            else [text + exists]
+                gen -> gen : 18.3 : generateExpectFindsText(text, count)
+            end
+        end
+    end
+end
+
+gen -> gen : 19 : _generateIntegrationTests(uiFile, cases, providers)
+gen -> fs : 20 : writeTestScriptFile(testScriptPath)
+fs --> gen : 21 : done
+gen --> ctrl : 22 : return testScriptPath
+
+@enduml

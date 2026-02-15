@@ -1,0 +1,7 @@
+{
+  "source": {
+    "file": "lib/cubit/linkedin_cubit.dart",
+    "pageClass": "linkedin_cubit"
+  },
+  "widgets": []
+}
