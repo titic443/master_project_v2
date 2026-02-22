@@ -13,10 +13,15 @@
       "linkedin_02_fullname_textfield": [
         {
           "valid": "Alice Johnson",
-          "invalid": "J",
+          "invalid": "A",
           "invalidRuleMessages": "Full name must be at least 2 characters",
           "atMin": "A",
-          "atMax": "Apiradee Somboonratanakornwongpattana Charoenkitthanakul Wattanavekin Srisomboon Prasertphon Panyara"
+          "atMax": "Alice Johnson Wongsuwan Charoenpong Panyanart Srisomboon Boonmee Suk Phakpoom Thongkam"
+        },
+        {
+          "valid": "John Doe",
+          "invalid": "John Doe",
+          "invalidRuleMessages": "Full name must contain only letters and spaces"
         }
       ],
       "linkedin_03_email_textfield": [
@@ -25,7 +30,7 @@
           "invalid": "john.doe@example",
           "invalidRuleMessages": "Please enter a valid email address",
           "atMin": "",
-          "atMax": "superlonglocalpart1234567890123456789012@example.c"
+          "atMax": "abcdefghijklmnopqrstuvwxy@abcdefghijklmnopqrstu.co"
         }
       ],
       "linkedin_04_position_textfield": [
@@ -33,26 +38,31 @@
           "valid": "Software Engineer",
           "invalid": "S",
           "invalidRuleMessages": "Position must be at least 2 characters",
-          "atMin": "P",
-          "atMax": "Senior Principal Distinguished Chief Software Architect and Evangelist for Innovation and Technology"
+          "atMin": "A",
+          "atMax": "Senior Principal Software Engineer and Architect, Leading Global Distributed Teams and Strategic Ini"
         }
       ],
       "linkedin_05_company_textfield": [
         {
-          "valid": "Acme Corporation",
+          "valid": "Acme Innovations Co., Ltd.",
           "invalid": "A",
-          "invalidRuleMessages": "Company must be at least 2 characters",
-          "atMin": "C",
-          "atMax": "International Global Solutions and Advanced Technology Co., Ltd. for Future Innovations Worldwide Gr"
+          "invalidRuleMessages": "Company is required",
+          "atMin": "A",
+          "atMax": "International Business Machines Corporation Global Solutions & Technologies, Asia Pacific Division"
         }
       ],
       "linkedin_06_experience_textfield": [
         {
+          "valid": "5",
+          "invalid": "",
+          "invalidRuleMessages": "Years must be 0 or greater",
+          "atMin": "0",
+          "atMax": "99"
+        },
+        {
           "valid": "45",
           "invalid": "51",
-          "invalidRuleMessages": "Years cannot exceed 50",
-          "atMin": "0",
-          "atMax": "50"
+          "invalidRuleMessages": "Years cannot exceed 50"
         }
       ],
       "linkedin_09_university_textfield": [
@@ -60,8 +70,8 @@
           "valid": "Chulalongkorn University",
           "invalid": "C",
           "invalidRuleMessages": "University must be at least 2 characters",
-          "atMin": "U",
-          "atMax": "King Mongkut's Institute of Technology Ladkrabang Phetchaburi Campus of Excellence"
+          "atMin": "A",
+          "atMax": "King Mongkut's Institute of Technology Ladkrabang International College of Advanced Technology"
         }
       ]
     }
@@ -180,10 +190,6 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
           "text": "University must be at least 2 characters",
           "exists": true
         },
@@ -298,7 +304,7 @@
       ],
       "asserts": [
         {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -408,7 +414,7 @@
           "exists": true
         },
         {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -535,10 +541,6 @@
       "asserts": [
         {
           "text": "Full name must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
           "exists": true
         },
         {
@@ -762,11 +764,7 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -1006,11 +1004,7 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -1136,10 +1130,6 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
           "byKey": "linkedin_01_expected_fail",
           "exists": true
         }
@@ -1254,7 +1244,7 @@
           "exists": true
         },
         {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -1502,11 +1492,7 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -1624,11 +1610,7 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
+          "text": "Years must be 0 or greater",
           "exists": true
         },
         {
@@ -3083,7 +3065,7 @@
       "tc": "edge_cases_empty_all_fields",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "submit with all fields empty → expect validation errors",
+      "description": "fullname: empty, email: empty, position: empty, company: empty, experience: empty, university: empty",
       "steps": [
         {
           "tap": {
@@ -3146,7 +3128,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "fill all text fields at maximum allowed length (atMax) → expect success",
+      "description": "fullname: atMax, email: atMax, position: atMax, company: atMax, experience: atMax, university: atMax",
       "steps": [
         {
           "enterText": {
@@ -3252,7 +3234,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "fill all text fields at minimum boundary (atMin) → expect validation errors",
+      "description": "fullname: atMin, email: atMin, position: atMin, company: atMin, experience: atMin, university: atMin",
       "steps": [
         {
           "enterText": {
@@ -3361,7 +3343,7 @@
           "exists": true
         },
         {
-          "text": "Company must be at least 2 characters",
+          "text": "Company is required",
           "exists": true
         },
         {

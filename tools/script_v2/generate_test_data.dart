@@ -1837,12 +1837,14 @@ class TestDataGenerator {
     }
 
     // เพิ่ม edge case ลง test cases
+    final emptyCombo = <String, String>{
+      for (final k in textKeys) k: 'empty',
+    };
     cases.add({
       'tc': 'edge_cases_empty_all_fields', // Test case ID
       'kind': 'failed', // คาดหวังว่าจะ fail
       'group': 'edge_cases', // Group name
-      'description':
-          'submit with all fields empty → expect validation errors',
+      'description': _buildDescription(emptyCombo, 'failed', [], [], emptyAsserts),
       'steps': emptySteps, // Steps (แค่กดปุ่ม submit)
       'asserts': emptyAsserts, // คาดหวังเห็น validation messages
     });
@@ -1992,12 +1994,15 @@ class TestDataGenerator {
         for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
       ];
 
+      final maxCombo = <String, String>{
+        for (final k in textKeys)
+          k: datasetsHasField(k, 'atMax') ? 'atMax' : 'valid',
+      };
       cases.add({
         'tc': 'edge_cases_boundary_at_max_length',
         'kind': 'success',
         'group': 'edge_cases',
-        'description':
-            'fill all text fields at maximum allowed length (atMax) → expect success',
+        'description': _buildDescription(maxCombo, 'success', [], [], maxAsserts),
         'steps': maxSteps,
         'asserts': maxAsserts,
       });
@@ -2096,12 +2101,15 @@ class TestDataGenerator {
         }
       }
 
+      final minCombo = <String, String>{
+        for (final k in textKeys)
+          k: datasetsHasField(k, 'atMin') ? 'atMin' : 'empty',
+      };
       cases.add({
         'tc': 'edge_cases_boundary_at_min_length',
         'kind': 'failed',
         'group': 'edge_cases',
-        'description':
-            'fill all text fields at minimum boundary (atMin) → expect validation errors',
+        'description': _buildDescription(minCombo, 'failed', [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
       });

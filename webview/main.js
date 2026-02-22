@@ -714,6 +714,26 @@ class WebUI {
     this.#el.outputLog.innerHTML = '';
   }
 
+  #getChipClass(value) {
+    if (value === 'valid' || value === 'checked') return 'val-success';
+    if (value === 'invalid' || value === 'unchecked') return 'val-error';
+    if (value === 'atMax') return 'val-primary';
+    if (value === 'atMin') return 'val-warning';
+    return 'val-neutral';
+  }
+
+  #renderDescription(description) {
+    if (!description) return '';
+    return description.split(', ').map(pair => {
+      const colonIdx = pair.indexOf(': ');
+      if (colonIdx === -1) return `<span class="desc-chip val-neutral"><span class="desc-chip-val">${pair}</span></span>`;
+      const field = pair.substring(0, colonIdx);
+      const value = pair.substring(colonIdx + 2);
+      const cls = this.#getChipClass(value);
+      return `<span class="desc-chip ${cls}"><span class="desc-chip-field">${field}</span><span class="desc-chip-val">${value}</span></span>`;
+    }).join('');
+  }
+
   #showTestSummary(summary) {
     if (!summary) {
       this.#el.testSummarySection.classList.add('hidden');
@@ -731,7 +751,7 @@ class WebUI {
       rowsHtml += `<tr>
             <td>${i + 1}</td>
             <td>${c.tc}</td>
-            <td class="desc-cell">${c.description || ''}</td>
+            <td class="desc-cell">${this.#renderDescription(c.description)}</td>
             <td class="result-cell" data-tc="${c.tc}"><span class="result-status">-</span></td>
         </tr>`;
     });

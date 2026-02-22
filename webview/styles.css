@@ -492,13 +492,48 @@ button {
 }
 
 .desc-cell {
-    max-width: 400px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
+    max-width: 480px;
+    line-height: 1.8;
 }
+
+.desc-chip {
+    display: inline-flex;
+    align-items: center;
+    margin: 2px 4px 2px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.desc-chip-field {
+    padding: 2px 5px;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 11px;
+    border-right: 1px solid var(--border-color);
+}
+
+.desc-chip-val {
+    padding: 2px 6px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.desc-chip.val-success { border-color: #c8e6c9; }
+.desc-chip.val-success .desc-chip-val { color: var(--accent-success); background: #f1f8f1; }
+
+.desc-chip.val-error { border-color: #ffcdd2; }
+.desc-chip.val-error .desc-chip-val { color: var(--accent-error); background: #fff5f5; }
+
+.desc-chip.val-primary { border-color: #bbdefb; }
+.desc-chip.val-primary .desc-chip-val { color: var(--accent-primary); background: #f0f7ff; }
+
+.desc-chip.val-warning { border-color: #ffe0b2; }
+.desc-chip.val-warning .desc-chip-val { color: var(--accent-warning); background: #fff8f0; }
+
+.desc-chip.val-neutral .desc-chip-val { color: var(--text-secondary); background: var(--bg-tertiary); }
 
 /* Result Status */
 .result-cell {
