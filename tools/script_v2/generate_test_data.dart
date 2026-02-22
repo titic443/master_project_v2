@@ -2037,7 +2037,7 @@ class TestDataGenerator {
     // =========================================================================
     // Text fields : กรอกด้วย atMin (ค่าที่ขอบต่ำสุด)
     // Non-text   : กรอกด้วย valid default (โฟกัสเฉพาะ text field boundaries)
-    // Expected   : failed (text fields ที่กรอก atMin จะ trigger validation)
+    // Expected   : success (atMin คือค่าต่ำสุดที่ valid)
 
     if (textKeys.isNotEmpty && endKey != null) {
       final minStepsByKey = buildNonTextDefaultSteps();
@@ -2056,74 +2056,11 @@ class TestDataGenerator {
 
       // -----------------------------------------------------------------------
       // สร้าง asserts สำหรับ atMin case
-      // โฟกัสเฉพาะ validation messages จาก text fields
-      // (ไม่รวม non-text field messages เพราะ non-text ถูกกรอกด้วย valid values)
+      // atMin คือค่าต่ำสุดที่ valid → expect success
       // -----------------------------------------------------------------------
-      final minAsserts = <Map<String, dynamic>>[];
-      final bDs =
-          (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
-
-      for (final key in textKeys) {
-        final arr = (bDs[key] as List?) ?? const [];
-        final first = arr.isNotEmpty ? arr[0] as Map? : null;
-        final atMinVal = first?['atMin']?.toString() ?? '';
-
-        if (atMinVal.isEmpty) {
-          // atMin = "" → triggers required message
-          final meta = _widgetMetaByKey(key);
-          final rules =
-              (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
-          for (final rule in rules) {
-            if (rule is! Map) continue;
-            final condition = rule['condition']?.toString() ?? '';
-            final msg = rule['message']?.toString() ?? '';
-            if (msg.isNotEmpty && _isEmptyCheckCondition(condition)) {
-              if (!minAsserts.any((a) => a['text'] == msg)) {
-                minAsserts.add({'text': msg, 'exists': true});
-              }
-              break;
-            }
-          }
-        } else {
-          // atMin = non-empty → หา validation message ที่ atMinVal จะ trigger
-          // ค้นจาก datasets pairs ก่อน (reliable ที่สุด)
-          bool foundInDatasets = false;
-          for (final pair in arr) {
-            if (pair is! Map) continue;
-            final inv = pair['invalid']?.toString() ?? '';
-            final msg = pair['invalidRuleMessages']?.toString() ?? '';
-            if (inv == atMinVal && msg.isNotEmpty && msg != 'general') {
-              if (!minAsserts.any((a) => a['text'] == msg)) {
-                minAsserts.add({'text': msg, 'exists': true});
-              }
-              foundInDatasets = true;
-              break;
-            }
-          }
-
-          // Fallback: ค้นจาก validatorRules ที่มี length < N
-          if (!foundInDatasets) {
-            final meta = _widgetMetaByKey(key);
-            final rules =
-                (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
-            for (final rule in rules) {
-              if (rule is! Map) continue;
-              final condition = rule['condition']?.toString() ?? '';
-              final msg = rule['message']?.toString() ?? '';
-              final m = RegExp(r'length\s*<\s*(\d+)').firstMatch(condition);
-              if (m != null) {
-                final minLen = int.tryParse(m.group(1)!) ?? 0;
-                if (atMinVal.length < minLen) {
-                  if (!minAsserts.any((a) => a['text'] == msg)) {
-                    minAsserts.add({'text': msg, 'exists': true});
-                  }
-                  break;
-                }
-              }
-            }
-          }
-        }
-      }
+      final minAsserts = <Map<String, dynamic>>[
+        for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
+      ];
 
       final minCombo = <String, String>{
         for (final k in textKeys)
@@ -2131,9 +2068,9 @@ class TestDataGenerator {
       };
       cases.add({
         'tc': 'edge_cases_boundary_at_min_length',
-        'kind': 'failed',
+        'kind': 'success',
         'group': 'edge_cases',
-        'description': _buildDescription(minCombo, 'failed', [], [], minAsserts),
+        'description': _buildDescription(minCombo, 'success', [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
       });
