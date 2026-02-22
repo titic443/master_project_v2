@@ -535,6 +535,9 @@ button {
 
 .desc-chip.val-neutral .desc-chip-val { color: var(--text-secondary); background: var(--bg-tertiary); }
 
+.desc-chip.val-data { border-color: #e0e0e0; }
+.desc-chip.val-data .desc-chip-val { color: var(--text-primary); background: #f9f9f9; font-weight: 500; }
+
 /* Result Status */
 .result-cell {
     white-space: nowrap;

@@ -715,11 +715,12 @@ class WebUI {
   }
 
   #getChipClass(value) {
-    if (value === 'valid' || value === 'checked') return 'val-success';
-    if (value === 'invalid' || value === 'unchecked') return 'val-error';
+    if (value === 'checked' || value === 'valid') return 'val-success';
+    if (value === 'unchecked' || value === 'invalid') return 'val-error';
     if (value === 'atMax') return 'val-primary';
     if (value === 'atMin') return 'val-warning';
-    return 'val-neutral';
+    if (value === '""') return 'val-neutral';
+    return 'val-data'; // actual input value
   }
 
   #renderDescription(description) {
