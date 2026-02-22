@@ -556,27 +556,28 @@ class TestDataGenerator {
 
         String value;
         if (raw == 'checked' || raw == 'unchecked') {
-          // checkbox: คงไว้เป็น label เพื่อ color coding ใน UI
+          // checkbox: ใช้ label ตรงๆ เพื่อ color coding ใน UI
           value = raw;
-        } else if (raw == 'empty') {
-          value = '""';
         } else if (raw == 'valid' || raw == 'invalid' ||
-            raw == 'atMax' || raw == 'atMin') {
+            raw == 'atMax' || raw == 'atMin' || raw == 'empty') {
           // resolve ค่าจริงจาก datasets[byKey][key][0]
+          // format: "label§actualValue" เพื่อให้ UI รู้จักสี
           final arr = (byKey[e.key] as List?) ?? const [];
-          final actual = arr.isNotEmpty && arr[0] is Map
-              ? (arr[0] as Map)[raw]?.toString() ?? ''
-              : '';
-          if (actual.isNotEmpty) {
-            // truncate ค่ายาวเกิน 28 ตัวอักษร
-            value = actual.length > 28
-                ? '${actual.substring(0, 28)}…'
-                : actual;
-          } else {
-            value = raw; // fallback: ใช้ label ถ้าไม่มี dataset
-          }
+          final actual = raw == 'empty'
+              ? ''
+              : (arr.isNotEmpty && arr[0] is Map
+                  ? (arr[0] as Map)[raw]?.toString() ?? ''
+                  : '');
+          final display = raw == 'empty'
+              ? '""'
+              : (actual.isNotEmpty
+                  ? (actual.length > 28
+                      ? '${actual.substring(0, 28)}…'
+                      : actual)
+                  : raw); // fallback label ถ้าไม่มี dataset
+          value = '$raw§$display';
         } else {
-          // radio/dropdown: ใช้ _shortValue เหมือนเดิม
+          // radio/dropdown: ใช้ _shortValue (ไม่มี label prefix)
           value = _shortValue(raw);
         }
         parts.add('$field: $value');

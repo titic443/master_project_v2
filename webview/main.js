@@ -714,13 +714,13 @@ class WebUI {
     this.#el.outputLog.innerHTML = '';
   }
 
-  #getChipClass(value) {
-    if (value === 'checked' || value === 'valid') return 'val-success';
-    if (value === 'unchecked' || value === 'invalid') return 'val-error';
-    if (value === 'atMax') return 'val-primary';
-    if (value === 'atMin') return 'val-warning';
-    if (value === '""') return 'val-neutral';
-    return 'val-data'; // actual input value
+  #getChipClass(label) {
+    if (label === 'valid' || label === 'checked') return 'val-success';
+    if (label === 'invalid' || label === 'unchecked') return 'val-error';
+    if (label === 'atMax') return 'val-primary';
+    if (label === 'atMin') return 'val-warning';
+    if (label === 'empty') return 'val-neutral';
+    return 'val-data'; // radio/dropdown actual values
   }
 
   #renderDescription(description) {
@@ -729,9 +729,13 @@ class WebUI {
       const colonIdx = pair.indexOf(': ');
       if (colonIdx === -1) return `<span class="desc-chip val-neutral"><span class="desc-chip-val">${pair}</span></span>`;
       const field = pair.substring(0, colonIdx);
-      const value = pair.substring(colonIdx + 2);
-      const cls = this.#getChipClass(value);
-      return `<span class="desc-chip ${cls}"><span class="desc-chip-field">${field}</span><span class="desc-chip-val">${value}</span></span>`;
+      const rawValue = pair.substring(colonIdx + 2);
+      // format "label§display" — label ใช้กำหนดสี, display ใช้แสดงค่าจริง
+      const sepIdx = rawValue.indexOf('§');
+      const label = sepIdx !== -1 ? rawValue.substring(0, sepIdx) : rawValue;
+      const display = sepIdx !== -1 ? rawValue.substring(sepIdx + 1) : rawValue;
+      const cls = this.#getChipClass(label);
+      return `<span class="desc-chip ${cls}"><span class="desc-chip-field">${field}</span><span class="desc-chip-val">${display}</span></span>`;
     }).join('');
   }
 
