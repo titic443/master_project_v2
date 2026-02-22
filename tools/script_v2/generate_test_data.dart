@@ -1848,6 +1848,266 @@ class TestDataGenerator {
     });
 
     // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // STEP 15b: สร้าง Edge Cases - Boundary Value Tests (atMin / atMax)
+    // ---------------------------------------------------------------------------
+    //
+    // สร้าง test cases สำหรับค่าขอบ โดยใช้ atMin และ atMax จาก datasets
+    //   - edge_cases_boundary_at_max_length : กรอกทุก text field ด้วยค่า atMax
+    //                                         + non-text fields ด้วยค่า valid default
+    //   - edge_cases_boundary_at_min_length : กรอกทุก text field ด้วยค่า atMin
+    //                                         + non-text fields ด้วยค่า valid default
+    //
+    // ถ้า field ไม่มี atMax ใน datasets → ใช้ valid value แทน
+    // ถ้า field ไม่มี atMin ใน datasets → ใช้ "" (empty) แทน
+    //
+    // Non-text widgets (Radio, Dropdown, required Checkbox) ถูกกรอกด้วยค่า valid
+    // เพื่อให้ boundary test โฟกัสเฉพาะ text field boundaries
+
+    // -------------------------------------------------------------------------
+    // Helper: ตรวจสอบว่า datasets มี field ที่ต้องการหรือไม่
+    // -------------------------------------------------------------------------
+    bool datasetsHasField(String fieldKey, String field) {
+      final ds =
+          (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+      if (!ds.containsKey(fieldKey)) return false;
+      final arr = ds[fieldKey];
+      if (arr is! List || arr.isEmpty) return false;
+      final first = arr[0];
+      return first is Map && first.containsKey(field);
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper: หา key แรกของแต่ละ radio group (เพื่อ select default option)
+    //
+    // จัดกลุ่มโดยใช้ sequence number ใน key (เช่น _08_ → group 8)
+    // คืน list ของ radio key แรกในแต่ละกลุ่ม
+    // -------------------------------------------------------------------------
+    List<String> boundaryFirstRadioKeys() {
+      final result = <String>[];
+      final seenSeqs = <int>{};
+      for (final rk in radioKeys) {
+        final seq = _extractSequence(rk);
+        if (seq >= 0 && !seenSeqs.contains(seq)) {
+          seenSeqs.add(seq);
+          result.add(rk);
+        } else if (seq < 0 && !result.contains(rk)) {
+          result.add(rk);
+        }
+      }
+      return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper: สร้าง stepsByKey สำหรับ non-text widgets (valid default values)
+    //
+    // Radio    → tap radio option แรกของแต่ละ group
+    // Dropdown → tap dropdown + select option แรก
+    // Required Checkbox → tap เพื่อ check
+    // -------------------------------------------------------------------------
+    Map<String, List<Map<String, dynamic>>> buildNonTextDefaultSteps() {
+      final stepsByKey = <String, List<Map<String, dynamic>>>{};
+
+      // Radio: เลือก option แรกของแต่ละ group
+      for (final rk in boundaryFirstRadioKeys()) {
+        stepsByKey[rk] = [
+          {'tap': {'byKey': rk}},
+          {'pump': true},
+        ];
+      }
+
+      // Dropdown: เลือก option แรกของแต่ละ dropdown
+      for (int i = 0; i < dropdownKeys.length; i++) {
+        final dk = dropdownKeys[i];
+        final mapping = i < dropdownValueToTextMaps.length
+            ? dropdownValueToTextMaps[i]
+            : <String, String>{};
+        final firstText =
+            mapping.values.isNotEmpty ? mapping.values.first : '';
+        if (firstText.isNotEmpty) {
+          stepsByKey[dk] = [
+            {'tap': {'byKey': dk}},
+            {'pumpAndSettle': true},
+            {'scrollAndTapText': firstText},
+            {'pumpAndSettle': true},
+          ];
+        }
+      }
+
+      // Required Checkbox: tap เพื่อ check (ไม่รวม optional checkboxes)
+      for (final ck in requiredCheckboxValidation.keys) {
+        stepsByKey[ck] = [
+          {'tap': {'byKey': ck}},
+          {'pump': true},
+        ];
+      }
+
+      return stepsByKey;
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper: เรียง steps ตาม widget order ใน manifest
+    // ใช้ sortedWidgets (เรียงตาม key alphabetically) เหมือน pairwise cases
+    // -------------------------------------------------------------------------
+    List<Map<String, dynamic>> buildOrderedSteps(
+        Map<String, List<Map<String, dynamic>>> stepsByKey) {
+      final sortedWidgets = List<Map<String, dynamic>>.from(widgets)
+        ..sort((a, b) => (a['key'] ?? '').toString()
+            .compareTo((b['key'] ?? '').toString()));
+      final steps = <Map<String, dynamic>>[];
+      for (final w in sortedWidgets) {
+        final k = (w['key'] ?? '').toString();
+        if (stepsByKey.containsKey(k)) steps.addAll(stepsByKey[k]!);
+      }
+      return steps;
+    }
+
+    // =========================================================================
+    // edge_cases_boundary_at_max_length
+    // =========================================================================
+    // Text fields : กรอกด้วย atMax (ค่าที่ maxLength)
+    // Non-text   : กรอกด้วย valid default เพื่อให้ form submit ได้
+    // Expected   : success
+
+    final hasAnyAtMax = textKeys.any((k) => datasetsHasField(k, 'atMax'));
+
+    if (hasAnyAtMax && endKey != null) {
+      final maxStepsByKey = buildNonTextDefaultSteps();
+
+      // เพิ่ม text field steps ด้วย atMax
+      for (final key in textKeys) {
+        final dsField = datasetsHasField(key, 'atMax') ? 'atMax' : 'valid';
+        final hasDs = datasetsHasField(key, dsField);
+        final enterStep = hasDs
+            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}}
+            : {'enterText': {'byKey': key, 'text': 'Test'}};
+        maxStepsByKey[key] = [enterStep, {'pump': true}];
+      }
+
+      final maxSteps = buildOrderedSteps(maxStepsByKey)
+        ..add({'tap': {'byKey': endKey}})
+        ..add({'pumpAndSettle': true});
+
+      final maxAsserts = <Map<String, dynamic>>[
+        for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
+      ];
+
+      cases.add({
+        'tc': 'edge_cases_boundary_at_max_length',
+        'kind': 'success',
+        'group': 'edge_cases',
+        'description':
+            'fill all text fields at maximum allowed length (atMax) → expect success',
+        'steps': maxSteps,
+        'asserts': maxAsserts,
+      });
+    }
+
+    // =========================================================================
+    // edge_cases_boundary_at_min_length
+    // =========================================================================
+    // Text fields : กรอกด้วย atMin (ค่าที่ขอบต่ำสุด)
+    // Non-text   : กรอกด้วย valid default (โฟกัสเฉพาะ text field boundaries)
+    // Expected   : failed (text fields ที่กรอก atMin จะ trigger validation)
+
+    if (textKeys.isNotEmpty && endKey != null) {
+      final minStepsByKey = buildNonTextDefaultSteps();
+
+      // เพิ่ม text field steps ด้วย atMin
+      for (final key in textKeys) {
+        final enterStep = datasetsHasField(key, 'atMin')
+            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}}
+            : {'enterText': {'byKey': key, 'text': ''}};
+        minStepsByKey[key] = [enterStep, {'pump': true}];
+      }
+
+      final minSteps = buildOrderedSteps(minStepsByKey)
+        ..add({'tap': {'byKey': endKey}})
+        ..add({'pumpAndSettle': true});
+
+      // -----------------------------------------------------------------------
+      // สร้าง asserts สำหรับ atMin case
+      // โฟกัสเฉพาะ validation messages จาก text fields
+      // (ไม่รวม non-text field messages เพราะ non-text ถูกกรอกด้วย valid values)
+      // -----------------------------------------------------------------------
+      final minAsserts = <Map<String, dynamic>>[];
+      final bDs =
+          (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+
+      for (final key in textKeys) {
+        final arr = (bDs[key] as List?) ?? const [];
+        final first = arr.isNotEmpty ? arr[0] as Map? : null;
+        final atMinVal = first?['atMin']?.toString() ?? '';
+
+        if (atMinVal.isEmpty) {
+          // atMin = "" → triggers required message
+          final meta = _widgetMetaByKey(key);
+          final rules =
+              (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+          for (final rule in rules) {
+            if (rule is! Map) continue;
+            final condition = rule['condition']?.toString() ?? '';
+            final msg = rule['message']?.toString() ?? '';
+            if (msg.isNotEmpty && _isEmptyCheckCondition(condition)) {
+              if (!minAsserts.any((a) => a['text'] == msg)) {
+                minAsserts.add({'text': msg, 'exists': true});
+              }
+              break;
+            }
+          }
+        } else {
+          // atMin = non-empty → หา validation message ที่ atMinVal จะ trigger
+          // ค้นจาก datasets pairs ก่อน (reliable ที่สุด)
+          bool foundInDatasets = false;
+          for (final pair in arr) {
+            if (pair is! Map) continue;
+            final inv = pair['invalid']?.toString() ?? '';
+            final msg = pair['invalidRuleMessages']?.toString() ?? '';
+            if (inv == atMinVal && msg.isNotEmpty && msg != 'general') {
+              if (!minAsserts.any((a) => a['text'] == msg)) {
+                minAsserts.add({'text': msg, 'exists': true});
+              }
+              foundInDatasets = true;
+              break;
+            }
+          }
+
+          // Fallback: ค้นจาก validatorRules ที่มี length < N
+          if (!foundInDatasets) {
+            final meta = _widgetMetaByKey(key);
+            final rules =
+                (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+            for (final rule in rules) {
+              if (rule is! Map) continue;
+              final condition = rule['condition']?.toString() ?? '';
+              final msg = rule['message']?.toString() ?? '';
+              final m = RegExp(r'length\s*<\s*(\d+)').firstMatch(condition);
+              if (m != null) {
+                final minLen = int.tryParse(m.group(1)!) ?? 0;
+                if (atMinVal.length < minLen) {
+                  if (!minAsserts.any((a) => a['text'] == msg)) {
+                    minAsserts.add({'text': msg, 'exists': true});
+                  }
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      cases.add({
+        'tc': 'edge_cases_boundary_at_min_length',
+        'kind': 'failed',
+        'group': 'edge_cases',
+        'description':
+            'fill all text fields at minimum boundary (atMin) → expect validation errors',
+        'steps': minSteps,
+        'asserts': minAsserts,
+      });
+    }
+
+    // ---------------------------------------------------------------------------
     // STEP 16: เขียน Output File
     // ---------------------------------------------------------------------------
 
