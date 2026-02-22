@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: linkedin_mongodb
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: linkedin_profiles
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build: ./backend/functions
+    container_name: linkedin_backend
+    restart: unless-stopped
+    ports:
+      - '8000:8000'
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/linkedin_profiles
+      PORT: 8000
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo_data:
