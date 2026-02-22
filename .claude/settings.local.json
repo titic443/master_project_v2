@@ -20,7 +20,8 @@
       "Bash(git commit:*)",
       "Bash(python3:*)",
       "Bash(git checkout:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(git -C /Users/70009215/Desktop/101/master_project_v2 log --oneline -5)"
     ],
     "deny": [],
     "ask": []

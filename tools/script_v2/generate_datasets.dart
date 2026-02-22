@@ -354,13 +354,25 @@ class DatasetGenerator {
 
       // AI return array of pairs: [{valid, invalid, invalidRuleMessages}, ...]
       if (aiEntry is List) {
-        // ดึง maxLength constraint (default 50)
-        final maxLen = meta['maxLength'] as int? ?? 50;
+        // ดึง maxLength constraint จาก 2 sources:
+        //   1. inputFormatters.lengthLimit (มี priority สูงกว่า)
+        //   2. maxLength property โดยตรง
+        //   3. default = 50
+        int? maxLen = meta['maxLength'] as int?;
+        final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
+        for (final fmt in fmts) {
+          if ((fmt['type'] ?? '') == 'lengthLimit' && fmt['max'] is int) {
+            maxLen = fmt['max'] as int;
+            break;
+          }
+        }
+        maxLen ??= 50;
 
         // สร้าง list เก็บ pairs ที่ processed แล้ว
         final pairs = <Map<String, dynamic>>[];
 
         // วนลูปแต่ละ pair จาก AI
+        bool isFirstPair = true;
         for (final pair in aiEntry) {
           // ข้าม entry ที่ไม่ใช่ Map
           if (pair is! Map) continue;
@@ -381,12 +393,33 @@ class DatasetGenerator {
           // หมายเหตุ: invalid value ไม่ตัด
           // เพราะอาจต้องการทดสอบกรณี exceed maxLength
 
-          // เพิ่ม pair ลง list
-          pairs.add({
+          // สร้าง pair entry
+          final pairEntry = <String, dynamic>{
             'valid': validVal,
             'invalid': invalidVal,
             'invalidRuleMessages': msg,
-          });
+          };
+
+          // เพิ่ม atMin และ atMax เฉพาะ pair แรก
+          if (isFirstPair) {
+            // atMin: ค่าที่ขอบต่ำสุด (default = "" ถ้า AI ไม่ได้ระบุ)
+            final atMinVal = pair['atMin']?.toString() ?? '';
+            pairEntry['atMin'] = atMinVal;
+
+            // atMax: ค่าที่ขอบสูงสุด (ความยาว = maxLength)
+            // ถ้า AI ไม่ได้ระบุ ใช้ valid value แทน
+            var atMaxVal = pair['atMax']?.toString() ?? validVal;
+            // ตัดถ้าเกิน maxLength
+            if (atMaxVal.length > maxLen) {
+              atMaxVal = atMaxVal.substring(0, maxLen);
+            }
+            pairEntry['atMax'] = atMaxVal;
+
+            isFirstPair = false;
+          }
+
+          // เพิ่ม pair ลง list
+          pairs.add(pairEntry);
         }
 
         // บันทึกผลลัพธ์
@@ -511,7 +544,8 @@ class DatasetGenerator {
       '4. For fields WITH validatorRules: generate pairs based on rules (skip isEmpty/null rules)',
       '5. For fields WITHOUT validatorRules: generate 1 realistic valid + 1 common invalid',
       '6. CRITICAL: Invalid values MUST pass inputFormatters but represent bad data',
-      '7. Output valid JSON',
+      '7. Also generate boundary values: atMin and atMax for each field',
+      '8. Output valid JSON',
       '',
 
       // === EXECUTION: ขั้นตอนการทำงาน ===
@@ -527,24 +561,38 @@ class DatasetGenerator {
       '  3. Generate common invalid value (e.g., too short, wrong format)',
       '  4. Use "general" as invalidRuleMessages',
       '',
+      'For boundary values (add to FIRST pair only):',
+      '  atMin: value at the minimum boundary',
+      '    - Default: "" (empty string)',
+      '    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")',
+      '    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")',
+      '  atMax: value at the maximum length boundary',
+      '    - If field has maxLength (from inputFormatters.lengthLimit or maxLength property):',
+      '        generate a realistic value whose length == maxLength',
+      '    - If field has no maxLength: use same as valid value',
+      '    - MUST respect inputFormatters and be a realistic value (not just repeated chars)',
+      '    - For email fields at max length: pad local-part with chars to reach maxLength',
+      '    - For digit-only fields: use digits that reach maxLength',
+      '',
       'Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}',
-      'Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"..."}',
+      'Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}',
+      '(atMin and atMax are ONLY in the FIRST pair of each field)',
       '',
 
       // === EXAMPLE: ตัวอย่าง ===
-      'Example 1 (field with rules):',
-      'Input: {"key":"firstname","meta":{"validatorRules":[',
+      'Example 1 (field with rules, maxLength=100):',
+      'Input: {"key":"firstname","meta":{"inputFormatters":[{"type":"lengthLimit","max":100}],"validatorRules":[',
       '  {"condition":"value.isEmpty","message":"Required"},',
       '  {"condition":"value.length < 2","message":"Min 2 chars"}]}}',
-      'Output: {"firstname":[{"valid":"Alice","invalid":"J","invalidRuleMessages":"Min 2 chars"}]}',
+      'Output: {"firstname":[{"valid":"Alice","invalid":"J","invalidRuleMessages":"Min 2 chars","atMin":"A","atMax":"Alice Johnson Wongsuwan Charoenpong Panyanart Srisomboon Boonmee Suk"}]}',
       '',
-      'Example 2 (field without rules):',
-      'Input: {"key":"phone_textfield","meta":{"inputFormatters":[{"type":"digitsOnly"}]}}',
-      'Output: {"phone_textfield":[{"valid":"0812345678","invalid":"081","invalidRuleMessages":"general"}]}',
+      'Example 2 (field without rules, digitsOnly, maxLength=10):',
+      'Input: {"key":"phone_textfield","meta":{"inputFormatters":[{"type":"digitsOnly"},{"type":"lengthLimit","max":10}]}}',
+      'Output: {"phone_textfield":[{"valid":"0812345678","invalid":"081","invalidRuleMessages":"general","atMin":"","atMax":"0812345678"}]}',
       '',
-      'Example 3 (name field without rules):',
+      'Example 3 (name field without rules, no maxLength):',
       'Input: {"key":"nickname_textfield","meta":{}}',
-      'Output: {"nickname_textfield":[{"valid":"Johnny","invalid":"X","invalidRuleMessages":"general"}]}',
+      'Output: {"nickname_textfield":[{"valid":"Johnny","invalid":"X","invalidRuleMessages":"general","atMin":"","atMax":"Johnny"}]}',
       '',
 
       // === STYLE: รูปแบบ output ===
