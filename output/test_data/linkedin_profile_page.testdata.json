@@ -3250,7 +3250,7 @@
     },
     {
       "tc": "edge_cases_boundary_at_min_length",
-      "kind": "failed",
+      "kind": "success",
       "group": "edge_cases",
       "description": "fullname: atMin§A, email: atMin§atMin, position: atMin§A, company: atMin§A, experience: atMin§atMin, university: atMin§A",
       "steps": [
@@ -3349,27 +3349,7 @@
       ],
       "asserts": [
         {
-          "text": "Full name must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Email is required",
-          "exists": true
-        },
-        {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years of experience is required",
-          "exists": true
-        },
-        {
-          "text": "University must be at least 2 characters",
+          "byKey": "linkedin_01_expected_success",
           "exists": true
         }
       ]

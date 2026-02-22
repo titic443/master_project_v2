@@ -6,11 +6,13 @@ import 'cubit/product_cubit.dart';
 import 'cubit/employee_cubit.dart';
 import 'cubit/rider_cubit.dart';
 import 'cubit/linkedin_cubit.dart';
+import 'cubit/linkedin_search_cubit.dart';
 import 'demos/customer_details_page.dart';
 import 'demos/product_registration_page.dart';
 import 'demos/employee_survey_page.dart';
 import 'demos/rider_registration_page.dart';
 import 'demos/linkedin_profile_page.dart';
+import 'demos/linkedin_search_page.dart';
 import 'widgets/switch_demo_page.dart';
 import 'widgets/slider_demo_page.dart';
 import 'widgets/segmented_button_demo_page.dart';
@@ -136,6 +138,21 @@ class HomePage extends StatelessWidget {
                   BlocProvider(
                     create: (_) => LinkedinCubit(),
                     child: const LinkedinProfilePage(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFormCard(
+                context,
+                title: '6. LinkedIn Profile Search',
+                description: 'Search existing profiles by name or email',
+                icon: Icons.manage_search,
+                color: Colors.deepPurple,
+                onTap: () => _navigateToPage(
+                  context,
+                  BlocProvider(
+                    create: (_) => LinkedinSearchCubit(),
+                    child: const LinkedinSearchPage(),
                   ),
                 ),
               ),

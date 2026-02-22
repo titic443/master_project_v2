@@ -140,6 +140,24 @@ async def list_profiles():
     return {"profiles": profiles, "total": len(profiles)}
 
 
+@app.get("/api/demo/linkedin/search")
+async def search_profiles(email: Optional[str] = None, name: Optional[str] = None):
+    """Search profiles by email and/or name (case-insensitive, partial match)"""
+    if not email and not name:
+        raise HTTPException(status_code=400, detail="Please provide email or name to search")
+    conditions = []
+    if email:
+        conditions.append({"email": {"$regex": email, "$options": "i"}})
+    if name:
+        conditions.append({"fullName": {"$regex": name, "$options": "i"}})
+    query = {"$or": conditions} if len(conditions) > 1 else conditions[0]
+    profiles = []
+    async for doc in db.collection.find(query).sort("_id", -1):
+        doc["id"] = str(doc.pop("_id"))
+        profiles.append(doc)
+    return {"profiles": profiles, "total": len(profiles)}
+
+
 @app.get("/api/demo/linkedin/{profile_id}")
 async def get_profile(profile_id: str):
     """Get a single profile by ID"""
