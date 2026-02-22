@@ -541,21 +541,44 @@ class TestDataGenerator {
     }
 
     /// สร้าง description สำหรับ test case
-    /// แสดงทุก field พร้อมค่าที่ใช้ test เช่น
-    ///   "fullname: valid, email: invalid, education: master, ..."
+    /// แสดงทุก field พร้อมค่าที่ใช้ test จริงๆ เช่น
+    ///   "fullname: Alice, email: bad@email, education: master, ..."
     String _buildDescription(Map<String, String> combo, String kind,
         List<String> invalidFields, List<String> uncheckedRequired,
         List<Map<String, dynamic>> asserts) {
       final parts = <String>[];
+      final byKey =
+          (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+
       for (final e in combo.entries) {
         final field = _shortFieldName(e.key);
         final raw = e.value;
-        // ค่า valid/invalid/checked/unchecked ใช้ตรงๆ
-        // ค่าอื่น (radio/dropdown) ย่อให้สั้น
-        final value = (raw == 'valid' || raw == 'invalid' ||
-                raw == 'checked' || raw == 'unchecked')
-            ? raw
-            : _shortValue(raw);
+
+        String value;
+        if (raw == 'checked' || raw == 'unchecked') {
+          // checkbox: คงไว้เป็น label เพื่อ color coding ใน UI
+          value = raw;
+        } else if (raw == 'empty') {
+          value = '""';
+        } else if (raw == 'valid' || raw == 'invalid' ||
+            raw == 'atMax' || raw == 'atMin') {
+          // resolve ค่าจริงจาก datasets[byKey][key][0]
+          final arr = (byKey[e.key] as List?) ?? const [];
+          final actual = arr.isNotEmpty && arr[0] is Map
+              ? (arr[0] as Map)[raw]?.toString() ?? ''
+              : '';
+          if (actual.isNotEmpty) {
+            // truncate ค่ายาวเกิน 28 ตัวอักษร
+            value = actual.length > 28
+                ? '${actual.substring(0, 28)}…'
+                : actual;
+          } else {
+            value = raw; // fallback: ใช้ label ถ้าไม่มี dataset
+          }
+        } else {
+          // radio/dropdown: ใช้ _shortValue เหมือนเดิม
+          value = _shortValue(raw);
+        }
         parts.add('$field: $value');
       }
       if (parts.isEmpty) return kind == 'failed' ? 'expect failure' : 'all valid';
