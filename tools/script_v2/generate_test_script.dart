@@ -1312,6 +1312,15 @@ class TestScriptGenerator {
             }
             if (!nextIsPump) ib.writeln('        await tester.pump();');
           }
+          // scrollAndTapText — select dropdown item after dropdown is opened
+          else if (s.containsKey('scrollAndTapText')) {
+            final txt = utils.dartEscape(s['scrollAndTapText'].toString());
+            ib
+              ..writeln(
+                  "        await tester.ensureVisible(find.text('$txt').last);")
+              ..writeln("        await tester.tap(find.text('$txt').last);")
+              ..writeln('        await tester.pumpAndSettle();');
+          }
           // pumpAndSettle
           else if (s.containsKey('pumpAndSettle')) {
             ib.writeln('        await tester.pumpAndSettle();');
