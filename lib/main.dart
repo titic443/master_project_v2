@@ -5,10 +5,14 @@ import 'cubit/linkedin_cubit.dart';
 import 'cubit/linkedin_search_cubit.dart';
 import 'cubit/job_post_cubit.dart';
 import 'cubit/job_search_cubit.dart';
+import 'cubit/property_post_cubit.dart';
+import 'cubit/property_search_cubit.dart';
 import 'demos/linkedin_profile_page.dart';
 import 'demos/linkedin_search_page.dart';
 import 'demos/job_post_page.dart';
 import 'demos/job_search_page.dart';
+import 'demos/property_post_page.dart';
+import 'demos/property_search_page.dart';
 
 void main() => runApp(const DemoApp());
 
@@ -122,6 +126,47 @@ class HomePage extends StatelessWidget {
                   BlocProvider(
                     create: (_) => JobSearchCubit(),
                     child: const JobSearchPage(),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // ── Real Estate ─────────────────────────────────────────────
+              _AppGroupHeader(
+                title: 'Real Estate',
+                icon: Icons.holiday_village_outlined,
+                color: Colors.deepPurple,
+              ),
+              const SizedBox(height: 12),
+              _buildCard(
+                context,
+                title: 'List a Property',
+                description:
+                    'Post a property listing with full details and pricing',
+                icon: Icons.home_work_outlined,
+                color: Colors.deepPurple,
+                onTap: () => _go(
+                  context,
+                  BlocProvider(
+                    create: (_) => PropertyPostCubit(),
+                    child: const PropertyPostPage(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildCard(
+                context,
+                title: 'Find Properties',
+                description:
+                    'Search by location, type, price, bedrooms, area and more',
+                icon: Icons.search,
+                color: Colors.deepPurple,
+                onTap: () => _go(
+                  context,
+                  BlocProvider(
+                    create: (_) => PropertySearchCubit(),
+                    child: const PropertySearchPage(),
                   ),
                 ),
               ),

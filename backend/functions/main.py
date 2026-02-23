@@ -30,6 +30,7 @@ class Database:
     client: AsyncIOMotorClient = None
     collection = None
     jobs_collection = None
+    properties_collection = None
 
 
 db = Database()
@@ -41,6 +42,7 @@ async def lifespan(app: FastAPI):
     db.client = AsyncIOMotorClient(settings.mongo_uri)
     db.collection = db.client.get_default_database()["profiles"]
     db.jobs_collection = db.client.get_default_database()["jobs"]
+    db.properties_collection = db.client.get_default_database()["properties"]
     print(f"✅ Connected to MongoDB: {settings.mongo_uri}")
     yield
     # Shutdown
@@ -265,6 +267,91 @@ async def list_jobs():
         doc["id"] = str(doc.pop("_id"))
         jobs.append(doc)
     return {"jobs": jobs, "total": len(jobs)}
+
+
+# ─── Real Estate Schemas ──────────────────────────────────────────────────────
+
+class PropertyIn(BaseModel):
+    title: str = Field(..., min_length=5, max_length=150)
+    propertyType: Literal["Condo", "House", "Townhouse", "Land", "Commercial"]
+    location: str = Field(..., min_length=2, max_length=100)
+    district: str = Field(..., min_length=2, max_length=100)
+    price: int = Field(..., ge=100_000, le=1_000_000_000)
+    bedrooms: Optional[Literal["Studio", "1", "2", "3", "4+"]] = None
+    bathrooms: Optional[Literal["1", "2", "3", "4+"]] = None
+    areaSqm: float = Field(..., ge=10, le=100_000)
+    floor: str = Field(..., min_length=1, max_length=50)
+    isFurnished: bool = False
+    description: str = Field(..., min_length=20, max_length=5000)
+    contactName: str = Field(..., min_length=2, max_length=100)
+
+
+# ─── Real Estate Routes ───────────────────────────────────────────────────────
+
+@app.post("/api/demo/properties", response_model=ApiResponse)
+async def post_property(prop: PropertyIn):
+    """Create a new property listing"""
+    doc = prop.model_dump()
+    result = await db.properties_collection.insert_one(doc)
+    print(f"📥 Property saved: {result.inserted_id}")
+    return ApiResponse(message="Property listed successfully", code=200)
+
+
+@app.get("/api/demo/properties/search")
+async def search_properties(
+    location: Optional[str] = None,
+    property_type: Optional[str] = None,
+    bedrooms: Optional[str] = None,
+    min_price: Optional[int] = None,
+    max_price: Optional[int] = None,
+    min_area: Optional[float] = None,
+    is_furnished: Optional[bool] = None,
+):
+    """Search property listings — all params optional, at least one required"""
+    conditions = []
+
+    if location:
+        conditions.append({
+            "$or": [
+                {"location": {"$regex": location, "$options": "i"}},
+                {"district": {"$regex": location, "$options": "i"}},
+            ]
+        })
+    if property_type:
+        conditions.append({"propertyType": property_type})
+    if bedrooms:
+        conditions.append({"bedrooms": bedrooms})
+    if min_price is not None:
+        conditions.append({"price": {"$gte": min_price}})
+    if max_price is not None:
+        conditions.append({"price": {"$lte": max_price}})
+    if min_area is not None:
+        conditions.append({"areaSqm": {"$gte": min_area}})
+    if is_furnished is not None:
+        conditions.append({"isFurnished": is_furnished})
+
+    if not conditions:
+        raise HTTPException(
+            status_code=400,
+            detail="At least one search filter is required",
+        )
+
+    query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
+    props = []
+    async for doc in db.properties_collection.find(query).sort("_id", -1).limit(50):
+        doc["id"] = str(doc.pop("_id"))
+        props.append(doc)
+    return {"properties": props, "total": len(props)}
+
+
+@app.get("/api/demo/properties")
+async def list_properties():
+    """List all property listings"""
+    props = []
+    async for doc in db.properties_collection.find().sort("_id", -1):
+        doc["id"] = str(doc.pop("_id"))
+        props.append(doc)
+    return {"properties": props, "total": len(props)}
 
 
 # ─── Entrypoint ───────────────────────────────────────────────────────────────
