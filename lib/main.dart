@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'cubit/customer_cubit.dart';
-import 'cubit/product_cubit.dart';
-import 'cubit/employee_cubit.dart';
-import 'cubit/rider_cubit.dart';
 import 'cubit/linkedin_cubit.dart';
 import 'cubit/linkedin_search_cubit.dart';
 import 'cubit/job_post_cubit.dart';
 import 'cubit/job_search_cubit.dart';
-import 'demos/customer_details_page.dart';
-import 'demos/product_registration_page.dart';
-import 'demos/employee_survey_page.dart';
-import 'demos/rider_registration_page.dart';
 import 'demos/linkedin_profile_page.dart';
 import 'demos/linkedin_search_page.dart';
 import 'demos/job_post_page.dart';
 import 'demos/job_search_page.dart';
-import 'widgets/switch_demo_page.dart';
-import 'widgets/slider_demo_page.dart';
-import 'widgets/segmented_button_demo_page.dart';
-import 'widgets/chip_demo_page.dart';
-import 'widgets/date_picker_demo_page.dart';
 
 void main() => runApp(const DemoApp());
 
@@ -31,7 +18,7 @@ class DemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Form Demos',
+      title: 'Demo Apps',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
@@ -49,7 +36,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Form Demos',
+          'Demo Apps',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -58,86 +45,24 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 20),
-              const Text(
-                'Select a Demo to Explore',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 40),
-              _buildFormCard(
-                context,
-                title: '1. Customer Details Form',
-                description: 'Customer registration with personal information',
-                icon: Icons.person_add,
-                color: Colors.blue,
-                onTap: () => _navigateToPage(
-                  context,
-                  BlocProvider(
-                    create: (_) => CustomerCubit(),
-                    child: const CustomerDetailsPage(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildFormCard(
-                context,
-                title: '2. Product Registration Form',
-                description: 'Register new products with SKU and pricing',
-                icon: Icons.inventory_2,
-                color: Colors.green,
-                onTap: () => _navigateToPage(
-                  context,
-                  BlocProvider(
-                    create: (_) => ProductCubit(),
-                    child: const ProductRegistrationPage(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildFormCard(
-                context,
-                title: '3. Employee Survey Form',
-                description: 'Employee satisfaction survey and feedback',
-                icon: Icons.poll,
-                color: Colors.orange,
-                onTap: () => _navigateToPage(
-                  context,
-                  BlocProvider(
-                    create: (_) => EmployeeCubit(),
-                    child: const EmployeeSurveyPage(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildFormCard(
-                context,
-                title: '4. Rider Registration Form',
-                description: 'Register as a delivery rider',
-                icon: Icons.delivery_dining,
-                color: Colors.teal,
-                onTap: () => _navigateToPage(
-                  context,
-                  BlocProvider(
-                    create: (_) => RiderCubit(),
-                    child: const RiderRegistrationPage(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildFormCard(
-                context,
-                title: '5. LinkedIn Profile Registration',
-                description: 'Register your professional profile',
+
+              // ── LinkedIn ────────────────────────────────────────────────
+              _AppGroupHeader(
+                title: 'LinkedIn',
                 icon: Icons.work,
                 color: Colors.indigo,
-                onTap: () => _navigateToPage(
+              ),
+              const SizedBox(height: 12),
+              _buildCard(
+                context,
+                title: 'LinkedIn Profile Registration',
+                description: 'Register your professional profile',
+                icon: Icons.person_add_outlined,
+                color: Colors.indigo,
+                onTap: () => _go(
                   context,
                   BlocProvider(
                     create: (_) => LinkedinCubit(),
@@ -145,14 +70,14 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              _buildFormCard(
+              const SizedBox(height: 12),
+              _buildCard(
                 context,
-                title: '6. LinkedIn Profile Search',
-                description: 'Search existing profiles by name or email',
+                title: 'LinkedIn Profile Search',
+                description: 'Search profiles by name or email',
                 icon: Icons.manage_search,
-                color: Colors.deepPurple,
-                onTap: () => _navigateToPage(
+                color: Colors.indigo,
+                onTap: () => _go(
                   context,
                   BlocProvider(
                     create: (_) => LinkedinSearchCubit(),
@@ -160,14 +85,23 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              _buildFormCard(
+
+              const SizedBox(height: 32),
+
+              // ── Job Board ───────────────────────────────────────────────
+              _AppGroupHeader(
+                title: 'Job Board',
+                icon: Icons.work_history_outlined,
+                color: Colors.deepOrange,
+              ),
+              const SizedBox(height: 12),
+              _buildCard(
                 context,
-                title: '7. Post a Job',
+                title: 'Post a Job',
                 description: 'Create a job listing with full position details',
                 icon: Icons.post_add,
                 color: Colors.deepOrange,
-                onTap: () => _navigateToPage(
+                onTap: () => _go(
                   context,
                   BlocProvider(
                     create: (_) => JobPostCubit(),
@@ -175,15 +109,15 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              _buildFormCard(
+              const SizedBox(height: 12),
+              _buildCard(
                 context,
-                title: '8. Find Jobs',
+                title: 'Find Jobs',
                 description:
-                    'Search job listings by keyword, location, salary and more',
+                    'Search listings by keyword, location, salary and more',
                 icon: Icons.manage_search,
-                color: Colors.orange,
-                onTap: () => _navigateToPage(
+                color: Colors.deepOrange,
+                onTap: () => _go(
                   context,
                   BlocProvider(
                     create: (_) => JobSearchCubit(),
@@ -191,63 +125,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
-              const Divider(thickness: 2),
-              const SizedBox(height: 20),
-              const Text(
-                'Widget Demos',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildFormCard(
-                context,
-                title: 'Switch Demo',
-                description: 'Toggle switches for settings (on/off)',
-                icon: Icons.toggle_on,
-                color: Colors.teal,
-                onTap: () => _navigateToPage(context, const SwitchDemoPage()),
-              ),
-              const SizedBox(height: 12),
-              _buildFormCard(
-                context,
-                title: 'Slider Demo',
-                description: 'Adjustable sliders for numeric values',
-                icon: Icons.tune,
-                color: Colors.deepPurple,
-                onTap: () => _navigateToPage(context, const SliderDemoPage()),
-              ),
-              const SizedBox(height: 12),
-              _buildFormCard(
-                context,
-                title: 'SegmentedButton Demo',
-                description: 'Material 3 segmented button selections',
-                icon: Icons.view_agenda,
-                color: Colors.indigo,
-                onTap: () => _navigateToPage(context, const SegmentedButtonDemoPage()),
-              ),
-              const SizedBox(height: 12),
-              _buildFormCard(
-                context,
-                title: 'Chip Demo',
-                description: 'Choice, Filter, and Input chips',
-                icon: Icons.label,
-                color: Colors.pink,
-                onTap: () => _navigateToPage(context, const ChipDemoPage()),
-              ),
-              const SizedBox(height: 12),
-              _buildFormCard(
-                context,
-                title: 'DatePicker Demo',
-                description: 'Date and time picker dialogs',
-                icon: Icons.calendar_today,
-                color: Colors.red,
-                onTap: () => _navigateToPage(context, const DatePickerDemoPage()),
-              ),
+
+              const SizedBox(height: 32),
             ],
           ),
         ),
@@ -255,7 +134,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildFormCard(
+  Widget _buildCard(
     BuildContext context, {
     required String title,
     required String description,
@@ -264,27 +143,24 @@ class HomePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Card(
-      elevation: 4,
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(18.0),
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  color: color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(
-                  icon,
-                  size: 32,
-                  color: color,
-                ),
+                child: Icon(icon, size: 28, color: color),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,26 +168,19 @@ class HomePage extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       description,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                   ],
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 20,
-                color: Colors.grey[400],
-              ),
+              Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
             ],
           ),
         ),
@@ -319,11 +188,39 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _navigateToPage(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => page),
-    );
+  void _go(BuildContext context, Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => page));
   }
 }
 
+class _AppGroupHeader extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
+
+  const _AppGroupHeader({
+    required this.title,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 20, color: color),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Expanded(child: Divider()),
+      ],
+    );
+  }
+}
