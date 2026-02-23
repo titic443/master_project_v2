@@ -5,7 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings
 from bson import ObjectId
 import uvicorn
@@ -29,6 +29,7 @@ settings = Settings()
 class Database:
     client: AsyncIOMotorClient = None
     collection = None
+    jobs_collection = None
 
 
 db = Database()
@@ -39,6 +40,7 @@ async def lifespan(app: FastAPI):
     # Startup
     db.client = AsyncIOMotorClient(settings.mongo_uri)
     db.collection = db.client.get_default_database()["profiles"]
+    db.jobs_collection = db.client.get_default_database()["jobs"]
     print(f"✅ Connected to MongoDB: {settings.mongo_uri}")
     yield
     # Shutdown
@@ -119,6 +121,28 @@ class ApiResponse(BaseModel):
     code: int
 
 
+# ─── Job Board Schemas ────────────────────────────────────────────────────────
+
+class JobIn(BaseModel):
+    title: str = Field(..., min_length=3, max_length=100)
+    company: str = Field(..., min_length=2, max_length=100)
+    location: str = Field(..., min_length=2, max_length=100)
+    category: Literal["IT & Tech", "Finance", "Marketing", "Engineering", "Healthcare", "Education"]
+    employmentType: Literal["Full-time", "Part-time", "Contract", "Freelance", "Internship"]
+    experienceLevel: Literal["Entry Level", "Junior", "Mid-Level", "Senior"]
+    salaryMin: int = Field(..., ge=0, le=10_000_000)
+    salaryMax: int = Field(..., ge=0, le=10_000_000)
+    description: str = Field(..., min_length=20, max_length=5000)
+    skills: str = Field(..., min_length=2, max_length=500)
+    isRemote: bool = False
+
+    @model_validator(mode="after")
+    def salary_range_valid(self) -> "JobIn":
+        if self.salaryMax < self.salaryMin:
+            raise ValueError("Max salary must be >= min salary")
+        return self
+
+
 # ─── Routes ───────────────────────────────────────────────────────────────────
 
 @app.post("/api/demo/linkedin", response_model=ApiResponse)
@@ -175,6 +199,72 @@ async def delete_profile(profile_id: str):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Profile not found")
     return ApiResponse(message="Deleted", code=200)
+
+
+# ─── Job Board Routes ─────────────────────────────────────────────────────────
+
+@app.post("/api/demo/jobs", response_model=ApiResponse)
+async def post_job(job: JobIn):
+    """Post a new job listing"""
+    doc = job.model_dump()
+    result = await db.jobs_collection.insert_one(doc)
+    print(f"📥 Job saved: {result.inserted_id}")
+    return ApiResponse(message="Job posted successfully", code=200)
+
+
+@app.get("/api/demo/jobs/search")
+async def search_jobs(
+    keyword: Optional[str] = None,
+    location: Optional[str] = None,
+    category: Optional[str] = None,
+    employment_type: Optional[str] = None,
+    salary_min: Optional[int] = None,
+    is_remote: Optional[bool] = None,
+):
+    """Search jobs — all params optional, at least one required"""
+    conditions = []
+
+    if keyword:
+        conditions.append({
+            "$or": [
+                {"title": {"$regex": keyword, "$options": "i"}},
+                {"skills": {"$regex": keyword, "$options": "i"}},
+                {"description": {"$regex": keyword, "$options": "i"}},
+            ]
+        })
+    if location:
+        conditions.append({"location": {"$regex": location, "$options": "i"}})
+    if category:
+        conditions.append({"category": category})
+    if employment_type:
+        conditions.append({"employmentType": employment_type})
+    if salary_min is not None:
+        conditions.append({"salaryMax": {"$gte": salary_min}})
+    if is_remote is not None:
+        conditions.append({"isRemote": is_remote})
+
+    if not conditions:
+        raise HTTPException(
+            status_code=400,
+            detail="At least one search filter is required",
+        )
+
+    query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
+    jobs = []
+    async for doc in db.jobs_collection.find(query).sort("_id", -1).limit(50):
+        doc["id"] = str(doc.pop("_id"))
+        jobs.append(doc)
+    return {"jobs": jobs, "total": len(jobs)}
+
+
+@app.get("/api/demo/jobs")
+async def list_jobs():
+    """List all job listings"""
+    jobs = []
+    async for doc in db.jobs_collection.find().sort("_id", -1):
+        doc["id"] = str(doc.pop("_id"))
+        jobs.append(doc)
+    return {"jobs": jobs, "total": len(jobs)}
 
 
 # ─── Entrypoint ───────────────────────────────────────────────────────────────

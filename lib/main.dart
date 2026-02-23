@@ -7,12 +7,16 @@ import 'cubit/employee_cubit.dart';
 import 'cubit/rider_cubit.dart';
 import 'cubit/linkedin_cubit.dart';
 import 'cubit/linkedin_search_cubit.dart';
+import 'cubit/job_post_cubit.dart';
+import 'cubit/job_search_cubit.dart';
 import 'demos/customer_details_page.dart';
 import 'demos/product_registration_page.dart';
 import 'demos/employee_survey_page.dart';
 import 'demos/rider_registration_page.dart';
 import 'demos/linkedin_profile_page.dart';
 import 'demos/linkedin_search_page.dart';
+import 'demos/job_post_page.dart';
+import 'demos/job_search_page.dart';
 import 'widgets/switch_demo_page.dart';
 import 'widgets/slider_demo_page.dart';
 import 'widgets/segmented_button_demo_page.dart';
@@ -153,6 +157,37 @@ class HomePage extends StatelessWidget {
                   BlocProvider(
                     create: (_) => LinkedinSearchCubit(),
                     child: const LinkedinSearchPage(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFormCard(
+                context,
+                title: '7. Post a Job',
+                description: 'Create a job listing with full position details',
+                icon: Icons.post_add,
+                color: Colors.deepOrange,
+                onTap: () => _navigateToPage(
+                  context,
+                  BlocProvider(
+                    create: (_) => JobPostCubit(),
+                    child: const JobPostPage(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFormCard(
+                context,
+                title: '8. Find Jobs',
+                description:
+                    'Search job listings by keyword, location, salary and more',
+                icon: Icons.manage_search,
+                color: Colors.orange,
+                onTap: () => _navigateToPage(
+                  context,
+                  BlocProvider(
+                    create: (_) => JobSearchCubit(),
+                    child: const JobSearchPage(),
                   ),
                 ),
               ),
