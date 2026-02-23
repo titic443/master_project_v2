@@ -50,7 +50,32 @@ class _LinkedinSearchViewState extends State<_LinkedinSearchView> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
-      body: BlocBuilder<LinkedinSearchCubit, LinkedinSearchState>(
+      body: BlocConsumer<LinkedinSearchCubit, LinkedinSearchState>(
+        listenWhen: (prev, curr) =>
+            prev.status == LinkedinSearchStatus.loading &&
+            curr.status != LinkedinSearchStatus.loading,
+        listener: (context, state) {
+          if (state.status == LinkedinSearchStatus.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                key: const Key('search_01_expected_success'),
+                content: Text('Found ${state.profiles.length} profile(s)'),
+              ),
+            );
+          } else if (state.status == LinkedinSearchStatus.error ||
+              state.status == LinkedinSearchStatus.empty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                key: const Key('search_01_expected_fail'),
+                content: Text(
+                  state.status == LinkedinSearchStatus.empty
+                      ? 'No profiles found'
+                      : state.errorMessage ?? 'An error occurred',
+                ),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           _sync(state);
           return Column(
@@ -101,8 +126,7 @@ class _SearchForm extends StatelessWidget {
               labelStyle:
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               hintText: 'e.g. Alice Smith',
-              hintStyle:
-                  TextStyle(fontSize: 14, color: Colors.grey[400]),
+              hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
               prefixIcon: const Icon(Icons.person_search),
               border: const OutlineInputBorder(),
             ),
@@ -120,8 +144,7 @@ class _SearchForm extends StatelessWidget {
               labelStyle:
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               hintText: 'e.g. alice@example.com',
-              hintStyle:
-                  TextStyle(fontSize: 14, color: Colors.grey[400]),
+              hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
               prefixIcon: const Icon(Icons.email_outlined),
               border: const OutlineInputBorder(),
             ),
@@ -129,24 +152,30 @@ class _SearchForm extends StatelessWidget {
             onSubmitted: (_) => cubit.search(),
           ),
           const SizedBox(height: 16),
-          ElevatedButton.icon(
-            key: const Key('search_03_search_button'),
+          ElevatedButton(
+            key: const Key('search_03_end_button'),
             onPressed: isLoading ? null : cubit.search,
-            icon: isLoading
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+            ),
+            child: isLoading
                 ? const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.search),
-            label: Text(
-              isLoading ? 'Searching...' : 'Search',
-              style:
-                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-            ),
+                : const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.search),
+                      SizedBox(width: 8),
+                      Text(
+                        'Search',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
           ),
         ],
       ),

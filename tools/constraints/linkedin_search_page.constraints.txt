@@ -1,0 +1,7 @@
+# Dataset Constraints for LinkedIn Search Page
+# =============================================
+# Specify fixed data values for text fields (overrides AI generation in generate-datasets step)
+# Format: <key> = <value>
+
+search_01_name_textfield = Supaporn Srisomboon
+search_02_email_textfield = narong.s@example.com

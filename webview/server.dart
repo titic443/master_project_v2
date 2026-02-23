@@ -539,6 +539,13 @@ class PipelineController {
     final body = await _readBody(request);
     final manifest = body['manifest'] as String?;
 
+    // datasetOverrides: Map ของ key → value ที่ต้องการ override หลัง AI generate
+    // เช่น {"search_01_name_textfield": "Supaporn Srisomboon"}
+    final rawOverrides = body['datasetOverrides'];
+    final datasetOverrides = rawOverrides is Map
+        ? rawOverrides.cast<String, dynamic>()
+        : null;
+
     // Validate input
     if (manifest == null) {
       request.response.statusCode = 400;
@@ -562,6 +569,28 @@ class PipelineController {
           'skipped': true,
         }));
       } else {
+        // Apply dataset overrides ถ้ามี (override ค่า valid/atMax ตาม key ที่ระบุ)
+        if (datasetOverrides != null && datasetOverrides.isNotEmpty) {
+          // derive correct path จาก manifest source.file เพราะ generateDatasets()
+          // return path ที่มี subfolder (demos/...) แต่ไฟล์จริงไม่มี
+          String correctDatasetsPath = datasetsPath;
+          try {
+            final mf = File(manifest);
+            if (await mf.exists()) {
+              final mJson = jsonDecode(await mf.readAsString())
+                  as Map<String, dynamic>;
+              final uiFile = ((mJson['source'] as Map?)?['file'] as String?) ?? '';
+              if (uiFile.isNotEmpty) {
+                final base = uiFile.split('/').last.replaceAll('.dart', '');
+                correctDatasetsPath = 'output/test_data/$base.datasets.json';
+              }
+            }
+          } catch (_) {}
+
+          await _applyDatasetOverrides(correctDatasetsPath, datasetOverrides);
+          print('  ✓ Applied dataset overrides to $correctDatasetsPath: ${datasetOverrides.keys.join(', ')}');
+        }
+
         request.response.write(jsonEncode({
           'success': true,
           'datasetsPath': datasetsPath,
@@ -575,6 +604,47 @@ class PipelineController {
     }
 
     await request.response.close();
+  }
+
+  /// Override ค่า valid (และ atMax) ใน datasets.json ตาม Map ที่ระบุ
+  ///
+  /// Parameters:
+  ///   [datasetsPath]    - path ของ .datasets.json ที่จะแก้ไข
+  ///   [overrides]       - Map ของ key → new valid value
+  Future<void> _applyDatasetOverrides(
+    String datasetsPath,
+    Map<String, dynamic> overrides,
+  ) async {
+    final file = File(datasetsPath);
+    if (!await file.exists()) return;
+
+    final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
+    final byKey =
+        ((data['datasets'] as Map?)?['byKey'] as Map?)
+            ?.cast<String, dynamic>() ??
+        <String, dynamic>{};
+
+    for (final entry in overrides.entries) {
+      final key = entry.key;
+      final newValue = entry.value.toString();
+      final pairs = byKey[key];
+
+      if (pairs is List && pairs.isNotEmpty) {
+        final first = pairs[0] as Map<String, dynamic>;
+        final oldValid = first['valid']?.toString() ?? '';
+
+        // Override valid
+        first['valid'] = newValue;
+
+        // Override atMax ถ้าเดิมเท่ากับ valid (boundary value ขอบบน)
+        if (first['atMax']?.toString() == oldValid) {
+          first['atMax'] = newValue;
+        }
+      }
+    }
+
+    await file.writeAsString(
+        '${const JsonEncoder.withIndent('  ').convert(data)}\n');
   }
 
   /// POST /generate-test-data - สร้าง test plan ด้วย PICT
@@ -883,6 +953,10 @@ class PipelineController {
         r'^\d{2}:\d{2}\s+\+(\d+)(?:\s+-(\d+))?:\s+(.+)$',
         multiLine: true);
 
+    // prevFailCount ใช้ track cumulative failures เพื่อหา delta
+    // (Flutter output แสดง -N แบบ cumulative ไม่ใช่ per-test)
+    int prevFailCount = 0;
+
     for (final match in testCaseRegex.allMatches(output)) {
       final testName = match.group(3)?.trim() ?? '';
 
@@ -891,20 +965,34 @@ class PipelineController {
           !testName.startsWith('loading') &&
           !testName.contains('All tests passed') &&
           !testName.contains('Some tests failed')) {
-        // ตรวจสอบว่าเป็น test ที่ fail หรือไม่
-        final failCount = match.group(2);
-        final isFailed = failCount != null &&
-            int.tryParse(failCount) != null &&
-            int.parse(failCount) > 0;
+        // คำนวณ delta ของ fail count เพื่อตรวจว่า test นี้ fail หรือไม่
+        // Bug เดิม: ใช้ cumulative -N > 0 → test ที่ pass หลัง fail อื่น ถูก mark ว่า failed
+        // Fix: ใช้ delta (เพิ่มขึ้นจาก prev หรือไม่)
+        final currFailCount =
+            int.tryParse(match.group(2) ?? '0') ?? 0;
+        final thisTestFailed = currFailCount > prevFailCount;
 
-        // หลีกเลี่ยงการเพิ่ม test ซ้ำ (เพราะ output แสดง test name หลายครั้ง)
-        final exists = testCases.any((tc) => tc['name'] == testName);
-        if (!exists) {
+        // Normalize: Flutter เพิ่ม " [E]" suffix เมื่อ test fail
+        // เช่น "test_1" (บรรทัดแรก) และ "test_1 [E]" (บรรทัดสอง)
+        // ต้อง strip [E] เพื่อ match กับ entry เดิม
+        final normalizedName = testName.endsWith(' [E]')
+            ? testName.substring(0, testName.length - 4)
+            : testName;
+
+        final idx =
+            testCases.indexWhere((tc) => tc['name'] == normalizedName);
+        if (idx == -1) {
+          // เพิ่มครั้งแรก (ใช้ normalizedName เสมอ)
           testCases.add({
-            'name': testName,
-            'status': isFailed ? 'failed' : 'passed',
+            'name': normalizedName,
+            'status': thisTestFailed ? 'failed' : 'passed',
           });
+        } else if (thisTestFailed) {
+          // บรรทัดที่ 2 (มี [E]) → update status เดิมเป็น "failed"
+          testCases[idx]['status'] = 'failed';
         }
+
+        if (currFailCount > prevFailCount) prevFailCount = currFailCount;
       }
     }
 

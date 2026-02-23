@@ -188,7 +188,15 @@ class WebUI {
 
       // Step 2: Generate datasets
       this.#updateProgress(2, 'running', 'Generating datasets (AI)...');
-      const datasetResult = await this.#runStep('generate-datasets', { manifest: manifestResult.manifestPath });
+      const datasetsParams = { manifest: manifestResult.manifestPath };
+      if (this.#el.useConstraints.checked && this.#el.constraintsTextArea.value.trim()) {
+        const { datasetOverrides } = this.#parseConstraints(this.#el.constraintsTextArea.value);
+        if (Object.keys(datasetOverrides).length > 0) {
+          datasetsParams.datasetOverrides = datasetOverrides;
+          this.#log(`Applying dataset overrides: ${JSON.stringify(datasetOverrides)}`, 'info');
+        }
+      }
+      const datasetResult = await this.#runStep('generate-datasets', datasetsParams);
       if (datasetResult.skipped) {
         this.#updateProgress(2, 'skipped', 'No text fields found');
         this.#log('Datasets: Skipped (no text fields)', 'info');
@@ -205,8 +213,11 @@ class WebUI {
       const testDataParams = { manifest: manifestResult.manifestPath };
 
       if (this.#el.useConstraints.checked && this.#el.constraintsTextArea.value.trim()) {
-        testDataParams.constraints = this.#el.constraintsTextArea.value.trim();
-        this.#log('Using custom PICT constraints', 'info');
+        const { pictConstraints } = this.#parseConstraints(this.#el.constraintsTextArea.value);
+        if (pictConstraints.trim()) {
+          testDataParams.constraints = pictConstraints;
+          this.#log('Using custom PICT constraints', 'info');
+        }
       }
 
       const testDataResult = await this.#runStep('generate-test-data', testDataParams);
@@ -527,12 +538,16 @@ class WebUI {
 
       const lineNum = i + 1;
 
-      // Must contain IF and THEN
-      if (!/\bIF\b/.test(line) || !/\bTHEN\b/.test(line)) {
-        return `Line ${lineNum}: Missing IF or THEN keyword\n"${line}"`;
+      // --- Format A: Dataset constraint  key = value ---
+      // e.g. search_01_name_textfield = Supaporn Srisomboo
+      if (!/\bIF\b/.test(line) && !/\bTHEN\b/.test(line)) {
+        if (!/^\w+\s*=\s*.+$/.test(line)) {
+          return `Line ${lineNum}: Expected "key = value" or PICT "IF [...] = "..." THEN [...] = "...";"\n"${line}"`;
+        }
+        continue; // valid dataset constraint
       }
 
-      // Split into IF-part and THEN-part
+      // --- Format B: PICT constraint  IF [...] ... THEN [...] ...; ---
       const thenIndex = line.indexOf('THEN');
       const ifPart = line.substring(0, thenIndex);
       const thenPart = line.substring(thenIndex);
@@ -564,6 +579,38 @@ class WebUI {
     }
 
     return null;
+  }
+
+  /**
+   * แยก constraints text เป็น 2 format:
+   *   datasetOverrides : { key: value }  — Format A  (key = value)
+   *   pictConstraints  : string          — Format B  (IF [...] THEN [...];)
+   * @param {string} text
+   * @returns {{ datasetOverrides: Object, pictConstraints: string }}
+   */
+  #parseConstraints(text) {
+    const datasetOverrides = {};
+    const pictLines = [];
+
+    for (const line of text.split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+
+      if (!/\bIF\b/.test(trimmed) && !/\bTHEN\b/.test(trimmed)) {
+        // Format A: key = value
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx > 0) {
+          const key = trimmed.substring(0, eqIdx).trim();
+          const value = trimmed.substring(eqIdx + 1).trim();
+          datasetOverrides[key] = value;
+        }
+      } else {
+        // Format B: PICT constraint
+        pictLines.push(line);
+      }
+    }
+
+    return { datasetOverrides, pictConstraints: pictLines.join('\n') };
   }
 
   /**
