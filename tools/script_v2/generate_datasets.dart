@@ -59,7 +59,7 @@ import 'utils.dart' as utils;
 
 // ค่าคงที่สำหรับเก็บ API key แบบ hardcode (ใช้เป็น fallback)
 // SECURITY WARNING: ไม่ควรใช้ในโปรดักชัน ควรใช้ environment variable แทน
-const String hardcodedApiKey = 'AIzaSyDB0EdBJKORdsBiw5lSTRowrnd-JdBOR7o';
+const String hardcodedApiKey = 'AIzaSyDSugyt2jNciwncycX-UhbEZSPnXmKgtMs';
 
 // =============================================================================
 // MAIN FUNCTION - Entry Point
