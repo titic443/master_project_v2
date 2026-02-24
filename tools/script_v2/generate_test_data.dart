@@ -1229,7 +1229,10 @@ class TestDataGenerator {
                   dropdownIdx < dropdownValueToTextMaps.length) {
                 final mapping = dropdownValueToTextMaps[dropdownIdx];
                 final cleanPick = pick.replaceAll('"', '');
-                textToTap = mapping[cleanPick] ?? pick;
+                // PICT encodes spaces as underscores ("Entry Level" → "Entry_Level").
+                // Decode back before map lookup so we get the actual display text.
+                final decodedPick = cleanPick.replaceAll('_', ' ');
+                textToTap = mapping[decodedPick] ?? mapping[cleanPick] ?? pick;
               }
 
               stepsByKey[factorName] = [
@@ -1672,7 +1675,10 @@ class TestDataGenerator {
                   dropdownIdx < dropdownValueToTextMaps.length) {
                 final mapping = dropdownValueToTextMaps[dropdownIdx];
                 final cleanPick = pick.replaceAll('"', '');
-                textToTap = mapping[cleanPick] ?? pick;
+                // PICT encodes spaces as underscores ("Entry Level" → "Entry_Level").
+                // Decode back before map lookup so we get the actual display text.
+                final decodedPick = cleanPick.replaceAll('_', ' ');
+                textToTap = mapping[decodedPick] ?? mapping[cleanPick] ?? pick;
               }
 
               stepsByKey[factorName] = [
