@@ -334,69 +334,6 @@ class TestScriptGenerator {
     // Import UI file
     b.writeln("import '$uiImport';");
 
-    // ---------------------------------------------------------------------------
-    // STEP 13: สร้าง Stub Classes สำหรับ Cubit
-    // Stub classes ใช้สำหรับ mock behavior ใน tests
-    // ---------------------------------------------------------------------------
-
-    if (primaryCubitType != null) {
-      // -------------------------------------------------------------------------
-      // Success Stub: emit ApiResponse สำเร็จ
-      // -------------------------------------------------------------------------
-      b
-        ..writeln('')
-        // ประกาศ class ที่ extend จาก primary Cubit
-        ..writeln('class _Success$primaryCubitType extends $primaryCubitType {')
-        // Property เก็บ stub response (optional)
-        ..writeln('  final ApiResponse? stubResp;')
-        // Constructor รับ stubResp และส่งต่อ shouldSucceed: true ไปยัง parent
-        ..writeln(
-            '  _Success$primaryCubitType({this.stubResp}) : super(shouldSucceed: true);')
-        // Override onEndButton method
-        ..writeln('  @override')
-        ..writeln('  Future<void> onEndButton() async {')
-        // ใช้ stubResp ถ้ามี ไม่งั้นใช้ default response
-        ..writeln(
-            '    final resp = stubResp ?? const ApiResponse(message: \"ok\", code: 200);')
-        // emit state ใหม่ที่มี response และไม่มี exception
-        ..writeln('    emit(state.copyWith(response: resp, exception: null));')
-        ..writeln('  }')
-        // Override callApi method (ทำเหมือน onEndButton)
-        ..writeln('  @override')
-        ..writeln('  Future<void> callApi() async {')
-        ..writeln(
-            '    final resp = stubResp ?? const ApiResponse(message: \"ok\", code: 200);')
-        ..writeln('    emit(state.copyWith(response: resp, exception: null));')
-        ..writeln('  }')
-        ..writeln('}');
-
-      // -------------------------------------------------------------------------
-      // Failure Stub: emit Exception
-      // -------------------------------------------------------------------------
-      b
-        ..writeln('')
-        // ประกาศ class ที่ extend จาก primary Cubit
-        ..writeln('class _Fail$primaryCubitType extends $primaryCubitType {')
-        // Property เก็บ error code
-        ..writeln('  final int code;')
-        // Constructor รับ code และส่งต่อ shouldSucceed: false ไปยัง parent
-        ..writeln(
-            '  _Fail$primaryCubitType(this.code) : super(shouldSucceed: false);')
-        // Override callApi method
-        ..writeln('  @override')
-        ..writeln('  Future<void> callApi() async {')
-        // emit state ที่มี exception พร้อม code ที่กำหนด
-        ..writeln(
-            '    emit(state.copyWith(exception: RegisterException(message: \"api_failed\", code: code)));')
-        ..writeln('  }')
-        // Override onEndButton method (ทำเหมือน callApi)
-        ..writeln('  @override')
-        ..writeln('  Future<void> onEndButton() async {')
-        ..writeln(
-            '    emit(state.copyWith(exception: RegisterException(message: \"api_failed\", code: code)));')
-        ..writeln('  }')
-        ..writeln('}');
-    }
 
     // ---------------------------------------------------------------------------
     // STEP 14: สร้าง _wrap helper function
