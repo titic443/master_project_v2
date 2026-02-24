@@ -145,14 +145,12 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   ),
                   hint: const Text('Select type'),
                   items: const [
-                    'Condo',
-                    'House',
-                    'Townhouse',
-                    'Land',
-                    'Commercial',
-                  ]
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
+                    DropdownMenuItem(value: 'Condo', child: Text('Condo')),
+                    DropdownMenuItem(value: 'House', child: Text('House')),
+                    DropdownMenuItem(value: 'Townhouse', child: Text('Townhouse')),
+                    DropdownMenuItem(value: 'Land', child: Text('Land')),
+                    DropdownMenuItem(value: 'Commercial', child: Text('Commercial')),
+                  ],
                   onChanged: cubit.onPropertyTypeChanged,
                   validator: (v) => v == null ? 'Required' : null,
                 ),
@@ -234,11 +232,13 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                           icon: Icons.bed_outlined,
                         ),
                         hint: const Text('Select'),
-                        items: const ['Studio', '1', '2', '3', '4+']
-                            .map(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)),
-                            )
-                            .toList(),
+                        items: const [
+                          DropdownMenuItem(value: 'Studio', child: Text('Studio')),
+                          DropdownMenuItem(value: '1', child: Text('1')),
+                          DropdownMenuItem(value: '2', child: Text('2')),
+                          DropdownMenuItem(value: '3', child: Text('3')),
+                          DropdownMenuItem(value: '4+', child: Text('4+')),
+                        ],
                         onChanged: cubit.onBedroomsChanged,
                         validator: (v) => v == null ? 'Required' : null,
                       ),
@@ -253,11 +253,12 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                           icon: Icons.bathtub_outlined,
                         ),
                         hint: const Text('Select'),
-                        items: const ['1', '2', '3', '4+']
-                            .map(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)),
-                            )
-                            .toList(),
+                        items: const [
+                          DropdownMenuItem(value: '1', child: Text('1')),
+                          DropdownMenuItem(value: '2', child: Text('2')),
+                          DropdownMenuItem(value: '3', child: Text('3')),
+                          DropdownMenuItem(value: '4+', child: Text('4+')),
+                        ],
                         onChanged: cubit.onBathroomsChanged,
                         validator: (v) => v == null ? 'Required' : null,
                       ),
