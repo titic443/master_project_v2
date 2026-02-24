@@ -190,15 +190,13 @@ class _JobPostViewState extends State<_JobPostView> {
                   ),
                   hint: const Text('Select category'),
                   items: const [
-                    'IT & Tech',
-                    'Finance',
-                    'Marketing',
-                    'Engineering',
-                    'Healthcare',
-                    'Education',
-                  ]
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
+                    DropdownMenuItem(value: 'IT & Tech', child: Text('IT & Tech')),
+                    DropdownMenuItem(value: 'Finance', child: Text('Finance')),
+                    DropdownMenuItem(value: 'Marketing', child: Text('Marketing')),
+                    DropdownMenuItem(value: 'Engineering', child: Text('Engineering')),
+                    DropdownMenuItem(value: 'Healthcare', child: Text('Healthcare')),
+                    DropdownMenuItem(value: 'Education', child: Text('Education')),
+                  ],
                   onChanged: cubit.onCategoryChanged,
                   validator: (v) => v == null ? 'Required' : null,
                 ),
@@ -212,14 +210,12 @@ class _JobPostViewState extends State<_JobPostView> {
                   ),
                   hint: const Text('Select type'),
                   items: const [
-                    'Full-time',
-                    'Part-time',
-                    'Contract',
-                    'Freelance',
-                    'Internship',
-                  ]
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
+                    DropdownMenuItem(value: 'Full-time', child: Text('Full-time')),
+                    DropdownMenuItem(value: 'Part-time', child: Text('Part-time')),
+                    DropdownMenuItem(value: 'Contract', child: Text('Contract')),
+                    DropdownMenuItem(value: 'Freelance', child: Text('Freelance')),
+                    DropdownMenuItem(value: 'Internship', child: Text('Internship')),
+                  ],
                   onChanged: cubit.onEmploymentTypeChanged,
                   validator: (v) => v == null ? 'Required' : null,
                 ),
@@ -233,13 +229,11 @@ class _JobPostViewState extends State<_JobPostView> {
                   ),
                   hint: const Text('Select experience'),
                   items: const [
-                    'Entry Level',
-                    'Junior',
-                    'Mid-Level',
-                    'Senior',
-                  ]
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
+                    DropdownMenuItem(value: 'Entry Level', child: Text('Entry Level')),
+                    DropdownMenuItem(value: 'Junior', child: Text('Junior')),
+                    DropdownMenuItem(value: 'Mid-Level', child: Text('Mid-Level')),
+                    DropdownMenuItem(value: 'Senior', child: Text('Senior')),
+                  ],
                   onChanged: cubit.onExperienceLevelChanged,
                   validator: (v) => v == null ? 'Required' : null,
                 ),
