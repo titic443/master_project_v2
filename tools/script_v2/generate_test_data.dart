@@ -181,7 +181,8 @@ class TestDataGenerator {
 
     /// Helper function: รักษา format ของ datasets (ไม่ต้อง convert)
     /// Format ใหม่: {"key": [{"valid": "value1", "invalid": "value2", "invalidRuleMessages": "msg"}]}
-    Map<String, dynamic> _convertDatasetsToOldFormat(Map<String, dynamic> byKey) {
+    Map<String, dynamic> _convertDatasetsToOldFormat(
+        Map<String, dynamic> byKey) {
       // Return as-is เพื่อรักษา array of objects format
       return Map<String, dynamic>.from(byKey);
     }
@@ -207,7 +208,8 @@ class TestDataGenerator {
 
         // ดึง datasets.byKey
         final extDatasets = (ext['datasets'] as Map?)?.cast<String, dynamic>();
-        final extByKey = (extDatasets?['byKey'] as Map?)?.cast<String, dynamic>();
+        final extByKey =
+            (extDatasets?['byKey'] as Map?)?.cast<String, dynamic>();
 
         // ถ้ามี byKey ให้ merge เข้า datasets
         if (extByKey != null) {
@@ -294,7 +296,8 @@ class TestDataGenerator {
     // ใช้ Set เพื่อป้องกัน duplicates (SnackBar อาจปรากฏหลายครั้งใน manifest)
     final expectedSuccessKeys =
         <String>{}; // keys สำหรับ success (เช่น snackbar success)
-    final expectedFailKeys = <String>{}; // keys สำหรับ fail (เช่น error message)
+    final expectedFailKeys =
+        <String>{}; // keys สำหรับ fail (เช่น error message)
 
     // ---------------------------------------------------------------------------
     // STEP 6: ระบุและจัดหมวดหมู่ Widget Keys
@@ -504,9 +507,9 @@ class TestDataGenerator {
       }
     }
 
-  // ---------------------------------------------------------------------------
-  // STEP 9: เตรียม Test Cases และ Helper Functions
-  // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // STEP 9: เตรียม Test Cases และ Helper Functions
+    // ---------------------------------------------------------------------------
 
     // List เก็บ test cases ที่จะสร้าง
     final cases = <Map<String, dynamic>>[];
@@ -543,8 +546,11 @@ class TestDataGenerator {
     /// สร้าง description สำหรับ test case
     /// แสดงทุก field พร้อมค่าที่ใช้ test จริงๆ เช่น
     ///   "fullname: Alice, email: bad@email, education: master, ..."
-    String _buildDescription(Map<String, String> combo, String kind,
-        List<String> invalidFields, List<String> uncheckedRequired,
+    String _buildDescription(
+        Map<String, String> combo,
+        String kind,
+        List<String> invalidFields,
+        List<String> uncheckedRequired,
         List<Map<String, dynamic>> asserts) {
       final parts = <String>[];
       final byKey =
@@ -558,8 +564,11 @@ class TestDataGenerator {
         if (raw == 'checked' || raw == 'unchecked') {
           // checkbox: ใช้ label ตรงๆ เพื่อ color coding ใน UI
           value = raw;
-        } else if (raw == 'valid' || raw == 'invalid' ||
-            raw == 'atMax' || raw == 'atMin' || raw == 'empty') {
+        } else if (raw == 'valid' ||
+            raw == 'invalid' ||
+            raw == 'atMax' ||
+            raw == 'atMin' ||
+            raw == 'empty') {
           // resolve ค่าจริงจาก datasets[byKey][key][0]
           // format: "label§actualValue" เพื่อให้ UI รู้จักสี
           final arr = (byKey[e.key] as List?) ?? const [];
@@ -582,7 +591,8 @@ class TestDataGenerator {
         }
         parts.add('$field: $value');
       }
-      if (parts.isEmpty) return kind == 'failed' ? 'expect failure' : 'all valid';
+      if (parts.isEmpty)
+        return kind == 'failed' ? 'expect failure' : 'all valid';
       return parts.join(', ');
     }
 
@@ -629,7 +639,8 @@ class TestDataGenerator {
         firstDate = now;
       } else {
         // ลอง extract year จาก pattern DateTime(year)
-        final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
+        final yearMatch =
+            RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
         if (yearMatch != null) {
           firstDate = DateTime(int.parse(yearMatch.group(1)!));
         }
@@ -646,7 +657,8 @@ class TestDataGenerator {
         }
       } else {
         // ลอง extract year จาก pattern DateTime(year)
-        final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
+        final yearMatch =
+            RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
         if (yearMatch != null) {
           lastDate = DateTime(int.parse(yearMatch.group(1)!));
         }
@@ -806,7 +818,8 @@ class TestDataGenerator {
             // Text field: มี 'valid' และ 'invalid' values
             factorTypes[factorName] = 'text';
             textFieldFactors.add(factorName);
-          } else if (values.contains('checked') && values.contains('unchecked')) {
+          } else if (values.contains('checked') &&
+              values.contains('unchecked')) {
             // Checkbox: มี 'checked' และ 'unchecked' values
             factorTypes[factorName] = 'checkbox';
             checkboxFactors.add(factorName);
@@ -838,13 +851,14 @@ class TestDataGenerator {
 
       // โหลด full pairwise combinations (valid + invalid)
       if (File(pageResultPath).existsSync()) {
-        extCombos = pictGen.parsePictResult(File(pageResultPath).readAsStringSync());
+        extCombos =
+            pictGen.parsePictResult(File(pageResultPath).readAsStringSync());
       }
 
       // โหลด valid-only combinations
       if (File(pageValidResultPath).existsSync()) {
-        extValidCombos =
-            pictGen.parsePictResult(File(pageValidResultPath).readAsStringSync());
+        extValidCombos = pictGen
+            .parsePictResult(File(pageValidResultPath).readAsStringSync());
       }
 
       // -------------------------------------------------------------------------
@@ -1152,7 +1166,8 @@ class TestDataGenerator {
                 .toList();
             if (lines.isNotEmpty) {
               // บรรทัดแรกคือ header (tab-separated)
-              headerOrder = lines.first.split('\t').map((s) => s.trim()).toList();
+              headerOrder =
+                  lines.first.split('\t').map((s) => s.trim()).toList();
             }
           }
 
@@ -1163,8 +1178,8 @@ class TestDataGenerator {
           // Process แต่ละ factor ตาม actual factor names จาก model
           for (final factorName in c.keys) {
             final factorType = factorTypes[factorName]; // ดึง type ของ factor
-            final pick =
-                (c[factorName] ?? '').toString(); // ค่าที่เลือกสำหรับ factor นี้
+            final pick = (c[factorName] ?? '')
+                .toString(); // ค่าที่เลือกสำหรับ factor นี้
             if (pick.isEmpty) continue;
 
             // -----------------------------------------------------------------
@@ -1320,7 +1335,8 @@ class TestDataGenerator {
           for (int j = 0; j < textKeys.length; j++) {
             // กำหนด factor name: TEXT, TEXT2, TEXT3, ...
             final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
-            final tfBucket = c[factorName]; // ค่า bucket ที่เลือก (valid/invalid)
+            final tfBucket =
+                c[factorName]; // ค่า bucket ที่เลือก (valid/invalid)
 
             if (tfBucket != null) {
               // Track invalid data
@@ -1566,8 +1582,7 @@ class TestDataGenerator {
           'tc': id, // Test case ID
           'kind': caseKind, // success หรือ failed
           'group': 'pairwise_valid_invalid_cases', // Group name
-          'description': _buildDescription(
-              comboStr, caseKind, invalidFields,
+          'description': _buildDescription(comboStr, caseKind, invalidFields,
               uncheckedRequiredCheckboxes, asserts),
           'steps': st, // List ของ steps
           'asserts': asserts, // List ของ assertions
@@ -1596,7 +1611,8 @@ class TestDataGenerator {
                 .toList();
             if (lines.isNotEmpty) {
               // บรรทัดแรกคือ header
-              headerOrder = lines.first.split('\t').map((s) => s.trim()).toList();
+              headerOrder =
+                  lines.first.split('\t').map((s) => s.trim()).toList();
             }
           }
 
@@ -1839,7 +1855,8 @@ class TestDataGenerator {
     // Fallback: ถ้าไม่พบ specific messages ให้ใช้ "Required" default
     if (expectedMsgsCount.isEmpty && textKeys.isNotEmpty) {
       for (final tfKey in textKeys) {
-        expectedMsgsCount['Required'] = (expectedMsgsCount['Required'] ?? 0) + 1;
+        expectedMsgsCount['Required'] =
+            (expectedMsgsCount['Required'] ?? 0) + 1;
       }
     }
 
@@ -1862,13 +1879,15 @@ class TestDataGenerator {
 
     // เพิ่ม edge case ลง test cases
     final emptyCombo = <String, String>{
+      ...buildNonTextDefaultCombo(),
       for (final k in textKeys) k: 'empty',
     };
     cases.add({
       'tc': 'edge_cases_empty_all_fields', // Test case ID
       'kind': 'failed', // คาดหวังว่าจะ fail
       'group': 'edge_cases', // Group name
-      'description': _buildDescription(emptyCombo, 'failed', [], [], emptyAsserts),
+      'description':
+          _buildDescription(emptyCombo, 'failed', [], [], emptyAsserts),
       'steps': emptySteps, // Steps (แค่กดปุ่ม submit)
       'asserts': emptyAsserts, // คาดหวังเห็น validation messages
     });
@@ -1931,13 +1950,47 @@ class TestDataGenerator {
     // Dropdown → tap dropdown + select option แรก
     // Required Checkbox → tap เพื่อ check
     // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Helper: สร้าง combo map สำหรับ non-text fields (ใช้ใน edge case description)
+    // Dropdown  → first display text (e.g. "Condo")
+    // Radio     → first option key of each group
+    // Required Checkbox → 'checked'
+    // -------------------------------------------------------------------------
+    Map<String, String> buildNonTextDefaultCombo() {
+      final combo = <String, String>{};
+
+      // Radio: ใช้ key ของ option แรกในแต่ละ group
+      for (final rk in boundaryFirstRadioKeys()) {
+        combo[rk] = rk; // _shortValue จะย่อให้เอง
+      }
+
+      // Dropdown: ใช้ display text ของ option แรก
+      for (int i = 0; i < dropdownKeys.length; i++) {
+        final dk = dropdownKeys[i];
+        final mapping = i < dropdownValueToTextMaps.length
+            ? dropdownValueToTextMaps[i]
+            : <String, String>{};
+        final firstText = mapping.values.isNotEmpty ? mapping.values.first : '';
+        if (firstText.isNotEmpty) combo[dk] = firstText;
+      }
+
+      // Required Checkbox: ถือว่า checked
+      for (final ck in requiredCheckboxValidation.keys) {
+        combo[ck] = 'checked';
+      }
+
+      return combo;
+    }
+
     Map<String, List<Map<String, dynamic>>> buildNonTextDefaultSteps() {
       final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
       // Radio: เลือก option แรกของแต่ละ group
       for (final rk in boundaryFirstRadioKeys()) {
         stepsByKey[rk] = [
-          {'tap': {'byKey': rk}},
+          {
+            'tap': {'byKey': rk}
+          },
           {'pump': true},
         ];
       }
@@ -1948,11 +2001,12 @@ class TestDataGenerator {
         final mapping = i < dropdownValueToTextMaps.length
             ? dropdownValueToTextMaps[i]
             : <String, String>{};
-        final firstText =
-            mapping.values.isNotEmpty ? mapping.values.first : '';
+        final firstText = mapping.values.isNotEmpty ? mapping.values.first : '';
         if (firstText.isNotEmpty) {
           stepsByKey[dk] = [
-            {'tap': {'byKey': dk}},
+            {
+              'tap': {'byKey': dk}
+            },
             {'pumpAndSettle': true},
             {'scrollAndTapText': firstText},
             {'pumpAndSettle': true},
@@ -1963,7 +2017,9 @@ class TestDataGenerator {
       // Required Checkbox: tap เพื่อ check (ไม่รวม optional checkboxes)
       for (final ck in requiredCheckboxValidation.keys) {
         stepsByKey[ck] = [
-          {'tap': {'byKey': ck}},
+          {
+            'tap': {'byKey': ck}
+          },
           {'pump': true},
         ];
       }
@@ -1978,8 +2034,8 @@ class TestDataGenerator {
     List<Map<String, dynamic>> buildOrderedSteps(
         Map<String, List<Map<String, dynamic>>> stepsByKey) {
       final sortedWidgets = List<Map<String, dynamic>>.from(widgets)
-        ..sort((a, b) => (a['key'] ?? '').toString()
-            .compareTo((b['key'] ?? '').toString()));
+        ..sort((a, b) =>
+            (a['key'] ?? '').toString().compareTo((b['key'] ?? '').toString()));
       final steps = <Map<String, dynamic>>[];
       for (final w in sortedWidgets) {
         final k = (w['key'] ?? '').toString();
@@ -2005,13 +2061,22 @@ class TestDataGenerator {
         final dsField = datasetsHasField(key, 'atMax') ? 'atMax' : 'valid';
         final hasDs = datasetsHasField(key, dsField);
         final enterStep = hasDs
-            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}}
-            : {'enterText': {'byKey': key, 'text': 'Test'}};
-        maxStepsByKey[key] = [enterStep, {'pump': true}];
+            ? {
+                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}
+              }
+            : {
+                'enterText': {'byKey': key, 'text': 'Test'}
+              };
+        maxStepsByKey[key] = [
+          enterStep,
+          {'pump': true}
+        ];
       }
 
       final maxSteps = buildOrderedSteps(maxStepsByKey)
-        ..add({'tap': {'byKey': endKey}})
+        ..add({
+          'tap': {'byKey': endKey}
+        })
         ..add({'pumpAndSettle': true});
 
       final maxAsserts = <Map<String, dynamic>>[
@@ -2019,6 +2084,7 @@ class TestDataGenerator {
       ];
 
       final maxCombo = <String, String>{
+        ...buildNonTextDefaultCombo(),
         for (final k in textKeys)
           k: datasetsHasField(k, 'atMax') ? 'atMax' : 'valid',
       };
@@ -2026,7 +2092,8 @@ class TestDataGenerator {
         'tc': 'edge_cases_boundary_at_max_length',
         'kind': 'success',
         'group': 'edge_cases',
-        'description': _buildDescription(maxCombo, 'success', [], [], maxAsserts),
+        'description':
+            _buildDescription(maxCombo, 'success', [], [], maxAsserts),
         'steps': maxSteps,
         'asserts': maxAsserts,
       });
@@ -2045,13 +2112,22 @@ class TestDataGenerator {
       // เพิ่ม text field steps ด้วย atMin
       for (final key in textKeys) {
         final enterStep = datasetsHasField(key, 'atMin')
-            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}}
-            : {'enterText': {'byKey': key, 'text': ''}};
-        minStepsByKey[key] = [enterStep, {'pump': true}];
+            ? {
+                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}
+              }
+            : {
+                'enterText': {'byKey': key, 'text': ''}
+              };
+        minStepsByKey[key] = [
+          enterStep,
+          {'pump': true}
+        ];
       }
 
       final minSteps = buildOrderedSteps(minStepsByKey)
-        ..add({'tap': {'byKey': endKey}})
+        ..add({
+          'tap': {'byKey': endKey}
+        })
         ..add({'pumpAndSettle': true});
 
       // -----------------------------------------------------------------------
@@ -2063,6 +2139,7 @@ class TestDataGenerator {
       ];
 
       final minCombo = <String, String>{
+        ...buildNonTextDefaultCombo(),
         for (final k in textKeys)
           k: datasetsHasField(k, 'atMin') ? 'atMin' : 'empty',
       };
@@ -2070,7 +2147,8 @@ class TestDataGenerator {
         'tc': 'edge_cases_boundary_at_min_length',
         'kind': 'success',
         'group': 'edge_cases',
-        'description': _buildDescription(minCombo, 'success', [], [], minAsserts),
+        'description':
+            _buildDescription(minCombo, 'success', [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
       });
