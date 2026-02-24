@@ -1559,10 +1559,9 @@ class TestDataGenerator {
             }
           }
 
-          // Assert ว่า expected fail keys ต้อง exist
-          for (final failKey in expectedFailKeys) {
-            asserts.add({'byKey': failKey, 'exists': true});
-          }
+          // หมายเหตุ: ไม่ใช้ expectedFailKeys (SnackBar key) สำหรับ pairwise cases
+          // เพราะ assertion ควรตรวจสอบ validator message โดยตรง ไม่ใช่ SnackBar รอง
+          // expectedFailKeys ใช้เฉพาะใน edge_cases และ API-error scenarios เท่านั้น
         } else {
           // Case: valid data -> คาดหวัง success keys
 
