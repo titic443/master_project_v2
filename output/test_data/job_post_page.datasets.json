@@ -1,0 +1,70 @@
+{
+  "file": "lib/demos/job_post_page.dart",
+  "datasets": {
+    "byKey": {
+      "job_01_title_textfield": [
+        {
+          "valid": "Senior Software Engineer (Flutter/Dart)",
+          "invalid": "SE",
+          "invalidRuleMessages": "At least 3 characters",
+          "atMin": "De",
+          "atMax": "Senior Software Engineer (Flutter/Dart)"
+        }
+      ],
+      "job_02_company_textfield": [
+        {
+          "valid": "Tech Solutions Inc.",
+          "invalid": "T",
+          "invalidRuleMessages": "At least 2 characters",
+          "atMin": "C",
+          "atMax": "Tech Solutions Inc."
+        }
+      ],
+      "job_03_location_textfield": [
+        {
+          "valid": "Bangkok, Thailand",
+          "invalid": "B",
+          "invalidRuleMessages": "At least 2 characters",
+          "atMin": "L",
+          "atMax": "Bangkok, Thailand"
+        }
+      ],
+      "job_07_salary_min_textfield": [
+        {
+          "valid": "50000",
+          "invalid": "100",
+          "invalidRuleMessages": "general",
+          "atMin": "",
+          "atMax": "50000"
+        }
+      ],
+      "job_08_salary_max_textfield": [
+        {
+          "valid": "100000",
+          "invalid": "45000",
+          "invalidRuleMessages": "Must be ≥ min",
+          "atMin": "",
+          "atMax": "100000"
+        }
+      ],
+      "job_09_desc_textfield": [
+        {
+          "valid": "We are seeking a highly skilled Flutter developer ",
+          "invalid": "Short job description for a new role.",
+          "invalidRuleMessages": "At least 20 characters",
+          "atMin": "Short job description.",
+          "atMax": "We are seeking a highly skilled Flutter developer "
+        }
+      ],
+      "job_10_skills_textfield": [
+        {
+          "valid": "Flutter, Dart, Firebase, REST APIs, Git",
+          "invalid": "F",
+          "invalidRuleMessages": "At least 2 characters",
+          "atMin": "S",
+          "atMax": "Flutter, Dart, Firebase, REST APIs, Git"
+        }
+      ]
+    }
+  }
+}

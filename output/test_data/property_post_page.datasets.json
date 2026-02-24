@@ -1,0 +1,79 @@
+{
+  "file": "lib/demos/property_post_page.dart",
+  "datasets": {
+    "byKey": {
+      "prop_01_title_textfield": [
+        {
+          "valid": "คอนโดมิเนียมหรูใจกลางเมือง",
+          "invalid": "ห้องเช่า",
+          "invalidRuleMessages": "At least 5 characters",
+          "atMin": "ห้องเช่า",
+          "atMax": "คอนโดมิเนียมหรูใจกลางเมือง"
+        }
+      ],
+      "prop_03_location_textfield": [
+        {
+          "valid": "ถนนสุขุมวิท 21",
+          "invalid": "ส",
+          "invalidRuleMessages": "At least 2 characters",
+          "atMin": "ส",
+          "atMax": "ถนนสุขุมวิท 21"
+        }
+      ],
+      "prop_04_district_textfield": [
+        {
+          "valid": "วัฒนา",
+          "invalid": "ท",
+          "invalidRuleMessages": "At least 2 characters",
+          "atMin": "ท",
+          "atMax": "วัฒนา"
+        }
+      ],
+      "prop_05_price_textfield": [
+        {
+          "valid": "5000000",
+          "invalid": "99999",
+          "invalidRuleMessages": "Min 100,000 THB",
+          "atMin": "",
+          "atMax": "5000000"
+        }
+      ],
+      "prop_08_area_textfield": [
+        {
+          "valid": "120.50",
+          "invalid": "9.99",
+          "invalidRuleMessages": "Min 10 sqm",
+          "atMin": "",
+          "atMax": "120.50"
+        }
+      ],
+      "prop_09_floor_textfield": [
+        {
+          "valid": "25",
+          "invalid": "",
+          "invalidRuleMessages": "general",
+          "atMin": "",
+          "atMax": "25"
+        }
+      ],
+      "prop_11_desc_textfield": [
+        {
+          "valid": "คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู",
+          "invalid": "คอนโดวิวสวย",
+          "invalidRuleMessages": "At least 20 characters",
+          "atMin": "คอนโดวิวสวยบรรยากาศดีมากๆเลย",
+          "atMax": "คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู"
+        }
+      ],
+      "prop_12_contact_textfield": [
+        {
+          "valid": "สมศักดิ์ ชัยชนะ",
+          "invalid": "ธ",
+          "invalidRuleMessages": "At least 2 characters",
+          "atMin": "ธ",
+          "atMax": "สมศักดิ์ ชัยชนะ"
+        }
+      ]
+    }
+  }
+}
