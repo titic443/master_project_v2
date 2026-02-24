@@ -1860,6 +1860,62 @@ class TestDataGenerator {
       }
     }
 
+    // -------------------------------------------------------------------------
+    // Helper: ตรวจสอบว่า datasets มี field ที่ต้องการหรือไม่
+    // -------------------------------------------------------------------------
+    bool datasetsHasField(String fieldKey, String field) {
+      final ds =
+          (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+      if (!ds.containsKey(fieldKey)) return false;
+      final arr = ds[fieldKey];
+      if (arr is! List || arr.isEmpty) return false;
+      final first = arr[0];
+      return first is Map && first.containsKey(field);
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper: หา key แรกของแต่ละ radio group (เพื่อ select default option)
+    // -------------------------------------------------------------------------
+    List<String> boundaryFirstRadioKeys() {
+      final result = <String>[];
+      final seenSeqs = <int>{};
+      for (final rk in radioKeys) {
+        final seq = _extractSequence(rk);
+        if (seq >= 0 && !seenSeqs.contains(seq)) {
+          seenSeqs.add(seq);
+          result.add(rk);
+        } else if (seq < 0 && !result.contains(rk)) {
+          result.add(rk);
+        }
+      }
+      return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper: สร้าง combo map สำหรับ non-text fields (ใช้ใน edge case description)
+    // Dropdown  → first display text (e.g. "Condo")
+    // Radio     → first option key of each group
+    // Required Checkbox → 'checked'
+    // -------------------------------------------------------------------------
+    Map<String, String> buildNonTextDefaultCombo() {
+      final combo = <String, String>{};
+      for (final rk in boundaryFirstRadioKeys()) {
+        combo[rk] = rk;
+      }
+      for (int i = 0; i < dropdownKeys.length; i++) {
+        final dk = dropdownKeys[i];
+        final mapping = i < dropdownValueToTextMaps.length
+            ? dropdownValueToTextMaps[i]
+            : <String, String>{};
+        final firstText = mapping.values.isNotEmpty ? mapping.values.first : '';
+        if (firstText.isNotEmpty) combo[dk] = firstText;
+      }
+      for (final ck in requiredCheckboxValidation.keys) {
+        combo[ck] = 'checked';
+      }
+      return combo;
+    }
+
     // สร้าง assertions สำหรับ empty fields test
     // รวม 'count' เพื่อบอกว่าคาดหวังจะเห็น message นี้กี่ครั้ง
     final emptyAsserts = [
@@ -1893,7 +1949,6 @@ class TestDataGenerator {
     });
 
     // ---------------------------------------------------------------------------
-    // ---------------------------------------------------------------------------
     // STEP 15b: สร้าง Edge Cases - Boundary Value Tests (atMin / atMax)
     // ---------------------------------------------------------------------------
     //
@@ -1910,78 +1965,12 @@ class TestDataGenerator {
     // เพื่อให้ boundary test โฟกัสเฉพาะ text field boundaries
 
     // -------------------------------------------------------------------------
-    // Helper: ตรวจสอบว่า datasets มี field ที่ต้องการหรือไม่
-    // -------------------------------------------------------------------------
-    bool datasetsHasField(String fieldKey, String field) {
-      final ds =
-          (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
-      if (!ds.containsKey(fieldKey)) return false;
-      final arr = ds[fieldKey];
-      if (arr is! List || arr.isEmpty) return false;
-      final first = arr[0];
-      return first is Map && first.containsKey(field);
-    }
-
-    // -------------------------------------------------------------------------
-    // Helper: หา key แรกของแต่ละ radio group (เพื่อ select default option)
-    //
-    // จัดกลุ่มโดยใช้ sequence number ใน key (เช่น _08_ → group 8)
-    // คืน list ของ radio key แรกในแต่ละกลุ่ม
-    // -------------------------------------------------------------------------
-    List<String> boundaryFirstRadioKeys() {
-      final result = <String>[];
-      final seenSeqs = <int>{};
-      for (final rk in radioKeys) {
-        final seq = _extractSequence(rk);
-        if (seq >= 0 && !seenSeqs.contains(seq)) {
-          seenSeqs.add(seq);
-          result.add(rk);
-        } else if (seq < 0 && !result.contains(rk)) {
-          result.add(rk);
-        }
-      }
-      return result;
-    }
-
-    // -------------------------------------------------------------------------
     // Helper: สร้าง stepsByKey สำหรับ non-text widgets (valid default values)
     //
     // Radio    → tap radio option แรกของแต่ละ group
     // Dropdown → tap dropdown + select option แรก
     // Required Checkbox → tap เพื่อ check
     // -------------------------------------------------------------------------
-    // -------------------------------------------------------------------------
-    // Helper: สร้าง combo map สำหรับ non-text fields (ใช้ใน edge case description)
-    // Dropdown  → first display text (e.g. "Condo")
-    // Radio     → first option key of each group
-    // Required Checkbox → 'checked'
-    // -------------------------------------------------------------------------
-    Map<String, String> buildNonTextDefaultCombo() {
-      final combo = <String, String>{};
-
-      // Radio: ใช้ key ของ option แรกในแต่ละ group
-      for (final rk in boundaryFirstRadioKeys()) {
-        combo[rk] = rk; // _shortValue จะย่อให้เอง
-      }
-
-      // Dropdown: ใช้ display text ของ option แรก
-      for (int i = 0; i < dropdownKeys.length; i++) {
-        final dk = dropdownKeys[i];
-        final mapping = i < dropdownValueToTextMaps.length
-            ? dropdownValueToTextMaps[i]
-            : <String, String>{};
-        final firstText = mapping.values.isNotEmpty ? mapping.values.first : '';
-        if (firstText.isNotEmpty) combo[dk] = firstText;
-      }
-
-      // Required Checkbox: ถือว่า checked
-      for (final ck in requiredCheckboxValidation.keys) {
-        combo[ck] = 'checked';
-      }
-
-      return combo;
-    }
-
     Map<String, List<Map<String, dynamic>>> buildNonTextDefaultSteps() {
       final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
