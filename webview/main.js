@@ -770,6 +770,15 @@ class WebUI {
     return 'val-data'; // radio/dropdown actual values
   }
 
+  #getGroupLabel(name) {
+    const labels = {
+      'pairwise_valid_cases':         'Pairwise (All Valid)',
+      'pairwise_valid_invalid_cases': 'Pairwise (Valid/Invalid)',
+      'edge_cases':                   'Edge Cases',
+    };
+    return labels[name] ?? name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
   #renderDescription(description) {
     if (!description) return '';
     return description.split(', ').map(pair => {
@@ -794,7 +803,7 @@ class WebUI {
 
     let badgesHtml = `<div class="summary-badge"><strong>${summary.totalCases}</strong> Total Cases</div>`;
     for (const g of summary.groups) {
-      badgesHtml += `<div class="summary-badge"><strong>${g.count}</strong> ${g.name}</div>`;
+      badgesHtml += `<div class="summary-badge"><strong>${g.count}</strong> ${this.#getGroupLabel(g.name)}</div>`;
     }
     this.#el.summaryOverview.innerHTML = badgesHtml;
 
