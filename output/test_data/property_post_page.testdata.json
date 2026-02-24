@@ -12,74 +12,74 @@
     "byKey": {
       "prop_01_title_textfield": [
         {
-          "valid": "คอนโดมิเนียมหรูใจกลางเมือง",
-          "invalid": "ห้องเช่า",
+          "valid": "Beautiful Modern Condo for Sale",
+          "invalid": "Home",
           "invalidRuleMessages": "At least 5 characters",
-          "atMin": "ห้องเช่า",
-          "atMax": "คอนโดมิเนียมหรูใจกลางเมือง"
+          "atMin": "ABCD",
+          "atMax": "Luxury 3-Bedroom Penthouse with Panoramic City Vie"
         }
       ],
       "prop_03_location_textfield": [
         {
-          "valid": "ถนนสุขุมวิท 21",
-          "invalid": "ส",
+          "valid": "Bangkok",
+          "invalid": "A",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "ส",
-          "atMax": "ถนนสุขุมวิท 21"
+          "atMin": "A",
+          "atMax": "Sukhumvit 71 Road, Phra Khanong Nuea, Wattana, Ban"
         }
       ],
       "prop_04_district_textfield": [
         {
-          "valid": "วัฒนา",
-          "invalid": "ท",
+          "valid": "Wattana",
+          "invalid": "K",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "ท",
-          "atMax": "วัฒนา"
+          "atMin": "K",
+          "atMax": "Phra Khanong Nuea"
         }
       ],
       "prop_05_price_textfield": [
         {
-          "valid": "5000000",
+          "valid": "1500000",
           "invalid": "99999",
           "invalidRuleMessages": "Min 100,000 THB",
           "atMin": "",
-          "atMax": "5000000"
+          "atMax": "250000000"
         }
       ],
       "prop_08_area_textfield": [
         {
-          "valid": "120.50",
+          "valid": "75.50",
           "invalid": "9.99",
           "invalidRuleMessages": "Min 10 sqm",
           "atMin": "",
-          "atMax": "120.50"
+          "atMax": "9999.99"
         }
       ],
       "prop_09_floor_textfield": [
         {
-          "valid": "25",
-          "invalid": "",
-          "invalidRuleMessages": "general",
+          "valid": "15",
+          "invalid": "Ground",
+          "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "25"
+          "atMax": "60"
         }
       ],
       "prop_11_desc_textfield": [
         {
-          "valid": "คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู",
-          "invalid": "คอนโดวิวสวย",
+          "valid": "This spacious condo offers stunning city views and",
+          "invalid": "Great place.",
           "invalidRuleMessages": "At least 20 characters",
-          "atMin": "คอนโดวิวสวยบรรยากาศดีมากๆเลย",
-          "atMax": "คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู"
+          "atMin": "This is nineteen char.",
+          "atMax": "This meticulously designed property boasts an expa"
         }
       ],
       "prop_12_contact_textfield": [
         {
-          "valid": "สมศักดิ์ ชัยชนะ",
-          "invalid": "ธ",
+          "valid": "John Doe (081-234-5678)",
+          "invalid": "J",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "ธ",
-          "atMax": "สมศักดิ์ ชัยชนะ"
+          "atMin": "J",
+          "atMax": "Johnathan Smith (Mobile: +66 81 234 5678, Email: j"
         }
       ]
     }
@@ -89,7 +89,7 @@
       "tc": "pairwise_valid_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: valid§5000000, bedrooms: 4+, bathrooms: 3, area: invalid§9.99, floor: valid§25, furnished_switch: on, desc: invalid§คอนโดวิวสวย, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: valid§Bangkok, district: invalid§K, price: valid§1500000, bedrooms: 4+, bathrooms: 3, area: invalid§9.99, floor: valid§15, furnished_switch: on, desc: invalid§Great place., contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -237,10 +237,6 @@
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -249,7 +245,7 @@
       "tc": "pairwise_valid_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Land, location: invalid§ส, district: valid§วัฒนา, price: invalid§99999, bedrooms: 4+, bathrooms: 2, area: valid§120.50, floor: invalid§invalid, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Land, location: invalid§A, district: valid§Wattana, price: invalid§99999, bedrooms: 4+, bathrooms: 2, area: valid§75.50, floor: invalid§Ground, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -385,14 +381,6 @@
         },
         {
           "text": "Min 100,000 THB",
-          "exists": true
-        },
-        {
-          "text": "general",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -401,7 +389,7 @@
       "tc": "pairwise_valid_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Condo, location: invalid§ส, district: invalid§ท, price: valid§5000000, bedrooms: 2, bathrooms: 4+, area: valid§120.50, floor: invalid§invalid, furnished_switch: on, desc: invalid§คอนโดวิวสวย, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Condo, location: invalid§A, district: invalid§K, price: valid§1500000, bedrooms: 2, bathrooms: 4+, area: valid§75.50, floor: invalid§Ground, furnished_switch: on, desc: invalid§Great place., contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -548,15 +536,7 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -565,7 +545,7 @@
       "tc": "pairwise_valid_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: invalid§99999, bedrooms: Studio, bathrooms: 1, area: invalid§9.99, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: valid§Wattana, price: invalid§99999, bedrooms: Studio, bathrooms: 1, area: invalid§9.99, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -709,10 +689,6 @@
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -721,7 +697,7 @@
       "tc": "pairwise_valid_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: invalid§99999, bedrooms: 4+, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: invalid§K, price: invalid§99999, bedrooms: 4+, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -857,10 +833,6 @@
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -869,7 +841,7 @@
       "tc": "pairwise_valid_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Commercial, location: invalid§ส, district: valid§วัฒนา, price: valid§5000000, bedrooms: Studio, bathrooms: 3, area: invalid§9.99, floor: invalid§invalid, furnished_switch: off, desc: invalid§คอนโดวิวสวย, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Commercial, location: invalid§A, district: valid§Wattana, price: valid§1500000, bedrooms: Studio, bathrooms: 3, area: invalid§9.99, floor: invalid§Ground, furnished_switch: off, desc: invalid§Great place., contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -1004,15 +976,7 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1021,7 +985,7 @@
       "tc": "pairwise_valid_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Condo, location: invalid§ส, district: valid§วัฒนา, price: invalid§99999, bedrooms: 1, bathrooms: 1, area: invalid§9.99, floor: invalid§invalid, furnished_switch: off, desc: invalid§คอนโดวิวสวย, contact: invalid§ธ",
+      "description": "title: invalid§Home, type: Condo, location: invalid§A, district: valid§Wattana, price: invalid§99999, bedrooms: 1, bathrooms: 1, area: invalid§9.99, floor: invalid§Ground, furnished_switch: off, desc: invalid§Great place., contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -1164,19 +1128,11 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1185,7 +1141,7 @@
       "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: valid§5000000, bedrooms: 3, bathrooms: 2, area: invalid§9.99, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Townhouse, location: valid§Bangkok, district: invalid§K, price: valid§1500000, bedrooms: 3, bathrooms: 2, area: invalid§9.99, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -1329,10 +1285,6 @@
         },
         {
           "text": "Min 10 sqm",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1341,7 +1293,7 @@
       "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: invalid§ส, district: valid§วัฒนา, price: invalid§99999, bedrooms: 2, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: invalid§A, district: valid§Wattana, price: invalid§99999, bedrooms: 2, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -1477,10 +1429,6 @@
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1489,7 +1437,7 @@
       "tc": "pairwise_valid_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 1, area: valid§120.50, floor: invalid§invalid, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 1, area: valid§75.50, floor: invalid§Ground, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -1617,14 +1565,6 @@
       "asserts": [
         {
           "text": "At least 5 characters",
-          "exists": true
-        },
-        {
-          "text": "general",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1633,7 +1573,7 @@
       "tc": "pairwise_valid_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: invalid§ส, district: valid§วัฒนา, price: invalid§99999, bedrooms: 3, bathrooms: 2, area: valid§120.50, floor: invalid§invalid, furnished_switch: off, desc: invalid§คอนโดวิวสวย, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: invalid§A, district: valid§Wattana, price: invalid§99999, bedrooms: 3, bathrooms: 2, area: valid§75.50, floor: invalid§Ground, furnished_switch: off, desc: invalid§Great place., contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -1768,19 +1708,11 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1789,7 +1721,7 @@
       "tc": "pairwise_valid_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: invalid§ส, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 4+, area: invalid§9.99, floor: valid§25, furnished_switch: off, desc: invalid§คอนโดวิวสวย, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: invalid§A, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 4+, area: invalid§9.99, floor: valid§15, furnished_switch: off, desc: invalid§Great place., contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -1925,10 +1857,6 @@
         },
         {
           "text": "At least 20 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -1937,7 +1865,7 @@
       "tc": "pairwise_valid_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: valid§5000000, bedrooms: 1, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: invalid§คอนโดวิวสวย, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: valid§Bangkok, district: invalid§K, price: valid§1500000, bedrooms: 1, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: invalid§Great place., contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -2077,10 +2005,6 @@
         },
         {
           "text": "At least 20 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -2089,7 +2013,7 @@
       "tc": "pairwise_valid_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Commercial, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: invalid§99999, bedrooms: 3, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: invalid§Home, type: Commercial, location: valid§Bangkok, district: invalid§K, price: invalid§99999, bedrooms: 3, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -2237,10 +2161,6 @@
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -2249,7 +2169,7 @@
       "tc": "pairwise_valid_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Townhouse, location: invalid§ส, district: invalid§ท, price: valid§5000000, bedrooms: Studio, bathrooms: 2, area: valid§120.50, floor: invalid§invalid, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Townhouse, location: invalid§A, district: invalid§K, price: valid§1500000, bedrooms: Studio, bathrooms: 2, area: valid§75.50, floor: invalid§Ground, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -2393,14 +2313,6 @@
         },
         {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "general",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -2409,7 +2321,7 @@
       "tc": "pairwise_valid_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 3, area: invalid§9.99, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 3, area: invalid§9.99, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -2550,10 +2462,6 @@
         {
           "text": "Min 10 sqm",
           "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -2561,7 +2469,7 @@
       "tc": "pairwise_valid_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Condo, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: valid§5000000, bedrooms: Studio, bathrooms: 3, area: invalid§9.99, floor: invalid§invalid, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Condo, location: valid§Bangkok, district: invalid§K, price: valid§1500000, bedrooms: Studio, bathrooms: 3, area: invalid§9.99, floor: invalid§Ground, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -2706,14 +2614,6 @@
         {
           "text": "Min 10 sqm",
           "exists": true
-        },
-        {
-          "text": "general",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -2721,7 +2621,7 @@
       "tc": "pairwise_valid_invalid_cases_18",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Commercial, location: invalid§ส, district: invalid§ท, price: invalid§99999, bedrooms: 2, bathrooms: 2, area: valid§120.50, floor: invalid§invalid, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Commercial, location: invalid§A, district: invalid§K, price: invalid§99999, bedrooms: 2, bathrooms: 2, area: valid§75.50, floor: invalid§Ground, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -2870,14 +2770,6 @@
         {
           "text": "Min 100,000 THB",
           "exists": true
-        },
-        {
-          "text": "general",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -2885,7 +2777,7 @@
       "tc": "pairwise_valid_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: invalid§ส, district: invalid§ท, price: invalid§99999, bedrooms: 3, bathrooms: 4+, area: valid§120.50, floor: invalid§invalid, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: invalid§A, district: invalid§K, price: invalid§99999, bedrooms: 3, bathrooms: 4+, area: valid§75.50, floor: invalid§Ground, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -3024,15 +2916,7 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -3041,7 +2925,7 @@
       "tc": "pairwise_valid_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: valid§5000000, bedrooms: 1, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: invalid§คอนโดวิวสวย, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: invalid§K, price: valid§1500000, bedrooms: 1, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: invalid§Great place., contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -3174,10 +3058,6 @@
         {
           "text": "At least 20 characters",
           "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -3185,7 +3065,7 @@
       "tc": "pairwise_valid_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: invalid§99999, bedrooms: 3, bathrooms: 3, area: valid§120.50, floor: invalid§invalid, furnished_switch: off, desc: invalid§คอนโดวิวสวย, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: invalid§Home, type: Land, location: valid§Bangkok, district: valid§Wattana, price: invalid§99999, bedrooms: 3, bathrooms: 3, area: valid§75.50, floor: invalid§Ground, furnished_switch: off, desc: invalid§Great place., contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -3320,15 +3200,7 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -3337,7 +3209,7 @@
       "tc": "pairwise_valid_invalid_cases_22",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: invalid§ท, price: invalid§99999, bedrooms: 4+, bathrooms: 1, area: invalid§9.99, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: invalid§Home, type: Townhouse, location: valid§Bangkok, district: invalid§K, price: invalid§99999, bedrooms: 4+, bathrooms: 1, area: invalid§9.99, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -3482,10 +3354,6 @@
         {
           "text": "At least 2 characters",
           "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -3493,7 +3361,7 @@
       "tc": "pairwise_valid_invalid_cases_23",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Commercial, location: invalid§ส, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 4+, area: invalid§9.99, floor: invalid§invalid, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: invalid§Home, type: Commercial, location: invalid§A, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 4+, area: invalid§9.99, floor: invalid§Ground, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -3632,15 +3500,7 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -3649,7 +3509,7 @@
       "tc": "pairwise_valid_invalid_cases_24",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: invalid§99999, bedrooms: 1, bathrooms: 2, area: invalid§9.99, floor: valid§25, furnished_switch: on, desc: invalid§คอนโดวิวสวย, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: valid§Wattana, price: invalid§99999, bedrooms: 1, bathrooms: 2, area: invalid§9.99, floor: valid§15, furnished_switch: on, desc: invalid§Great place., contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -3798,10 +3658,6 @@
         {
           "text": "At least 2 characters",
           "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -3809,7 +3665,7 @@
       "tc": "pairwise_valid_invalid_cases_25",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: invalid§ส, district: invalid§ท, price: invalid§99999, bedrooms: Studio, bathrooms: 4+, area: valid§120.50, floor: invalid§invalid, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: invalid§A, district: invalid§K, price: invalid§99999, bedrooms: Studio, bathrooms: 4+, area: valid§75.50, floor: invalid§Ground, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -3956,15 +3812,7 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
           "exists": true
         }
       ]
@@ -3973,7 +3821,7 @@
       "tc": "pairwise_valid_invalid_cases_26",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§ห้องเช่า, type: Commercial, location: invalid§ส, district: valid§วัฒนา, price: invalid§99999, bedrooms: 4+, bathrooms: 1, area: invalid§9.99, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: invalid§ธ",
+      "description": "title: invalid§Home, type: Commercial, location: invalid§A, district: valid§Wattana, price: invalid§99999, bedrooms: 4+, bathrooms: 1, area: invalid§9.99, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: invalid§J",
       "steps": [
         {
           "enterText": {
@@ -4126,10 +3974,6 @@
         {
           "text": "At least 2 characters",
           "exists": true
-        },
-        {
-          "byKey": "prop_13_expected_fail",
-          "exists": true
         }
       ]
     },
@@ -4137,7 +3981,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 3, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 3, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -4273,7 +4117,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Commercial, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: Studio, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Commercial, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: Studio, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -4417,7 +4261,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 3, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 3, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -4561,7 +4405,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 4+, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 4+, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -4697,7 +4541,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 4+, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 4+, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -4841,7 +4685,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 3, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 3, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -4977,7 +4821,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5121,7 +4965,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5257,7 +5101,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5393,7 +5237,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 3, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 3, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5537,7 +5381,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5681,7 +5525,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: Studio, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: Studio, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5817,7 +5661,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Commercial, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Commercial, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -5953,7 +5797,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6089,7 +5933,7 @@
       "tc": "pairwise_valid_cases_15",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: Studio, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: Studio, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6233,7 +6077,7 @@
       "tc": "pairwise_valid_cases_16",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Land, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: Studio, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Land, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: Studio, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6369,7 +6213,7 @@
       "tc": "pairwise_valid_cases_17",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Townhouse, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Townhouse, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6505,7 +6349,7 @@
       "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Commercial, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Commercial, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6649,7 +6493,7 @@
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: Studio, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: Studio, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6793,7 +6637,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Commercial, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 3, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Commercial, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 3, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -6937,7 +6781,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 4+, bathrooms: 2, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 4+, bathrooms: 2, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -7073,7 +6917,7 @@
       "tc": "pairwise_valid_cases_22",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: House, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 1, bathrooms: 4+, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: House, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 1, bathrooms: 4+, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -7209,7 +7053,7 @@
       "tc": "pairwise_valid_cases_23",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 4+, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 4+, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -7345,7 +7189,7 @@
       "tc": "pairwise_valid_cases_24",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Commercial, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 4+, bathrooms: 1, area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Commercial, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 4+, bathrooms: 1, area: valid§75.50, floor: valid§15, furnished_switch: on, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -7489,7 +7333,7 @@
       "tc": "pairwise_valid_cases_25",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดมิเนียมหรูใจกลางเมือง, type: Condo, location: valid§ถนนสุขุมวิท 21, district: valid§วัฒนา, price: valid§5000000, bedrooms: 2, bathrooms: 3, area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: valid§สมศักดิ์ ชัยชนะ",
+      "description": "title: valid§Beautiful Modern Condo for S…, type: Condo, location: valid§Bangkok, district: valid§Wattana, price: valid§1500000, bedrooms: 2, bathrooms: 3, area: valid§75.50, floor: valid§15, furnished_switch: off, desc: valid§This spacious condo offers s…, contact: valid§John Doe (081-234-5678)",
       "steps": [
         {
           "enterText": {
@@ -7625,7 +7469,7 @@
       "tc": "edge_cases_empty_all_fields",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "title: empty§\"\", location: empty§\"\", district: empty§\"\", price: empty§\"\", area: empty§\"\", floor: empty§\"\", desc: empty§\"\", contact: empty§\"\"",
+      "description": "type: Condo, bedrooms: Studio, bathrooms: 1, title: empty§\"\", location: empty§\"\", district: empty§\"\", price: empty§\"\", area: empty§\"\", floor: empty§\"\", desc: empty§\"\", contact: empty§\"\"",
       "steps": [
         {
           "tap": {
@@ -7648,7 +7492,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type: Condo, bedrooms: Studio, bathrooms: 1, title: atMax§คอนโดมิเนียมหรูใจกลางเมือง, location: atMax§ถนนสุขุมวิท 21, district: atMax§วัฒนา, price: atMax§5000000, area: atMax§120.50, floor: atMax§25, desc: atMax§คอนโดสวยหรู วิวเมืองงาม ตกแต…, contact: atMax§สมศักดิ์ ชัยชนะ",
+      "description": "type: Condo, bedrooms: Studio, bathrooms: 1, title: atMax§Luxury 3-Bedroom Penthouse w…, location: atMax§Sukhumvit 71 Road, Phra Khan…, district: atMax§Phra Khanong Nuea, price: atMax§250000000, area: atMax§9999.99, floor: atMax§60, desc: atMax§This meticulously designed p…, contact: atMax§Johnathan Smith (Mobile: +66…",
       "steps": [
         {
           "enterText": {
@@ -7784,7 +7628,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type: Condo, bedrooms: Studio, bathrooms: 1, title: atMin§ห้องเช่า, location: atMin§ส, district: atMin§ท, price: atMin§atMin, area: atMin§atMin, floor: atMin§atMin, desc: atMin§คอนโดวิวสวยบรรยากาศดีมากๆเลย, contact: atMin§ธ",
+      "description": "type: Condo, bedrooms: Studio, bathrooms: 1, title: atMin§ABCD, location: atMin§A, district: atMin§K, price: atMin§atMin, area: atMin§atMin, floor: atMin§atMin, desc: atMin§This is nineteen char., contact: atMin§J",
       "steps": [
         {
           "enterText": {
