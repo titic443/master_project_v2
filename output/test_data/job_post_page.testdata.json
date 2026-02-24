@@ -12,20 +12,20 @@
     "byKey": {
       "job_01_title_textfield": [
         {
-          "valid": "Senior Software Engineer (Flutter/Dart)",
-          "invalid": "SE",
+          "valid": "Senior Software Engineer",
+          "invalid": "Sr",
           "invalidRuleMessages": "At least 3 characters",
-          "atMin": "De",
-          "atMax": "Senior Software Engineer (Flutter/Dart)"
+          "atMin": "SE",
+          "atMax": "Senior Software Engineer"
         }
       ],
       "job_02_company_textfield": [
         {
-          "valid": "Tech Solutions Inc.",
+          "valid": "Tech Innovations Co.",
           "invalid": "T",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "C",
-          "atMax": "Tech Solutions Inc."
+          "atMin": "T",
+          "atMax": "Tech Innovations Co."
         }
       ],
       "job_03_location_textfield": [
@@ -33,44 +33,44 @@
           "valid": "Bangkok, Thailand",
           "invalid": "B",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "L",
+          "atMin": "B",
           "atMax": "Bangkok, Thailand"
         }
       ],
       "job_07_salary_min_textfield": [
         {
           "valid": "50000",
-          "invalid": "100",
-          "invalidRuleMessages": "general",
+          "invalid": "1",
+          "invalidRuleMessages": "",
           "atMin": "",
           "atMax": "50000"
         }
       ],
       "job_08_salary_max_textfield": [
         {
-          "valid": "100000",
-          "invalid": "45000",
+          "valid": "80000",
+          "invalid": "40000",
           "invalidRuleMessages": "Must be ≥ min",
           "atMin": "",
-          "atMax": "100000"
+          "atMax": "80000"
         }
       ],
       "job_09_desc_textfield": [
         {
-          "valid": "We are seeking a highly skilled Flutter developer ",
-          "invalid": "Short job description for a new role.",
+          "valid": "We are looking for a highly motivated and skilled ",
+          "invalid": "Job desc too short.",
           "invalidRuleMessages": "At least 20 characters",
-          "atMin": "Short job description.",
-          "atMax": "We are seeking a highly skilled Flutter developer "
+          "atMin": "This is a short text.",
+          "atMax": "We are looking for a highly motivated and skilled "
         }
       ],
       "job_10_skills_textfield": [
         {
-          "valid": "Flutter, Dart, Firebase, REST APIs, Git",
-          "invalid": "F",
+          "valid": "Flutter, Dart, AWS",
+          "invalid": "S",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "S",
-          "atMax": "Flutter, Dart, Firebase, REST APIs, Git"
+          "atMin": "F",
+          "atMax": "Flutter, Dart, AWS"
         }
       ]
     }
@@ -80,7 +80,7 @@
       "tc": "pairwise_valid_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Part-time, exp: Senior, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Part-time, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -202,10 +202,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         },
@@ -219,7 +215,7 @@
       "tc": "pairwise_valid_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: invalid§B, category: Education, type: Full-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: invalid§Short job description for a …, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: invalid§B, category: Education, type: Full-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: invalid§Job desc too short., skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -362,7 +358,7 @@
       "tc": "pairwise_valid_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: invalid§B, category: Healthcare, type: Freelance, exp: Junior, salary_min: invalid§100, salary_max: valid§100000, remote_switch: off, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: invalid§B, category: Healthcare, type: Freelance, exp: Junior, salary_min: invalid§1, salary_max: valid§80000, remote_switch: off, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -484,10 +480,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         },
@@ -501,7 +493,7 @@
       "tc": "pairwise_valid_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: valid§Bangkok, Thailand, category: Finance, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: invalid§Sr, company: invalid§T, location: valid§Bangkok, Thailand, category: Finance, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -644,7 +636,7 @@
       "tc": "pairwise_valid_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: invalid§B, category: Education, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: invalid§Sr, company: invalid§T, location: invalid§B, category: Education, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -787,7 +779,7 @@
       "tc": "pairwise_valid_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Engineering, type: Contract, exp: Senior, salary_min: invalid§100, salary_max: valid§100000, remote_switch: on, desc: invalid§Short job description for a …, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Engineering, type: Contract, exp: Senior, salary_min: invalid§1, salary_max: valid§80000, remote_switch: on, desc: invalid§Job desc too short., skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -913,10 +905,6 @@
       ],
       "asserts": [
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         }
@@ -926,7 +914,7 @@
       "tc": "pairwise_valid_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: invalid§B, category: Engineering, type: Part-time, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: invalid§B, category: Engineering, type: Part-time, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -1069,7 +1057,7 @@
       "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Internship, exp: Mid-Level, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: invalid§Short job description for a …, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Internship, exp: Mid-Level, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: invalid§Job desc too short., skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -1187,10 +1175,6 @@
       ],
       "asserts": [
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         },
@@ -1204,7 +1188,7 @@
       "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: invalid§B, category: Tech, type: Full-time, exp: Level, salary_min: invalid§100, salary_max: valid§100000, remote_switch: off, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: invalid§B, category: Tech, type: Full-time, exp: Level, salary_min: invalid§1, salary_max: valid§80000, remote_switch: off, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -1330,10 +1314,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         },
@@ -1347,7 +1327,7 @@
       "tc": "pairwise_valid_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: valid§Bangkok, Thailand, category: Tech, type: Part-time, exp: Junior, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: valid§Bangkok, Thailand, category: Tech, type: Part-time, exp: Junior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -1486,7 +1466,7 @@
       "tc": "pairwise_valid_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: invalid§B, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: invalid§B, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -1625,7 +1605,7 @@
       "tc": "pairwise_valid_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: valid§Bangkok, Thailand, category: Engineering, type: Freelance, exp: Mid-Level, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: invalid§Sr, company: invalid§T, location: valid§Bangkok, Thailand, category: Engineering, type: Freelance, exp: Mid-Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -1768,7 +1748,7 @@
       "tc": "pairwise_valid_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: valid§Bangkok, Thailand, category: Education, type: Freelance, exp: Senior, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: invalid§Sr, company: invalid§T, location: valid§Bangkok, Thailand, category: Education, type: Freelance, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -1894,10 +1874,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         }
@@ -1907,7 +1883,7 @@
       "tc": "pairwise_valid_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: invalid§B, category: Engineering, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: invalid§Sr, company: invalid§T, location: invalid§B, category: Engineering, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -2054,7 +2030,7 @@
       "tc": "pairwise_valid_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: invalid§B, category: Tech, type: Freelance, exp: Level, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: invalid§B, category: Tech, type: Freelance, exp: Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -2197,7 +2173,7 @@
       "tc": "pairwise_valid_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: invalid§B, category: Finance, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: invalid§B, category: Finance, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -2344,7 +2320,7 @@
       "tc": "pairwise_valid_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: valid§Bangkok, Thailand, category: Healthcare, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: invalid§Sr, company: invalid§T, location: valid§Bangkok, Thailand, category: Healthcare, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -2487,7 +2463,7 @@
       "tc": "pairwise_valid_invalid_cases_18",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: valid§Bangkok, Thailand, category: Marketing, type: Freelance, exp: Senior, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: valid§Bangkok, Thailand, category: Marketing, type: Freelance, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -2617,10 +2593,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         }
@@ -2630,7 +2602,7 @@
       "tc": "pairwise_valid_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Full-time, exp: Junior, salary_min: invalid§100, salary_max: valid§100000, remote_switch: off, desc: invalid§Short job description for a …, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Full-time, exp: Junior, salary_min: invalid§1, salary_max: valid§80000, remote_switch: off, desc: invalid§Job desc too short., skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -2748,10 +2720,6 @@
       ],
       "asserts": [
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         }
@@ -2761,7 +2729,7 @@
       "tc": "pairwise_valid_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Internship, exp: Level, salary_min: invalid§100, salary_max: valid§100000, remote_switch: off, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Internship, exp: Level, salary_min: invalid§1, salary_max: valid§80000, remote_switch: off, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -2883,10 +2851,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "At least 20 characters",
           "exists": true
         },
@@ -2900,7 +2864,7 @@
       "tc": "pairwise_valid_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: valid§Bangkok, Thailand, category: Tech, type: Contract, exp: Senior, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: valid§Bangkok, Thailand, category: Tech, type: Contract, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -3022,10 +2986,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         }
@@ -3035,7 +2995,7 @@
       "tc": "pairwise_valid_invalid_cases_22",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: valid§Bangkok, Thailand, category: Finance, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: off, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: invalid§Sr, company: invalid§T, location: valid§Bangkok, Thailand, category: Finance, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -3178,7 +3138,7 @@
       "tc": "pairwise_valid_invalid_cases_23",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Contract, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Contract, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -3313,7 +3273,7 @@
       "tc": "pairwise_valid_invalid_cases_24",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§T, location: valid§Bangkok, Thailand, category: Healthcare, type: Contract, exp: Level, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: invalid§Sr, company: invalid§T, location: valid§Bangkok, Thailand, category: Healthcare, type: Contract, exp: Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -3452,7 +3412,7 @@
       "tc": "pairwise_valid_invalid_cases_25",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: invalid§B, category: Education, type: Internship, exp: Junior, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: invalid§Short job description for a …, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: invalid§B, category: Education, type: Internship, exp: Junior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: invalid§Job desc too short., skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -3578,10 +3538,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         },
@@ -3595,7 +3551,7 @@
       "tc": "pairwise_valid_invalid_cases_26",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: invalid§T, location: valid§Bangkok, Thailand, category: Healthcare, type: Internship, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: invalid§T, location: valid§Bangkok, Thailand, category: Healthcare, type: Internship, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -3722,7 +3678,7 @@
       "tc": "pairwise_valid_invalid_cases_27",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: invalid§B, category: Healthcare, type: Full-time, exp: Senior, salary_min: valid§50000, salary_max: invalid§45000, remote_switch: off, desc: invalid§Short job description for a …, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: invalid§B, category: Healthcare, type: Full-time, exp: Senior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: invalid§Job desc too short., skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -3857,7 +3813,7 @@
       "tc": "pairwise_valid_invalid_cases_28",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: invalid§B, category: Education, type: Part-time, exp: Level, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: invalid§B, category: Education, type: Part-time, exp: Level, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: on, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -3991,10 +3947,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         },
@@ -4008,7 +3960,7 @@
       "tc": "pairwise_valid_invalid_cases_29",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: invalid§B, category: Engineering, type: Full-time, exp: Junior, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: invalid§F",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: invalid§B, category: Engineering, type: Full-time, exp: Junior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are looking for a highly …, skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -4130,10 +4082,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         },
@@ -4147,7 +4095,7 @@
       "tc": "pairwise_valid_invalid_cases_30",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Tech Solutions Inc., location: invalid§B, category: Tech, type: Internship, exp: Mid-Level, salary_min: invalid§100, salary_max: invalid§45000, remote_switch: off, desc: invalid§Short job description for a …, skills: invalid§F",
+      "description": "title: invalid§Sr, company: valid§Tech Innovations Co., location: invalid§B, category: Tech, type: Internship, exp: Mid-Level, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: invalid§Job desc too short., skills: invalid§S",
       "steps": [
         {
           "enterText": {
@@ -4273,10 +4221,6 @@
           "exists": true
         },
         {
-          "text": "general",
-          "exists": true
-        },
-        {
           "text": "Must be ≥ min",
           "exists": true
         },
@@ -4294,7 +4238,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Engineering, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Engineering, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -4429,7 +4373,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Healthcare, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Healthcare, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -4556,7 +4500,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Healthcare, type: Freelance, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Healthcare, type: Freelance, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -4683,7 +4627,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Education, type: Contract, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Education, type: Contract, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -4818,7 +4762,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Tech, type: Part-time, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Tech, type: Part-time, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -4945,7 +4889,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Freelance, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Freelance, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5080,7 +5024,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Engineering, type: Internship, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Engineering, type: Internship, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5207,7 +5151,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Contract, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Contract, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5342,7 +5286,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Tech, type: Full-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Tech, type: Full-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5477,7 +5421,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5604,7 +5548,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Education, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Education, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5731,7 +5675,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Tech, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Tech, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5858,7 +5802,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Internship, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Internship, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -5993,7 +5937,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Education, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Education, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6120,7 +6064,7 @@
       "tc": "pairwise_valid_cases_15",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Healthcare, type: Part-time, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Healthcare, type: Part-time, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6255,7 +6199,7 @@
       "tc": "pairwise_valid_cases_16",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6390,7 +6334,7 @@
       "tc": "pairwise_valid_cases_17",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Engineering, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Engineering, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6525,7 +6469,7 @@
       "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6652,7 +6596,7 @@
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Healthcare, type: Internship, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Healthcare, type: Internship, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6779,7 +6723,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Engineering, type: Full-time, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Engineering, type: Full-time, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -6906,7 +6850,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Healthcare, type: Full-time, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Healthcare, type: Full-time, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7041,7 +6985,7 @@
       "tc": "pairwise_valid_cases_22",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Education, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Education, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7176,7 +7120,7 @@
       "tc": "pairwise_valid_cases_23",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Internship, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Internship, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7303,7 +7247,7 @@
       "tc": "pairwise_valid_cases_24",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Tech, type: Freelance, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Tech, type: Freelance, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7438,7 +7382,7 @@
       "tc": "pairwise_valid_cases_25",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Marketing, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Marketing, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7565,7 +7509,7 @@
       "tc": "pairwise_valid_cases_26",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Tech, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Tech, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7692,7 +7636,7 @@
       "tc": "pairwise_valid_cases_27",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7819,7 +7763,7 @@
       "tc": "pairwise_valid_cases_28",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Engineering, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Engineering, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -7946,7 +7890,7 @@
       "tc": "pairwise_valid_cases_29",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Finance, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: valid§100000, remote_switch: off, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Finance, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: valid§80000, remote_switch: off, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -8073,7 +8017,7 @@
       "tc": "pairwise_valid_cases_30",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer (Fl…, company: valid§Tech Solutions Inc., location: valid§Bangkok, Thailand, category: Education, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§100000, remote_switch: on, desc: valid§We are seeking a highly skil…, skills: valid§Flutter, Dart, Firebase, RES…",
+      "description": "title: valid§Senior Software Engineer, company: valid§Tech Innovations Co., location: valid§Bangkok, Thailand, category: Education, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§80000, remote_switch: on, desc: valid§We are looking for a highly …, skills: valid§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -8231,7 +8175,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: atMax§Senior Software Engineer (Fl…, company: atMax§Tech Solutions Inc., location: atMax§Bangkok, Thailand, salary_min: atMax§50000, salary_max: atMax§100000, desc: atMax§We are seeking a highly skil…, skills: atMax§Flutter, Dart, Firebase, RES…",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: atMax§Senior Software Engineer, company: atMax§Tech Innovations Co., location: atMax§Bangkok, Thailand, salary_min: atMax§50000, salary_max: atMax§80000, desc: atMax§We are looking for a highly …, skills: atMax§Flutter, Dart, AWS",
       "steps": [
         {
           "enterText": {
@@ -8358,7 +8302,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: atMin§De, company: atMin§C, location: atMin§L, salary_min: atMin§atMin, salary_max: atMin§atMin, desc: atMin§Short job description., skills: atMin§S",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: atMin§SE, company: atMin§T, location: atMin§B, salary_min: atMin§atMin, salary_max: atMin§atMin, desc: atMin§This is a short text., skills: atMin§F",
       "steps": [
         {
           "enterText": {

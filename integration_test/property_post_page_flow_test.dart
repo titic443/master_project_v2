@@ -17,7 +17,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -28,13 +28,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -56,16 +56,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -77,7 +77,6 @@ void main() {
           find.text('Min 10 sqm'),
           find.text('At least 20 characters'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -90,7 +89,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -101,10 +100,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -126,16 +125,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -146,8 +145,6 @@ void main() {
           find.text('At least 5 characters'),
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
-          find.text('general'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -160,7 +157,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -171,13 +168,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -196,19 +193,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -219,9 +216,7 @@ void main() {
           find.text('At least 5 characters'),
           find.text('At least 2 characters'),
           find.text('At least 2 characters'),
-          find.text('general'),
           find.text('At least 20 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -234,7 +229,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -245,10 +240,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -273,16 +268,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -293,7 +288,6 @@ void main() {
           find.text('Min 100,000 THB'),
           find.text('Min 10 sqm'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -306,7 +300,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -317,10 +311,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -342,16 +336,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -362,7 +356,6 @@ void main() {
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -375,7 +368,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -386,13 +379,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -414,13 +407,13 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -430,9 +423,7 @@ void main() {
         final expected = [
           find.text('At least 2 characters'),
           find.text('Min 10 sqm'),
-          find.text('general'),
           find.text('At least 20 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -445,7 +436,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -456,10 +447,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -484,13 +475,13 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -502,10 +493,8 @@ void main() {
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
           find.text('Min 10 sqm'),
-          find.text('general'),
           find.text('At least 20 characters'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -518,7 +507,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -529,13 +518,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -557,16 +546,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -577,7 +566,6 @@ void main() {
           find.text('At least 5 characters'),
           find.text('At least 2 characters'),
           find.text('Min 10 sqm'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -590,7 +578,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -601,10 +589,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -626,16 +614,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -646,7 +634,6 @@ void main() {
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -659,7 +646,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -670,13 +657,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -695,16 +682,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -713,8 +700,6 @@ void main() {
         // Check if any expected element exists (OR logic)
         final expected = [
           find.text('At least 5 characters'),
-          find.text('general'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -727,7 +712,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -738,10 +723,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -763,16 +748,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -782,10 +767,8 @@ void main() {
         final expected = [
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
-          find.text('general'),
           find.text('At least 20 characters'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -798,7 +781,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -809,13 +792,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -837,13 +820,13 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -854,7 +837,6 @@ void main() {
           find.text('At least 2 characters'),
           find.text('Min 10 sqm'),
           find.text('At least 20 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -867,7 +849,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -878,13 +860,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -903,19 +885,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -925,7 +907,6 @@ void main() {
         final expected = [
           find.text('At least 2 characters'),
           find.text('At least 20 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -938,7 +919,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -949,10 +930,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -974,19 +955,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -998,7 +979,6 @@ void main() {
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1011,7 +991,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1022,13 +1002,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1047,19 +1027,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1070,8 +1050,6 @@ void main() {
           find.text('At least 5 characters'),
           find.text('At least 2 characters'),
           find.text('At least 2 characters'),
-          find.text('general'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1084,7 +1062,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1095,13 +1073,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1123,16 +1101,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1142,7 +1120,6 @@ void main() {
         final expected = [
           find.text('At least 5 characters'),
           find.text('Min 10 sqm'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1155,7 +1132,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1166,13 +1143,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1194,16 +1171,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1214,8 +1191,6 @@ void main() {
           find.text('At least 5 characters'),
           find.text('At least 2 characters'),
           find.text('Min 10 sqm'),
-          find.text('general'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1228,7 +1203,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1239,10 +1214,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1264,19 +1239,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1288,8 +1263,6 @@ void main() {
           find.text('At least 2 characters'),
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
-          find.text('general'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1302,7 +1275,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1313,10 +1286,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1338,16 +1311,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1358,9 +1331,7 @@ void main() {
           find.text('At least 2 characters'),
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
-          find.text('general'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1373,7 +1344,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1384,13 +1355,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1409,16 +1380,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1428,7 +1399,6 @@ void main() {
         final expected = [
           find.text('At least 2 characters'),
           find.text('At least 20 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1441,7 +1411,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1452,10 +1422,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1477,16 +1447,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1496,9 +1466,7 @@ void main() {
         final expected = [
           find.text('At least 5 characters'),
           find.text('Min 100,000 THB'),
-          find.text('general'),
           find.text('At least 20 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1511,7 +1479,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1522,10 +1490,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1550,13 +1518,13 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1569,7 +1537,6 @@ void main() {
           find.text('Min 100,000 THB'),
           find.text('Min 10 sqm'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1582,7 +1549,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1593,13 +1560,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1621,13 +1588,13 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1638,9 +1605,7 @@ void main() {
           find.text('At least 5 characters'),
           find.text('At least 2 characters'),
           find.text('Min 10 sqm'),
-          find.text('general'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1653,7 +1618,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1664,10 +1629,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1692,16 +1657,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'Great place.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1713,7 +1678,6 @@ void main() {
           find.text('Min 10 sqm'),
           find.text('At least 20 characters'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1726,7 +1690,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1737,10 +1701,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1762,19 +1726,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), 'Ground');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1785,9 +1749,7 @@ void main() {
           find.text('At least 2 characters'),
           find.text('At least 2 characters'),
           find.text('Min 100,000 THB'),
-          find.text('general'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1800,7 +1762,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Home');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1811,10 +1773,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '99999');
@@ -1839,16 +1801,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1861,7 +1823,6 @@ void main() {
           find.text('Min 100,000 THB'),
           find.text('Min 10 sqm'),
           find.text('At least 2 characters'),
-          find.byKey(const Key('prop_13_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
@@ -1876,7 +1837,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1887,13 +1848,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1912,16 +1873,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -1942,7 +1903,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -1953,13 +1914,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -1978,19 +1939,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2011,7 +1972,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2022,13 +1983,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2047,19 +2008,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2080,7 +2041,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2091,13 +2052,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2116,16 +2077,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2146,7 +2107,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2157,13 +2118,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2182,19 +2143,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2215,7 +2176,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2226,13 +2187,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2251,16 +2212,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2281,7 +2242,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2292,13 +2253,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2317,19 +2278,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2350,7 +2311,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2361,13 +2322,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2386,16 +2347,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2416,7 +2377,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2427,13 +2388,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2452,16 +2413,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2482,7 +2443,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2493,13 +2454,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2518,19 +2479,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2551,7 +2512,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2562,13 +2523,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2587,19 +2548,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2620,7 +2581,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2631,13 +2592,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2656,16 +2617,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2686,7 +2647,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2697,13 +2658,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2722,16 +2683,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2752,7 +2713,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2763,13 +2724,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2788,16 +2749,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2818,7 +2779,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2829,13 +2790,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2854,19 +2815,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2887,7 +2848,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2898,13 +2859,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2923,16 +2884,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -2953,7 +2914,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -2964,13 +2925,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -2989,16 +2950,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3019,7 +2980,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3030,13 +2991,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3055,19 +3016,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3088,7 +3049,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3099,13 +3060,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3124,19 +3085,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3157,7 +3118,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3168,13 +3129,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3193,19 +3154,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3226,7 +3187,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3237,13 +3198,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3262,16 +3223,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3292,7 +3253,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3303,13 +3264,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3328,16 +3289,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3358,7 +3319,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3369,13 +3330,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3394,16 +3355,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3424,7 +3385,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3435,13 +3396,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3460,19 +3421,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.tap(find.byKey(const Key('prop_10_furnished_switch')));
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3493,7 +3454,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Beautiful Modern Condo for Sale');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3504,13 +3465,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Bangkok');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Wattana');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '1500000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3529,16 +3490,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '75.50');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '15');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This spacious condo offers stunning city views and');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'John Doe (081-234-5678)');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3579,7 +3540,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'คอนโดมิเนียมหรูใจกลางเมือง');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'Luxury 3-Bedroom Penthouse with Panoramic City Vie');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3590,13 +3551,13 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ถนนสุขุมวิท 21');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'Sukhumvit 71 Road, Phra Khanong Nuea, Wattana, Ban');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'วัฒนา');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'Phra Khanong Nuea');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '5000000');
+        await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '250000000');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_06_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('prop_06_bedrooms_dropdown')));
@@ -3615,16 +3576,16 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_08_area_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '120.50');
+        await tester.enterText(find.byKey(const Key('prop_08_area_textfield')), '9999.99');
         await tester.pump();
         // dataset: byKey.prop_09_floor_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '25');
+        await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '60');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดสวยหรู วิวเมืองงาม ตกแต่งครบครัน พร้อมเข้าอยู');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This meticulously designed property boasts an expa');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'สมศักดิ์ ชัยชนะ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'Johnathan Smith (Mobile: +66 81 234 5678, Email: j');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
@@ -3645,7 +3606,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertyPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.prop_01_title_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ห้องเช่า');
+        await tester.enterText(find.byKey(const Key('prop_01_title_textfield')), 'ABCD');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('prop_02_type_dropdown')));
@@ -3656,10 +3617,10 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.prop_03_location_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('prop_03_location_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.prop_04_district_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'ท');
+        await tester.enterText(find.byKey(const Key('prop_04_district_textfield')), 'K');
         await tester.pump();
         // dataset: byKey.prop_05_price_textfield[0].atMin
         await tester.enterText(find.byKey(const Key('prop_05_price_textfield')), '');
@@ -3687,10 +3648,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('prop_09_floor_textfield')), '');
         await tester.pump();
         // dataset: byKey.prop_11_desc_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'คอนโดวิวสวยบรรยากาศดีมากๆเลย');
+        await tester.enterText(find.byKey(const Key('prop_11_desc_textfield')), 'This is nineteen char.');
         await tester.pump();
         // dataset: byKey.prop_12_contact_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'ธ');
+        await tester.enterText(find.byKey(const Key('prop_12_contact_textfield')), 'J');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('prop_13_end_button')));
         await tester.tap(find.byKey(const Key('prop_13_end_button')));
