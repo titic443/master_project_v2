@@ -1539,10 +1539,12 @@ class TestDataGenerator {
               if (firstPair is Map) {
                 final invalidRuleMsg =
                     firstPair['invalidRuleMessages']?.toString();
-                // รวมเฉพาะ validation messages ที่ไม่ใช่ "Required" หรือ "กรุณา"
-                // (empty field messages ถูกจัดการแยกใน edge_cases)
+                // รวมเฉพาะ specific validation messages ที่แสดงใน UI จริง
+                // ยกเว้น: "Required"/"กรุณา" (จัดการใน edge_cases_empty_all_fields)
+                // ยกเว้น: "" หรือ "general" (field ไม่มี validator rule → ไม่มีข้อความ error ที่ตรวจสอบได้)
                 if (invalidRuleMsg != null &&
                     invalidRuleMsg.isNotEmpty &&
+                    invalidRuleMsg.toLowerCase() != 'general' &&
                     !invalidRuleMsg.toLowerCase().contains('required') &&
                     !invalidRuleMsg.toLowerCase().contains('กรุณา')) {
                   asserts.add({'text': invalidRuleMsg, 'exists': true});
