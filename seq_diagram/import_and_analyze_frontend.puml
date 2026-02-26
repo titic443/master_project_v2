@@ -1,0 +1,80 @@
+@startuml import_and_analyze_frontend
+title Sequence Diagram: Import and Analyze Frontend Input
+
+actor       "Tester"                                            as Tester
+participant "WebUI\n(main.js)"                                  as WebUI
+participant "PipelineController\n(server.dart)"                 as Controller
+participant "UiManifestExtractor\n(extract_ui_manifest.dart)"   as Extractor
+
+' ─────────────────────────────────────────────
+' STEP 1: Select frontend file
+' ─────────────────────────────────────────────
+Tester  ->  WebUI   : Click Browse Input File button
+activate WebUI
+
+WebUI   ->  WebUI   : browseInputFile()
+WebUI   ->  WebUI   : window.showOpenFilePicker()\n{ accept: ['.dart'] }
+WebUI   -->  Tester : Show native file picker dialog
+Tester  ->  WebUI   : Select .dart file
+WebUI   ->  WebUI   : fileHandle.getFile()\nExtract fileName, content
+
+' ─────────────────────────────────────────────
+' STEP 2: Validate file type
+' ─────────────────────────────────────────────
+WebUI   ->  Controller  : POST /find-file\nhandleRequest()
+activate Controller
+Controller  ->  Controller  : handleFindFile(request)\nSearch in lib/ matching fileName + content
+
+alt [Valid file type]
+    Controller  -->  WebUI  : { success: true,\n  filePath: 'lib/demos/page.dart' }
+    deactivate Controller
+
+    WebUI   ->  WebUI   : inputFile.value = filePath
+    WebUI   ->  WebUI   : auto-set outputDir = 'integration_test/'
+    WebUI   ->  WebUI   : #updateOutputFileName()
+
+else [Invalid file type]
+    Controller  -->  WebUI  : { success: false, error: '...' }
+    deactivate Controller
+
+    WebUI   ->  WebUI   : #showDialog('error', 'Import Failed',\n  'The imported file is not a Dart file')
+    WebUI   ->  WebUI   : #validateForm()\n(Disable Generate button)
+    WebUI   ->  Tester  : Show error dialog
+end
+
+' ─────────────────────────────────────────────
+' STEP 3: Scan widgets in Dart file
+' ─────────────────────────────────────────────
+WebUI   ->  Controller  : POST /scan\nhandleRequest()
+activate Controller
+Controller  ->  Controller  : handleScan(request)
+Controller  ->  Extractor   : extractManifest(file)
+activate Extractor
+Extractor   ->  Extractor   : _processOne(path)\nStrip comments -> scan widgets -> write JSON
+Extractor   -->  Controller : manifestPath
+deactivate Extractor
+
+Controller  ->  Controller  : Read manifest JSON\nCount widgetCount
+
+alt [Widgets found]
+    Controller  -->  WebUI  : { resultType: 'success',\n  widgetCount,\n  hasWidgets: true,\n  manifestPath }
+    deactivate Controller
+
+    WebUI   ->  WebUI   : #hasValidWidgets = true
+    WebUI   ->  WebUI   : #showDialog('success',\n  'File Imported Successfully',\n  'Found N widgets')
+    WebUI   ->  WebUI   : #validateForm()\n(Enable Generate button)
+    WebUI   ->  Tester  : Show success dialog with widget count
+
+else [No widgets found]
+    Controller  -->  WebUI  : { resultType: 'no_widgets',\n  warning: 'No supported widgets found' }
+    deactivate Controller
+
+    WebUI   ->  WebUI   : #hasValidWidgets = false
+    WebUI   ->  WebUI   : #showDialog('warning',\n  'No Widgets Found',\n  'No supported widgets found')
+    WebUI   ->  WebUI   : #validateForm()\n(Disable Generate button)
+    WebUI   ->  Tester  : Show warning dialog
+end
+
+deactivate WebUI
+
+@enduml

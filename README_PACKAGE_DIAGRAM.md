@@ -368,7 +368,7 @@ Orchestrate การทำงานระหว่าง Extractor และ Ge
 
 | Function | หน้าที่ |
 |---|---|
-| `_processOne(path, {pairwiseMerge, planSummary, pairwiseUsePict, pictBin, constraints})` | core processing: อ่าน manifest → สร้าง factors → PICT → สร้าง test cases → เขียน JSON |
+| `_processOne(path, {pairwiseUsePict, pictBin, constraints})` | core processing: อ่าน manifest → สร้าง factors → PICT → สร้าง test cases → เขียน JSON |
 | `_tryWritePictModelFromManifestForUi(uiFile, {pictBin, constraints})` | สร้าง PICT model files จาก manifest widgets |
 | `_extractSequence(key)` | ดึง sequence number จาก widget key (pattern: `prefix_07_desc_type`) |
 | `_findHighestSequenceButton(widgets)` | หา Button widget ที่มี sequence สูงสุด (ใช้เป็น end/submit button) |
