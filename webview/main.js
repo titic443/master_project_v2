@@ -135,8 +135,13 @@ class WebUI {
         // Scan widgets
         this.#scanWidgets(data.filePath);
       } else {
-        // If can't find, just use the filename
-        this.#log(`File selected: ${fileName}`, 'info');
+        this.#showDialog(
+          'error',
+          'Import Failed',
+          data.error || 'The imported file is not a Dart file (.dart)',
+          'scan'
+        );
+        this.#validateForm();
       }
 
       this.#validateForm();

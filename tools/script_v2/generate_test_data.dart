@@ -98,8 +98,6 @@ class TestDataGenerator {
 
     await _processOne(
       manifestPath,
-      pairwiseMerge: true,
-      planSummary: false,
       pairwiseUsePict: true,
       pictBin: pictBin,
       constraints: constraints,
@@ -116,8 +114,6 @@ class TestDataGenerator {
   ///
   /// Parameters:
   ///   [path]           - path ของไฟล์ .manifest.json
-  ///   [pairwiseMerge]  - ใช้ pairwise testing (default: false)
-  ///   [planSummary]    - แสดง plan summary (default: false)
   ///   [pairwiseUsePict]- ใช้ PICT tool (default: false)
   ///   [pictBin]        - path ของ PICT binary
   ///   [constraints]    - PICT constraints string (optional)
@@ -131,9 +127,7 @@ class TestDataGenerator {
   ///   6. สร้าง edge cases (empty fields)
   ///   7. เขียน test data file
   Future<void> _processOne(String path,
-      {bool pairwiseMerge = false,
-      bool planSummary = false,
-      bool pairwiseUsePict = false,
+      {bool pairwiseUsePict = false,
       String pictBin = './pict',
       String? constraints}) async {
     // ---------------------------------------------------------------------------

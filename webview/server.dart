@@ -16,7 +16,6 @@
 //
 // API Endpoints:
 //   GET  /files              - รายการ Dart files ใน lib/demos/
-//   GET  /test-scripts       - รายการ test scripts ใน test/
 //   POST /find-file          - หา file path จาก filename
 //   POST /scan               - scan widgets ใน file
 //   POST /extract-manifest   - สร้าง UI manifest
@@ -155,17 +154,9 @@ class PipelineController {
         // GET /files - รายการ Dart files
         await handleGetFiles(request);
         break;
-      case '/test-scripts':
-        // GET /test-scripts - รายการ test scripts
-        await handleGetTestScripts(request);
-        break;
       case '/find-file':
         // POST /find-file - หา file path
         await handleFindFile(request);
-        break;
-      case '/find-test-script':
-        // POST /find-test-script - หา test script path
-        await handleFindTestScript(request);
         break;
       case '/scan':
         // POST /scan - scan widgets
@@ -243,31 +234,6 @@ class PipelineController {
     await request.response.close();
   }
 
-  /// GET /test-scripts - ดึงรายการ test scripts ใน integration_test/
-  ///
-  /// Response:
-  ///   { "files": ["integration_test/page1_flow_test.dart", ...] }
-  Future<void> handleGetTestScripts(HttpRequest request) async {
-    // กำหนด directory ที่จะ scan
-    final testDir = Directory('integration_test');
-    final files = <String>[];
-
-    // ตรวจสอบว่า directory มีอยู่หรือไม่
-    if (await testDir.exists()) {
-      // list() โดยไม่ recursive (เฉพาะ root level)
-      await for (final entity in testDir.list()) {
-        // กรองเอาเฉพาะไฟล์ที่ลงท้ายด้วย _flow_test.dart
-        if (entity is File && entity.path.endsWith('_flow_test.dart')) {
-          files.add(entity.path);
-        }
-      }
-    }
-
-    // ส่ง response
-    request.response.write(jsonEncode({'files': files}));
-    await request.response.close();
-  }
-
 // =============================================================================
 // API HANDLERS - File Operations
 // =============================================================================
@@ -291,6 +257,20 @@ class PipelineController {
     if (fileName == null) {
       request.response.statusCode = 400; // Bad Request
       request.response.write(jsonEncode({'error': 'fileName required'}));
+      await request.response.close();
+      return;
+    }
+
+    // ---------------------------------------------------------------------------
+    // ตรวจสอบว่าไฟล์เป็นภาษา Dart หรือไม่
+    // ---------------------------------------------------------------------------
+
+    if (!fileName.endsWith('.dart')) {
+      request.response.write(jsonEncode({
+        'success': false,
+        'resultType': 'not_dart',
+        'error': 'The imported file is not a Dart file (.dart)',
+      }));
       await request.response.close();
       return;
     }
@@ -342,48 +322,6 @@ class PipelineController {
     await request.response.close();
   }
 
-  /// POST /find-test-script - หา test script path จาก filename
-  ///
-  /// Request body:
-  ///   { "fileName": "page_flow_test.dart" }
-  ///
-  /// Response:
-  ///   { "success": true, "filePath": "integration_test/page_flow_test.dart" }
-  Future<void> handleFindTestScript(HttpRequest request) async {
-    final body = await _readBody(request);
-    final fileName = body['fileName'] as String?;
-
-    if (fileName == null) {
-      request.response.statusCode = 400;
-      request.response.write(jsonEncode({'error': 'fileName required'}));
-      await request.response.close();
-      return;
-    }
-
-    // ค้นหาใน integration_test/ และ test/
-    for (final dirName in ['integration_test', 'test']) {
-      final dir = Directory(dirName);
-      if (await dir.exists()) {
-        await for (final entity in dir.list(recursive: true)) {
-          if (entity is File && entity.path.endsWith(fileName)) {
-            request.response.write(jsonEncode({
-              'success': true,
-              'filePath': entity.path,
-            }));
-            await request.response.close();
-            return;
-          }
-        }
-      }
-    }
-
-    request.response.write(jsonEncode({
-      'success': false,
-      'error': 'Test script not found',
-    }));
-    await request.response.close();
-  }
-
 // =============================================================================
 // API HANDLERS - Test Generation Pipeline
 // =============================================================================
@@ -393,10 +331,9 @@ class PipelineController {
   /// Request body:
   ///   { "file": "lib/demos/page.dart" }
   ///
-  /// Response (3 กรณี):
+  /// Response (2 กรณี):
   ///   1. สำเร็จ:       { "success": true,  "resultType": "success",    "widgetCount": 10, ... }
   ///   2. ไม่พบ widgets: { "success": true,  "resultType": "no_widgets", "warning": "..." }
-  ///   3. ไม่ใช่ Dart:   { "success": false, "resultType": "not_dart",   "error": "..." }
   Future<void> handleScan(HttpRequest request) async {
     // อ่าน request body
     final body = await _readBody(request);
@@ -408,38 +345,6 @@ class PipelineController {
       request.response.write(jsonEncode({'error': 'File path required'}));
       await request.response.close();
       return;
-    }
-
-    // ---------------------------------------------------------------------------
-    // กรณีที่ 3: ตรวจสอบว่าไฟล์เป็นภาษา Dart หรือไม่
-    // ---------------------------------------------------------------------------
-
-    if (!file.endsWith('.dart')) {
-      request.response.write(jsonEncode({
-        'success': false,
-        'resultType': 'not_dart',
-        'error': 'The imported file is not a Dart file (.dart)',
-      }));
-      await request.response.close();
-      return;
-    }
-
-    // ตรวจสอบเนื้อหาว่ามี Dart syntax พื้นฐาน (import/class/Widget)
-    final dartFile = File(file);
-    if (await dartFile.exists()) {
-      final content = await dartFile.readAsString();
-      final hasDartSyntax = content.contains('import ') ||
-          content.contains('class ') ||
-          content.contains('Widget');
-      if (!hasDartSyntax) {
-        request.response.write(jsonEncode({
-          'success': false,
-          'resultType': 'not_dart',
-          'error': 'No valid Dart syntax found in file',
-        }));
-        await request.response.close();
-        return;
-      }
     }
 
     // ---------------------------------------------------------------------------
@@ -473,8 +378,7 @@ class PipelineController {
         'widgetCount': widgetCount,
         'hasWidgets': hasWidgets,
         'manifestPath': manifestPath,
-        if (!hasWidgets)
-          'warning': 'No supported widgets found in this file',
+        if (!hasWidgets) 'warning': 'No supported widgets found in this file',
       }));
     } catch (e) {
       request.response.write(jsonEncode({
@@ -542,9 +446,8 @@ class PipelineController {
     // datasetOverrides: Map ของ key → value ที่ต้องการ override หลัง AI generate
     // เช่น {"search_01_name_textfield": "Supaporn Srisomboon"}
     final rawOverrides = body['datasetOverrides'];
-    final datasetOverrides = rawOverrides is Map
-        ? rawOverrides.cast<String, dynamic>()
-        : null;
+    final datasetOverrides =
+        rawOverrides is Map ? rawOverrides.cast<String, dynamic>() : null;
 
     // Validate input
     if (manifest == null) {
@@ -577,9 +480,10 @@ class PipelineController {
           try {
             final mf = File(manifest);
             if (await mf.exists()) {
-              final mJson = jsonDecode(await mf.readAsString())
-                  as Map<String, dynamic>;
-              final uiFile = ((mJson['source'] as Map?)?['file'] as String?) ?? '';
+              final mJson =
+                  jsonDecode(await mf.readAsString()) as Map<String, dynamic>;
+              final uiFile =
+                  ((mJson['source'] as Map?)?['file'] as String?) ?? '';
               if (uiFile.isNotEmpty) {
                 final base = uiFile.split('/').last.replaceAll('.dart', '');
                 correctDatasetsPath = 'output/test_data/$base.datasets.json';
@@ -588,7 +492,8 @@ class PipelineController {
           } catch (_) {}
 
           await _applyDatasetOverrides(correctDatasetsPath, datasetOverrides);
-          print('  ✓ Applied dataset overrides to $correctDatasetsPath: ${datasetOverrides.keys.join(', ')}');
+          print(
+              '  ✓ Applied dataset overrides to $correctDatasetsPath: ${datasetOverrides.keys.join(', ')}');
         }
 
         request.response.write(jsonEncode({
@@ -619,8 +524,7 @@ class PipelineController {
     if (!await file.exists()) return;
 
     final data = jsonDecode(await file.readAsString()) as Map<String, dynamic>;
-    final byKey =
-        ((data['datasets'] as Map?)?['byKey'] as Map?)
+    final byKey = ((data['datasets'] as Map?)?['byKey'] as Map?)
             ?.cast<String, dynamic>() ??
         <String, dynamic>{};
 
@@ -643,8 +547,8 @@ class PipelineController {
       }
     }
 
-    await file.writeAsString(
-        '${const JsonEncoder.withIndent('  ').convert(data)}\n');
+    await file
+        .writeAsString('${const JsonEncoder.withIndent('  ').convert(data)}\n');
   }
 
   /// POST /generate-test-data - สร้าง test plan ด้วย PICT
@@ -968,8 +872,7 @@ class PipelineController {
         // คำนวณ delta ของ fail count เพื่อตรวจว่า test นี้ fail หรือไม่
         // Bug เดิม: ใช้ cumulative -N > 0 → test ที่ pass หลัง fail อื่น ถูก mark ว่า failed
         // Fix: ใช้ delta (เพิ่มขึ้นจาก prev หรือไม่)
-        final currFailCount =
-            int.tryParse(match.group(2) ?? '0') ?? 0;
+        final currFailCount = int.tryParse(match.group(2) ?? '0') ?? 0;
         final thisTestFailed = currFailCount > prevFailCount;
 
         // Normalize: Flutter เพิ่ม " [E]" suffix เมื่อ test fail
@@ -979,8 +882,7 @@ class PipelineController {
             ? testName.substring(0, testName.length - 4)
             : testName;
 
-        final idx =
-            testCases.indexWhere((tc) => tc['name'] == normalizedName);
+        final idx = testCases.indexWhere((tc) => tc['name'] == normalizedName);
         if (idx == -1) {
           // เพิ่มครั้งแรก (ใช้ normalizedName เสมอ)
           testCases.add({
