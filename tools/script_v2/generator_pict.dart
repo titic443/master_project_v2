@@ -244,6 +244,59 @@ class GeneratorPict {
     return factors;
   }
 
+  /// Validate PICT constraint syntax line-by-line.
+  ///
+  /// Supports two formats:
+  ///   Format A (dataset override): `key = value`
+  ///   Format B (PICT constraint):  `IF [param] = "value" THEN [param] = "value";`
+  ///
+  /// Returns null if valid, or an error message string if invalid.
+  String? validateConstraintsSyntax(String constraints) {
+    final lines = constraints.split('\n');
+
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i].trim();
+      final lineNum = i + 1;
+
+      // Skip empty lines and comments
+      if (line.isEmpty || line.startsWith('#')) continue;
+
+      final hasIf = line.contains('IF');
+      final hasThen = line.contains('THEN');
+
+      // Format A: Dataset constraint  key = value
+      if (!hasIf && !hasThen) {
+        if (!RegExp(r'^\w+\s*=\s*.+$').hasMatch(line)) {
+          return 'Line $lineNum: Expected "key = value" or PICT "IF [...] = "..." THEN [...] = "...";"\n"$line"';
+        }
+        continue;
+      }
+
+      // Format B: PICT constraint  IF [...] ... THEN [...] ...;
+      final thenIndex = line.indexOf('THEN');
+      final ifPart = line.substring(0, thenIndex);
+      final thenPart = line.substring(thenIndex);
+
+      if (!RegExp(r'\[.+?\]').hasMatch(ifPart)) {
+        return 'Line $lineNum: IF parameter must be in [brackets]\n"$line"';
+      }
+      if (!RegExp(r'\[.+?\]').hasMatch(thenPart)) {
+        return 'Line $lineNum: THEN parameter must be in [brackets]\n"$line"';
+      }
+      if (!RegExp(r'".+?"').hasMatch(ifPart)) {
+        return 'Line $lineNum: IF value must be in "quotes"\n"$line"';
+      }
+      if (!RegExp(r'".+?"').hasMatch(thenPart)) {
+        return 'Line $lineNum: THEN value must be in "quotes"\n"$line"';
+      }
+      if (!line.endsWith(';')) {
+        return 'Line $lineNum: Constraint must end with ;\n"$line"';
+      }
+    }
+
+    return null;
+  }
+
   /// Read factor names from .full.model.txt file
   ///
   /// Returns: List of factor names in order they appear in the model

@@ -410,10 +410,16 @@ class WebUI {
       const file = await fileHandle.getFile();
       const content = await file.text();
 
-      // Validate PICT constraint syntax
-      const syntaxError = this.#validateConstraintsSyntax(content);
-      if (syntaxError) {
-        this.#showDialog('error', 'Invalid Constraint Syntax', '', 'constraints');
+      // Validate PICT constraint syntax via server
+      const validationResponse = await fetch(`${WebUI.API_BASE}/validate-constraints`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ constraints: content })
+      });
+      const validationResult = await validationResponse.json();
+
+      if (!validationResult.valid) {
+        this.#showDialog('error', 'Invalid Constraint Syntax', validationResult.error || '', 'constraints');
         return;
       }
 
@@ -526,65 +532,6 @@ class WebUI {
   // ===========================================================================
   // Dialog Methods
   // ===========================================================================
-
-  /**
-   * Validate PICT constraint syntax line-by-line.
-   * @param {string} content - raw file content
-   * @returns {string|null} error message or null if valid
-   */
-  #validateConstraintsSyntax(content) {
-    const lines = content.split('\n');
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-
-      // Skip empty lines and comments
-      if (!line || line.startsWith('#')) continue;
-
-      const lineNum = i + 1;
-
-      // --- Format A: Dataset constraint  key = value ---
-      // e.g. search_01_name_textfield = Supaporn Srisomboo
-      if (!/\bIF\b/.test(line) && !/\bTHEN\b/.test(line)) {
-        if (!/^\w+\s*=\s*.+$/.test(line)) {
-          return `Line ${lineNum}: Expected "key = value" or PICT "IF [...] = "..." THEN [...] = "...";"\n"${line}"`;
-        }
-        continue; // valid dataset constraint
-      }
-
-      // --- Format B: PICT constraint  IF [...] ... THEN [...] ...; ---
-      const thenIndex = line.indexOf('THEN');
-      const ifPart = line.substring(0, thenIndex);
-      const thenPart = line.substring(thenIndex);
-
-      // IF-part must have parameter in [...]
-      if (!/\[.+?\]/.test(ifPart)) {
-        return `Line ${lineNum}: IF parameter must be in [brackets]\n"${line}"`;
-      }
-
-      // THEN-part must have parameter in [...]
-      if (!/\[.+?\]/.test(thenPart)) {
-        return `Line ${lineNum}: THEN parameter must be in [brackets]\n"${line}"`;
-      }
-
-      // IF-part must have value in "..."
-      if (!/".+?"/.test(ifPart)) {
-        return `Line ${lineNum}: IF value must be in "quotes"\n"${line}"`;
-      }
-
-      // THEN-part must have value in "..."
-      if (!/".+?"/.test(thenPart)) {
-        return `Line ${lineNum}: THEN value must be in "quotes"\n"${line}"`;
-      }
-
-      // Must end with ;
-      if (!line.endsWith(';')) {
-        return `Line ${lineNum}: Constraint must end with ;\n"${line}"`;
-      }
-    }
-
-    return null;
-  }
 
   /**
    * แยก constraints text เป็น 2 format:
