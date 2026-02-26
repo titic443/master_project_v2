@@ -138,7 +138,7 @@ class WebUI {
         this.#showDialog(
           'error',
           'Import Failed',
-          data.error || 'The imported file is not a Dart file (.dart)',
+          data.error || 'Invalid File Type',
           'scan'
         );
         this.#validateForm();
@@ -364,7 +364,7 @@ class WebUI {
 
     // ถ้า checkbox checked แต่ยังไม่ได้ import file → ไม่ให้ generate
     const constraintsOk = !this.#el.useConstraints.checked
-        || this.#el.constraintsTextArea.value.trim().length > 0;
+      || this.#el.constraintsTextArea.value.trim().length > 0;
 
     this.#el.generateBtn.disabled = !hasInput || !hasOutputDir || !this.#hasValidWidgets || !constraintsOk || this.#isGenerating;
     this.#el.runCoverageBtn.disabled = !hasTestScript || this.#isGenerating;
@@ -468,7 +468,7 @@ class WebUI {
         this.#showDialog(
           'error',
           'Import Failed',
-          data.error || 'The imported file is not a Dart file (.dart)',
+          data.error || 'Invalid File Type',
           'scan'
         );
         this.#validateForm();
@@ -593,7 +593,7 @@ class WebUI {
 
     // Clear input fields only when closing scan (Step 1) error/warning dialogs
     if (this.#dialogContext === 'scan' &&
-        (this.#dialogType === 'error' || this.#dialogType === 'warning')) {
+      (this.#dialogType === 'error' || this.#dialogType === 'warning')) {
       this.#el.inputFile.value = '';
       this.#el.outputDir.value = 'integration_test/';
       this.#el.outputFileName.textContent = '-';
@@ -724,9 +724,9 @@ class WebUI {
 
   #getGroupLabel(name) {
     const labels = {
-      'pairwise_valid_cases':         'Pairwise (All Valid)',
+      'pairwise_valid_cases': 'Pairwise (All Valid)',
       'pairwise_valid_invalid_cases': 'Pairwise (Valid/Invalid)',
-      'edge_cases':                   'Edge Cases',
+      'edge_cases': 'Edge Cases',
     };
     return labels[name] ?? name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   }
