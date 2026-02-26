@@ -274,7 +274,7 @@ class PipelineController {
       request.response.write(jsonEncode({
         'success': false,
         'resultType': 'not_dart',
-        'error': 'The imported file is not a Dart file (.dart)',
+        'error': 'Invalid File Type',
       }));
       await request.response.close();
       return;
