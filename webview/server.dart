@@ -53,6 +53,7 @@ import '../tools/script_v2/extract_ui_manifest.dart' show UiManifestExtractor;
 import '../tools/script_v2/generate_datasets.dart' show DatasetGenerator;
 import '../tools/script_v2/generate_test_data.dart' show TestDataGenerator;
 import '../tools/script_v2/generate_test_script.dart' show TestScriptGenerator;
+import '../tools/script_v2/generator_pict.dart' show GeneratorPict;
 
 // =============================================================================
 // MAIN FUNCTION - Server Entry Point
@@ -157,6 +158,10 @@ class PipelineController {
       case '/find-file':
         // POST /find-file - หา file path
         await handleFindFile(request);
+        break;
+      case '/validate-constraints':
+        // POST /validate-constraints - ตรวจสอบ PICT constraint syntax
+        await handleValidateConstraints(request);
         break;
       case '/scan':
         // POST /scan - scan widgets
@@ -317,6 +322,40 @@ class PipelineController {
         'success': false,
         'error': 'File not found in project',
       }));
+    }
+
+    await request.response.close();
+  }
+
+// =============================================================================
+// API HANDLERS - Constraint Validation
+// =============================================================================
+
+  /// POST /validate-constraints - ตรวจสอบ PICT constraint syntax
+  ///
+  /// Request body:
+  ///   { "constraints": "IF [field] = \"value\" THEN [field] = \"value\";" }
+  ///
+  /// Response:
+  ///   { "valid": true }
+  ///   หรือ { "valid": false, "error": "Line 1: ..." }
+  Future<void> handleValidateConstraints(HttpRequest request) async {
+    final body = await _readBody(request);
+    final constraints = body['constraints'] as String?;
+
+    if (constraints == null) {
+      request.response.statusCode = 400;
+      request.response.write(jsonEncode({'error': 'constraints required'}));
+      await request.response.close();
+      return;
+    }
+
+    final error = const GeneratorPict().validateConstraintsSyntax(constraints);
+
+    if (error != null) {
+      request.response.write(jsonEncode({'valid': false, 'error': error}));
+    } else {
+      request.response.write(jsonEncode({'valid': true}));
     }
 
     await request.response.close();
