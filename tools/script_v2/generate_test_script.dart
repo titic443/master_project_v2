@@ -68,23 +68,31 @@ class TestScriptGenerator {
 
   /// สร้าง Flutter test script จาก test data file
   ///
-  /// Parameter:
+  /// Parameters:
   ///   [testDataPath] - path ของไฟล์ .testdata.json
   ///                    เช่น "output/test_data/login_page.testdata.json"
+  ///   [outputPath]   - (optional) path ของ output file ที่ต้องการ
+  ///                    เช่น "integration_test/login_page_flow_test.dart"
+  ///                    ถ้าไม่ระบุ จะใช้ default: "integration_test/<base>_flow_test.dart"
   ///
   /// Returns:
   ///   String - path ของ integration test file ที่สร้าง
-  ///            เช่น "integration_test/login_page_flow_test.dart"
-  String generateTestScript(String testDataPath) {
+  String generateTestScript(String testDataPath, {String? outputPath}) {
+    // คำนวณ effective output path
+    final String effectivePath;
+    if (outputPath != null && outputPath.trim().isNotEmpty) {
+      effectivePath = outputPath.trim();
+    } else {
+      final base = testDataPath
+          .replaceAll('output/test_data/', '')
+          .replaceAll(RegExp(r'\.testdata\.json$'), '');
+      effectivePath = 'integration_test/${base}_flow_test.dart';
+    }
+
     // เรียก function หลักในการประมวลผล
-    _processOne(testDataPath);
+    _processOne(testDataPath, outputPath: effectivePath);
 
-    // คำนวณ output path จาก input path
-    final base = testDataPath
-        .replaceAll('output/test_data/', '')
-        .replaceAll(RegExp(r'\.testdata\.json$'), '');
-
-    return 'integration_test/${base}_flow_test.dart';
+    return effectivePath;
   }
 
   // =========================================================================
@@ -93,8 +101,9 @@ class TestScriptGenerator {
 
   /// ประมวลผลไฟล์ test data หนึ่งไฟล์และสร้าง test script
   ///
-  /// Parameter:
-  ///   [planPath] - path ของไฟล์ .testdata.json
+  /// Parameters:
+  ///   [planPath]   - path ของไฟล์ .testdata.json
+  ///   [outputPath] - path ของ output file ที่ต้องการเขียน
   ///
   /// การทำงาน:
   ///   1. อ่านและ parse test data JSON
@@ -103,7 +112,7 @@ class TestScriptGenerator {
   ///   4. สร้าง stub classes สำหรับ Cubit
   ///   5. สร้าง test cases ตาม groups
   ///   6. เขียน integration test file
-  void _processOne(String planPath) {
+  void _processOne(String planPath, {required String outputPath}) {
     // ---------------------------------------------------------------------------
     // STEP 1: อ่านและ parse ไฟล์ test data
     // ---------------------------------------------------------------------------
@@ -892,7 +901,8 @@ class TestScriptGenerator {
         providerTypes,
         datasets,
         sampleByKey,
-        validationCounts);
+        validationCounts,
+        outputPath);
   }
 
   // =========================================================================
@@ -927,7 +937,8 @@ class TestScriptGenerator {
       List<String> providerTypes,
       Map<String, dynamic> datasets,
       Map<String, String> sampleByKey,
-      Map<String, int> validationCounts) {
+      Map<String, int> validationCounts,
+      String outputPath) {
     // ---------------------------------------------------------------------------
     // สร้าง StringBuffer สำหรับ integration test code
     // ---------------------------------------------------------------------------
@@ -1325,18 +1336,14 @@ class TestScriptGenerator {
     // เขียน integration test file
     // ---------------------------------------------------------------------------
 
-    // กำหนด output path
-    final integPath =
-        'integration_test/${utils.basenameWithoutExtension(uiFile)}_flow_test.dart';
-
     // สร้าง directory ถ้ายังไม่มี
-    File(integPath).createSync(recursive: true);
+    File(outputPath).createSync(recursive: true);
 
     // เขียน code ลงไฟล์
-    File(integPath).writeAsStringSync(ib.toString());
+    File(outputPath).writeAsStringSync(ib.toString());
 
     // แสดง success message
-    stdout.writeln('✓ integration full flow tests: $integPath');
+    stdout.writeln('✓ integration full flow tests: $outputPath');
   }
 
   // =========================================================================

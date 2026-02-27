@@ -685,6 +685,7 @@ class PipelineController {
   Future<void> handleGenerateTestScript(HttpRequest request) async {
     final body = await _readBody(request);
     final testData = body['testData'] as String?;
+    final outputPath = body['outputPath'] as String?;
 
     // Validate input
     if (testData == null) {
@@ -699,7 +700,10 @@ class PipelineController {
     // ---------------------------------------------------------------------------
 
     try {
-      final testScriptPath = _testScriptGenerator.generateTestScript(testData);
+      final testScriptPath = _testScriptGenerator.generateTestScript(
+        testData,
+        outputPath: outputPath,
+      );
 
       // -----------------------------------------------------------------------
       // สร้าง summary จาก testdata.json
