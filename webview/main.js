@@ -158,6 +158,17 @@ class WebUI {
       const dirHandle = await window.showDirectoryPicker();
       this.#el.outputDir.value = dirHandle.name + '/';
       this.#updateOutputFileName();
+
+      // Store output path in TestScriptGenerator via server
+      const outputPath = this.#getOutputFilePath();
+      if (outputPath) {
+        await fetch(`${WebUI.API_BASE}/set-output-path`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ outputPath })
+        });
+      }
+
       this.#validateForm();
     } catch (err) {
       if (err.name !== 'AbortError') {
