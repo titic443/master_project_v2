@@ -123,8 +123,7 @@ class PipelineController {
   })  : _extractor = extractor ?? const UiManifestExtractor(),
         _datasetGenerator = datasetGenerator ?? const DatasetGenerator(),
         _testDataGenerator = testDataGenerator ?? const TestDataGenerator(),
-        _testScriptGenerator =
-            testScriptGenerator ?? const TestScriptGenerator();
+        _testScriptGenerator = testScriptGenerator ?? TestScriptGenerator();
 
 // =============================================================================
 // REQUEST ROUTER - Main Handler
@@ -158,6 +157,10 @@ class PipelineController {
       case '/find-file':
         // POST /find-file - หา file path
         await handleFindFile(request);
+        break;
+      case '/set-output-path':
+        // POST /set-output-path - set output path ใน TestScriptGenerator
+        await handleSetOutputPath(request);
         break;
       case '/validate-constraints':
         // POST /validate-constraints - ตรวจสอบ PICT constraint syntax
@@ -324,6 +327,33 @@ class PipelineController {
       }));
     }
 
+    await request.response.close();
+  }
+
+// =============================================================================
+// API HANDLERS - Output Path
+// =============================================================================
+
+  /// POST /set-output-path - เก็บ output path ไว้ใน TestScriptGenerator
+  ///
+  /// Request body:
+  ///   { "outputPath": "integration_test/page_flow_test.dart" }
+  ///
+  /// Response:
+  ///   { "success": true }
+  Future<void> handleSetOutputPath(HttpRequest request) async {
+    final body = await _readBody(request);
+    final outputPath = body['outputPath'] as String?;
+
+    if (outputPath == null || outputPath.trim().isEmpty) {
+      request.response.statusCode = 400;
+      request.response.write(jsonEncode({'error': 'outputPath required'}));
+      await request.response.close();
+      return;
+    }
+
+    _testScriptGenerator.setOutputPath(outputPath);
+    request.response.write(jsonEncode({'success': true}));
     await request.response.close();
   }
 

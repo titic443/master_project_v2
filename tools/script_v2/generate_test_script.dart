@@ -57,31 +57,43 @@ import 'utils.dart' as utils;
 
 /// Backward-compatible wrapper — delegates to [TestScriptGenerator].
 String generateTestScriptFromTestData(String testDataPath) =>
-    const TestScriptGenerator().generateTestScript(testDataPath);
+    TestScriptGenerator().generateTestScript(testDataPath);
 
 // =============================================================================
 // TestScriptGenerator CLASS
 // =============================================================================
 
 class TestScriptGenerator {
-  const TestScriptGenerator();
+  /// Output path ที่ถูก set ไว้ล่วงหน้าผ่าน setOutputPath()
+  String? _outputPath;
+
+  TestScriptGenerator();
+
+  /// เก็บ output path ล่วงหน้าก่อน generate
+  ///
+  /// Parameter:
+  ///   [path] - path ของ output file เช่น "integration_test/page_flow_test.dart"
+  void setOutputPath(String path) {
+    _outputPath = path.trim().isNotEmpty ? path.trim() : null;
+  }
 
   /// สร้าง Flutter test script จาก test data file
   ///
   /// Parameters:
   ///   [testDataPath] - path ของไฟล์ .testdata.json
   ///                    เช่น "output/test_data/login_page.testdata.json"
-  ///   [outputPath]   - (optional) path ของ output file ที่ต้องการ
-  ///                    เช่น "integration_test/login_page_flow_test.dart"
-  ///                    ถ้าไม่ระบุ จะใช้ default: "integration_test/<base>_flow_test.dart"
+  ///   [outputPath]   - (optional) override path ของ output file
+  ///                    Priority: outputPath param → _outputPath → default
   ///
   /// Returns:
   ///   String - path ของ integration test file ที่สร้าง
   String generateTestScript(String testDataPath, {String? outputPath}) {
-    // คำนวณ effective output path
+    // Priority: parameter → stored → default
     final String effectivePath;
     if (outputPath != null && outputPath.trim().isNotEmpty) {
       effectivePath = outputPath.trim();
+    } else if (_outputPath != null) {
+      effectivePath = _outputPath!;
     } else {
       final base = testDataPath
           .replaceAll('output/test_data/', '')
