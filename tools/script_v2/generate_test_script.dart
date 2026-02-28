@@ -125,196 +125,38 @@ class TestScriptGenerator {
   ///   5. สร้าง test cases ตาม groups
   ///   6. เขียน integration test file
   void _processOne(String planPath, {required String outputPath}) {
-    // ---------------------------------------------------------------------------
     // STEP 1: อ่านและ parse ไฟล์ test data
-    // ---------------------------------------------------------------------------
+    final j = _parsePlanFile(planPath);
 
-    // อ่านเนื้อหาทั้งไฟล์เป็น string
-    final raw = File(planPath).readAsStringSync();
-
-    // แปลง JSON string เป็น Map
-    final j = jsonDecode(raw) as Map<String, dynamic>;
-
-    // ---------------------------------------------------------------------------
     // STEP 2: ดึงข้อมูลจาก source section
-    // source section มีข้อมูลเกี่ยวกับ UI file ต้นทาง
-    // ---------------------------------------------------------------------------
+    final (:uiFile, :pageClass, :cubitClass, :stateClass) = _extractSource(j);
 
-    // ดึง source map (ถ้าไม่มีใช้ empty map)
-    final source = (j['source'] as Map<String, dynamic>?) ?? const {};
-
-    // ดึง path ของ UI file
-    // ใช้เป็น reference และสำหรับ import
-    final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
-
-    // ดึงชื่อ page class (widget class หลักของหน้า)
-    // ถ้าไม่ระบุ ใช้ชื่อไฟล์แทน
-    final pageClass = (source['pageClass'] as String?) ??
-        utils.basenameWithoutExtension(uiFile);
-
-    // ดึงชื่อ Cubit class (state management)
-    final cubitClass = (source['cubitClass'] as String?);
-
-    // ดึงชื่อ State class (ใช้สำหรับ import)
-    final stateClass = (source['stateClass'] as String?);
-
-    // ---------------------------------------------------------------------------
     // STEP 3: สร้าง providers list จาก cubitClass
-    // ---------------------------------------------------------------------------
-
-    // ถ้ามี cubitClass ให้สร้าง list ของ providers
-    // ใช้สำหรับ wrap widget ด้วย BlocProvider
     final providers = cubitClass != null
-        ? [
-            {'type': cubitClass}
-          ]
+        ? [{'type': cubitClass}]
         : <Map<String, dynamic>>[];
-
-    // ดึง list ของ test cases
     final cases = (j['cases'] as List? ?? const []).cast<Map<String, dynamic>>();
 
-    // ---------------------------------------------------------------------------
     // STEP 4: ดึง validation counts จาก test plan
-    // ใช้สำหรับกำหนดจำนวน widgets ที่คาดหวังใน assertions
-    // ---------------------------------------------------------------------------
-
     final validationCounts = _extractValidationCountsFromPlan(cases);
 
-    // ---------------------------------------------------------------------------
     // STEP 5: โหลด datasets (external หรือ embedded)
-    // ---------------------------------------------------------------------------
+    final datasets = _loadDatasets(uiFile, j);
 
-    /// Function ภายในสำหรับโหลด datasets จากไฟล์ external
-    /// ถ้ามีไฟล์ .datasets.json จะใช้แทน embedded datasets
-    Map<String, dynamic> _maybeLoadExternalDatasets(String uiFile) {
-      try {
-        // สร้าง path ของ datasets file
-        final base = utils.basenameWithoutExtension(uiFile);
-        final f = File('output/test_data/' + base + '.datasets.json');
-
-        // ตรวจสอบว่าไฟล์มีอยู่หรือไม่
-        if (f.existsSync()) {
-          // อ่านและ parse JSON
-          final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
-          final extDs = (ext['datasets'] as Map?)?.cast<String, dynamic>();
-
-          // ตรวจสอบว่ามี datasets หรือไม่
-          if (extDs != null && extDs.isNotEmpty) {
-            // เก็บ format ใหม่ (array-based) สำหรับ path resolution
-            // format: byKey.field[0].invalid
-            return extDs;
-          }
-        }
-      } catch (_) {
-        // ignore errors - จะ fallback ไปใช้ embedded
-      }
-      return const {}; // return empty map ถ้าโหลดไม่ได้
-    }
-
-    // ตัวแปรเก็บ datasets ที่จะใช้
-    Map<String, dynamic> datasets;
-
-    // ลองโหลด external datasets ก่อน
-    final extFirst = _maybeLoadExternalDatasets(uiFile);
-
-    if (extFirst.isNotEmpty) {
-      // ใช้ external datasets
-      datasets = extFirst;
-    } else {
-      // ใช้ embedded datasets จาก test data file
-      // ไม่ convert format - ใช้ original array structure
-      datasets = (j['datasets'] as Map? ?? const {}).cast<String, dynamic>();
-    }
-
-    // ---------------------------------------------------------------------------
     // STEP 6: อ่านชื่อ package จาก pubspec.yaml
-    // ---------------------------------------------------------------------------
-
     final pkg = utils.readPackageName() ?? 'master_project';
 
-    // ---------------------------------------------------------------------------
-    // STEP 7: Normalize UI file path
-    // แปลง absolute path เป็น relative path ถ้าจำเป็น
-    // ---------------------------------------------------------------------------
+    // STEP 7: Normalize UI file path → uiImport
+    final uiImport = _resolveUiImport(uiFile, pkg);
 
-    String normalizedUiFile = uiFile;
-
-    // ตรวจสอบว่าเป็น absolute path หรือไม่
-    if (uiFile.contains('/lib/')) {
-      // แยก path หลัง /lib/
-      // /Users/xxx/project/lib/widgets/file.dart -> lib/widgets/file.dart
-      normalizedUiFile = 'lib/' + uiFile.split('/lib/').last;
-    }
-
-    // สร้าง import statement สำหรับ UI file
-    // แปลงเป็น format: package:pkg/path/file.dart
-    final uiImport = utils.pkgImport(pkg, normalizedUiFile);
-
-    // ---------------------------------------------------------------------------
     // STEP 8: หา provider type files สำหรับ import
-    // ---------------------------------------------------------------------------
+    final (:providerTypes, :providerFiles) = _resolveProviderFiles(providers, pkg);
 
-    // ดึง list ของ provider types (เช่น RegisterCubit, LoginCubit)
-    final providerTypes = <String>[];
-    for (final p in providers) {
-      final t = (p['type'] ?? '').toString();
-      if (t.isNotEmpty) providerTypes.add(t);
-    }
-
-    // หาไฟล์ที่มี class declaration ของแต่ละ provider
-    // ใช้ RegExp หา pattern: class XxxCubit
-    final providerFiles = <String>[];
-    for (final t in providerTypes) {
-      // หาไฟล์ที่มี class declaration และลงท้ายด้วย _cubit.dart
-      final f = utils.findDeclFile(
-        RegExp(r'class\s+' + RegExp.escape(t) + r'\b'),
-        endsWith: '_cubit.dart',
-      );
-      if (f != null) providerFiles.add(f);
-    }
-
-    // ---------------------------------------------------------------------------
     // STEP 9: กำหนด primary Cubit type
-    // ใช้สำหรับสร้าง stub classes
-    // ---------------------------------------------------------------------------
-
     final primaryCubitType = _getPrimaryCubitType(providerTypes);
 
-    // ---------------------------------------------------------------------------
     // STEP 10: สร้าง sample values map
-    // ดึงค่า valid ตัวแรกของแต่ละ field สำหรับใช้เป็น fallback
-    // ---------------------------------------------------------------------------
-
-    final sampleByKey = <String, String>{};
-
-    // ตรวจสอบว่ามี byKey ใน datasets หรือไม่
-    if (datasets.containsKey('byKey') && datasets['byKey'] is Map) {
-      final byKey = (datasets['byKey'] as Map).cast<String, dynamic>();
-
-      // วนลูปแต่ละ field
-      byKey.forEach((k, v) {
-        try {
-          // Handle format ใหม่: array of objects [{valid, invalid}, ...]
-          if (v is List && v.isNotEmpty && v.first is Map) {
-            final first = v.first as Map;
-            if (first.containsKey('valid') && first['valid'] is String) {
-              sampleByKey[k] = first['valid'] as String;
-            }
-          }
-          // Handle format เก่า: Map {valid: [...], invalid: [...]}
-          else if (v is Map) {
-            final valid = v['valid'];
-            if (valid is List && valid.isNotEmpty && valid.first is String) {
-              sampleByKey[k] = valid.first as String;
-            } else if (valid is String) {
-              sampleByKey[k] = valid;
-            }
-          }
-        } catch (_) {
-          // ignore errors
-        }
-      });
-    }
+    final sampleByKey = _buildSampleByKey(datasets);
 
     // ---------------------------------------------------------------------------
     // STEP 11: เริ่มสร้าง test code
@@ -915,6 +757,104 @@ class TestScriptGenerator {
         sampleByKey,
         validationCounts,
         outputPath);
+  }
+
+  // =========================================================================
+  // PROCESS ONE — HELPER METHODS (STEP 1, 2, 5, 7, 8, 10)
+  // =========================================================================
+
+  /// STEP 1: อ่านและ parse ไฟล์ test data JSON
+  Map<String, dynamic> _parsePlanFile(String planPath) {
+    final raw = File(planPath).readAsStringSync();
+    return jsonDecode(raw) as Map<String, dynamic>;
+  }
+
+  /// STEP 2: ดึงข้อมูลจาก source section ของ plan
+  ({String uiFile, String pageClass, String? cubitClass, String? stateClass})
+      _extractSource(Map<String, dynamic> j) {
+    final source = (j['source'] as Map<String, dynamic>?) ?? const {};
+    final uiFile = (source['file'] as String?) ?? 'lib/unknown.dart';
+    final pageClass = (source['pageClass'] as String?) ??
+        utils.basenameWithoutExtension(uiFile);
+    final cubitClass = source['cubitClass'] as String?;
+    final stateClass = source['stateClass'] as String?;
+    return (
+      uiFile: uiFile,
+      pageClass: pageClass,
+      cubitClass: cubitClass,
+      stateClass: stateClass,
+    );
+  }
+
+  /// STEP 5: โหลด datasets — external file ก่อน, fallback embedded
+  Map<String, dynamic> _loadDatasets(
+      String uiFile, Map<String, dynamic> j) {
+    try {
+      final base = utils.basenameWithoutExtension(uiFile);
+      final f = File('output/test_data/$base.datasets.json');
+      if (f.existsSync()) {
+        final ext = jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+        final extDs = (ext['datasets'] as Map?)?.cast<String, dynamic>();
+        if (extDs != null && extDs.isNotEmpty) return extDs;
+      }
+    } catch (_) {}
+    return (j['datasets'] as Map? ?? const {}).cast<String, dynamic>();
+  }
+
+  /// STEP 7: Normalize UI file path และสร้าง package import string
+  String _resolveUiImport(String uiFile, String pkg) {
+    String normalized = uiFile;
+    if (uiFile.contains('/lib/')) {
+      normalized = 'lib/' + uiFile.split('/lib/').last;
+    }
+    return utils.pkgImport(pkg, normalized);
+  }
+
+  /// STEP 8: หา provider types และ provider files สำหรับ import
+  ({List<String> providerTypes, List<String> providerFiles})
+      _resolveProviderFiles(
+          List<Map<String, dynamic>> providers, String pkg) {
+    final providerTypes = <String>[];
+    for (final p in providers) {
+      final t = (p['type'] ?? '').toString();
+      if (t.isNotEmpty) providerTypes.add(t);
+    }
+    final providerFiles = <String>[];
+    for (final t in providerTypes) {
+      final f = utils.findDeclFile(
+        RegExp(r'class\s+' + RegExp.escape(t) + r'\b'),
+        endsWith: '_cubit.dart',
+      );
+      if (f != null) providerFiles.add(f);
+    }
+    return (providerTypes: providerTypes, providerFiles: providerFiles);
+  }
+
+  /// STEP 10: สร้าง sample values map จาก datasets
+  /// ดึงค่า valid ตัวแรกของแต่ละ field สำหรับใช้เป็น fallback
+  Map<String, String> _buildSampleByKey(Map<String, dynamic> datasets) {
+    final sampleByKey = <String, String>{};
+    if (datasets.containsKey('byKey') && datasets['byKey'] is Map) {
+      final byKey = (datasets['byKey'] as Map).cast<String, dynamic>();
+      byKey.forEach((k, v) {
+        try {
+          if (v is List && v.isNotEmpty && v.first is Map) {
+            final first = v.first as Map;
+            if (first.containsKey('valid') && first['valid'] is String) {
+              sampleByKey[k] = first['valid'] as String;
+            }
+          } else if (v is Map) {
+            final valid = v['valid'];
+            if (valid is List && valid.isNotEmpty && valid.first is String) {
+              sampleByKey[k] = valid.first as String;
+            } else if (valid is String) {
+              sampleByKey[k] = valid;
+            }
+          }
+        } catch (_) {}
+      });
+    }
+    return sampleByKey;
   }
 
   // =========================================================================
