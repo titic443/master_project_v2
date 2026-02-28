@@ -829,7 +829,7 @@ class TestDataGenerator {
       }
 
       // ── STEP 13: Build Pairwise Cases ─────────────────────────────────────────
-      Future<void> buildPairwiseCases() async {
+      Future<void> _buildPairwiseCases() async {
         // Inner helpers
         String textForBucket(String tfKey, String bucket) {
           final maxLen = _maxLenFromMeta(_widgetMetaByKey(tfKey));
@@ -848,16 +848,15 @@ class TestDataGenerator {
         }
 
         String? datasetPathForKeyBucket(String tfKey, String bucket) {
-          final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
-              const {};
+          final ds =
+              (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
           if (!ds.containsKey(tfKey)) return null;
           if (bucket != 'valid' && bucket != 'invalid') return null;
           final dataArray = ds[tfKey];
           if (dataArray is List && dataArray.isNotEmpty) {
             return 'byKey.$tfKey[0].$bucket';
           }
-          final sub =
-              (ds[tfKey] as Map?)?.cast<String, dynamic>() ?? const {};
+          final sub = (ds[tfKey] as Map?)?.cast<String, dynamic>() ?? const {};
           final list = (sub[bucket] as List?) ?? const [];
           if (list.isEmpty) return null;
           return 'byKey.$tfKey.$bucket[0]';
@@ -873,17 +872,20 @@ class TestDataGenerator {
         } else {
           final factors = <String, List<String>>{};
           for (int i = 0; i < textKeys.length; i++) {
-            factors[textKeys.length == 1 ? 'TEXT' : 'TEXT${i + 1}'] =
-                ['valid', 'invalid'];
+            factors[textKeys.length == 1 ? 'TEXT' : 'TEXT${i + 1}'] = [
+              'valid',
+              'invalid'
+            ];
           }
           final radioGroups = <String, List<String>>{};
           for (final w in widgets) {
             final t = (w['widgetType'] ?? '').toString();
             final k = (w['key'] ?? '').toString();
-            if (t.startsWith('Radio') && k.isNotEmpty && radioKeys.contains(k)) {
+            if (t.startsWith('Radio') &&
+                k.isNotEmpty &&
+                radioKeys.contains(k)) {
               try {
-                final meta =
-                    (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+                final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
                 final groupBinding =
                     (meta['groupValueBinding'] ?? '').toString();
                 if (groupBinding.isNotEmpty) {
@@ -1002,7 +1004,9 @@ class TestDataGenerator {
                 final mk = radioKeyForSuffix(radioKeys, pick);
                 if (mk != null) {
                   stepsByKey[mk] = [
-                    {'tap': {'byKey': mk}},
+                    {
+                      'tap': {'byKey': mk}
+                    },
                     {'pump': true}
                   ];
                 }
@@ -1017,7 +1021,9 @@ class TestDataGenerator {
                       pick;
                 }
                 stepsByKey[factorName] = [
-                  {'tap': {'byKey': factorName}},
+                  {
+                    'tap': {'byKey': factorName}
+                  },
                   {'pumpAndSettle': true},
                   {'scrollAndTapText': textToTap},
                   {'pumpAndSettle': true}
@@ -1025,7 +1031,9 @@ class TestDataGenerator {
               } else if (factorType == 'checkbox') {
                 if (pick == 'checked') {
                   stepsByKey[factorName] = [
-                    {'tap': {'byKey': factorName}},
+                    {
+                      'tap': {'byKey': factorName}
+                    },
                     {'pump': true}
                   ];
                 } else if (pick == 'unchecked' &&
@@ -1036,20 +1044,26 @@ class TestDataGenerator {
               } else if (factorType == 'switch') {
                 if (pick == 'on') {
                   stepsByKey[factorName] = [
-                    {'tap': {'byKey': factorName}},
+                    {
+                      'tap': {'byKey': factorName}
+                    },
                     {'pump': true}
                   ];
                 }
               } else if (datePickerKeys.contains(factorName)) {
                 stepsByKey[factorName] = [
-                  {'tap': {'byKey': factorName}},
+                  {
+                    'tap': {'byKey': factorName}
+                  },
                   {'pumpAndSettle': true},
                   {'selectDate': pick},
                   {'pumpAndSettle': true}
                 ];
               } else if (timePickerKeys.contains(factorName)) {
                 stepsByKey[factorName] = [
-                  {'tap': {'byKey': factorName}},
+                  {
+                    'tap': {'byKey': factorName}
+                  },
                   {'pumpAndSettle': true},
                   {'selectTime': pick},
                   {'pumpAndSettle': true}
@@ -1067,8 +1081,7 @@ class TestDataGenerator {
           } else {
             final stepsByKey = <String, List<Map<String, dynamic>>>{};
             for (int j = 0; j < textKeys.length; j++) {
-              final factorName =
-                  textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
+              final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
               final tfBucket = c[factorName];
               if (tfBucket != null) {
                 if (tfBucket.toString() == 'invalid') {
@@ -1080,10 +1093,7 @@ class TestDataGenerator {
                 stepsByKey[textKeys[j]] = dsPath != null
                     ? [
                         {
-                          'enterText': {
-                            'byKey': textKeys[j],
-                            'dataset': dsPath
-                          }
+                          'enterText': {'byKey': textKeys[j], 'dataset': dsPath}
                         },
                         {'pump': true}
                       ]
@@ -1102,7 +1112,9 @@ class TestDataGenerator {
               final ddPick = (c['Dropdown'] ?? '').toString();
               if (ddPick.isNotEmpty) {
                 stepsByKey[dropdownKey] = [
-                  {'tap': {'byKey': dropdownKey}},
+                  {
+                    'tap': {'byKey': dropdownKey}
+                  },
                   {'pump': true},
                   {'tapText': ddPick},
                   {'pump': true}
@@ -1116,7 +1128,9 @@ class TestDataGenerator {
                   final mk = radioKeyForSuffix(radioKeys, pick);
                   if (mk != null) {
                     stepsByKey[mk] = [
-                      {'tap': {'byKey': mk}},
+                      {
+                        'tap': {'byKey': mk}
+                      },
                       {'pump': true}
                     ];
                   }
@@ -1131,7 +1145,9 @@ class TestDataGenerator {
                 final key = checkboxKeys[idx];
                 if (key.isNotEmpty) {
                   stepsByKey[key] = [
-                    {'tap': {'byKey': key}},
+                    {
+                      'tap': {'byKey': key}
+                    },
                     {'pump': true}
                   ];
                 }
@@ -1142,7 +1158,9 @@ class TestDataGenerator {
               final pick = (c[key] ?? '').toString();
               if (pick.isNotEmpty) {
                 stepsByKey[key] = [
-                  {'tap': {'byKey': key}},
+                  {
+                    'tap': {'byKey': key}
+                  },
                   {'pumpAndSettle': true},
                   {'selectDate': pick},
                   {'pumpAndSettle': true}
@@ -1154,7 +1172,9 @@ class TestDataGenerator {
               final pick = (c[key] ?? '').toString();
               if (pick.isNotEmpty) {
                 stepsByKey[key] = [
-                  {'tap': {'byKey': key}},
+                  {
+                    'tap': {'byKey': key}
+                  },
                   {'pumpAndSettle': true},
                   {'selectTime': pick},
                   {'pumpAndSettle': true}
@@ -1172,7 +1192,9 @@ class TestDataGenerator {
           }
 
           if (hasEndButton && endKey != null) {
-            st.add({'tap': {'byKey': endKey}});
+            st.add({
+              'tap': {'byKey': endKey}
+            });
             st.add({'pumpAndSettle': true});
           } else {
             st.add({'pump': true});
@@ -1227,7 +1249,7 @@ class TestDataGenerator {
       }
 
       // ── STEP 14: Build Valid-Only Cases ───────────────────────────────────────
-      void buildPairwiseValidCases() {
+      void _buildPairwiseValidCases() {
         if (extValidCombos == null || extValidCombos!.isEmpty) return;
         for (int i = 0; i < extValidCombos!.length; i++) {
           final c = extValidCombos![i];
@@ -1248,7 +1270,12 @@ class TestDataGenerator {
           }
           if (headerOrder.isEmpty) {
             headerOrder = [
-              'TEXT', 'TEXT2', 'TEXT3', 'Radio2', 'Radio3', 'Radio4',
+              'TEXT',
+              'TEXT2',
+              'TEXT3',
+              'Radio2',
+              'Radio3',
+              'Radio4',
               'Dropdown'
             ];
           }
@@ -1272,7 +1299,9 @@ class TestDataGenerator {
               final mk = radioKeyForSuffix(radioKeys, pick);
               if (mk != null) {
                 stepsByKey[mk] = [
-                  {'tap': {'byKey': mk}},
+                  {
+                    'tap': {'byKey': mk}
+                  },
                   {'pump': true}
                 ];
               }
@@ -1287,7 +1316,9 @@ class TestDataGenerator {
                     pick;
               }
               stepsByKey[factorName] = [
-                {'tap': {'byKey': factorName}},
+                {
+                  'tap': {'byKey': factorName}
+                },
                 {'pumpAndSettle': true},
                 {'scrollAndTapText': textToTap},
                 {'pumpAndSettle': true}
@@ -1295,27 +1326,35 @@ class TestDataGenerator {
             } else if (factorType == 'checkbox') {
               if (pick == 'checked') {
                 stepsByKey[factorName] = [
-                  {'tap': {'byKey': factorName}},
+                  {
+                    'tap': {'byKey': factorName}
+                  },
                   {'pump': true}
                 ];
               }
             } else if (factorType == 'switch') {
               if (pick == 'on') {
                 stepsByKey[factorName] = [
-                  {'tap': {'byKey': factorName}},
+                  {
+                    'tap': {'byKey': factorName}
+                  },
                   {'pump': true}
                 ];
               }
             } else if (datePickerKeys.contains(factorName)) {
               stepsByKey[factorName] = [
-                {'tap': {'byKey': factorName}},
+                {
+                  'tap': {'byKey': factorName}
+                },
                 {'pumpAndSettle': true},
                 {'selectDate': pick},
                 {'pumpAndSettle': true}
               ];
             } else if (timePickerKeys.contains(factorName)) {
               stepsByKey[factorName] = [
-                {'tap': {'byKey': factorName}},
+                {
+                  'tap': {'byKey': factorName}
+                },
                 {'pumpAndSettle': true},
                 {'selectTime': pick},
                 {'pumpAndSettle': true}
@@ -1333,7 +1372,9 @@ class TestDataGenerator {
           }
 
           if (hasEndButton && endKey != null) {
-            st.add({'tap': {'byKey': endKey}});
+            st.add({
+              'tap': {'byKey': endKey}
+            });
             st.add({'pumpAndSettle': true});
           } else {
             st.add({'pump': true});
@@ -1359,8 +1400,8 @@ class TestDataGenerator {
 
       // ── Execute ───────────────────────────────────────────────────────────────
       loadPictAnalysis();
-      await buildPairwiseCases();
-      buildPairwiseValidCases();
+      await _buildPairwiseCases();
+      _buildPairwiseValidCases();
     } // End of hasPictModel block
 
     // ---------------------------------------------------------------------------
@@ -1429,7 +1470,9 @@ class TestDataGenerator {
       final stepsByKey = <String, List<Map<String, dynamic>>>{};
       for (final rk in boundaryFirstRadioKeys()) {
         stepsByKey[rk] = [
-          {'tap': {'byKey': rk}},
+          {
+            'tap': {'byKey': rk}
+          },
           {'pump': true},
         ];
       }
@@ -1441,7 +1484,9 @@ class TestDataGenerator {
         final firstText = mapping.values.isNotEmpty ? mapping.values.first : '';
         if (firstText.isNotEmpty) {
           stepsByKey[dk] = [
-            {'tap': {'byKey': dk}},
+            {
+              'tap': {'byKey': dk}
+            },
             {'pumpAndSettle': true},
             {'scrollAndTapText': firstText},
             {'pumpAndSettle': true},
@@ -1450,7 +1495,9 @@ class TestDataGenerator {
       }
       for (final ck in requiredCheckboxValidation.keys) {
         stepsByKey[ck] = [
-          {'tap': {'byKey': ck}},
+          {
+            'tap': {'byKey': ck}
+          },
           {'pump': true},
         ];
       }
@@ -1476,8 +1523,7 @@ class TestDataGenerator {
       final expectedMsgsCount = <String, int>{};
       for (final w in widgets) {
         try {
-          final meta =
-              (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+          final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
           final rules =
               (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
           for (final rule in rules) {
@@ -1521,7 +1567,9 @@ class TestDataGenerator {
       ];
       final emptySteps = <Map<String, dynamic>>[];
       if (endKey != null) {
-        emptySteps.add({'tap': {'byKey': endKey}});
+        emptySteps.add({
+          'tap': {'byKey': endKey}
+        });
         emptySteps.add({'pumpAndSettle': true});
       }
       final emptyCombo = <String, String>{
@@ -1550,12 +1598,21 @@ class TestDataGenerator {
         final dsField = datasetsHasField(key, 'atMax') ? 'atMax' : 'valid';
         final hasDs = datasetsHasField(key, dsField);
         final enterStep = hasDs
-            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}}
-            : {'enterText': {'byKey': key, 'text': 'Test'}};
-        maxStepsByKey[key] = [enterStep, {'pump': true}];
+            ? {
+                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}
+              }
+            : {
+                'enterText': {'byKey': key, 'text': 'Test'}
+              };
+        maxStepsByKey[key] = [
+          enterStep,
+          {'pump': true}
+        ];
       }
       final maxSteps = buildOrderedSteps(maxStepsByKey)
-        ..add({'tap': {'byKey': endKey}})
+        ..add({
+          'tap': {'byKey': endKey}
+        })
         ..add({'pumpAndSettle': true});
       final maxAsserts = <Map<String, dynamic>>[
         for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
@@ -1584,12 +1641,21 @@ class TestDataGenerator {
       final minStepsByKey = buildNonTextDefaultSteps();
       for (final key in textKeys) {
         final enterStep = datasetsHasField(key, 'atMin')
-            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}}
-            : {'enterText': {'byKey': key, 'text': ''}};
-        minStepsByKey[key] = [enterStep, {'pump': true}];
+            ? {
+                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}
+              }
+            : {
+                'enterText': {'byKey': key, 'text': ''}
+              };
+        minStepsByKey[key] = [
+          enterStep,
+          {'pump': true}
+        ];
       }
       final minSteps = buildOrderedSteps(minStepsByKey)
-        ..add({'tap': {'byKey': endKey}})
+        ..add({
+          'tap': {'byKey': endKey}
+        })
         ..add({'pumpAndSettle': true});
       final minAsserts = <Map<String, dynamic>>[
         for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
@@ -1610,15 +1676,19 @@ class TestDataGenerator {
       };
     }
 
-    // ── Call edge case builders ─────────────────────────────────────────────────
+    // ── STEP 15c: Group all edge case builders ────────────────────────────────────
 
-    cases.add(buildEdgeCaseEmptyFields());
+    void _buildAllEdgeCases() {
+      cases.add(buildEdgeCaseEmptyFields());
 
-    final maxCase = buildEdgeCaseBoundaryAtMax();
-    if (maxCase != null) cases.add(maxCase);
+      final maxCase = buildEdgeCaseBoundaryAtMax();
+      if (maxCase != null) cases.add(maxCase);
 
-    final minCase = buildEdgeCaseBoundaryAtMin();
-    if (minCase != null) cases.add(minCase);
+      final minCase = buildEdgeCaseBoundaryAtMin();
+      if (minCase != null) cases.add(minCase);
+    }
+
+    _buildAllEdgeCases();
 
     // ---------------------------------------------------------------------------
     // STEP 16: เขียน Output File
