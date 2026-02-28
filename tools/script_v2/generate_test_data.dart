@@ -2148,27 +2148,27 @@ class TestDataGenerator {
     // STEP 16: เขียน Output File
     // ---------------------------------------------------------------------------
 
-    // สร้างโครงสร้าง output JSON
-    // มี 3 sections หลัก: source, datasets, cases
+    _writeTestDataFile(uiFile, source, datasets, cases);
+  }
+
+  void _writeTestDataFile(
+    String uiFile,
+    Map<String, dynamic> source,
+    Map<String, dynamic> datasets,
+    List<Map<String, dynamic>> cases,
+  ) {
     final plan = <String, dynamic>{
-      'source': source, // ข้อมูล source (UI file, page class, cubit class)
-      'datasets': datasets, // datasets สำหรับ test data
-      'cases': cases, // list ของ test cases
+      'source': source,
+      'datasets': datasets,
+      'cases': cases,
     };
 
-    // กำหนด output path
-    // ตัวอย่าง: lib/demos/customer_page.dart -> output/test_data/customer_page.testdata.json
     final outPath =
         'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
 
-    // สร้าง directory ถ้ายังไม่มี (recursive)
     File(outPath).createSync(recursive: true);
-
-    // เขียน JSON ไฟล์ (pretty print with 2-space indent)
     File(outPath).writeAsStringSync(
         const JsonEncoder.withIndent('  ').convert(plan) + '\n');
-
-    // แสดง success message
     stdout.writeln('✓ fullpage plan: $outPath');
   }
 
