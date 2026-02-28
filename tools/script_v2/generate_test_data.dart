@@ -775,830 +775,464 @@ class TestDataGenerator {
     // ---------------------------------------------------------------------------
 
     if (hasPictModel) {
-      // โหลด PICT results และ model factors
+      // ── Shared State (closure variables) ─────────────────────────────────────
+      List<Map<String, String>>? extCombos;
+      List<Map<String, String>>? extValidCombos;
+      Map<String, List<String>>? modelFactors;
+      final factorTypes = <String, String>{};
 
-      List<Map<String, String>>? extCombos; // Full pairwise combinations
-      List<Map<String, String>>? extValidCombos; // Valid-only combinations
-      Map<String, List<String>>? modelFactors; // Factors จาก model file
-
-      // โหลด PICT model เพื่อดึง factor names และ widget mappings
-      if (File(pageModelPath).existsSync()) {
-        modelFactors =
-            pictGen.parsePictModel(File(pageModelPath).readAsStringSync());
-      }
-
-      // -------------------------------------------------------------------------
-      // สร้าง factor type mapping จาก model factors
-      // จัดหมวดหมู่ factors เป็น: text, radio, dropdown, checkbox, switch, datepicker, timepicker
-      // -------------------------------------------------------------------------
-
-      final factorTypes = <String, String>{}; // factorName -> type
-      final textFieldFactors = <String>[]; // List ของ textfield widget keys
-      final radioGroupFactors = <String>[]; // List ของ radio group names
-      final dropdownFactors = <String>[]; // List ของ dropdown widget keys
-      final checkboxFactors = <String>[]; // List ของ checkbox widget keys
-      final switchFactors = <String>[]; // List ของ switch widget keys
-
-      if (modelFactors != null) {
-        // วนลูปแต่ละ factor ใน model
-        for (final entry in modelFactors.entries) {
-          final factorName =
-              entry.key; // ชื่อ factor (เช่น customer_01_name_textfield)
-          final values =
-              entry.value; // ค่าที่เป็นไปได้ (เช่น ['valid', 'invalid'])
-
-          // กำหนด factor type ตาม values
-          if (values.contains('valid') && values.contains('invalid')) {
-            // Text field: มี 'valid' และ 'invalid' values
-            factorTypes[factorName] = 'text';
-            textFieldFactors.add(factorName);
-          } else if (values.contains('checked') &&
-              values.contains('unchecked')) {
-            // Checkbox: มี 'checked' และ 'unchecked' values
-            factorTypes[factorName] = 'checkbox';
-            checkboxFactors.add(factorName);
-          } else if (values.contains('on') && values.contains('off')) {
-            // Switch widget: มี 'on' และ 'off' values
-            factorTypes[factorName] = 'switch';
-            switchFactors.add(factorName);
-          } else if (values.any((v) => v.endsWith('_radio'))) {
-            // Radio group: มี value ที่ลงท้ายด้วย '_radio'
-            factorTypes[factorName] = 'radio';
-            radioGroupFactors.add(factorName);
-          } else if (datePickerKeys.contains(factorName)) {
-            // DatePicker: ตรวจจากว่า factor name อยู่ใน datePickerKeys
-            factorTypes[factorName] = 'datepicker';
-          } else if (timePickerKeys.contains(factorName)) {
-            // TimePicker: ตรวจจากว่า factor name อยู่ใน timePickerKeys
-            factorTypes[factorName] = 'timepicker';
-          } else {
-            // Dropdown (default): cases อื่นๆ ถือว่าเป็น dropdown
-            factorTypes[factorName] = 'dropdown';
-            dropdownFactors.add(factorName);
-          }
-        }
-      }
-
-      // -------------------------------------------------------------------------
-      // โหลด PICT result files
-      // -------------------------------------------------------------------------
-
-      // โหลด full pairwise combinations (valid + invalid)
-      if (File(pageResultPath).existsSync()) {
-        extCombos =
-            pictGen.parsePictResult(File(pageResultPath).readAsStringSync());
-      }
-
-      // โหลด valid-only combinations
-      if (File(pageValidResultPath).existsSync()) {
-        extValidCombos = pictGen
-            .parsePictResult(File(pageValidResultPath).readAsStringSync());
-      }
-
-      // -------------------------------------------------------------------------
-      // Helper Function: Map Radio Suffix to Full Key
-      // -------------------------------------------------------------------------
-
-      /// แปลง Radio suffix เป็น full Radio key
-      /// Example: age_10_20_radio -> customer_04_age_10_20_radio
-      ///
-      /// Parameters:
-      ///   [keys]   - list ของ radio keys ทั้งหมด
-      ///   [suffix] - suffix ที่ต้องการหา
-      ///
-      /// Returns:
-      ///   String? - full key หรือ null ถ้าไม่พบ
-      String? _radioKeyForSuffix(List<String> keys, String suffix) {
+      // ── Shared Helper ─────────────────────────────────────────────────────────
+      String? radioKeyForSuffix(List<String> keys, String suffix) {
         if (suffix.isEmpty) return null;
-
-        // หา key ที่ลงท้ายด้วย suffix
-        String hit = keys.firstWhere(
+        final hit = keys.firstWhere(
             (k) => k.endsWith('_$suffix') || k.endsWith(suffix),
             orElse: () => '');
         return hit.isEmpty ? null : hit;
       }
 
-      // -------------------------------------------------------------------------
-      // เลือก combinations ที่จะใช้
-      // -------------------------------------------------------------------------
-
-      List<Map<String, String>> combos;
-      bool usingExternalCombos = false;
-
-      // ถ้ามี external combos จาก PICT result ให้ใช้เลย
-      if (extCombos != null && extCombos.isNotEmpty) {
-        combos = extCombos;
-        usingExternalCombos = true;
-      }
-      // ถ้าไม่มี ต้องสร้าง combinations ใหม่
-      else {
-        // -----------------------------------------------------------------------
-        // Fallback: สร้าง factors ใหม่ (ไม่มี PICT model)
-        // -----------------------------------------------------------------------
-
-        final factors = <String, List<String>>{};
-
-        // TextFormField factors: เฉพาะ 'valid' และ 'invalid'
-        for (int i = 0; i < textKeys.length; i++) {
-          // ใช้ชื่อ TEXT, TEXT2, TEXT3, ... สำหรับหลาย fields
-          final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${i + 1}';
-          factors[factorName] = ['valid', 'invalid'];
+      // ── STEP 12: Load PICT Analysis ───────────────────────────────────────────
+      void loadPictAnalysis() {
+        if (File(pageModelPath).existsSync()) {
+          modelFactors =
+              pictGen.parsePictModel(File(pageModelPath).readAsStringSync());
         }
-
-        // -----------------------------------------------------------------------
-        // Auto-detect Radio groups จาก widgets metadata
-        // -----------------------------------------------------------------------
-
-        final radioGroups = <String, List<String>>{};
-
-        // Method 1: Group by groupValueBinding (reliable ที่สุด)
-        for (final w in widgets) {
-          final t = (w['widgetType'] ?? '').toString();
-          final k = (w['key'] ?? '').toString();
-          if (t.startsWith('Radio') && k.isNotEmpty && radioKeys.contains(k)) {
-            try {
-              final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
-              // ดึง groupValueBinding (ระบุว่า radio ไหนอยู่ group เดียวกัน)
-              final groupBinding = (meta['groupValueBinding'] ?? '').toString();
-              if (groupBinding.isNotEmpty) {
-                radioGroups.putIfAbsent(groupBinding, () => []);
-                radioGroups[groupBinding]!.add(k);
-              }
-            } catch (_) {}
+        if (modelFactors != null) {
+          for (final entry in modelFactors!.entries) {
+            final name = entry.key;
+            final values = entry.value;
+            if (values.contains('valid') && values.contains('invalid')) {
+              factorTypes[name] = 'text';
+            } else if (values.contains('checked') &&
+                values.contains('unchecked')) {
+              factorTypes[name] = 'checkbox';
+            } else if (values.contains('on') && values.contains('off')) {
+              factorTypes[name] = 'switch';
+            } else if (values.any((v) => v.endsWith('_radio'))) {
+              factorTypes[name] = 'radio';
+            } else if (datePickerKeys.contains(name)) {
+              factorTypes[name] = 'datepicker';
+            } else if (timePickerKeys.contains(name)) {
+              factorTypes[name] = 'timepicker';
+            } else {
+              factorTypes[name] = 'dropdown';
+            }
           }
         }
+        if (File(pageResultPath).existsSync()) {
+          extCombos =
+              pictGen.parsePictResult(File(pageResultPath).readAsStringSync());
+        }
+        if (File(pageValidResultPath).existsSync()) {
+          extValidCombos = pictGen
+              .parsePictResult(File(pageValidResultPath).readAsStringSync());
+        }
+      }
 
-        // Method 2: Fallback ใช้ FormField<int> options (ถ้าไม่พบ groupValueBinding)
-        if (radioGroups.isEmpty) {
+      // ── STEP 13: Build Pairwise Cases ─────────────────────────────────────────
+      Future<void> buildPairwiseCases() async {
+        // Inner helpers
+        String textForBucket(String tfKey, String bucket) {
+          final maxLen = _maxLenFromMeta(_widgetMetaByKey(tfKey));
+          if (bucket == 'min') return '';
+          if (bucket == 'min+1') return 'A';
+          if (bucket == 'nominal') {
+            final n = (maxLen != null && maxLen > 2) ? (maxLen ~/ 2) : 5;
+            return 'A' * n;
+          }
+          if (bucket == 'max-1') {
+            if (maxLen != null && maxLen > 1) return 'A' * (maxLen - 1);
+            return 'A';
+          }
+          if (bucket == 'max') return 'A' * (maxLen ?? 10);
+          return 'A' * 5;
+        }
+
+        String? datasetPathForKeyBucket(String tfKey, String bucket) {
+          final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
+              const {};
+          if (!ds.containsKey(tfKey)) return null;
+          if (bucket != 'valid' && bucket != 'invalid') return null;
+          final dataArray = ds[tfKey];
+          if (dataArray is List && dataArray.isNotEmpty) {
+            return 'byKey.$tfKey[0].$bucket';
+          }
+          final sub =
+              (ds[tfKey] as Map?)?.cast<String, dynamic>() ?? const {};
+          final list = (sub[bucket] as List?) ?? const [];
+          if (list.isEmpty) return null;
+          return 'byKey.$tfKey.$bucket[0]';
+        }
+
+        // Resolve combos
+        List<Map<String, String>> combos;
+        bool usingExternalCombos = false;
+
+        if (extCombos != null && extCombos!.isNotEmpty) {
+          combos = extCombos!;
+          usingExternalCombos = true;
+        } else {
+          final factors = <String, List<String>>{};
+          for (int i = 0; i < textKeys.length; i++) {
+            factors[textKeys.length == 1 ? 'TEXT' : 'TEXT${i + 1}'] =
+                ['valid', 'invalid'];
+          }
+          final radioGroups = <String, List<String>>{};
           for (final w in widgets) {
             final t = (w['widgetType'] ?? '').toString();
-            // FormField<int> มักเป็น wrapper ของ radio group
-            if (t == 'FormField<int>') {
+            final k = (w['key'] ?? '').toString();
+            if (t.startsWith('Radio') && k.isNotEmpty && radioKeys.contains(k)) {
               try {
-                final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
-                final options = meta['options'];
-                if (options is List) {
-                  final radioGroup = <String>[];
-                  // วนลูปหา Radio ที่ตรงกับแต่ละ option
-                  for (final opt in options) {
-                    if (opt is Map) {
-                      final optValue = opt['value']?.toString();
-                      if (optValue != null) {
-                        // หา Radio ที่มี valueExpr ตรงกัน
-                        for (final rw in widgets) {
-                          final rt = (rw['widgetType'] ?? '').toString();
-                          final rk = (rw['key'] ?? '').toString();
-                          if (rt.startsWith('Radio') && rk.isNotEmpty) {
-                            final rmeta =
-                                (rw['meta'] as Map?)?.cast<String, dynamic>() ??
-                                    {};
-                            final valueExpr =
-                                (rmeta['valueExpr'] ?? '').toString();
-                            if (valueExpr == optValue) {
-                              radioGroup.add(rk);
+                final meta =
+                    (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+                final groupBinding =
+                    (meta['groupValueBinding'] ?? '').toString();
+                if (groupBinding.isNotEmpty) {
+                  radioGroups.putIfAbsent(groupBinding, () => []).add(k);
+                }
+              } catch (_) {}
+            }
+          }
+          if (radioGroups.isEmpty) {
+            for (final w in widgets) {
+              if ((w['widgetType'] ?? '').toString() == 'FormField<int>') {
+                try {
+                  final meta =
+                      (w['meta'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final options = meta['options'];
+                  if (options is List) {
+                    final radioGroup = <String>[];
+                    for (final opt in options) {
+                      if (opt is Map) {
+                        final optValue = opt['value']?.toString();
+                        if (optValue != null) {
+                          for (final rw in widgets) {
+                            final rt = (rw['widgetType'] ?? '').toString();
+                            final rk = (rw['key'] ?? '').toString();
+                            if (rt.startsWith('Radio') && rk.isNotEmpty) {
+                              final rmeta = (rw['meta'] as Map?)
+                                      ?.cast<String, dynamic>() ??
+                                  {};
+                              if ((rmeta['valueExpr'] ?? '').toString() ==
+                                  optValue) {
+                                radioGroup.add(rk);
+                              }
                             }
                           }
                         }
                       }
                     }
+                    if (radioGroup.length > 1) {
+                      radioGroups[(w['key'] ?? 'unknown').toString()] =
+                          radioGroup;
+                    }
                   }
-                  // เพิ่ม group ถ้ามีมากกว่า 1 option
-                  if (radioGroup.length > 1) {
-                    final groupKey = (w['key'] ?? 'unknown').toString();
-                    radioGroups[groupKey] = radioGroup;
-                  }
-                }
-              } catch (_) {}
+                } catch (_) {}
+              }
             }
           }
-        }
-
-        // เพิ่ม radio groups เป็น factors
-        int radioIndex = 1;
-        for (final entry in radioGroups.entries) {
-          if (entry.value.length > 1) {
-            factors['Radio$radioIndex'] = entry.value;
-            radioIndex++;
+          int radioIndex = 1;
+          for (final entry in radioGroups.entries) {
+            if (entry.value.length > 1) {
+              factors['Radio$radioIndex'] = entry.value;
+              radioIndex++;
+            }
           }
-        }
-
-        // Dropdown factors: ใช้ values จาก dropdown แรก
-        if (dropdownValues.isNotEmpty)
-          factors['Dropdown'] = List<String>.from(dropdownValues);
-
-        // Checkbox factors: Checkbox, Checkbox2, Checkbox3, ...
-        for (int i = 0; i < checkboxKeys.length; i++) {
-          final factorName = (checkboxKeys.length == 1 || i == 0)
-              ? 'Checkbox'
-              : 'Checkbox${i + 1}';
-          factors[factorName] = ['checked', 'unchecked'];
-        }
-
-        // DatePicker factors: สร้าง dates ตาม constraints
-        for (int i = 0; i < datePickerKeys.length; i++) {
-          final key = datePickerKeys[i];
-          final factorName = key; // ใช้ widget key เป็น factor name
-
-          // หา picker metadata
-          final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
-              orElse: () => <String, dynamic>{});
-          final pickerMeta =
-              (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ?? {};
-
-          // สร้าง date values ตาม constraints
-          final dateValues = _generateDateValues(pickerMeta);
-          factors[factorName] = dateValues;
-        }
-
-        // TimePicker factors: สร้าง times
-        for (int i = 0; i < timePickerKeys.length; i++) {
-          final key = timePickerKeys[i];
-          final factorName = timePickerKeys.length == 1 ? key : key;
-          // ค่าเวลาตัวอย่าง + null สำหรับ cancel
-          factors[factorName] = ['09:00', '14:30', '18:00', 'null'];
-        }
-
-        // -----------------------------------------------------------------------
-        // Generate pairwise combinations
-        // -----------------------------------------------------------------------
-
-        if (pairwiseUsePict) {
-          // ลองใช้ PICT tool ก่อน
-          try {
-            combos = await pictGen.executePict(factors);
-          } catch (e) {
-            // ถ้า PICT ล้มเหลว ใช้ internal algorithm แทน
-            stderr.writeln(
-                '! PICT failed ($e). Falling back to internal pairwise.');
+          if (dropdownValues.isNotEmpty) {
+            factors['Dropdown'] = List<String>.from(dropdownValues);
+          }
+          for (int i = 0; i < checkboxKeys.length; i++) {
+            factors[(checkboxKeys.length == 1 || i == 0)
+                ? 'Checkbox'
+                : 'Checkbox${i + 1}'] = ['checked', 'unchecked'];
+          }
+          for (final key in datePickerKeys) {
+            final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
+                orElse: () => <String, dynamic>{});
+            final pickerMeta =
+                (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ??
+                    {};
+            factors[key] = _generateDateValues(pickerMeta);
+          }
+          for (final key in timePickerKeys) {
+            factors[key] = ['09:00', '14:30', '18:00', 'null'];
+          }
+          if (pairwiseUsePict) {
+            try {
+              combos = await pictGen.executePict(factors);
+            } catch (e) {
+              stderr.writeln(
+                  '! PICT failed ($e). Falling back to internal pairwise.');
+              combos = pictGen.generatePairwiseInternal(factors);
+            }
+          } else {
             combos = pictGen.generatePairwiseInternal(factors);
           }
-        } else {
-          // ใช้ internal algorithm
-          combos = pictGen.generatePairwiseInternal(factors);
-        }
-      }
-
-      // -------------------------------------------------------------------------
-      // Helper Functions สำหรับสร้าง Test Data
-      // -------------------------------------------------------------------------
-
-      /// สร้าง text value สำหรับ boundary value bucket
-      ///
-      /// รองรับ legacy buckets: min, min+1, nominal, max-1, max
-      /// ใช้เมื่อไม่มี dataset สำหรับ field นั้น
-      ///
-      /// Parameters:
-      ///   [tfKey]  - key ของ textfield
-      ///   [bucket] - boundary bucket (valid, invalid, min, max, etc.)
-      ///
-      /// Returns:
-      ///   String - text value ที่เหมาะกับ bucket
-      String textForBucket(String tfKey, String bucket) {
-        // ดึง maxLength ของ field
-        final maxLen = _maxLenFromMeta(_widgetMetaByKey(tfKey));
-
-        // Legacy boundary buckets
-        if (bucket == 'min') return ''; // empty string
-        if (bucket == 'min+1') return 'A'; // 1 character
-        if (bucket == 'nominal') {
-          // ค่ากลาง: ครึ่งหนึ่งของ maxLength หรือ 5
-          final n = (maxLen != null && maxLen > 2) ? (maxLen ~/ 2) : 5;
-          return 'A' * n;
-        }
-        if (bucket == 'max-1') {
-          // maxLength - 1
-          if (maxLen != null && maxLen > 1) return 'A' * (maxLen - 1);
-          return 'A';
-        }
-        if (bucket == 'max') {
-          // maxLength เต็ม
-          final m = maxLen ?? 10;
-          return 'A' * m;
         }
 
-        // Default: 5 characters
-        return 'A' * 5;
-      }
+        // Build cases
+        for (int i = 0; i < combos.length; i++) {
+          final c = combos[i];
+          final st = <Map<String, dynamic>>[];
+          bool hasInvalidData = false;
+          final invalidFields = <String>[];
+          final uncheckedRequiredCheckboxes = <String>[];
 
-      /// สร้าง dataset path สำหรับ field และ bucket ที่กำหนด
-      ///
-      /// Parameters:
-      ///   [tfKey]  - key ของ textfield
-      ///   [bucket] - 'valid' หรือ 'invalid'
-      ///
-      /// Returns:
-      ///   String? - dataset path หรือ null ถ้าไม่พบ
-      ///
-      /// Example:
-      ///   datasetPathForKeyBucket('name_textfield', 'valid')
-      ///   -> 'byKey.name_textfield[0].valid'
-      String? datasetPathForKeyBucket(String tfKey, String bucket) {
-        final ds =
-            (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
-
-        // ตรวจสอบว่ามี key นี้ใน datasets หรือไม่
-        if (!ds.containsKey(tfKey)) return null;
-
-        // รับเฉพาะ valid และ invalid buckets
-        if (bucket != 'valid' && bucket != 'invalid') return null;
-
-        // New format: byKey.<key> เป็น array of objects
-        final dataArray = ds[tfKey];
-        if (dataArray is List && dataArray.isNotEmpty) {
-          // Return path: byKey.<key>[0].valid หรือ byKey.<key>[0].invalid
-          return 'byKey.$tfKey[0].$bucket';
-        }
-
-        // Fallback: old format (map with valid/invalid lists)
-        final sub = (ds[tfKey] as Map?)?.cast<String, dynamic>() ?? const {};
-        final list = (sub[bucket] as List?) ?? const [];
-        if (list.isEmpty) return null;
-        return 'byKey.$tfKey.$bucket[0]';
-      }
-
-      // -------------------------------------------------------------------------
-      // STEP 13: สร้าง Pairwise Test Cases
-      // -------------------------------------------------------------------------
-
-      // วนลูปแต่ละ combination ที่ได้จาก PICT
-      for (int i = 0; i < combos.length; i++) {
-        final c = combos[i]; // current combination
-
-        // ดึง radio picks (legacy support)
-        final r1Pick = (c['Radio1'] ?? '').toString();
-        final r2Pick = (c['Radio2'] ?? '').toString();
-        final r3Pick = (c['Radio3'] ?? '').toString();
-        final r4Pick = (c['Radio4'] ?? '').toString();
-        final ddPick = (c['Dropdown'] ?? '').toString();
-
-        // List เก็บ steps สำหรับ test case นี้
-        final st = <Map<String, dynamic>>[];
-
-        // -----------------------------------------------------------------------
-        // Track Invalid Data
-        // ใช้เพื่อกำหนด test case kind (success/failed)
-        // -----------------------------------------------------------------------
-
-        bool hasInvalidData = false; // มี invalid data หรือไม่
-        final invalidFields = <String>[]; // fields ที่ใช้ invalid data
-        final uncheckedRequiredCheckboxes =
-            <String>[]; // required checkboxes ที่ไม่ได้ check
-
-        // -----------------------------------------------------------------------
-        // Process Factors ตาม PICT header order (ถ้าใช้ external combos)
-        // -----------------------------------------------------------------------
-        if (usingExternalCombos) {
-          // ดึง header order จาก PICT result file เพื่อเรียง factors
-          List<String> headerOrder = [];
-          if (File(pageResultPath).existsSync()) {
-            final content = File(pageResultPath).readAsStringSync();
-            // แยก lines และกรอง empty lines
-            final lines = content
-                .trim()
-                .split(RegExp(r'\r?\n'))
-                .where((l) => l.trim().isNotEmpty)
-                .toList();
-            if (lines.isNotEmpty) {
-              // บรรทัดแรกคือ header (tab-separated)
-              headerOrder =
-                  lines.first.split('\t').map((s) => s.trim()).toList();
-            }
-          }
-
-          // สร้าง map เก็บ steps แยกตาม widget key
-          // ใช้เพื่อรักษาลำดับตาม manifest
-          final stepsByKey = <String, List<Map<String, dynamic>>>{};
-
-          // Process แต่ละ factor ตาม actual factor names จาก model
-          for (final factorName in c.keys) {
-            final factorType = factorTypes[factorName]; // ดึง type ของ factor
-            final pick = (c[factorName] ?? '')
-                .toString(); // ค่าที่เลือกสำหรับ factor นี้
-            if (pick.isEmpty) continue;
-
-            // -----------------------------------------------------------------
-            // Text Field: กรอกข้อความ valid หรือ invalid
-            // -----------------------------------------------------------------
-            if (factorType == 'text') {
-              // กำหนด bucket จากค่าที่เลือก
-              final bucket = (pick == 'invalid') ? 'invalid' : 'valid';
-              if (bucket == 'invalid') {
-                hasInvalidData = true;
-                invalidFields.add(factorName); // Track field นี้เป็น invalid
-              }
-              // สร้าง enterText step พร้อม dataset path
-              stepsByKey[factorName] = [
-                {
-                  'enterText': {
-                    'byKey': factorName,
-                    'dataset': 'byKey.$factorName[0].$bucket'
-                  }
-                },
-                {'pump': true}
-              ];
-            }
-            // -----------------------------------------------------------------
-            // Radio Group: เลือก radio option
-            // -----------------------------------------------------------------
-            else if (factorType == 'radio') {
-              // pick คือ radio option suffix (เช่น age_10_20_radio)
-              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
-              if (matchedKey != null) {
-                stepsByKey[matchedKey] = [
-                  {
-                    'tap': {'byKey': matchedKey}
-                  },
-                  {'pump': true}
-                ];
-              }
-            }
-            // -----------------------------------------------------------------
-            // Dropdown: เลือก dropdown option
-            // -----------------------------------------------------------------
-            else if (factorType == 'dropdown') {
-              // แปลง value เป็น text ที่แสดงใน UI
-              String textToTap = pick;
-              final dropdownIdx = dropdownKeys.indexOf(factorName);
-              if (dropdownIdx >= 0 &&
-                  dropdownIdx < dropdownValueToTextMaps.length) {
-                final mapping = dropdownValueToTextMaps[dropdownIdx];
-                final cleanPick = pick.replaceAll('"', '');
-                // PICT encodes spaces as underscores ("Entry Level" → "Entry_Level").
-                // Decode back before map lookup so we get the actual display text.
-                final decodedPick = cleanPick.replaceAll('_', ' ');
-                textToTap = mapping[decodedPick] ?? mapping[cleanPick] ?? pick;
-              }
-
-              stepsByKey[factorName] = [
-                {
-                  'tap': {'byKey': factorName}
-                }, // เปิด dropdown
-                {'pumpAndSettle': true}, // รอ dropdown popup เปิด
-                {'scrollAndTapText': textToTap}, // scroll หา option แล้ว tap
-                {'pumpAndSettle': true} // รอ dropdown ปิด
-              ];
-            }
-            // -----------------------------------------------------------------
-            // Checkbox: check หรือ uncheck
-            // -----------------------------------------------------------------
-            else if (factorType == 'checkbox') {
-              if (pick == 'checked') {
-                // Tap เพื่อ check
+          if (usingExternalCombos) {
+            final stepsByKey = <String, List<Map<String, dynamic>>>{};
+            for (final factorName in c.keys) {
+              final factorType = factorTypes[factorName];
+              final pick = (c[factorName] ?? '').toString();
+              if (pick.isEmpty) continue;
+              if (factorType == 'text') {
+                final bucket = pick == 'invalid' ? 'invalid' : 'valid';
+                if (bucket == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(factorName);
+                }
                 stepsByKey[factorName] = [
-                  {
-                    'tap': {'byKey': factorName}
-                  },
-                  {'pump': true}
-                ];
-              } else if (pick == 'unchecked' &&
-                  requiredCheckboxValidation.containsKey(factorName)) {
-                // Required checkbox ที่ unchecked = invalid form state
-                hasInvalidData = true;
-                uncheckedRequiredCheckboxes.add(factorName);
-              }
-              // ถ้า unchecked และไม่ required ไม่ต้องทำอะไร (default state)
-            }
-            // -----------------------------------------------------------------
-            // Switch: on หรือ off
-            // -----------------------------------------------------------------
-            else if (factorType == 'switch') {
-              // Tap เฉพาะถ้า 'on' (off คือ default state)
-              if (pick == 'on') {
-                stepsByKey[factorName] = [
-                  {
-                    'tap': {'byKey': factorName}
-                  },
-                  {'pump': true}
-                ];
-              }
-            }
-            // -----------------------------------------------------------------
-            // DatePicker: เปิด picker และเลือกวันที่
-            // -----------------------------------------------------------------
-            else if (datePickerKeys.contains(factorName)) {
-              stepsByKey[factorName] = [
-                {
-                  'tap': {'byKey': factorName}
-                }, // เปิด picker
-                {'pumpAndSettle': true}, // รอ dialog
-                {'selectDate': pick}, // เลือกวันที่
-                {'pumpAndSettle': true} // รอปิด dialog
-              ];
-            }
-            // -----------------------------------------------------------------
-            // TimePicker: เปิด picker และเลือกเวลา
-            // -----------------------------------------------------------------
-            else if (timePickerKeys.contains(factorName)) {
-              stepsByKey[factorName] = [
-                {
-                  'tap': {'byKey': factorName}
-                }, // เปิด picker
-                {'pumpAndSettle': true}, // รอ dialog
-                {'selectTime': pick}, // เลือกเวลา
-                {'pumpAndSettle': true} // รอปิด dialog
-              ];
-            }
-          }
-
-          // ---------------------------------------------------------------------
-          // เพิ่ม steps ตามลำดับ widget key (sort ก่อน)
-          // ---------------------------------------------------------------------
-          final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
-          sortedWidgets.sort((a, b) {
-            final keyA = (a['key'] ?? '').toString();
-            final keyB = (b['key'] ?? '').toString();
-            return keyA.compareTo(keyB);
-          });
-
-          // วนลูปเพิ่ม steps ตามลำดับ sorted widgets
-          for (final w in sortedWidgets) {
-            final key = (w['key'] ?? '').toString();
-            if (stepsByKey.containsKey(key)) {
-              st.addAll(stepsByKey[key]!);
-            }
-          }
-        }
-        // ---------------------------------------------------------------------
-        // Fallback: ไม่ได้ใช้ external combos
-        // ---------------------------------------------------------------------
-        else {
-          // Fallback: ใช้ original logic สำหรับ non-external combos
-          // สร้าง map เก็บ steps แยกตาม widget key
-          final stepsByKey = <String, List<Map<String, dynamic>>>{};
-
-          // ---------------------------------------------------------------------
-          // Process Text Fields
-          // ---------------------------------------------------------------------
-          for (int j = 0; j < textKeys.length; j++) {
-            // กำหนด factor name: TEXT, TEXT2, TEXT3, ...
-            final factorName = textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
-            final tfBucket =
-                c[factorName]; // ค่า bucket ที่เลือก (valid/invalid)
-
-            if (tfBucket != null) {
-              // Track invalid data
-              if (tfBucket.toString() == 'invalid') {
-                hasInvalidData = true;
-                invalidFields.add(textKeys[j]);
-              }
-
-              // หา dataset path
-              final dsPath =
-                  datasetPathForKeyBucket(textKeys[j], tfBucket.toString());
-              if (dsPath != null) {
-                // ใช้ dataset path
-                stepsByKey[textKeys[j]] = [
-                  {
-                    'enterText': {'byKey': textKeys[j], 'dataset': dsPath}
-                  },
-                  {'pump': true}
-                ];
-              } else {
-                // Fallback: ใช้ generated text
-                stepsByKey[textKeys[j]] = [
                   {
                     'enterText': {
-                      'byKey': textKeys[j],
-                      'text': textForBucket(textKeys[j], tfBucket)
+                      'byKey': factorName,
+                      'dataset': 'byKey.$factorName[0].$bucket'
                     }
                   },
                   {'pump': true}
                 ];
+              } else if (factorType == 'radio') {
+                final mk = radioKeyForSuffix(radioKeys, pick);
+                if (mk != null) {
+                  stepsByKey[mk] = [
+                    {'tap': {'byKey': mk}},
+                    {'pump': true}
+                  ];
+                }
+              } else if (factorType == 'dropdown') {
+                String textToTap = pick;
+                final idx = dropdownKeys.indexOf(factorName);
+                if (idx >= 0 && idx < dropdownValueToTextMaps.length) {
+                  final mapping = dropdownValueToTextMaps[idx];
+                  final clean = pick.replaceAll('"', '');
+                  textToTap = mapping[clean.replaceAll('_', ' ')] ??
+                      mapping[clean] ??
+                      pick;
+                }
+                stepsByKey[factorName] = [
+                  {'tap': {'byKey': factorName}},
+                  {'pumpAndSettle': true},
+                  {'scrollAndTapText': textToTap},
+                  {'pumpAndSettle': true}
+                ];
+              } else if (factorType == 'checkbox') {
+                if (pick == 'checked') {
+                  stepsByKey[factorName] = [
+                    {'tap': {'byKey': factorName}},
+                    {'pump': true}
+                  ];
+                } else if (pick == 'unchecked' &&
+                    requiredCheckboxValidation.containsKey(factorName)) {
+                  hasInvalidData = true;
+                  uncheckedRequiredCheckboxes.add(factorName);
+                }
+              } else if (factorType == 'switch') {
+                if (pick == 'on') {
+                  stepsByKey[factorName] = [
+                    {'tap': {'byKey': factorName}},
+                    {'pump': true}
+                  ];
+                }
+              } else if (datePickerKeys.contains(factorName)) {
+                stepsByKey[factorName] = [
+                  {'tap': {'byKey': factorName}},
+                  {'pumpAndSettle': true},
+                  {'selectDate': pick},
+                  {'pumpAndSettle': true}
+                ];
+              } else if (timePickerKeys.contains(factorName)) {
+                stepsByKey[factorName] = [
+                  {'tap': {'byKey': factorName}},
+                  {'pumpAndSettle': true},
+                  {'selectTime': pick},
+                  {'pumpAndSettle': true}
+                ];
               }
             }
-          }
-
-          // ---------------------------------------------------------------------
-          // Process Dropdown
-          // ---------------------------------------------------------------------
-          if (dropdownKey != null && c['Dropdown'] != null) {
-            final ddPick = (c['Dropdown'] ?? '').toString();
-            if (ddPick.isNotEmpty) {
-              stepsByKey[dropdownKey] = [
-                {
-                  'tap': {'byKey': dropdownKey}
-                }, // เปิด dropdown
-                {'pump': true},
-                {'tapText': ddPick}, // เลือก option
-                {'pump': true}
-              ];
+            final sorted = List<Map<String, dynamic>>.from(widgets)
+              ..sort((a, b) => (a['key'] ?? '')
+                  .toString()
+                  .compareTo((b['key'] ?? '').toString()));
+            for (final w in sorted) {
+              final k = (w['key'] ?? '').toString();
+              if (stepsByKey.containsKey(k)) st.addAll(stepsByKey[k]!);
             }
-          }
-
-          // ---------------------------------------------------------------------
-          // Process Radio Groups
-          // Match Radio suffix จาก PICT กับ full Radio key
-          // ---------------------------------------------------------------------
-          for (final factorName in c.keys) {
-            if (factorName.startsWith('Radio')) {
-              final pick = (c[factorName] ?? '').toString();
-              if (pick.isNotEmpty) {
-                // pick คือ Radio suffix เช่น "age_10_20_radio"
-                final matchedKey = _radioKeyForSuffix(radioKeys, pick);
-                if (matchedKey != null) {
-                  stepsByKey[matchedKey] = [
-                    {
-                      'tap': {'byKey': matchedKey}
-                    },
+          } else {
+            final stepsByKey = <String, List<Map<String, dynamic>>>{};
+            for (int j = 0; j < textKeys.length; j++) {
+              final factorName =
+                  textKeys.length == 1 ? 'TEXT' : 'TEXT${j + 1}';
+              final tfBucket = c[factorName];
+              if (tfBucket != null) {
+                if (tfBucket.toString() == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(textKeys[j]);
+                }
+                final dsPath =
+                    datasetPathForKeyBucket(textKeys[j], tfBucket.toString());
+                stepsByKey[textKeys[j]] = dsPath != null
+                    ? [
+                        {
+                          'enterText': {
+                            'byKey': textKeys[j],
+                            'dataset': dsPath
+                          }
+                        },
+                        {'pump': true}
+                      ]
+                    : [
+                        {
+                          'enterText': {
+                            'byKey': textKeys[j],
+                            'text': textForBucket(textKeys[j], tfBucket)
+                          }
+                        },
+                        {'pump': true}
+                      ];
+              }
+            }
+            if (dropdownKey != null && c['Dropdown'] != null) {
+              final ddPick = (c['Dropdown'] ?? '').toString();
+              if (ddPick.isNotEmpty) {
+                stepsByKey[dropdownKey] = [
+                  {'tap': {'byKey': dropdownKey}},
+                  {'pump': true},
+                  {'tapText': ddPick},
+                  {'pump': true}
+                ];
+              }
+            }
+            for (final factorName in c.keys) {
+              if (factorName.startsWith('Radio')) {
+                final pick = (c[factorName] ?? '').toString();
+                if (pick.isNotEmpty) {
+                  final mk = radioKeyForSuffix(radioKeys, pick);
+                  if (mk != null) {
+                    stepsByKey[mk] = [
+                      {'tap': {'byKey': mk}},
+                      {'pump': true}
+                    ];
+                  }
+                }
+              }
+            }
+            for (int idx = 0; idx < checkboxKeys.length; idx++) {
+              final factorName = (checkboxKeys.length == 1 || idx == 0)
+                  ? 'Checkbox'
+                  : 'Checkbox${idx + 1}';
+              if ((c[factorName] ?? '').toString() == 'checked') {
+                final key = checkboxKeys[idx];
+                if (key.isNotEmpty) {
+                  stepsByKey[key] = [
+                    {'tap': {'byKey': key}},
                     {'pump': true}
                   ];
                 }
               }
             }
-          }
-
-          // ---------------------------------------------------------------------
-          // Process Checkboxes
-          // ---------------------------------------------------------------------
-          for (int idx = 0; idx < checkboxKeys.length; idx++) {
-            // กำหนด factor name: Checkbox, Checkbox2, Checkbox3, ...
-            final factorName = (checkboxKeys.length == 1 || idx == 0)
-                ? 'Checkbox'
-                : 'Checkbox${idx + 1}';
-            final pick = (c[factorName] ?? '').toString();
-
-            // Tap เฉพาะถ้าเลือก 'checked'
-            if (pick == 'checked') {
-              final key = checkboxKeys[idx];
-              if (key.isNotEmpty) {
+            for (int idx = 0; idx < datePickerKeys.length; idx++) {
+              final key = datePickerKeys[idx];
+              final pick = (c[key] ?? '').toString();
+              if (pick.isNotEmpty) {
                 stepsByKey[key] = [
-                  {
-                    'tap': {'byKey': key}
-                  },
-                  {'pump': true}
+                  {'tap': {'byKey': key}},
+                  {'pumpAndSettle': true},
+                  {'selectDate': pick},
+                  {'pumpAndSettle': true}
                 ];
               }
             }
-          }
-
-          // ---------------------------------------------------------------------
-          // Process DatePicker Widgets
-          // ---------------------------------------------------------------------
-          for (int idx = 0; idx < datePickerKeys.length; idx++) {
-            final key = datePickerKeys[idx];
-            final factorName = datePickerKeys.length == 1 ? key : key;
-            final pick = (c[factorName] ?? '').toString();
-
-            if (pick.isNotEmpty && key.isNotEmpty) {
-              stepsByKey[key] = [
-                {
-                  'tap': {'byKey': key}
-                }, // เปิด picker
-                {'pumpAndSettle': true}, // รอ dialog ปรากฏ
-                {'selectDate': pick}, // เลือกวันที่: DD/MM/YYYY หรือ null
-                {'pumpAndSettle': true} // รอ dialog ปิด
-              ];
+            for (int idx = 0; idx < timePickerKeys.length; idx++) {
+              final key = timePickerKeys[idx];
+              final pick = (c[key] ?? '').toString();
+              if (pick.isNotEmpty) {
+                stepsByKey[key] = [
+                  {'tap': {'byKey': key}},
+                  {'pumpAndSettle': true},
+                  {'selectTime': pick},
+                  {'pumpAndSettle': true}
+                ];
+              }
+            }
+            final sorted = List<Map<String, dynamic>>.from(widgets)
+              ..sort((a, b) => (a['key'] ?? '')
+                  .toString()
+                  .compareTo((b['key'] ?? '').toString()));
+            for (final w in sorted) {
+              final k = (w['key'] ?? '').toString();
+              if (stepsByKey.containsKey(k)) st.addAll(stepsByKey[k]!);
             }
           }
 
-          // ---------------------------------------------------------------------
-          // Process TimePicker Widgets
-          // ---------------------------------------------------------------------
-          for (int idx = 0; idx < timePickerKeys.length; idx++) {
-            final key = timePickerKeys[idx];
-            final factorName = timePickerKeys.length == 1 ? key : key;
-            final pick = (c[factorName] ?? '').toString();
-
-            if (pick.isNotEmpty && key.isNotEmpty) {
-              stepsByKey[key] = [
-                {
-                  'tap': {'byKey': key}
-                }, // เปิด picker
-                {'pumpAndSettle': true}, // รอ dialog ปรากฏ
-                {'selectTime': pick}, // เลือกเวลา: HH:MM หรือ null
-                {'pumpAndSettle': true} // รอ dialog ปิด
-              ];
-            }
+          if (hasEndButton && endKey != null) {
+            st.add({'tap': {'byKey': endKey}});
+            st.add({'pumpAndSettle': true});
+          } else {
+            st.add({'pump': true});
           }
 
-          // ---------------------------------------------------------------------
-          // เพิ่ม steps ตามลำดับ widget key (sort ก่อน)
-          // ---------------------------------------------------------------------
-          final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
-          sortedWidgets.sort((a, b) {
-            final keyA = (a['key'] ?? '').toString();
-            final keyB = (b['key'] ?? '').toString();
-            return keyA.compareTo(keyB);
-          });
+          final caseKind = hasInvalidData ? 'failed' : 'success';
+          final id = 'pairwise_valid_invalid_cases_${i + 1}';
+          final asserts = <Map<String, dynamic>>[];
 
-          for (final w in sortedWidgets) {
-            final key = (w['key'] ?? '').toString();
-            if (stepsByKey.containsKey(key)) {
-              st.addAll(stepsByKey[key]!);
-            }
-          }
-        }
-
-        // -----------------------------------------------------------------------
-        // Final Action: Submit Form (ถ้ามี end button)
-        // -----------------------------------------------------------------------
-
-        if (hasEndButton && endKey != null) {
-          // API flow: กดปุ่ม submit
-          st.add({
-            'tap': {'byKey': endKey}
-          });
-          st.add({'pumpAndSettle': true}); // รอ API call และ animation
-        } else {
-          // Widget demo: ไม่มีปุ่ม submit, แค่ pump
-          st.add({'pump': true});
-        }
-
-        // -----------------------------------------------------------------------
-        // กำหนด Test Case Kind
-        // -----------------------------------------------------------------------
-
-        // กำหนดว่า test case เป็น success หรือ failed
-        // ขึ้นอยู่กับว่ามี invalid data หรือไม่
-        final caseKind = hasInvalidData ? 'failed' : 'success';
-
-        // สร้าง test case ID
-        final id = 'pairwise_valid_invalid_cases_${i + 1}';
-
-        // -----------------------------------------------------------------------
-        // สร้าง Assertions
-        // -----------------------------------------------------------------------
-
-        final asserts = <Map<String, dynamic>>[];
-
-        if (hasInvalidData) {
-          // Case: มี invalid data -> คาดหวัง validation error messages
-
-          final ds =
-              (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
-
-          // ดึง invalidRuleMessages จาก datasets สำหรับแต่ละ invalid field
-          for (final fieldKey in invalidFields) {
-            final dataArray = ds[fieldKey];
-            if (dataArray is List && dataArray.isNotEmpty) {
-              // ใช้ index [0] ตาม dataset path
-              final firstPair = dataArray[0];
-              if (firstPair is Map) {
-                final invalidRuleMsg =
-                    firstPair['invalidRuleMessages']?.toString();
-                // รวมเฉพาะ specific validation messages ที่แสดงใน UI จริง
-                // ยกเว้น: "Required"/"กรุณา" (จัดการใน edge_cases_empty_all_fields)
-                // ยกเว้น: "" หรือ "general" (field ไม่มี validator rule → ไม่มีข้อความ error ที่ตรวจสอบได้)
-                if (invalidRuleMsg != null &&
-                    invalidRuleMsg.isNotEmpty &&
-                    invalidRuleMsg.toLowerCase() != 'general' &&
-                    !invalidRuleMsg.toLowerCase().contains('required') &&
-                    !invalidRuleMsg.toLowerCase().contains('กรุณา')) {
-                  asserts.add({'text': invalidRuleMsg, 'exists': true});
+          if (hasInvalidData) {
+            final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
+                const {};
+            for (final fieldKey in invalidFields) {
+              final dataArray = ds[fieldKey];
+              if (dataArray is List && dataArray.isNotEmpty) {
+                final firstPair = dataArray[0];
+                if (firstPair is Map) {
+                  final msg = firstPair['invalidRuleMessages']?.toString();
+                  if (msg != null &&
+                      msg.isNotEmpty &&
+                      msg.toLowerCase() != 'general' &&
+                      !msg.toLowerCase().contains('required') &&
+                      !msg.toLowerCase().contains('กรุณา')) {
+                    asserts.add({'text': msg, 'exists': true});
+                  }
                 }
               }
             }
-          }
-
-          // เพิ่ม validation messages สำหรับ unchecked required checkboxes
-          for (final checkboxKey in uncheckedRequiredCheckboxes) {
-            final validationMsg = requiredCheckboxValidation[checkboxKey];
-            if (validationMsg != null && validationMsg.isNotEmpty) {
-              asserts.add({'text': validationMsg, 'exists': true});
+            for (final ck in uncheckedRequiredCheckboxes) {
+              final msg = requiredCheckboxValidation[ck];
+              if (msg != null && msg.isNotEmpty) {
+                asserts.add({'text': msg, 'exists': true});
+              }
+            }
+          } else {
+            for (final sk in expectedSuccessKeys) {
+              asserts.add({'byKey': sk, 'exists': true});
             }
           }
 
-          // หมายเหตุ: ไม่ใช้ expectedFailKeys (SnackBar key) สำหรับ pairwise cases
-          // เพราะ assertion ควรตรวจสอบ validator message โดยตรง ไม่ใช่ SnackBar รอง
-          // expectedFailKeys ใช้เฉพาะใน edge_cases และ API-error scenarios เท่านั้น
-        } else {
-          // Case: valid data -> คาดหวัง success keys
-
-          for (final successKey in expectedSuccessKeys) {
-            asserts.add({'byKey': successKey, 'exists': true});
-          }
+          final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
+          cases.add({
+            'tc': id,
+            'kind': caseKind,
+            'group': 'pairwise_valid_invalid_cases',
+            'description': _buildDescription(comboStr, caseKind, invalidFields,
+                uncheckedRequiredCheckboxes, asserts),
+            'steps': st,
+            'asserts': asserts,
+          });
         }
-
-        // -----------------------------------------------------------------------
-        // เพิ่ม Test Case ลง List
-        // -----------------------------------------------------------------------
-
-        // สร้าง combo map (String→String) สำหรับ description
-        final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
-
-        cases.add({
-          'tc': id, // Test case ID
-          'kind': caseKind, // success หรือ failed
-          'group': 'pairwise_valid_invalid_cases', // Group name
-          'description': _buildDescription(comboStr, caseKind, invalidFields,
-              uncheckedRequiredCheckboxes, asserts),
-          'steps': st, // List ของ steps
-          'asserts': asserts, // List ของ assertions
-        });
       }
 
-      // -------------------------------------------------------------------------
-      // STEP 14: สร้าง Pairwise Valid-Only Cases
-      // สร้าง test cases เพิ่มเติมที่ใช้เฉพาะ valid data
-      // -------------------------------------------------------------------------
-
-      if (extValidCombos != null && extValidCombos.isNotEmpty) {
-        // วนลูปแต่ละ valid combination
-        for (int i = 0; i < extValidCombos.length; i++) {
-          final c = extValidCombos[i];
+      // ── STEP 14: Build Valid-Only Cases ───────────────────────────────────────
+      void buildPairwiseValidCases() {
+        if (extValidCombos == null || extValidCombos!.isEmpty) return;
+        for (int i = 0; i < extValidCombos!.length; i++) {
+          final c = extValidCombos![i];
           final st = <Map<String, dynamic>>[];
 
-          // ดึง header order จาก valid result file
           List<String> headerOrder = [];
           if (File(pageValidResultPath).existsSync()) {
             final content = File(pageValidResultPath).readAsStringSync();
@@ -1608,36 +1242,22 @@ class TestDataGenerator {
                 .where((l) => l.trim().isNotEmpty)
                 .toList();
             if (lines.isNotEmpty) {
-              // บรรทัดแรกคือ header
               headerOrder =
                   lines.first.split('\t').map((s) => s.trim()).toList();
             }
           }
-
-          // Fallback: ใช้ default order ถ้าไม่พบ header
           if (headerOrder.isEmpty) {
             headerOrder = [
-              'TEXT',
-              'TEXT2',
-              'TEXT3',
-              'Radio2',
-              'Radio3',
-              'Radio4',
+              'TEXT', 'TEXT2', 'TEXT3', 'Radio2', 'Radio3', 'Radio4',
               'Dropdown'
             ];
           }
 
-          // สร้าง map เก็บ steps แยกตาม widget key
           final stepsByKey = <String, List<Map<String, dynamic>>>{};
-
-          // Process แต่ละ factor ตาม header order
           for (final factorName in headerOrder) {
             final pick = (c[factorName] ?? '').toString();
             if (pick.isEmpty) continue;
-
             final factorType = factorTypes[factorName];
-
-            // Text field: ใช้ valid data เสมอ
             if (factorType == 'text') {
               stepsByKey[factorName] = [
                 {
@@ -1648,81 +1268,54 @@ class TestDataGenerator {
                 },
                 {'pump': true}
               ];
-            }
-            // Radio group
-            else if (factorType == 'radio') {
-              final matchedKey = _radioKeyForSuffix(radioKeys, pick);
-              if (matchedKey != null) {
-                stepsByKey[matchedKey] = [
-                  {
-                    'tap': {'byKey': matchedKey}
-                  },
+            } else if (factorType == 'radio') {
+              final mk = radioKeyForSuffix(radioKeys, pick);
+              if (mk != null) {
+                stepsByKey[mk] = [
+                  {'tap': {'byKey': mk}},
                   {'pump': true}
                 ];
               }
-            }
-            // Dropdown
-            else if (factorType == 'dropdown') {
+            } else if (factorType == 'dropdown') {
               String textToTap = pick;
-              final dropdownIdx = dropdownKeys.indexOf(factorName);
-              if (dropdownIdx >= 0 &&
-                  dropdownIdx < dropdownValueToTextMaps.length) {
-                final mapping = dropdownValueToTextMaps[dropdownIdx];
-                final cleanPick = pick.replaceAll('"', '');
-                // PICT encodes spaces as underscores ("Entry Level" → "Entry_Level").
-                // Decode back before map lookup so we get the actual display text.
-                final decodedPick = cleanPick.replaceAll('_', ' ');
-                textToTap = mapping[decodedPick] ?? mapping[cleanPick] ?? pick;
+              final idx = dropdownKeys.indexOf(factorName);
+              if (idx >= 0 && idx < dropdownValueToTextMaps.length) {
+                final mapping = dropdownValueToTextMaps[idx];
+                final clean = pick.replaceAll('"', '');
+                textToTap = mapping[clean.replaceAll('_', ' ')] ??
+                    mapping[clean] ??
+                    pick;
               }
-
               stepsByKey[factorName] = [
-                {
-                  'tap': {'byKey': factorName}
-                },
-                {'pumpAndSettle': true}, // รอ dropdown popup เปิด
-                {'scrollAndTapText': textToTap}, // scroll หา option แล้ว tap
-                {'pumpAndSettle': true} // รอ dropdown ปิด
+                {'tap': {'byKey': factorName}},
+                {'pumpAndSettle': true},
+                {'scrollAndTapText': textToTap},
+                {'pumpAndSettle': true}
               ];
-            }
-            // Checkbox
-            else if (factorType == 'checkbox') {
+            } else if (factorType == 'checkbox') {
               if (pick == 'checked') {
                 stepsByKey[factorName] = [
-                  {
-                    'tap': {'byKey': factorName}
-                  },
+                  {'tap': {'byKey': factorName}},
                   {'pump': true}
                 ];
               }
-            }
-            // Switch
-            else if (factorType == 'switch') {
+            } else if (factorType == 'switch') {
               if (pick == 'on') {
                 stepsByKey[factorName] = [
-                  {
-                    'tap': {'byKey': factorName}
-                  },
+                  {'tap': {'byKey': factorName}},
                   {'pump': true}
                 ];
               }
-            }
-            // DatePicker
-            else if (datePickerKeys.contains(factorName)) {
+            } else if (datePickerKeys.contains(factorName)) {
               stepsByKey[factorName] = [
-                {
-                  'tap': {'byKey': factorName}
-                },
+                {'tap': {'byKey': factorName}},
                 {'pumpAndSettle': true},
                 {'selectDate': pick},
                 {'pumpAndSettle': true}
               ];
-            }
-            // TimePicker
-            else if (timePickerKeys.contains(factorName)) {
+            } else if (timePickerKeys.contains(factorName)) {
               stepsByKey[factorName] = [
-                {
-                  'tap': {'byKey': factorName}
-                },
+                {'tap': {'byKey': factorName}},
                 {'pumpAndSettle': true},
                 {'selectTime': pick},
                 {'pumpAndSettle': true}
@@ -1730,41 +1323,28 @@ class TestDataGenerator {
             }
           }
 
-          // เพิ่ม steps ตามลำดับ sorted widgets
-          final sortedWidgets = List<Map<String, dynamic>>.from(widgets);
-          sortedWidgets.sort((a, b) {
-            final keyA = (a['key'] ?? '').toString();
-            final keyB = (b['key'] ?? '').toString();
-            return keyA.compareTo(keyB);
-          });
-
-          for (final w in sortedWidgets) {
-            final key = (w['key'] ?? '').toString();
-            if (stepsByKey.containsKey(key)) {
-              st.addAll(stepsByKey[key]!);
-            }
+          final sorted = List<Map<String, dynamic>>.from(widgets)
+            ..sort((a, b) => (a['key'] ?? '')
+                .toString()
+                .compareTo((b['key'] ?? '').toString()));
+          for (final w in sorted) {
+            final k = (w['key'] ?? '').toString();
+            if (stepsByKey.containsKey(k)) st.addAll(stepsByKey[k]!);
           }
 
-          // Final action
           if (hasEndButton && endKey != null) {
-            st.add({
-              'tap': {'byKey': endKey}
-            });
+            st.add({'tap': {'byKey': endKey}});
             st.add({'pumpAndSettle': true});
           } else {
             st.add({'pump': true});
           }
 
-          // Valid-only cases: คาดหวัง success เสมอ
           final id = 'pairwise_valid_cases_${i + 1}';
           final asserts = <Map<String, dynamic>>[];
-          for (final successKey in expectedSuccessKeys) {
-            asserts.add({'byKey': successKey, 'exists': true});
+          for (final sk in expectedSuccessKeys) {
+            asserts.add({'byKey': sk, 'exists': true});
           }
-
-          // สร้าง combo map (String→String) สำหรับ description
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
-
           cases.add({
             'tc': id,
             'kind': 'success',
@@ -1776,6 +1356,11 @@ class TestDataGenerator {
           });
         }
       }
+
+      // ── Execute ───────────────────────────────────────────────────────────────
+      loadPictAnalysis();
+      await buildPairwiseCases();
+      buildPairwiseValidCases();
     } // End of hasPictModel block
 
     // ---------------------------------------------------------------------------
@@ -1783,87 +1368,19 @@ class TestDataGenerator {
     // ---------------------------------------------------------------------------
 
     // ---------------------------------------------------------------------------
-    // STEP 15: สร้าง Edge Cases - Empty All Fields Test
+    // STEP 15 & 15b: สร้าง Edge Cases
     // ---------------------------------------------------------------------------
 
-    // Test case: กดปุ่ม submit โดยไม่กรอกข้อมูลใดๆ
-    // คาดหวังว่าจะเห็น validation messages สำหรับทุก required fields
+    // ── Shared Helpers (closure over local variables) ──────────────────────────
 
-    // Map เก็บ validation messages และจำนวนครั้งที่คาดหวังจะเห็น
-    final expectedMsgsCount = <String, int>{};
-
-    /// Helper: ตรวจสอบว่า condition เป็นการ validate empty/null หรือไม่
-    bool _isEmptyCheckCondition(String condition) {
+    bool isEmptyCheckCondition(String condition) {
       final normalized = condition.toLowerCase().replaceAll(' ', '');
-      // Patterns ที่บ่งบอกว่าเป็น empty validation
       return normalized.contains('value==null') ||
           normalized.contains('value.isempty') ||
           normalized.contains('valuenull') ||
           normalized.contains('valueisempty');
     }
 
-    // วนลูปหา validation messages จากทุก widgets
-    for (final w in widgets) {
-      try {
-        final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
-
-        // -------------------------------------------------------------------------
-        // Method 1: ตรวจสอบ validatorRules (reliable กว่า - ใช้ condition logic)
-        // -------------------------------------------------------------------------
-        final rules =
-            (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
-        for (final rule in rules) {
-          if (rule is Map) {
-            final condition = rule['condition']?.toString() ?? '';
-            final msg = rule['message']?.toString() ?? '';
-
-            // วิเคราะห์ condition เพื่อดูว่าเป็น empty validation หรือไม่
-            if (msg.isNotEmpty && _isEmptyCheckCondition(condition)) {
-              // นับจำนวนครั้งที่คาดหวังจะเห็น message นี้
-              expectedMsgsCount[msg] = (expectedMsgsCount[msg] ?? 0) + 1;
-            }
-          }
-        }
-
-        // -------------------------------------------------------------------------
-        // Method 2: Fallback - ใช้ validatorMessages (สำหรับ TextFormField ที่ไม่มี explicit rules)
-        // -------------------------------------------------------------------------
-        if (rules.isEmpty) {
-          final v =
-              (meta['validatorMessages'] as List?)?.cast<dynamic>() ?? const [];
-          for (final m in v) {
-            final s = m?.toString() ?? '';
-            // Pattern matching สำหรับ empty field validation messages
-            // รองรับทั้งภาษาอังกฤษและภาษาไทย
-            if (s.isNotEmpty &&
-                (s.toLowerCase().contains('required') ||
-                    s.contains('กรุณา') || // Thai: "please"
-                    s.contains('โปรด') || // Thai: "please"
-                    s.contains('ต้อง') || // Thai: "must"
-                    s.toLowerCase().contains('please') ||
-                    s.toLowerCase().contains('cannot be empty') ||
-                    s.toLowerCase().contains('is required'))) {
-              expectedMsgsCount[s] = (expectedMsgsCount[s] ?? 0) + 1;
-              break; // เก็บแค่ message แรกของ field นี้
-            }
-          }
-        }
-      } catch (_) {
-        // ignore errors
-      }
-    }
-
-    // Fallback: ถ้าไม่พบ specific messages ให้ใช้ "Required" default
-    if (expectedMsgsCount.isEmpty && textKeys.isNotEmpty) {
-      for (final tfKey in textKeys) {
-        expectedMsgsCount['Required'] =
-            (expectedMsgsCount['Required'] ?? 0) + 1;
-      }
-    }
-
-    // -------------------------------------------------------------------------
-    // Helper: ตรวจสอบว่า datasets มี field ที่ต้องการหรือไม่
-    // -------------------------------------------------------------------------
     bool datasetsHasField(String fieldKey, String field) {
       final ds =
           (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
@@ -1874,9 +1391,6 @@ class TestDataGenerator {
       return first is Map && first.containsKey(field);
     }
 
-    // -------------------------------------------------------------------------
-    // Helper: หา key แรกของแต่ละ radio group (เพื่อ select default option)
-    // -------------------------------------------------------------------------
     List<String> boundaryFirstRadioKeys() {
       final result = <String>[];
       final seenSeqs = <int>{};
@@ -1892,12 +1406,6 @@ class TestDataGenerator {
       return result;
     }
 
-    // -------------------------------------------------------------------------
-    // Helper: สร้าง combo map สำหรับ non-text fields (ใช้ใน edge case description)
-    // Dropdown  → first display text (e.g. "Condo")
-    // Radio     → first option key of each group
-    // Required Checkbox → 'checked'
-    // -------------------------------------------------------------------------
     Map<String, String> buildNonTextDefaultCombo() {
       final combo = <String, String>{};
       for (final rk in boundaryFirstRadioKeys()) {
@@ -1917,75 +1425,14 @@ class TestDataGenerator {
       return combo;
     }
 
-    // สร้าง assertions สำหรับ empty fields test
-    // รวม 'count' เพื่อบอกว่าคาดหวังจะเห็น message นี้กี่ครั้ง
-    final emptyAsserts = [
-      for (final entry in expectedMsgsCount.entries)
-        {'text': entry.key, 'exists': true, 'count': entry.value}
-    ];
-
-    // สร้าง steps สำหรับ empty fields test
-    final emptySteps = <Map<String, dynamic>>[];
-    // กดปุ่ม end/submit เพื่อ trigger validation
-    if (endKey != null) {
-      emptySteps.add({
-        'tap': {'byKey': endKey}
-      });
-      emptySteps.add({'pumpAndSettle': true});
-    }
-
-    // เพิ่ม edge case ลง test cases
-    final emptyCombo = <String, String>{
-      ...buildNonTextDefaultCombo(),
-      for (final k in textKeys) k: 'empty',
-    };
-    cases.add({
-      'tc': 'edge_cases_empty_all_fields', // Test case ID
-      'kind': 'failed', // คาดหวังว่าจะ fail
-      'group': 'edge_cases', // Group name
-      'description':
-          _buildDescription(emptyCombo, 'failed', [], [], emptyAsserts),
-      'steps': emptySteps, // Steps (แค่กดปุ่ม submit)
-      'asserts': emptyAsserts, // คาดหวังเห็น validation messages
-    });
-
-    // ---------------------------------------------------------------------------
-    // STEP 15b: สร้าง Edge Cases - Boundary Value Tests (atMin / atMax)
-    // ---------------------------------------------------------------------------
-    //
-    // สร้าง test cases สำหรับค่าขอบ โดยใช้ atMin และ atMax จาก datasets
-    //   - edge_cases_boundary_at_max_length : กรอกทุก text field ด้วยค่า atMax
-    //                                         + non-text fields ด้วยค่า valid default
-    //   - edge_cases_boundary_at_min_length : กรอกทุก text field ด้วยค่า atMin
-    //                                         + non-text fields ด้วยค่า valid default
-    //
-    // ถ้า field ไม่มี atMax ใน datasets → ใช้ valid value แทน
-    // ถ้า field ไม่มี atMin ใน datasets → ใช้ "" (empty) แทน
-    //
-    // Non-text widgets (Radio, Dropdown, required Checkbox) ถูกกรอกด้วยค่า valid
-    // เพื่อให้ boundary test โฟกัสเฉพาะ text field boundaries
-
-    // -------------------------------------------------------------------------
-    // Helper: สร้าง stepsByKey สำหรับ non-text widgets (valid default values)
-    //
-    // Radio    → tap radio option แรกของแต่ละ group
-    // Dropdown → tap dropdown + select option แรก
-    // Required Checkbox → tap เพื่อ check
-    // -------------------------------------------------------------------------
     Map<String, List<Map<String, dynamic>>> buildNonTextDefaultSteps() {
       final stepsByKey = <String, List<Map<String, dynamic>>>{};
-
-      // Radio: เลือก option แรกของแต่ละ group
       for (final rk in boundaryFirstRadioKeys()) {
         stepsByKey[rk] = [
-          {
-            'tap': {'byKey': rk}
-          },
+          {'tap': {'byKey': rk}},
           {'pump': true},
         ];
       }
-
-      // Dropdown: เลือก option แรกของแต่ละ dropdown
       for (int i = 0; i < dropdownKeys.length; i++) {
         final dk = dropdownKeys[i];
         final mapping = i < dropdownValueToTextMaps.length
@@ -1994,33 +1441,22 @@ class TestDataGenerator {
         final firstText = mapping.values.isNotEmpty ? mapping.values.first : '';
         if (firstText.isNotEmpty) {
           stepsByKey[dk] = [
-            {
-              'tap': {'byKey': dk}
-            },
+            {'tap': {'byKey': dk}},
             {'pumpAndSettle': true},
             {'scrollAndTapText': firstText},
             {'pumpAndSettle': true},
           ];
         }
       }
-
-      // Required Checkbox: tap เพื่อ check (ไม่รวม optional checkboxes)
       for (final ck in requiredCheckboxValidation.keys) {
         stepsByKey[ck] = [
-          {
-            'tap': {'byKey': ck}
-          },
+          {'tap': {'byKey': ck}},
           {'pump': true},
         ];
       }
-
       return stepsByKey;
     }
 
-    // -------------------------------------------------------------------------
-    // Helper: เรียง steps ตาม widget order ใน manifest
-    // ใช้ sortedWidgets (เรียงตาม key alphabetically) เหมือน pairwise cases
-    // -------------------------------------------------------------------------
     List<Map<String, dynamic>> buildOrderedSteps(
         Map<String, List<Map<String, dynamic>>> stepsByKey) {
       final sortedWidgets = List<Map<String, dynamic>>.from(widgets)
@@ -2034,51 +1470,102 @@ class TestDataGenerator {
       return steps;
     }
 
-    // =========================================================================
-    // edge_cases_boundary_at_max_length
-    // =========================================================================
-    // Text fields : กรอกด้วย atMax (ค่าที่ maxLength)
-    // Non-text   : กรอกด้วย valid default เพื่อให้ form submit ได้
-    // Expected   : success
+    // ── STEP 15: Empty All Fields ──────────────────────────────────────────────
 
-    final hasAnyAtMax = textKeys.any((k) => datasetsHasField(k, 'atMax'));
+    Map<String, dynamic> buildEdgeCaseEmptyFields() {
+      final expectedMsgsCount = <String, int>{};
+      for (final w in widgets) {
+        try {
+          final meta =
+              (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+          final rules =
+              (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+          for (final rule in rules) {
+            if (rule is Map) {
+              final condition = rule['condition']?.toString() ?? '';
+              final msg = rule['message']?.toString() ?? '';
+              if (msg.isNotEmpty && isEmptyCheckCondition(condition)) {
+                expectedMsgsCount[msg] = (expectedMsgsCount[msg] ?? 0) + 1;
+              }
+            }
+          }
+          if (rules.isEmpty) {
+            final v = (meta['validatorMessages'] as List?)?.cast<dynamic>() ??
+                const [];
+            for (final m in v) {
+              final s = m?.toString() ?? '';
+              if (s.isNotEmpty &&
+                  (s.toLowerCase().contains('required') ||
+                      s.contains('กรุณา') ||
+                      s.contains('โปรด') ||
+                      s.contains('ต้อง') ||
+                      s.toLowerCase().contains('please') ||
+                      s.toLowerCase().contains('cannot be empty') ||
+                      s.toLowerCase().contains('is required'))) {
+                expectedMsgsCount[s] = (expectedMsgsCount[s] ?? 0) + 1;
+                break;
+              }
+            }
+          }
+        } catch (_) {}
+      }
+      if (expectedMsgsCount.isEmpty && textKeys.isNotEmpty) {
+        for (final _ in textKeys) {
+          expectedMsgsCount['Required'] =
+              (expectedMsgsCount['Required'] ?? 0) + 1;
+        }
+      }
+      final emptyAsserts = [
+        for (final entry in expectedMsgsCount.entries)
+          {'text': entry.key, 'exists': true, 'count': entry.value}
+      ];
+      final emptySteps = <Map<String, dynamic>>[];
+      if (endKey != null) {
+        emptySteps.add({'tap': {'byKey': endKey}});
+        emptySteps.add({'pumpAndSettle': true});
+      }
+      final emptyCombo = <String, String>{
+        ...buildNonTextDefaultCombo(),
+        for (final k in textKeys) k: 'empty',
+      };
+      return {
+        'tc': 'edge_cases_empty_all_fields',
+        'kind': 'failed',
+        'group': 'edge_cases',
+        'description':
+            _buildDescription(emptyCombo, 'failed', [], [], emptyAsserts),
+        'steps': emptySteps,
+        'asserts': emptyAsserts,
+      };
+    }
 
-    if (hasAnyAtMax && endKey != null) {
+    // ── STEP 15b: Boundary at Max Length ───────────────────────────────────────
+
+    Map<String, dynamic>? buildEdgeCaseBoundaryAtMax() {
+      final hasAnyAtMax = textKeys.any((k) => datasetsHasField(k, 'atMax'));
+      if (!hasAnyAtMax || endKey == null) return null;
+
       final maxStepsByKey = buildNonTextDefaultSteps();
-
-      // เพิ่ม text field steps ด้วย atMax
       for (final key in textKeys) {
         final dsField = datasetsHasField(key, 'atMax') ? 'atMax' : 'valid';
         final hasDs = datasetsHasField(key, dsField);
         final enterStep = hasDs
-            ? {
-                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}
-              }
-            : {
-                'enterText': {'byKey': key, 'text': 'Test'}
-              };
-        maxStepsByKey[key] = [
-          enterStep,
-          {'pump': true}
-        ];
+            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].$dsField'}}
+            : {'enterText': {'byKey': key, 'text': 'Test'}};
+        maxStepsByKey[key] = [enterStep, {'pump': true}];
       }
-
       final maxSteps = buildOrderedSteps(maxStepsByKey)
-        ..add({
-          'tap': {'byKey': endKey}
-        })
+        ..add({'tap': {'byKey': endKey}})
         ..add({'pumpAndSettle': true});
-
       final maxAsserts = <Map<String, dynamic>>[
         for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
       ];
-
       final maxCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
         for (final k in textKeys)
           k: datasetsHasField(k, 'atMax') ? 'atMax' : 'valid',
       };
-      cases.add({
+      return {
         'tc': 'edge_cases_boundary_at_max_length',
         'kind': 'success',
         'group': 'edge_cases',
@@ -2086,54 +1573,33 @@ class TestDataGenerator {
             _buildDescription(maxCombo, 'success', [], [], maxAsserts),
         'steps': maxSteps,
         'asserts': maxAsserts,
-      });
+      };
     }
 
-    // =========================================================================
-    // edge_cases_boundary_at_min_length
-    // =========================================================================
-    // Text fields : กรอกด้วย atMin (ค่าที่ขอบต่ำสุด)
-    // Non-text   : กรอกด้วย valid default (โฟกัสเฉพาะ text field boundaries)
-    // Expected   : success (atMin คือค่าต่ำสุดที่ valid)
+    // ── STEP 15b: Boundary at Min Length ───────────────────────────────────────
 
-    if (textKeys.isNotEmpty && endKey != null) {
+    Map<String, dynamic>? buildEdgeCaseBoundaryAtMin() {
+      if (textKeys.isEmpty || endKey == null) return null;
+
       final minStepsByKey = buildNonTextDefaultSteps();
-
-      // เพิ่ม text field steps ด้วย atMin
       for (final key in textKeys) {
         final enterStep = datasetsHasField(key, 'atMin')
-            ? {
-                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}
-              }
-            : {
-                'enterText': {'byKey': key, 'text': ''}
-              };
-        minStepsByKey[key] = [
-          enterStep,
-          {'pump': true}
-        ];
+            ? {'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].atMin'}}
+            : {'enterText': {'byKey': key, 'text': ''}};
+        minStepsByKey[key] = [enterStep, {'pump': true}];
       }
-
       final minSteps = buildOrderedSteps(minStepsByKey)
-        ..add({
-          'tap': {'byKey': endKey}
-        })
+        ..add({'tap': {'byKey': endKey}})
         ..add({'pumpAndSettle': true});
-
-      // -----------------------------------------------------------------------
-      // สร้าง asserts สำหรับ atMin case
-      // atMin คือค่าต่ำสุดที่ valid → expect success
-      // -----------------------------------------------------------------------
       final minAsserts = <Map<String, dynamic>>[
         for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
       ];
-
       final minCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
         for (final k in textKeys)
           k: datasetsHasField(k, 'atMin') ? 'atMin' : 'empty',
       };
-      cases.add({
+      return {
         'tc': 'edge_cases_boundary_at_min_length',
         'kind': 'success',
         'group': 'edge_cases',
@@ -2141,8 +1607,18 @@ class TestDataGenerator {
             _buildDescription(minCombo, 'success', [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
-      });
+      };
     }
+
+    // ── Call edge case builders ─────────────────────────────────────────────────
+
+    cases.add(buildEdgeCaseEmptyFields());
+
+    final maxCase = buildEdgeCaseBoundaryAtMax();
+    if (maxCase != null) cases.add(maxCase);
+
+    final minCase = buildEdgeCaseBoundaryAtMin();
+    if (minCase != null) cases.add(minCase);
 
     // ---------------------------------------------------------------------------
     // STEP 16: เขียน Output File
