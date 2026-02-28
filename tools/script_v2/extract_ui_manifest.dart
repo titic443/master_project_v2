@@ -261,6 +261,10 @@ class UiManifestExtractor {
 
     final outPath =
         '${outDir.path}/${utils.basenameWithoutExtension(path)}.manifest.json';
+    _writeManifestFile(outPath, ir);
+  }
+
+  void _writeManifestFile(String outPath, Map<String, dynamic> ir) {
     File(outPath).writeAsStringSync(
         const JsonEncoder.withIndent('  ').convert(ir) + '\n');
     stdout.writeln('✓ Manifest written: $outPath');

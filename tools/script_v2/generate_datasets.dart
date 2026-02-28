@@ -443,23 +443,18 @@ class DatasetGenerator {
     // STEP 12: เขียน output file
     // ---------------------------------------------------------------------------
 
-    // คำนวณ output path
-    // ใช้ utility function เพื่อดึงชื่อไฟล์โดยไม่มี extension
     final outPath =
         'output/test_data/${utils.basenameWithoutExtension(uiFile)}.datasets.json';
-
-    // สร้าง folder ถ้ายังไม่มี (recursive: true)
-    File(outPath).createSync(recursive: true);
-
-    // เขียน JSON ลงไฟล์
-    // JsonEncoder.withIndent('  ') ทำให้ output อ่านง่าย (pretty print)
-    File(outPath).writeAsStringSync(
-        '${const JsonEncoder.withIndent('  ').convert(result)}\n');
-
-    // แสดง success message
-    stdout.writeln('  ✓ Generated: $outPath');
+    _writeFileDataset(outPath, result);
 
     return true; // สำเร็จ
+  }
+
+  void _writeFileDataset(String outPath, Map<String, dynamic> result) {
+    File(outPath).createSync(recursive: true);
+    File(outPath).writeAsStringSync(
+        '${const JsonEncoder.withIndent('  ').convert(result)}\n');
+    stdout.writeln('  ✓ Generated: $outPath');
   }
 
   // =========================================================================
