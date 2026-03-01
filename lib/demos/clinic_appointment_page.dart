@@ -80,6 +80,11 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
       context: context,
       initialTime: const TimeOfDay(hour: 9, minute: 0),
       initialEntryMode: TimePickerEntryMode.input,
+      // Force 24-hour format so hours 13-23 are valid in input mode
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+        child: child!,
+      ),
     );
     if (picked != null && context.mounted) {
       context.read<ClinicAppointmentCubit>().onTimeChanged(picked);
