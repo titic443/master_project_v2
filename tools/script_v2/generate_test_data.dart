@@ -520,6 +520,22 @@ class TestDataGenerator {
     //   ดังนั้นจึง override ด้วยค่าที่ derive จาก _generateDateValues()
     // ---------------------------------------------------------------------------
 
+    // Helper: parse DateTime from pickerMeta string (reused for atMin/atMax)
+    String formatDate(DateTime d) =>
+        '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
+
+    DateTime parseDateStr(String s, DateTime fallback) {
+      final now = DateTime.now();
+      if (s.contains('DateTime.now()')) {
+        if (s.contains('add') && s.contains('365'))
+          return now.add(const Duration(days: 365));
+        return now;
+      }
+      final m = RegExp(r'DateTime\((\d{4})\)').firstMatch(s);
+      if (m != null) return DateTime(int.parse(m.group(1)!));
+      return fallback;
+    }
+
     for (final key in datePickerKeys) {
       final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
           orElse: () => <String, dynamic>{});
@@ -535,9 +551,14 @@ class TestDataGenerator {
         (v) => v.contains(currentYear),
         orElse: () => nonNullDates[nonNullDates.length ~/ 2],
       );
-      // atMin: วันแรก (ใกล้ firstDate), atMax: วันสุดท้าย (ใกล้ lastDate)
-      final atMinDate = nonNullDates.first;
-      final atMaxDate = nonNullDates.last;
+
+      // atMin/atMax: ใช้ exact firstDate/lastDate จาก pickerMetadata
+      final firstDate = parseDateStr(
+          (pickerMeta['firstDate'] ?? '').toString(), DateTime(2000));
+      final lastDate = parseDateStr(
+          (pickerMeta['lastDate'] ?? '').toString(), DateTime(2030));
+      final atMinDate = formatDate(firstDate);
+      final atMaxDate = formatDate(lastDate);
 
       // หา required validator message จาก widget meta
       final meta =
