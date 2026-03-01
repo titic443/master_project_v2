@@ -394,6 +394,241 @@ class TestDataGenerator {
       if (isOption && !radioKeys.contains(k)) radioKeys.add(k);
     }
 
+    // ── Helpers used by STEP 6b and later stages ──────────────────────────────
+
+    bool isEmptyCheckCondition(String condition) {
+      final normalized = condition.toLowerCase().replaceAll(' ', '');
+      return normalized.contains('value==null') ||
+          normalized.contains('value.isempty') ||
+          normalized.contains('valuenull') ||
+          normalized.contains('valueisempty');
+    }
+
+    /// สร้าง date values สำหรับ DatePicker ตาม firstDate/lastDate constraints
+    ///
+    /// Parameter:
+    ///   [pickerMeta] - metadata ของ DatePicker widget
+    ///
+    /// Returns:
+    ///   List<String> - list ของ date values ในรูปแบบ DD/MM/YYYY
+    ///                  รวม 'null' สำหรับ cancel case
+    ///
+    /// Example output: ['null', '15/01/2001', '29/01/2026', '15/12/2029']
+    List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
+      final values = <String>[];
+
+      // -------------------------------------------------------------------------
+      // Parse firstDate และ lastDate จาก metadata
+      // -------------------------------------------------------------------------
+      final firstDateStr = (pickerMeta['firstDate'] ?? '').toString();
+      final lastDateStr = (pickerMeta['lastDate'] ?? '').toString();
+
+      DateTime? firstDate;
+      DateTime? lastDate;
+      final now = DateTime.now();
+
+      // Parse firstDate
+      if (firstDateStr.contains('DateTime(1900)')) {
+        firstDate = DateTime(1900);
+      } else if (firstDateStr.contains('DateTime.now()')) {
+        firstDate = now;
+      } else {
+        final yearMatch =
+            RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
+        if (yearMatch != null) {
+          firstDate = DateTime(int.parse(yearMatch.group(1)!));
+        }
+      }
+
+      // Parse lastDate
+      if (lastDateStr.contains('DateTime.now()')) {
+        if (lastDateStr.contains('add') && lastDateStr.contains('365')) {
+          lastDate = now.add(const Duration(days: 365));
+        } else {
+          lastDate = now;
+        }
+      } else {
+        final yearMatch =
+            RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
+        if (yearMatch != null) {
+          lastDate = DateTime(int.parse(yearMatch.group(1)!));
+        }
+      }
+
+      // -------------------------------------------------------------------------
+      // Default values ถ้า parse ไม่ได้
+      // -------------------------------------------------------------------------
+      firstDate ??= DateTime(2000);
+      lastDate ??= DateTime(2030);
+
+      // -------------------------------------------------------------------------
+      // สร้าง test dates ภายใน constraints
+      // -------------------------------------------------------------------------
+
+      // 1. null (cancel) - เสมอ include เพื่อ test cancel behavior
+      values.add('null');
+
+      // 2. past_date - วันที่ใกล้ firstDate
+      final pastDate = DateTime(
+        firstDate.year + 1,
+        firstDate.month,
+        15.clamp(1, 28),
+      );
+      if (pastDate.isAfter(firstDate) && pastDate.isBefore(lastDate)) {
+        values.add(
+            '${pastDate.day.toString().padLeft(2, '0')}/${pastDate.month.toString().padLeft(2, '0')}/${pastDate.year}');
+      }
+
+      // 3. today - วันนี้ (ถ้าอยู่ใน range)
+      if (now.isAfter(firstDate) && now.isBefore(lastDate)) {
+        values.add(
+            '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}');
+      }
+
+      // 4. future_date - วันที่ใกล้ lastDate
+      final futureDate = DateTime(
+        lastDate.year - 1,
+        lastDate.month,
+        15.clamp(1, 28),
+      );
+      if (futureDate.isAfter(firstDate) &&
+          futureDate.isBefore(lastDate) &&
+          futureDate.isAfter(now)) {
+        values.add(
+            '${futureDate.day.toString().padLeft(2, '0')}/${futureDate.month.toString().padLeft(2, '0')}/${futureDate.year}');
+      }
+
+      // -------------------------------------------------------------------------
+      // Fallback: ถ้ามีน้อยกว่า 3 values ให้เพิ่ม middle date
+      // -------------------------------------------------------------------------
+      if (values.length < 3) {
+        final middleDate = DateTime(
+          (firstDate.year + lastDate.year) ~/ 2,
+          6,
+          15,
+        );
+        values.add(
+            '${middleDate.day.toString().padLeft(2, '0')}/${middleDate.month.toString().padLeft(2, '0')}/${middleDate.year}');
+      }
+
+      return values;
+    }
+
+    // ---------------------------------------------------------------------------
+    // STEP 6b: Auto-populate datasets for DatePicker / TimePicker keys
+    //   ค่าจาก external datasets.json อาจไม่สะท้อน firstDate/lastDate
+    //   ดังนั้นจึง override ด้วยค่าที่ derive จาก _generateDateValues()
+    // ---------------------------------------------------------------------------
+
+    for (final key in datePickerKeys) {
+      final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
+          orElse: () => <String, dynamic>{});
+      final pickerMeta =
+          (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ?? {};
+      final dateValues = _generateDateValues(pickerMeta);
+      final nonNullDates = dateValues.where((v) => v != 'null').toList();
+      if (nonNullDates.isEmpty) continue;
+
+      // valid: วันที่ปีปัจจุบัน (navigate น้อยที่สุดในปฏิทิน)
+      final currentYear = DateTime.now().year.toString();
+      final validDate = nonNullDates.firstWhere(
+        (v) => v.contains(currentYear),
+        orElse: () => nonNullDates[nonNullDates.length ~/ 2],
+      );
+      // atMin: วันแรก (ใกล้ firstDate), atMax: วันสุดท้าย (ใกล้ lastDate)
+      final atMinDate = nonNullDates.first;
+      final atMaxDate = nonNullDates.last;
+
+      // หา required validator message จาก widget meta
+      final meta =
+          (widget['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules =
+          (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+      String requiredMsg = '';
+      for (final rule in rules) {
+        if (rule is Map) {
+          final condition = rule['condition']?.toString() ?? '';
+          if (isEmptyCheckCondition(condition)) {
+            requiredMsg = rule['message']?.toString() ?? '';
+            break;
+          }
+        }
+      }
+
+      (datasets['byKey'] as Map<String, dynamic>)[key] = [
+        {
+          'valid': validDate,
+          'invalid': '',
+          'invalidRuleMessages': requiredMsg,
+          'atMin': atMinDate,
+          'atMax': atMaxDate,
+        }
+      ];
+    }
+
+    for (final key in timePickerKeys) {
+      final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
+          orElse: () => <String, dynamic>{});
+      final meta =
+          (widget['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules =
+          (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+      String requiredMsg = '';
+      for (final rule in rules) {
+        if (rule is Map) {
+          final condition = rule['condition']?.toString() ?? '';
+          if (isEmptyCheckCondition(condition)) {
+            requiredMsg = rule['message']?.toString() ?? '';
+            break;
+          }
+        }
+      }
+
+      (datasets['byKey'] as Map<String, dynamic>)[key] = [
+        {
+          'valid': '09:00',
+          'invalid': '',
+          'invalidRuleMessages': requiredMsg,
+          'atMin': '00:00',
+          'atMax': '23:59',
+        }
+      ];
+    }
+
+    // Write back corrected picker datasets to datasets.json so the file stays
+    // in sync with what generate_test_data.dart actually uses.
+    if (datePickerKeys.isNotEmpty || timePickerKeys.isNotEmpty) {
+      try {
+        final extPath =
+            'output/test_data/${utils.basenameWithoutExtension(uiFile)}.datasets.json';
+        final f = File(extPath);
+        if (f.existsSync()) {
+          final existing =
+              jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+          final extDatasets =
+              (existing['datasets'] as Map?)?.cast<String, dynamic>() ?? {};
+          final extByKey =
+              (extDatasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+
+          // Override picker keys with corrected values from in-memory datasets
+          final inMemByKey =
+              (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+          for (final key in [...datePickerKeys, ...timePickerKeys]) {
+            if (inMemByKey.containsKey(key)) {
+              extByKey[key] = inMemByKey[key];
+            }
+          }
+
+          extDatasets['byKey'] = extByKey;
+          existing['datasets'] = extDatasets;
+          f.writeAsStringSync(
+              const JsonEncoder.withIndent('  ').convert(existing));
+        }
+      } catch (_) {
+        // ignore write errors
+      }
+    }
+
     // ---------------------------------------------------------------------------
     // STEP 7: ตรวจจับ Required Checkboxes
     // ---------------------------------------------------------------------------
@@ -600,123 +835,6 @@ class TestDataGenerator {
         }
       }
       return const {}; // return empty map ถ้าไม่พบ
-    }
-
-    /// สร้าง date values สำหรับ DatePicker ตาม firstDate/lastDate constraints
-    ///
-    /// Parameter:
-    ///   [pickerMeta] - metadata ของ DatePicker widget
-    ///
-    /// Returns:
-    ///   List<String> - list ของ date values ในรูปแบบ DD/MM/YYYY
-    ///                  รวม 'null' สำหรับ cancel case
-    ///
-    /// Example output: ['null', '15/01/2001', '29/01/2026', '15/12/2029']
-    List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
-      final values = <String>[];
-
-      // -------------------------------------------------------------------------
-      // Parse firstDate และ lastDate จาก metadata
-      // -------------------------------------------------------------------------
-      final firstDateStr = (pickerMeta['firstDate'] ?? '').toString();
-      final lastDateStr = (pickerMeta['lastDate'] ?? '').toString();
-
-      DateTime? firstDate;
-      DateTime? lastDate;
-      final now = DateTime.now();
-
-      // Parse firstDate
-      if (firstDateStr.contains('DateTime(1900)')) {
-        // firstDate: DateTime(1900) - วันที่เก่าที่สุด
-        firstDate = DateTime(1900);
-      } else if (firstDateStr.contains('DateTime.now()')) {
-        // firstDate: DateTime.now() - วันนี้
-        firstDate = now;
-      } else {
-        // ลอง extract year จาก pattern DateTime(year)
-        final yearMatch =
-            RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
-        if (yearMatch != null) {
-          firstDate = DateTime(int.parse(yearMatch.group(1)!));
-        }
-      }
-
-      // Parse lastDate
-      if (lastDateStr.contains('DateTime.now()')) {
-        if (lastDateStr.contains('add') && lastDateStr.contains('365')) {
-          // lastDate: DateTime.now().add(Duration(days: 365)) - 1 ปีข้างหน้า
-          lastDate = now.add(const Duration(days: 365));
-        } else {
-          // lastDate: DateTime.now() - วันนี้
-          lastDate = now;
-        }
-      } else {
-        // ลอง extract year จาก pattern DateTime(year)
-        final yearMatch =
-            RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
-        if (yearMatch != null) {
-          lastDate = DateTime(int.parse(yearMatch.group(1)!));
-        }
-      }
-
-      // -------------------------------------------------------------------------
-      // Default values ถ้า parse ไม่ได้
-      // -------------------------------------------------------------------------
-      firstDate ??= DateTime(2000);
-      lastDate ??= DateTime(2030);
-
-      // -------------------------------------------------------------------------
-      // สร้าง test dates ภายใน constraints
-      // -------------------------------------------------------------------------
-
-      // 1. null (cancel) - เสมอ include เพื่อ test cancel behavior
-      values.add('null');
-
-      // 2. past_date - วันที่ใกล้ firstDate
-      final pastDate = DateTime(
-        firstDate.year + 1, // ปีถัดจาก firstDate
-        firstDate.month,
-        15.clamp(1, 28), // วันที่ 15 (กลางเดือน, ปลอดภัยสำหรับทุกเดือน)
-      );
-      if (pastDate.isAfter(firstDate) && pastDate.isBefore(lastDate)) {
-        // Format: DD/MM/YYYY
-        values.add(
-            '${pastDate.day.toString().padLeft(2, '0')}/${pastDate.month.toString().padLeft(2, '0')}/${pastDate.year}');
-      }
-
-      // 3. today - วันนี้ (ถ้าอยู่ใน range)
-      if (now.isAfter(firstDate) && now.isBefore(lastDate)) {
-        values.add(
-            '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}');
-      }
-
-      // 4. future_date - วันที่ใกล้ lastDate
-      final futureDate = DateTime(
-        lastDate.year - 1, // ปีก่อน lastDate
-        lastDate.month,
-        15.clamp(1, 28), // วันที่ 15
-      );
-      if (futureDate.isAfter(firstDate) &&
-          futureDate.isBefore(lastDate) &&
-          futureDate.isAfter(now)) {
-        values.add(
-            '${futureDate.day.toString().padLeft(2, '0')}/${futureDate.month.toString().padLeft(2, '0')}/${futureDate.year}');
-      }
-
-      // -------------------------------------------------------------------------
-      // Fallback: ถ้ามีน้อยกว่า 3 values ให้เพิ่ม middle date
-      // -------------------------------------------------------------------------
-      if (values.length < 3) {
-        final middleDate = DateTime(
-          (firstDate.year + lastDate.year) ~/ 2, // ปีกลางระหว่าง first และ last
-          6, // เดือน June
-          15, // วันที่ 15
-        );
-        values.add(
-            '${middleDate.day.toString().padLeft(2, '0')}/${middleDate.month.toString().padLeft(2, '0')}/${middleDate.year}');
-      }
-
-      return values;
     }
 
     /// ดึง maxLength จาก widget metadata
@@ -1412,16 +1530,6 @@ class TestDataGenerator {
     // ---------------------------------------------------------------------------
     // STEP 15 & 15b: สร้าง Edge Cases
     // ---------------------------------------------------------------------------
-
-    // ── Shared Helpers (closure over local variables) ──────────────────────────
-
-    bool isEmptyCheckCondition(String condition) {
-      final normalized = condition.toLowerCase().replaceAll(' ', '');
-      return normalized.contains('value==null') ||
-          normalized.contains('value.isempty') ||
-          normalized.contains('valuenull') ||
-          normalized.contains('valueisempty');
-    }
 
     bool datasetsHasField(String fieldKey, String field) {
       final ds =
