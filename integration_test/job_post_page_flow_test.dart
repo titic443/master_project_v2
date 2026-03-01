@@ -17,13 +17,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -53,16 +53,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -82,10 +82,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -115,22 +115,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -150,10 +150,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -186,16 +186,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -215,13 +215,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -248,22 +248,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -283,10 +283,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -316,19 +316,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -350,13 +350,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -386,19 +386,19 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -416,10 +416,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -449,22 +449,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -484,13 +484,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -520,16 +520,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -548,10 +548,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -584,16 +584,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -614,13 +614,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -647,22 +647,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -681,10 +681,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -714,19 +714,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -747,13 +747,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -780,22 +780,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -815,13 +815,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -851,16 +851,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -880,10 +880,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -913,22 +913,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -949,10 +949,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -982,22 +982,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1017,10 +1017,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -1050,22 +1050,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1086,13 +1086,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1119,22 +1119,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1154,13 +1154,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1190,19 +1190,19 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1221,13 +1221,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1257,16 +1257,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1284,13 +1284,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1320,16 +1320,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1349,13 +1349,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1385,16 +1385,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1413,13 +1413,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1446,19 +1446,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1480,13 +1480,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1513,22 +1513,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1546,13 +1546,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1579,19 +1579,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1612,10 +1612,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -1648,16 +1648,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1678,13 +1678,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'A');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -1711,19 +1711,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1741,10 +1741,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -1774,19 +1774,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1806,10 +1806,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -1842,19 +1842,19 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1875,10 +1875,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -1911,16 +1911,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -1940,10 +1940,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jr');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -1976,16 +1976,16 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '1');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '99999');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job descriptio.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2009,13 +2009,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2042,22 +2042,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2075,13 +2075,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2108,19 +2108,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2138,13 +2138,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2171,19 +2171,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2201,13 +2201,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2234,22 +2234,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2267,13 +2267,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2300,19 +2300,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2330,13 +2330,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2363,22 +2363,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2396,13 +2396,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2429,19 +2429,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2459,13 +2459,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2492,22 +2492,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2525,13 +2525,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2558,22 +2558,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2591,13 +2591,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2624,19 +2624,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2654,13 +2654,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2687,19 +2687,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2717,13 +2717,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2750,19 +2750,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2780,13 +2780,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2813,22 +2813,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2846,13 +2846,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2879,19 +2879,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2909,13 +2909,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -2942,22 +2942,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -2975,13 +2975,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3008,22 +3008,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3041,13 +3041,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3074,22 +3074,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3107,13 +3107,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3140,19 +3140,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3170,13 +3170,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3203,19 +3203,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3233,13 +3233,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3266,19 +3266,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3296,13 +3296,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3329,22 +3329,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3362,13 +3362,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3395,22 +3395,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3428,13 +3428,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3461,19 +3461,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3491,13 +3491,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3524,22 +3524,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3557,13 +3557,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3590,19 +3590,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3620,13 +3620,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3653,19 +3653,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3683,13 +3683,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3716,19 +3716,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3746,13 +3746,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3779,19 +3779,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3809,13 +3809,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3842,19 +3842,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3872,13 +3872,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3905,22 +3905,22 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_11_remote_switch')));
         await tester.tap(find.byKey(const Key('job_11_remote_switch')));
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3939,8 +3939,8 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -3958,13 +3958,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Software Engineer');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Senior Software Engineer');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Google');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'Tech Innovations Inc.');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok');
+        await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'Bangkok, Thailand');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('job_04_category_dropdown')));
         await tester.tap(find.byKey(const Key('job_04_category_dropdown')));
@@ -3991,19 +3991,19 @@ void main() {
         await tester.pumpAndSettle();
         await tester.pumpAndSettle();
         // dataset: byKey.job_07_salary_min_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '100000');
+        await tester.enterText(find.byKey(const Key('job_07_salary_min_textfield')), '40000');
         await tester.pump();
         // dataset: byKey.job_08_salary_max_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '150000');
+        await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '60000');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated and experien');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'We are looking for a highly motivated individual t');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Dart, Flutter, Firebase');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'Flutter, Dart, Firebase, AWS');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
@@ -4021,10 +4021,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: JobPostPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.job_01_title_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Jo');
+        await tester.enterText(find.byKey(const Key('job_01_title_textfield')), 'Ab');
         await tester.pump();
         // dataset: byKey.job_02_company_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'C');
+        await tester.enterText(find.byKey(const Key('job_02_company_textfield')), 'T');
         await tester.pump();
         // dataset: byKey.job_03_location_textfield[0].atMin
         await tester.enterText(find.byKey(const Key('job_03_location_textfield')), 'B');
@@ -4060,13 +4060,13 @@ void main() {
         await tester.enterText(find.byKey(const Key('job_08_salary_max_textfield')), '');
         await tester.pump();
         // dataset: byKey.job_09_desc_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This is a short des.');
+        await tester.enterText(find.byKey(const Key('job_09_desc_textfield')), 'This job description.');
         await tester.pump();
         // dataset: byKey.job_10_skills_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'S');
+        await tester.enterText(find.byKey(const Key('job_10_skills_textfield')), 'F');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('job_12_end_button')));
-        await tester.tap(find.byKey(const Key('job_12_end_button')));
+        await tester.ensureVisible(find.byKey(const Key('job_12_xxx_button')));
+        await tester.tap(find.byKey(const Key('job_12_xxx_button')));
         await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)

@@ -12,56 +12,56 @@
     "byKey": {
       "linkedin_02_fullname_textfield": [
         {
-          "valid": "Supaporn Srisomboon",
-          "invalid": "S",
+          "valid": "Alice Smith",
+          "invalid": "A",
           "invalidRuleMessages": "Full name must be at least 2 characters",
           "atMin": "A",
-          "atMax": "Alice Johnson Wongsuwan Charoenpong Panyanart Srisomboon Boonmee Suk Phadungkiart Sakulchai Thongkha"
+          "atMax": "Somchai Charoenwattana Srisombat Panyawong Boonmee Suksa Anantachai Wiwatthanapornkul Siriporn Thong"
         }
       ],
       "linkedin_03_email_textfield": [
         {
-          "valid": "narong.s@example.com",
-          "invalid": "narong.s@invalid",
+          "valid": "john.doe@example.com",
+          "invalid": "invalid@email",
           "invalidRuleMessages": "Please enter a valid email address",
           "atMin": "",
-          "atMax": "a.very.long.email.address.that.is.padded.to.max@ex"
+          "atMax": "long.email.username.abcdefghijklmno@example.com"
         }
       ],
       "linkedin_04_position_textfield": [
         {
-          "valid": "Senior Software Engineer",
+          "valid": "Software Engineer",
           "invalid": "S",
           "invalidRuleMessages": "Position must be at least 2 characters",
-          "atMin": "A",
-          "atMax": "Principal Staff Distinguished Chief Technologist Architect Manager Director Vice President of Engine"
+          "atMin": "S",
+          "atMax": "Senior Lead Full Stack Cloud Architect and DevOps Specialist with Extensive Experience in AI and Mac"
         }
       ],
       "linkedin_05_company_textfield": [
         {
-          "valid": "Innovative Tech Solutions Ltd.",
-          "invalid": "I",
+          "valid": "Acme Corporation",
+          "invalid": "C",
           "invalidRuleMessages": "Company must be at least 2 characters",
-          "atMin": "A",
-          "atMax": "Global Digital Solutions & Innovations Enterprise Technologies Group Holdings International Limited "
+          "atMin": "C",
+          "atMax": "International Global Tech Solutions and Innovations Group PLC - A Subsidiary of Worldwide Holdings I"
         }
       ],
       "linkedin_06_experience_textfield": [
         {
-          "valid": "15",
+          "valid": "25",
           "invalid": "51",
           "invalidRuleMessages": "Years cannot exceed 50",
-          "atMin": "",
+          "atMin": "0",
           "atMax": "50"
         }
       ],
       "linkedin_09_university_textfield": [
         {
           "valid": "Chulalongkorn University",
-          "invalid": "C",
+          "invalid": "U",
           "invalidRuleMessages": "University must be at least 2 characters",
-          "atMin": "A",
-          "atMax": "Thammasat University Mahidol University Kasetsart University King Mongkut's Institute of Technology "
+          "atMin": "U",
+          "atMax": "King Mongkut's Institute of Technology Ladkrabang and Thammasat University Interdisciplinary Program"
         }
       ]
     }
@@ -71,7 +71,7 @@
       "tc": "pairwise_valid_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: master, fullname: invalid§S, email: invalid§narong.s@invalid, position: invalid§S, company: invalid§I, experience: valid§15, employment: Freelance, university: invalid§C, open_to_work: checked",
+      "description": "agree_terms: unchecked, educationLevel: bachelor, fullname: invalid§A, email: invalid§invalid@email, position: valid§Software Engineer, company: invalid§C, experience: valid§25, employment: Freelance, university: invalid§U, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -94,7 +94,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
           }
         },
         {
@@ -134,7 +134,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_master_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -144,14 +144,6 @@
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
             "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
         {
@@ -176,10 +168,6 @@
           "exists": true
         },
         {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
           "text": "Company must be at least 2 characters",
           "exists": true
         },
@@ -189,10 +177,6 @@
         },
         {
           "text": "You must agree to terms",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
           "exists": true
         }
       ]
@@ -201,7 +185,7 @@
       "tc": "pairwise_valid_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: invalid§51, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: invalid§S, company: valid§Acme Corporation, experience: invalid§51, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -224,7 +208,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
           }
         },
         {
@@ -264,7 +248,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -289,6 +273,14 @@
         },
         {
           "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
             "byKey": "linkedin_12_end_button"
           }
         },
@@ -298,11 +290,11 @@
       ],
       "asserts": [
         {
-          "text": "Years cannot exceed 50",
+          "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "Years cannot exceed 50",
           "exists": true
         }
       ]
@@ -311,12 +303,12 @@
       "tc": "pairwise_valid_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: phd, fullname: valid§Supaporn Srisomboon, email: invalid§narong.s@invalid, position: invalid§S, company: valid§Innovative Tech Solutions Lt…, experience: invalid§51, employment: Freelance, university: invalid§C, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: invalid§A, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Contract, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
           }
         },
         {
@@ -325,7 +317,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
           }
         },
         {
@@ -334,7 +326,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
           }
         },
         {
@@ -352,7 +344,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
           }
         },
         {
@@ -367,7 +359,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Freelance"
+          "scrollAndTapText": "Contract"
         },
         {
           "pumpAndSettle": true
@@ -383,7 +375,15 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
           }
         },
         {
@@ -400,27 +400,7 @@
       ],
       "asserts": [
         {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
-          "exists": true
-        },
-        {
-          "text": "University must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "You must agree to terms",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "Full name must be at least 2 characters",
           "exists": true
         }
       ]
@@ -429,12 +409,12 @@
       "tc": "pairwise_valid_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: phd, fullname: invalid§S, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: invalid§I, experience: valid§15, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Alice Smith, email: invalid§invalid@email, position: invalid§S, company: invalid§C, experience: invalid§51, employment: Freelance, university: invalid§U, open_to_work: checked",
       "steps": [
         {
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
           }
         },
         {
@@ -443,7 +423,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
           }
         },
         {
@@ -452,7 +432,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
           }
         },
         {
@@ -470,7 +450,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
           }
         },
         {
@@ -485,14 +465,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Part-time"
+          "scrollAndTapText": "Freelance"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -501,7 +481,7 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
           }
         },
         {
@@ -534,7 +514,11 @@
       ],
       "asserts": [
         {
-          "text": "Full name must be at least 2 characters",
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
@@ -542,7 +526,11 @@
           "exists": true
         },
         {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "Years cannot exceed 50",
+          "exists": true
+        },
+        {
+          "text": "University must be at least 2 characters",
           "exists": true
         }
       ]
@@ -551,7 +539,7 @@
       "tc": "pairwise_valid_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: phd, fullname: invalid§S, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Contract, university: invalid§C, open_to_work: unchecked",
+      "description": "agree_terms: unchecked, educationLevel: bachelor, fullname: invalid§A, email: valid§john.doe@example.com, position: invalid§S, company: invalid§C, experience: invalid§51, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -574,7 +562,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
           }
         },
         {
@@ -583,7 +571,7 @@
         {
           "enterText": {
             "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
           }
         },
         {
@@ -592,7 +580,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
           }
         },
         {
@@ -607,14 +595,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Contract"
+          "scrollAndTapText": "Part-time"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -623,7 +611,7 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
           }
         },
         {
@@ -644,15 +632,19 @@
           "exists": true
         },
         {
-          "text": "University must be at least 2 characters",
+          "text": "Position must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Company must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "Years cannot exceed 50",
           "exists": true
         },
         {
           "text": "You must agree to terms",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
           "exists": true
         }
       ]
@@ -661,130 +653,12 @@
       "tc": "pairwise_valid_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: invalid§S, company: invalid§I, experience: invalid§51, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "description": "agree_terms: unchecked, educationLevel: master, fullname: valid§Alice Smith, email: invalid§invalid@email, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Full-time, university: invalid§U, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
             "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Full-time"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_master_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_invalid_cases_7",
-      "kind": "failed",
-      "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: bachelor, fullname: invalid§S, email: invalid§narong.s@invalid, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Full-time, university: invalid§C, open_to_work: checked",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
           }
         },
         {
@@ -842,7 +716,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_master_radio"
           }
         },
         {
@@ -859,14 +733,6 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "linkedin_12_end_button"
           }
         },
@@ -875,10 +741,6 @@
         }
       ],
       "asserts": [
-        {
-          "text": "Full name must be at least 2 characters",
-          "exists": true
-        },
         {
           "text": "Please enter a valid email address",
           "exists": true
@@ -890,23 +752,19 @@
         {
           "text": "You must agree to terms",
           "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_8",
+      "tc": "pairwise_valid_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: phd, fullname: valid§Supaporn Srisomboon, email: invalid§narong.s@invalid, position: invalid§S, company: invalid§I, experience: invalid§51, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: unchecked, educationLevel: phd, fullname: invalid§A, email: valid§john.doe@example.com, position: invalid§S, company: invalid§C, experience: valid§25, employment: Full-time, university: invalid§U, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
           }
         },
         {
@@ -915,7 +773,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
           }
         },
         {
@@ -942,7 +800,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
           }
         },
         {
@@ -973,15 +831,7 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
           }
         },
         {
@@ -998,7 +848,7 @@
       ],
       "asserts": [
         {
-          "text": "Please enter a valid email address",
+          "text": "Full name must be at least 2 characters",
           "exists": true
         },
         {
@@ -1010,24 +860,20 @@
           "exists": true
         },
         {
-          "text": "Years cannot exceed 50",
+          "text": "University must be at least 2 characters",
           "exists": true
         },
         {
           "text": "You must agree to terms",
           "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_9",
+      "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: invalid§S, company: invalid§I, experience: valid§15, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Alice Smith, email: invalid§invalid@email, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -1041,7 +887,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
           }
         },
         {
@@ -1050,7 +896,7 @@
         {
           "enterText": {
             "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].invalid"
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
           }
         },
         {
@@ -1059,7 +905,7 @@
         {
           "enterText": {
             "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
           }
         },
         {
@@ -1090,7 +936,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
+            "byKey": "linkedin_08_education_phd_radio"
           }
         },
         {
@@ -1132,24 +978,16 @@
       ],
       "asserts": [
         {
-          "text": "Position must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "text": "Company must be at least 2 characters",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "Please enter a valid email address",
           "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_10",
+      "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: invalid§S, email: invalid§narong.s@invalid, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: invalid§51, employment: Part-time, university: invalid§C, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: master, fullname: invalid§A, email: invalid§invalid@email, position: valid§Software Engineer, company: invalid§C, experience: invalid§51, employment: Contract, university: invalid§U, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -1181,7 +1019,7 @@
         {
           "enterText": {
             "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
           }
         },
         {
@@ -1205,7 +1043,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Part-time"
+          "scrollAndTapText": "Contract"
         },
         {
           "pumpAndSettle": true
@@ -1237,6 +1075,14 @@
         },
         {
           "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
             "byKey": "linkedin_12_end_button"
           }
         },
@@ -1254,24 +1100,24 @@
           "exists": true
         },
         {
+          "text": "Company must be at least 2 characters",
+          "exists": true
+        },
+        {
           "text": "Years cannot exceed 50",
           "exists": true
         },
         {
           "text": "University must be at least 2 characters",
           "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_11",
+      "tc": "pairwise_valid_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: invalid§narong.s@invalid, position: invalid§S, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: invalid§S, company: valid§Acme Corporation, experience: invalid§51, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -1285,7 +1131,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
           }
         },
         {
@@ -1312,7 +1158,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
           }
         },
         {
@@ -1327,7 +1173,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Part-time"
+          "scrollAndTapText": "Full-time"
         },
         {
           "pumpAndSettle": true
@@ -1351,7 +1197,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
+            "byKey": "linkedin_10_agree_terms_checkbox"
           }
         },
         {
@@ -1368,28 +1214,20 @@
       ],
       "asserts": [
         {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
           "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
-          "text": "You must agree to terms",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "Years cannot exceed 50",
           "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_12",
+      "tc": "pairwise_valid_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Supaporn Srisomboon, email: invalid§narong.s@invalid, position: invalid§S, company: invalid§I, experience: invalid§51, employment: Contract, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: invalid§S, company: invalid§C, experience: valid§25, employment: Contract, university: valid§Chulalongkorn University, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -1403,7 +1241,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
           }
         },
         {
@@ -1430,7 +1268,7 @@
         {
           "enterText": {
             "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].invalid"
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
           }
         },
         {
@@ -1452,7 +1290,7 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_08_education_master_radio"
+            "byKey": "linkedin_08_education_bachelor_radio"
           }
         },
         {
@@ -1494,32 +1332,20 @@
       ],
       "asserts": [
         {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
           "text": "Position must be at least 2 characters",
           "exists": true
         },
         {
           "text": "Company must be at least 2 characters",
           "exists": true
-        },
-        {
-          "text": "Years cannot exceed 50",
-          "exists": true
-        },
-        {
-          "byKey": "linkedin_01_expected_fail",
-          "exists": true
         }
       ]
     },
     {
-      "tc": "pairwise_valid_invalid_cases_13",
+      "tc": "pairwise_valid_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: unchecked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: invalid§narong.s@invalid, position: invalid§S, company: invalid§I, experience: invalid§51, employment: Contract, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: invalid§S, company: invalid§C, experience: invalid§51, employment: Freelance, university: invalid§U, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -1533,7 +1359,7 @@
         {
           "enterText": {
             "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
           }
         },
         {
@@ -1575,7 +1401,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Contract"
+          "scrollAndTapText": "Freelance"
         },
         {
           "pumpAndSettle": true
@@ -1591,7 +1417,15 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
           }
         },
         {
@@ -1616,10 +1450,6 @@
       ],
       "asserts": [
         {
-          "text": "Please enter a valid email address",
-          "exists": true
-        },
-        {
           "text": "Position must be at least 2 characters",
           "exists": true
         },
@@ -1632,11 +1462,133 @@
           "exists": true
         },
         {
-          "text": "You must agree to terms",
+          "text": "University must be at least 2 characters",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_invalid_cases_13",
+      "kind": "failed",
+      "group": "pairwise_valid_invalid_cases",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: invalid§A, email: invalid§invalid@email, position: valid§Software Engineer, company: invalid§C, experience: valid§25, employment: Part-time, university: invalid§U, open_to_work: checked",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Part-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_phd_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_11_open_to_work_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "Full name must be at least 2 characters",
           "exists": true
         },
         {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "Please enter a valid email address",
+          "exists": true
+        },
+        {
+          "text": "Company must be at least 2 characters",
+          "exists": true
+        },
+        {
+          "text": "University must be at least 2 characters",
           "exists": true
         }
       ]
@@ -1645,12 +1597,12 @@
       "tc": "pairwise_valid_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Freelance, university: invalid§C, open_to_work: unchecked",
+      "description": "agree_terms: unchecked, educationLevel: bachelor, fullname: invalid§A, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Contract, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
             "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].invalid"
           }
         },
         {
@@ -1701,7 +1653,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Freelance"
+          "scrollAndTapText": "Contract"
         },
         {
           "pumpAndSettle": true
@@ -1717,15 +1669,7 @@
         {
           "enterText": {
             "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
           }
         },
         {
@@ -1742,11 +1686,11 @@
       ],
       "asserts": [
         {
-          "text": "University must be at least 2 characters",
+          "text": "Full name must be at least 2 characters",
           "exists": true
         },
         {
-          "byKey": "linkedin_01_expected_fail",
+          "text": "You must agree to terms",
           "exists": true
         }
       ]
@@ -1755,7 +1699,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Contract, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Contract, university: valid§Chulalongkorn University, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -1869,7 +1813,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -1975,7 +1919,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -2081,7 +2025,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -2195,7 +2139,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: checked",
       "steps": [
         {
           "enterText": {
@@ -2309,7 +2253,113 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Freelance"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_bachelor_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "linkedin_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -2397,6 +2447,112 @@
         },
         {
           "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "linkedin_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: checked",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Freelance"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_phd_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
             "byKey": "linkedin_11_open_to_work_checkbox"
           }
         },
@@ -2420,10 +2576,116 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_7",
+      "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: checked",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Contract, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "linkedin_02_fullname_textfield",
+            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_03_email_textfield",
+            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_04_position_textfield",
+            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_05_company_textfield",
+            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_06_experience_textfield",
+            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_07_employment_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Contract"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_08_education_phd_radio"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "linkedin_09_university_textfield",
+            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_10_agree_terms_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "linkedin_12_end_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "linkedin_01_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_10",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Part-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -2511,14 +2773,6 @@
         },
         {
           "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
             "byKey": "linkedin_12_end_button"
           }
         },
@@ -2534,10 +2788,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_8",
+      "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -2593,7 +2847,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "Freelance"
+          "scrollAndTapText": "Full-time"
         },
         {
           "pumpAndSettle": true
@@ -2640,10 +2894,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_9",
+      "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Contract, university: valid§Chulalongkorn University, open_to_work: unchecked",
+      "description": "agree_terms: checked, educationLevel: master, fullname: valid§Alice Smith, email: valid§john.doe@example.com, position: valid§Software Engineer, company: valid§Acme Corporation, experience: valid§25, employment: Contract, university: valid§Chulalongkorn University, open_to_work: unchecked",
       "steps": [
         {
           "enterText": {
@@ -2746,344 +3000,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_10",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Contract, university: valid§Chulalongkorn University, open_to_work: checked",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Contract"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "linkedin_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_11",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: phd, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Freelance, university: valid§Chulalongkorn University, open_to_work: unchecked",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Freelance"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_phd_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "linkedin_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_12",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "agree_terms: checked, educationLevel: bachelor, fullname: valid§Supaporn Srisomboon, email: valid§narong.s@example.com, position: valid§Senior Software Engineer, company: valid§Innovative Tech Solutions Lt…, experience: valid§15, employment: Full-time, university: valid§Chulalongkorn University, open_to_work: checked",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "linkedin_02_fullname_textfield",
-            "dataset": "byKey.linkedin_02_fullname_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_03_email_textfield",
-            "dataset": "byKey.linkedin_03_email_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_04_position_textfield",
-            "dataset": "byKey.linkedin_04_position_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_05_company_textfield",
-            "dataset": "byKey.linkedin_05_company_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_06_experience_textfield",
-            "dataset": "byKey.linkedin_06_experience_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_07_employment_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "Full-time"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_08_education_bachelor_radio"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "linkedin_09_university_textfield",
-            "dataset": "byKey.linkedin_09_university_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_10_agree_terms_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_11_open_to_work_checkbox"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "linkedin_12_end_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "linkedin_01_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
       "tc": "edge_cases_empty_all_fields",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "fullname: empty§\"\", email: empty§\"\", position: empty§\"\", company: empty§\"\", experience: empty§\"\", university: empty§\"\"",
+      "description": "education_bachelor: bachelor, employment: Full-time, agree_terms: checked, fullname: empty§\"\", email: empty§\"\", position: empty§\"\", company: empty§\"\", experience: empty§\"\", university: empty§\"\"",
       "steps": [
         {
           "tap": {
@@ -3146,7 +3066,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "fullname: atMax§Alice Johnson Wongsuwan Char…, email: atMax§a.very.long.email.address.th…, position: atMax§Principal Staff Distinguishe…, company: atMax§Global Digital Solutions & I…, experience: atMax§50, university: atMax§Thammasat University Mahidol…",
+      "description": "education_bachelor: bachelor, employment: Full-time, agree_terms: checked, fullname: atMax§Somchai Charoenwattana Sriso…, email: atMax§long.email.username.abcdefgh…, position: atMax§Senior Lead Full Stack Cloud…, company: atMax§International Global Tech So…, experience: atMax§50, university: atMax§King Mongkut's Institute of …",
       "steps": [
         {
           "enterText": {
@@ -3252,7 +3172,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "fullname: atMin§A, email: atMin§atMin, position: atMin§A, company: atMin§A, experience: atMin§atMin, university: atMin§A",
+      "description": "education_bachelor: bachelor, employment: Full-time, agree_terms: checked, fullname: atMin§A, email: atMin§atMin, position: atMin§S, company: atMin§C, experience: atMin§0, university: atMin§U",
       "steps": [
         {
           "enterText": {
