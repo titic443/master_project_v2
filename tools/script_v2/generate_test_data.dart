@@ -335,7 +335,8 @@ class TestDataGenerator {
       // TextFormField / TextField - input fields สำหรับกรอกข้อความ
       // ---------------------------------------------------------------------
       if ((t.startsWith('TextField') || t.startsWith('TextFormField')) &&
-          k.isNotEmpty) {
+          k.isNotEmpty &&
+          pickerMeta == null) {
         textKeys.add(k);
       }
       // ---------------------------------------------------------------------
@@ -1501,6 +1502,40 @@ class TestDataGenerator {
           {'pump': true},
         ];
       }
+      for (final key in datePickerKeys) {
+        final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
+            orElse: () => <String, dynamic>{});
+        final pickerMeta =
+            (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ?? {};
+        final dateValues = _generateDateValues(pickerMeta);
+        // Prefer a date from the current year to minimise year-picker navigation
+        final currentYear = DateTime.now().year.toString();
+        final validDate = dateValues.firstWhere(
+          (v) => v != 'null' && v.contains(currentYear),
+          orElse: () =>
+              dateValues.firstWhere((v) => v != 'null', orElse: () => ''),
+        );
+        if (validDate.isNotEmpty) {
+          stepsByKey[key] = [
+            {
+              'tap': {'byKey': key}
+            },
+            {'pumpAndSettle': true},
+            {'selectDate': validDate},
+            {'pumpAndSettle': true},
+          ];
+        }
+      }
+      for (final key in timePickerKeys) {
+        stepsByKey[key] = [
+          {
+            'tap': {'byKey': key}
+          },
+          {'pumpAndSettle': true},
+          {'selectTime': '09:00'},
+          {'pumpAndSettle': true},
+        ];
+      }
       return stepsByKey;
     }
 
@@ -1638,6 +1673,44 @@ class TestDataGenerator {
     Map<String, dynamic>? buildEdgeCaseBoundaryAtMin() {
       if (textKeys.isEmpty || endKey == null) return null;
 
+      // Detect if any atMin value is actually invalid (fails form validation)
+      bool minHasInvalidFields = false;
+      for (final key in textKeys) {
+        if (!datasetsHasField(key, 'atMin')) continue;
+        final ds =
+            (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
+        final arr = ds[key];
+        if (arr is! List || arr.isEmpty) continue;
+        final first = arr[0] as Map?;
+        if (first == null) continue;
+        final atMinVal = first['atMin']?.toString() ?? '';
+        final invalidVal = first['invalid']?.toString() ?? '';
+        // Case 1: atMin equals the invalid dataset value
+        if (atMinVal == invalidVal && atMinVal.isNotEmpty) {
+          minHasInvalidFields = true;
+          break;
+        }
+        // Case 2: atMin is empty → check if field has a required validator
+        if (atMinVal.isEmpty) {
+          final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
+              orElse: () => <String, dynamic>{});
+          final meta =
+              (widget['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+          final rules =
+              (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+          for (final rule in rules) {
+            if (rule is Map) {
+              final condition = rule['condition']?.toString() ?? '';
+              if (isEmptyCheckCondition(condition)) {
+                minHasInvalidFields = true;
+                break;
+              }
+            }
+          }
+          if (minHasInvalidFields) break;
+        }
+      }
+
       final minStepsByKey = buildNonTextDefaultSteps();
       for (final key in textKeys) {
         final enterStep = datasetsHasField(key, 'atMin')
@@ -1657,8 +1730,12 @@ class TestDataGenerator {
           'tap': {'byKey': endKey}
         })
         ..add({'pumpAndSettle': true});
+      final minKind = minHasInvalidFields ? 'failed' : 'success';
       final minAsserts = <Map<String, dynamic>>[
-        for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
+        if (minHasInvalidFields)
+          for (final fk in expectedFailKeys) {'byKey': fk, 'exists': true}
+        else
+          for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
       ];
       final minCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
@@ -1667,10 +1744,10 @@ class TestDataGenerator {
       };
       return {
         'tc': 'edge_cases_boundary_at_min_length',
-        'kind': 'success',
+        'kind': minKind,
         'group': 'edge_cases',
         'description':
-            _buildDescription(minCombo, 'success', [], [], minAsserts),
+            _buildDescription(minCombo, minKind, [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
       };

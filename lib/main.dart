@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cubit/clinic_appointment_cubit.dart';
 import 'cubit/linkedin_cubit.dart';
 import 'cubit/linkedin_search_cubit.dart';
 import 'cubit/job_post_cubit.dart';
 import 'cubit/job_search_cubit.dart';
 import 'cubit/property_post_cubit.dart';
 import 'cubit/property_search_cubit.dart';
+import 'demos/clinic_appointment_page.dart';
 import 'demos/linkedin_profile_page.dart';
 import 'demos/linkedin_search_page.dart';
 import 'demos/job_post_page.dart';
@@ -126,6 +128,30 @@ class HomePage extends StatelessWidget {
                   BlocProvider(
                     create: (_) => JobSearchCubit(),
                     child: const JobSearchPage(),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // ── Clinic ──────────────────────────────────────────────────
+              _AppGroupHeader(
+                title: 'Clinic',
+                icon: Icons.local_hospital_outlined,
+                color: Colors.teal,
+              ),
+              const SizedBox(height: 12),
+              _buildCard(
+                context,
+                title: 'นัดหมายแพทย์',
+                description: 'จองคิวพบแพทย์ เลือกแผนก วันที่ และเวลา',
+                icon: Icons.event_available_outlined,
+                color: Colors.teal,
+                onTap: () => _go(
+                  context,
+                  BlocProvider(
+                    create: (_) => ClinicAppointmentCubit(),
+                    child: const ClinicAppointmentPage(),
                   ),
                 ),
               ),

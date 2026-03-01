@@ -133,9 +133,12 @@ class TestScriptGenerator {
 
     // STEP 3: สร้าง providers list จาก cubitClass
     final providers = cubitClass != null
-        ? [{'type': cubitClass}]
+        ? [
+            {'type': cubitClass}
+          ]
         : <Map<String, dynamic>>[];
-    final cases = (j['cases'] as List? ?? const []).cast<Map<String, dynamic>>();
+    final cases =
+        (j['cases'] as List? ?? const []).cast<Map<String, dynamic>>();
 
     // STEP 4: ดึง validation counts จาก test plan
     final validationCounts = _extractValidationCountsFromPlan(cases);
@@ -150,7 +153,8 @@ class TestScriptGenerator {
     final uiImport = _resolveUiImport(uiFile, pkg);
 
     // STEP 8: หา provider type files สำหรับ import
-    final (:providerTypes, :providerFiles) = _resolveProviderFiles(providers, pkg);
+    final (:providerTypes, :providerFiles) =
+        _resolveProviderFiles(providers, pkg);
 
     // STEP 9: กำหนด primary Cubit type
     final primaryCubitType = _getPrimaryCubitType(providerTypes);
@@ -196,7 +200,6 @@ class TestScriptGenerator {
 
     // Import UI file
     b.writeln("import '$uiImport';");
-
 
     // ---------------------------------------------------------------------------
     // STEP 14: สร้าง _wrap helper function
@@ -465,62 +468,96 @@ class TestScriptGenerator {
             final action = (s['selectDate']).toString();
 
             if (action == 'null' || action == 'cancel') {
-              // Cancel DatePicker dialog
-              b.writeln("      // Cancel DatePicker - try multiple button texts");
-              b.writeln("      if (tester.any(find.text('CANCEL'))) {");
-              b.writeln("        await tester.tap(find.text('CANCEL'));");
-              b.writeln("      } else if (tester.any(find.text('Cancel'))) {");
+              b.writeln("      // Cancel DatePicker");
+              b.writeln("      if (tester.any(find.text('Cancel'))) {");
               b.writeln("        await tester.tap(find.text('Cancel'));");
-              b.writeln("      } else if (tester.any(find.text('ยกเลิก'))) {");
-              b.writeln("        await tester.tap(find.text('ยกเลิก'));");
               b.writeln("      } else {");
-              // Fallback: tap นอก dialog
               b.writeln("        await tester.tapAt(const Offset(10, 10));");
               b.writeln("      }");
             } else {
-              // Parse date ในรูปแบบ DD/MM/YYYY
               final parts = action.split('/');
               if (parts.length == 3) {
-                final day = parts[0];
+                // Strip leading zero so Flutter calendar text matches (e.g. '1' not '01')
+                final day = parts[0].replaceFirst(RegExp(r'^0'), '');
                 final month = parts[1];
                 final year = parts[2];
 
-                b.writeln("      // Select date: $action");
-
-                // 1. เปิด year picker โดยแตะที่ปีใน header
-                b.writeln(
-                    "      await tester.tap(find.textContaining('$year').first);");
-                b.writeln("      await tester.pumpAndSettle();");
-
-                // 2. เลือกปี
-                b.writeln("      await tester.tap(find.text('$year'));");
-                b.writeln("      await tester.pumpAndSettle();");
-
-                // 3. Navigate ไปยังเดือนที่ต้องการ
                 final monthNames = [
                   '',
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec'
+                  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
                 ];
+                // Thai abbreviated month names for Thai-locale devices
+                final monthNamesTh = [
+                  '',
+                  'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+                  'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+                ];
+
+                b.writeln("      // Select date: $action");
+
+                // 1. เปิด year picker
+                b.writeln("      {");
+                b.writeln(
+                    "        final yearInHeader = find.byWidgetPredicate(");
+                b.writeln(
+                    "          (w) => w is Text && RegExp(r'^\\d{4}\$').hasMatch(w.data ?? ''));");
+                b.writeln("        if (tester.any(yearInHeader)) {");
+                b.writeln(
+                    "          await tester.tap(yearInHeader.first);");
+                b.writeln("          await tester.pumpAndSettle();");
+                b.writeln("        }");
+                b.writeln("      }");
+
+                // 2. Scroll ไปหาปี
+                b.writeln(
+                    "      for (int i = 0; i < 20 && !tester.any(find.text('$year')); i++) {");
+                b.writeln(
+                    "        await tester.drag(find.byType(Scrollable).first, const Offset(0, 200));");
+                b.writeln("        await tester.pumpAndSettle();");
+                b.writeln("      }");
+                b.writeln(
+                    "      for (int i = 0; i < 20 && !tester.any(find.text('$year')); i++) {");
+                b.writeln(
+                    "        await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));");
+                b.writeln("        await tester.pumpAndSettle();");
+                b.writeln("      }");
+                b.writeln("      if (tester.any(find.text('$year'))) {");
+                b.writeln(
+                    "        await tester.tap(find.text('$year').first);");
+                b.writeln("        await tester.pumpAndSettle();");
+                b.writeln("      }");
+
+                // 3. Navigate month แบบ bidirectional (supports English & Thai locale)
                 if (int.tryParse(month) != null) {
                   final monthIdx = int.parse(month);
                   if (monthIdx >= 1 && monthIdx <= 12) {
-                    b.writeln("      // Navigate to ${monthNames[monthIdx]}");
+                    final mName = monthNames[monthIdx];
+                    final mNameTh = monthNamesTh[monthIdx];
+                    b.writeln("      // Navigate to $mName (bidirectional)");
+                    b.writeln("      {");
+                    b.writeln("        int back = 0;");
                     b.writeln(
-                        "      while (!tester.any(find.textContaining('${monthNames[monthIdx]}'))) {");
+                        "        while (!tester.any(find.textContaining('$mName')) && !tester.any(find.textContaining('$mNameTh')) && back < 6) {");
                     b.writeln(
-                        "        await tester.tap(find.byIcon(Icons.chevron_right));");
-                    b.writeln("        await tester.pumpAndSettle();");
+                        "          if (tester.any(find.byIcon(Icons.chevron_left))) {");
+                    b.writeln(
+                        "            await tester.tap(find.byIcon(Icons.chevron_left).first);");
+                    b.writeln("            await tester.pumpAndSettle();");
+                    b.writeln("          }");
+                    b.writeln("          back++;");
+                    b.writeln("        }");
+                    b.writeln("        int fwd = 0;");
+                    b.writeln(
+                        "        while (!tester.any(find.textContaining('$mName')) && !tester.any(find.textContaining('$mNameTh')) && fwd < 12) {");
+                    b.writeln(
+                        "          if (tester.any(find.byIcon(Icons.chevron_right))) {");
+                    b.writeln(
+                        "            await tester.tap(find.byIcon(Icons.chevron_right).first);");
+                    b.writeln("            await tester.pumpAndSettle();");
+                    b.writeln("          }");
+                    b.writeln("          fwd++;");
+                    b.writeln("        }");
                     b.writeln("      }");
                   }
                 }
@@ -528,11 +565,8 @@ class TestScriptGenerator {
                 // 4. เลือกวัน
                 b.writeln("      await tester.tap(find.text('$day').first);");
                 b.writeln("      await tester.pumpAndSettle();");
-
-                // 5. ยืนยันการเลือก
                 b.writeln("      await tester.tap(find.text('OK'));");
               } else {
-                // Format ไม่ถูกต้อง - ใช้ fallback
                 b.writeln("      await tester.tap(find.text('OK'));");
               }
             }
@@ -546,34 +580,51 @@ class TestScriptGenerator {
 
             if (action == 'null' || action == 'cancel') {
               // Cancel TimePicker dialog
-              b.writeln("      // Cancel TimePicker - try multiple button texts");
-              b.writeln("      if (tester.any(find.text('CANCEL'))) {");
-              b.writeln("        await tester.tap(find.text('CANCEL'));");
-              b.writeln("      } else if (tester.any(find.text('Cancel'))) {");
+              b.writeln(
+                  "      // Cancel TimePicker - try multiple button texts");
+              b.writeln("      if (tester.any(find.text('Cancel'))) {");
               b.writeln("        await tester.tap(find.text('Cancel'));");
-              b.writeln("      } else if (tester.any(find.text('ยกเลิก'))) {");
-              b.writeln("        await tester.tap(find.text('ยกเลิก'));");
               b.writeln("      } else {");
               b.writeln("        await tester.tapAt(const Offset(10, 10));");
               b.writeln("      }");
             } else {
-              // Parse time ในรูปแบบ HH:MM
               final parts = action.split(':');
               if (parts.length == 2) {
                 final hour = parts[0];
                 final minute = parts[1];
 
                 b.writeln("      // Select time: $action");
-
-                // 1. เลือกชั่วโมง
-                b.writeln("      await tester.tap(find.text('$hour').first);");
-                b.writeln("      await tester.pumpAndSettle();");
-
-                // 2. เลือกนาที
-                b.writeln("      await tester.tap(find.text('$minute').first);");
-                b.writeln("      await tester.pumpAndSettle();");
-
-                // 3. ยืนยัน
+                // Switch to input mode if dial is showing
+                b.writeln("      {");
+                b.writeln(
+                    "        final keyboardBtn = find.byIcon(Icons.keyboard);");
+                b.writeln("        if (tester.any(keyboardBtn)) {");
+                b.writeln(
+                    "          await tester.tap(keyboardBtn.first);");
+                b.writeln("          await tester.pumpAndSettle();");
+                b.writeln("        }");
+                b.writeln("      }");
+                // Enter hour and minute via dialog TextFields
+                b.writeln("      {");
+                b.writeln(
+                    "        final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));");
+                b.writeln(
+                    "        if (dialogTF.evaluate().length >= 1) {");
+                b.writeln("          await tester.tap(dialogTF.first);");
+                b.writeln("          await tester.pumpAndSettle();");
+                b.writeln(
+                    "          await tester.enterText(dialogTF.first, '$hour');");
+                b.writeln("          await tester.pumpAndSettle();");
+                b.writeln("        }");
+                b.writeln(
+                    "        if (dialogTF.evaluate().length >= 2) {");
+                b.writeln("          await tester.tap(dialogTF.at(1));");
+                b.writeln("          await tester.pumpAndSettle();");
+                b.writeln(
+                    "          await tester.enterText(dialogTF.at(1), '$minute');");
+                b.writeln("          await tester.pumpAndSettle();");
+                b.writeln("        }");
+                b.writeln("      }");
                 b.writeln("      await tester.tap(find.text('OK'));");
               } else {
                 b.writeln("      await tester.tap(find.text('OK'));");
@@ -720,7 +771,8 @@ class TestScriptGenerator {
           }
 
           if (hasMessage) {
-            final msg = utils.dartEscape((respJson['message']?.toString() ?? ''));
+            final msg =
+                utils.dartEscape((respJson['message']?.toString() ?? ''));
             b.writeln("      expect(_cubit.state.response?.message, '$msg');");
           }
         }
@@ -787,8 +839,7 @@ class TestScriptGenerator {
   }
 
   /// STEP 5: โหลด datasets — external file ก่อน, fallback embedded
-  Map<String, dynamic> _loadDatasets(
-      String uiFile, Map<String, dynamic> j) {
+  Map<String, dynamic> _loadDatasets(String uiFile, Map<String, dynamic> j) {
     try {
       final base = utils.basenameWithoutExtension(uiFile);
       final f = File('output/test_data/$base.datasets.json');
@@ -812,8 +863,7 @@ class TestScriptGenerator {
 
   /// STEP 8: หา provider types และ provider files สำหรับ import
   ({List<String> providerTypes, List<String> providerFiles})
-      _resolveProviderFiles(
-          List<Map<String, dynamic>> providers, String pkg) {
+      _resolveProviderFiles(List<Map<String, dynamic>> providers, String pkg) {
     final providerTypes = <String>[];
     for (final p in providers) {
       final t = (p['type'] ?? '').toString();
@@ -1066,7 +1116,8 @@ class TestScriptGenerator {
             } else {
               final parts = action.split('/');
               if (parts.length == 3) {
-                final day = parts[0];
+                // Strip leading zero so Flutter calendar text matches (e.g. '1' not '01')
+                final day = parts[0].replaceFirst(RegExp(r'^0'), '');
                 final month = parts[1];
                 final year = parts[2];
 
@@ -1100,7 +1151,8 @@ class TestScriptGenerator {
                     "              (w) => w is Text && RegExp(r'^\\d{4}\$').hasMatch(w.data ?? ''),");
                 ib.writeln("            );");
                 ib.writeln("            if (tester.any(yearItems)) {");
-                ib.writeln("              // Found year items, picker is ready");
+                ib.writeln(
+                    "              // Found year items, picker is ready");
                 ib.writeln("              await tester.pumpAndSettle();");
                 ib.writeln("              break;");
                 ib.writeln("            }");
@@ -1137,43 +1189,56 @@ class TestScriptGenerator {
                 ib.writeln("          }");
                 ib.writeln("        }");
 
-                // Navigate to month
+                // Navigate to month (supports English & Thai locale)
                 final monthNames = [
                   '',
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec'
+                  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                ];
+                final monthNamesTh = [
+                  '',
+                  'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+                  'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
                 ];
                 if (int.tryParse(month) != null) {
                   final monthIdx = int.parse(month);
                   if (monthIdx >= 1 && monthIdx <= 12) {
-                    ib.writeln("        // Navigate to ${monthNames[monthIdx]}");
+                    final mName = monthNames[monthIdx];
+                    final mNameTh = monthNamesTh[monthIdx];
+                    ib.writeln("        // Navigate to $mName");
                     ib.writeln("        {");
-                    ib.writeln("          int monthNavAttempts = 0;");
                     ib.writeln(
-                        "          while (!tester.any(find.textContaining('${monthNames[monthIdx]}')) && monthNavAttempts < 12) {");
+                        "          // Try going backward (chevron_left) up to 6 months first");
+                    ib.writeln("          int backAttempts = 0;");
+                    ib.writeln(
+                        "          while (!tester.any(find.textContaining('$mName')) && !tester.any(find.textContaining('$mNameTh')) && backAttempts < 6) {");
+                    ib.writeln(
+                        "            if (tester.any(find.byIcon(Icons.chevron_left))) {");
+                    ib.writeln(
+                        "              await tester.tap(find.byIcon(Icons.chevron_left).first);");
+                    ib.writeln("              await tester.pumpAndSettle();");
+                    ib.writeln("            }");
+                    ib.writeln("            backAttempts++;");
+                    ib.writeln("          }");
+                    ib.writeln(
+                        "          // If not found, try going forward (chevron_right)");
+                    ib.writeln("          int fwdAttempts = 0;");
+                    ib.writeln(
+                        "          while (!tester.any(find.textContaining('$mName')) && !tester.any(find.textContaining('$mNameTh')) && fwdAttempts < 12) {");
                     ib.writeln(
                         "            if (tester.any(find.byIcon(Icons.chevron_right))) {");
                     ib.writeln(
-                        "              await tester.tap(find.byIcon(Icons.chevron_right));");
+                        "              await tester.tap(find.byIcon(Icons.chevron_right).first);");
                     ib.writeln("              await tester.pumpAndSettle();");
                     ib.writeln("            }");
-                    ib.writeln("            monthNavAttempts++;");
+                    ib.writeln("            fwdAttempts++;");
                     ib.writeln("          }");
                     ib.writeln("        }");
                   }
                 }
 
-                ib.writeln("        await tester.tap(find.text('$day').first);");
+                ib.writeln(
+                    "        await tester.tap(find.text('$day').first);");
                 ib.writeln("        await tester.pumpAndSettle();");
                 ib.writeln("        await tester.tap(find.text('OK'));");
               } else {
@@ -1200,11 +1265,37 @@ class TestScriptGenerator {
                 final minute = parts[1];
 
                 ib.writeln("        // Select time: $action");
-                ib.writeln("        await tester.tap(find.text('$hour').first);");
-                ib.writeln("        await tester.pumpAndSettle();");
+                // Switch to input mode if dial mode is showing (safety net)
+                ib.writeln("        {");
                 ib.writeln(
-                    "        await tester.tap(find.text('$minute').first);");
-                ib.writeln("        await tester.pumpAndSettle();");
+                    "          final keyboardBtn = find.byIcon(Icons.keyboard);");
+                ib.writeln("          if (tester.any(keyboardBtn)) {");
+                ib.writeln(
+                    "            await tester.tap(keyboardBtn.first);");
+                ib.writeln("            await tester.pumpAndSettle();");
+                ib.writeln("          }");
+                ib.writeln("        }");
+                // Enter hour and minute via dialog TextFields
+                ib.writeln("        {");
+                ib.writeln(
+                    "          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));");
+                ib.writeln(
+                    "          if (dialogTF.evaluate().length >= 1) {");
+                ib.writeln("            await tester.tap(dialogTF.first);");
+                ib.writeln("            await tester.pumpAndSettle();");
+                ib.writeln(
+                    "            await tester.enterText(dialogTF.first, '$hour');");
+                ib.writeln("            await tester.pumpAndSettle();");
+                ib.writeln("          }");
+                ib.writeln(
+                    "          if (dialogTF.evaluate().length >= 2) {");
+                ib.writeln("            await tester.tap(dialogTF.at(1));");
+                ib.writeln("            await tester.pumpAndSettle();");
+                ib.writeln(
+                    "            await tester.enterText(dialogTF.at(1), '$minute');");
+                ib.writeln("            await tester.pumpAndSettle();");
+                ib.writeln("          }");
+                ib.writeln("        }");
                 ib.writeln("        await tester.tap(find.text('OK'));");
               } else {
                 ib.writeln("        await tester.tap(find.text('OK'));");
