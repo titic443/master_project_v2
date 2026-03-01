@@ -4,11 +4,11 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมชาย ใจดี",
-          "invalid": "อ",
+          "valid": "สมศักดิ์ เจริญศรี",
+          "invalid": "ส",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "อ",
-          "atMax": "อภิวัฒน์ จันทร์เพ็ญ สุขสำราญสุขจิตต์"
+          "atMin": "ส",
+          "atMax": "สมศักดิ์ เจริญศรี ชัยวัฒน์ บุญมี สุขศรี สุวรรณมาลี"
         }
       ],
       "appt_02_id_card_textfield": [
@@ -23,10 +23,10 @@
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "08123456",
+          "invalid": "081234567",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "08123456",
-          "atMax": "0987654321"
+          "atMin": "",
+          "atMax": "0812345678"
         }
       ],
       "appt_06_date_textfield": [
@@ -34,8 +34,8 @@
           "valid": "01/03/2026",
           "invalid": "",
           "invalidRuleMessages": "",
-          "atMin": "15/01/2001",
-          "atMax": "15/01/2029"
+          "atMin": "01/01/2000",
+          "atMax": "01/01/2030"
         }
       ],
       "appt_07_time_textfield": [
@@ -49,11 +49,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ",
-          "invalid": "A",
+          "valid": "ผู้ป่วยมีอาการแพ้ยาพารา",
+          "invalid": "N/A",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ"
+          "atMax": "ผู้ป่วยมีอาการแพ้ยาพารา"
         }
       ]
     }
