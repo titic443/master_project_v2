@@ -273,6 +273,13 @@ class WebUI {
       this.#log('\n=== Generation complete! ===', 'success');
       this.#log('Click "Run Coverage Test" to execute tests.', 'info');
 
+      // Show success dialog with test case count
+      const totalCases = scriptResult.summary?.totalCases ?? 0;
+      const msg = totalCases > 0
+        ? `Generated ${totalCases} test cases\n${scriptResult.testScriptPath}`
+        : scriptResult.testScriptPath;
+      this.#showDialog('success', 'Test Script Generated', msg, 'generate');
+
     } catch (error) {
       this.#log(`\nError: ${error.message}`, 'error');
     } finally {
