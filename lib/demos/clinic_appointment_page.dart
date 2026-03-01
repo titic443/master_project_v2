@@ -68,7 +68,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
       context: context,
       initialDate: now.add(const Duration(days: 1)),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2030),
+      lastDate: DateTime(2031),
     );
     if (picked != null && context.mounted) {
       context.read<ClinicAppointmentCubit>().onDateChanged(picked);
@@ -131,8 +131,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 key: const Key('appt_10_expected_fail'),
-                content:
-                    Text(state.errorMessage ?? 'ไม่สามารถจองนัดหมายได้'),
+                content: Text(state.errorMessage ?? 'ไม่สามารถจองนัดหมายได้'),
                 backgroundColor: Colors.red,
               ),
             );
@@ -141,8 +140,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
         builder: (context, state) {
           _sync(state);
           final cubit = context.read<ClinicAppointmentCubit>();
-          final isLoading =
-              state.status == ClinicAppointmentStatus.loading;
+          final isLoading = state.status == ClinicAppointmentStatus.loading;
 
           return Form(
             key: _formKey,
@@ -166,7 +164,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   textCapitalization: TextCapitalization.words,
                   onChanged: cubit.onPatientNameChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกชื่อ-นามสกุล';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกชื่อ-นามสกุล';
                     if (v.trim().length < 2) return 'อย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
@@ -187,7 +186,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   ],
                   onChanged: cubit.onIdCardChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกเลขบัตรประชาชน';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกเลขบัตรประชาชน';
                     if (v.trim().length != 13) return 'ต้องมี 13 หลัก';
                     return null;
                   },
@@ -208,7 +208,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   ],
                   onChanged: cubit.onPhoneChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกเบอร์โทรศัพท์';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกเบอร์โทรศัพท์';
                     if (v.trim().length < 9) return 'เบอร์โทรไม่ถูกต้อง';
                     return null;
                   },
@@ -232,16 +233,14 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   items: const [
                     DropdownMenuItem(
                         value: 'internal_medicine', child: Text('อายุรกรรม')),
-                    DropdownMenuItem(
-                        value: 'surgery', child: Text('ศัลยกรรม')),
+                    DropdownMenuItem(value: 'surgery', child: Text('ศัลยกรรม')),
                     DropdownMenuItem(
                         value: 'pediatrics', child: Text('กุมารเวชศาสตร์')),
                     DropdownMenuItem(
                         value: 'obstetrics', child: Text('สูติ-นรีเวช')),
                     DropdownMenuItem(
                         value: 'ophthalmology', child: Text('จักษุวิทยา')),
-                    DropdownMenuItem(
-                        value: 'ent', child: Text('หู คอ จมูก')),
+                    DropdownMenuItem(value: 'ent', child: Text('หู คอ จมูก')),
                     DropdownMenuItem(
                         value: 'orthopedics', child: Text('กระดูกและข้อ')),
                   ],
@@ -302,7 +301,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                     icon: Icons.calendar_today_outlined,
                   ),
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณาเลือกวันที่นัดหมาย';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณาเลือกวันที่นัดหมาย';
                     return null;
                   },
                 ),
@@ -318,7 +318,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                     icon: Icons.access_time_outlined,
                   ),
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณาเลือกช่วงเวลา';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณาเลือกช่วงเวลา';
                     return null;
                   },
                 ),

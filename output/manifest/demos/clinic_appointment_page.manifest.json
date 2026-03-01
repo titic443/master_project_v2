@@ -151,7 +151,7 @@
       "pickerMetadata": {
         "type": "DatePicker",
         "firstDate": "DateTime(2000)",
-        "lastDate": "DateTime(2030)",
+        "lastDate": "DateTime(2031)",
         "initialDate": "now.add(const Duration(days: 1))"
       }
     },
