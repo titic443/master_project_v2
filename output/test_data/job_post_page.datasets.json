@@ -5,55 +5,55 @@
       "job_01_title_textfield": [
         {
           "valid": "Senior Software Engineer",
-          "invalid": "Jr",
+          "invalid": "SE",
           "invalidRuleMessages": "At least 3 characters",
-          "atMin": "Ab",
+          "atMin": "SE",
           "atMax": "Senior Software Engineer"
         }
       ],
       "job_02_company_textfield": [
         {
-          "valid": "Tech Innovations Inc.",
+          "valid": "Agoda",
           "invalid": "A",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "T",
-          "atMax": "Tech Innovations Inc."
+          "atMin": "A",
+          "atMax": "Agoda"
         }
       ],
       "job_03_location_textfield": [
         {
-          "valid": "Bangkok, Thailand",
+          "valid": "Bangkok",
           "invalid": "B",
           "invalidRuleMessages": "At least 2 characters",
           "atMin": "B",
-          "atMax": "Bangkok, Thailand"
+          "atMax": "Bangkok"
         }
       ],
       "job_07_salary_min_textfield": [
         {
-          "valid": "40000",
+          "valid": "50000",
           "invalid": "1",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "40000"
+          "atMax": "50000"
         }
       ],
       "job_08_salary_max_textfield": [
         {
-          "valid": "60000",
+          "valid": "75000",
           "invalid": "40000",
           "invalidRuleMessages": "Must be ≥ min",
           "atMin": "",
-          "atMax": "60000"
+          "atMax": "75000"
         }
       ],
       "job_09_desc_textfield": [
         {
-          "valid": "We are looking for a highly motivated individual t",
-          "invalid": "This job descriptio.",
+          "valid": "We are seeking a highly motivated and experienced ",
+          "invalid": "Need more details",
           "invalidRuleMessages": "At least 20 characters",
-          "atMin": "This job description.",
-          "atMax": "We are looking for a highly motivated individual t"
+          "atMin": "This is too short...",
+          "atMax": "We are seeking a highly motivated and experienced "
         }
       ],
       "job_10_skills_textfield": [

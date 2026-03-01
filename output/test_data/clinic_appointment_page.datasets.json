@@ -4,11 +4,11 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมศักดิ์ เจริญศรี",
-          "invalid": "ส",
+          "valid": "สมชาย ใจดี",
+          "invalid": "อ",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "ส",
-          "atMax": "สมศักดิ์ เจริญศรี ชัยวัฒน์ บุญมี สุขศรี สุวรรณมาลี"
+          "atMin": "อ",
+          "atMax": "สมชาย ใจดี"
         }
       ],
       "appt_02_id_card_textfield": [
@@ -16,16 +16,16 @@
           "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
+          "atMin": "0",
           "atMax": "1234567890123"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "081234567",
+          "invalid": "08123456",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "",
+          "atMin": "0",
           "atMax": "0812345678"
         }
       ],
@@ -35,7 +35,7 @@
           "invalid": "",
           "invalidRuleMessages": "",
           "atMin": "01/01/2000",
-          "atMax": "01/01/2030"
+          "atMax": "01/01/2031"
         }
       ],
       "appt_07_time_textfield": [
@@ -49,11 +49,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีอาการแพ้ยาพารา",
-          "invalid": "N/A",
+          "valid": "คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยมีอาการแพ้ยาพารา"
+          "atMax": "คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย"
         }
       ]
     }

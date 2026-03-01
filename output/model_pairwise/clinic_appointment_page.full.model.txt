@@ -3,7 +3,7 @@ appt_02_id_card_textfield: valid, invalid
 appt_03_phone_textfield: valid, invalid
 appt_04_department_dropdown: internal_medicine, surgery, pediatrics, obstetrics, ophthalmology, ent, orthopedics
 state.appointmentType: type_radio_opd, type_radio_tele
-appt_06_date_textfield: null, 15/01/2001, 01/03/2026, 15/01/2029
+appt_06_date_textfield: null, 15/01/2001, 01/03/2026, 15/01/2030
 appt_07_time_textfield: 09:00, 14:30, 18:00, null
 appt_08_insurance_switch: on, off
 appt_09_note_textfield: valid, invalid
