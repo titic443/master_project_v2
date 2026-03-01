@@ -419,6 +419,15 @@ class WebUI {
       });
 
       const file = await fileHandle.getFile();
+
+      // Validate file type: only .txt and .pict are accepted
+      const validExtensions = ['.txt', '.pict'];
+      const hasValidExt = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+      if (!hasValidExt) {
+        this.#showDialog('error', 'Import Failed', 'Invalid File Type', 'constraints');
+        return;
+      }
+
       const content = await file.text();
 
       // Validate PICT constraint syntax via server
@@ -430,7 +439,9 @@ class WebUI {
       const validationResult = await validationResponse.json();
 
       if (!validationResult.valid) {
-        this.#showDialog('error', 'Invalid Constraint Syntax', validationResult.error || '', 'constraints');
+        this.#showDialog('error', 'Invalid Constraint Syntax');
+        // this.#showDialog('error', 'Invalid Constraint Syntax', validati
+        // onResult.error || '', 'constraints');
         return;
       }
 
