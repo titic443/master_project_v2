@@ -292,6 +292,11 @@ class TestDataGenerator {
         <String>{}; // keys สำหรับ success (เช่น snackbar success)
     final expectedFailKeys =
         <String>{}; // keys สำหรับ fail (เช่น error message)
+    // Dialog keys ที่ต้อง dismiss หลัง assert
+    final dialogKeys = <String>{};
+
+    // Widget types ที่ถือว่าเป็น dialog
+    const dialogWidgetTypes = {'AlertDialog', 'SimpleDialog'};
 
     // ---------------------------------------------------------------------------
     // STEP 6: ระบุและจัดหมวดหมู่ Widget Keys
@@ -308,15 +313,28 @@ class TestDataGenerator {
     // วนลูปครั้งแรก: หา expected keys
     for (final w in widgets) {
       final k = (w['key'] ?? '').toString();
+      final t = (w['widgetType'] ?? '').toString();
+      final isDialog = dialogWidgetTypes.contains(t);
 
-      // เก็บ keys ที่มี _expected_success (เช่น snackbar แสดง success message)
-      if (k.contains('_expected_success')) {
+      // เก็บ keys ที่มี _expected_success หรือ _dialog_success
+      if (k.contains('_expected_success') || k.contains('_dialog_success')) {
         expectedSuccessKeys.add(k);
+        if (isDialog) dialogKeys.add(k);
       }
-      // เก็บ keys ที่มี _expected_fail (เช่น error message)
-      if (k.contains('_expected_fail')) {
+      // เก็บ keys ที่มี _expected_fail หรือ _dialog_fail
+      if (k.contains('_expected_fail') || k.contains('_dialog_fail')) {
         expectedFailKeys.add(k);
+        if (isDialog) dialogKeys.add(k);
       }
+    }
+
+    // Helper: สร้าง assert map สำหรับ key หนึ่งๆ
+    // ถ้า key อยู่ใน dialogKeys จะเพิ่ม dismiss: true เพื่อให้ test script
+    // dismiss dialog หลัง assert
+    Map<String, dynamic> buildAssert(String key, {bool exists = true}) {
+      final base = <String, dynamic>{'byKey': key, 'exists': exists};
+      if (dialogKeys.contains(key)) base['dismiss'] = true;
+      return base;
     }
 
     // ตรวจสอบว่ามี end button หรือไม่
@@ -1371,7 +1389,7 @@ class TestDataGenerator {
             }
           } else {
             for (final sk in expectedSuccessKeys) {
-              asserts.add({'byKey': sk, 'exists': true});
+              asserts.add(buildAssert(sk));
             }
           }
 
@@ -1523,7 +1541,7 @@ class TestDataGenerator {
           final id = 'pairwise_valid_cases_${i + 1}';
           final asserts = <Map<String, dynamic>>[];
           for (final sk in expectedSuccessKeys) {
-            asserts.add({'byKey': sk, 'exists': true});
+            asserts.add(buildAssert(sk));
           }
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
           cases.add({
@@ -1779,7 +1797,7 @@ class TestDataGenerator {
         })
         ..add({'pumpAndSettle': true});
       final maxAsserts = <Map<String, dynamic>>[
-        for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
+        for (final sk in expectedSuccessKeys) buildAssert(sk)
       ];
       final maxCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
@@ -1862,9 +1880,9 @@ class TestDataGenerator {
       final minKind = minHasInvalidFields ? 'failed' : 'success';
       final minAsserts = <Map<String, dynamic>>[
         if (minHasInvalidFields)
-          for (final fk in expectedFailKeys) {'byKey': fk, 'exists': true}
+          for (final fk in expectedFailKeys) buildAssert(fk)
         else
-          for (final sk in expectedSuccessKeys) {'byKey': sk, 'exists': true}
+          for (final sk in expectedSuccessKeys) buildAssert(sk)
       ];
       final minCombo = <String, String>{
         ...buildNonTextDefaultCombo(),

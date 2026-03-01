@@ -145,7 +145,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -191,7 +191,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -340,7 +340,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -381,7 +381,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -408,10 +408,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -424,8 +424,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -486,7 +486,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -632,7 +632,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -673,7 +673,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -700,10 +700,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -716,8 +716,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -781,7 +781,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -853,7 +853,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1003,7 +1003,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1078,7 +1078,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1198,7 +1198,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1269,7 +1269,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1385,7 +1385,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1426,7 +1426,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -1453,10 +1453,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -1469,8 +1469,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -1534,7 +1534,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1575,7 +1575,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -1602,10 +1602,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -1618,8 +1618,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -1683,7 +1683,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1802,7 +1802,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1952,7 +1952,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2098,7 +2098,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2248,7 +2248,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2319,7 +2319,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2465,7 +2465,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2614,7 +2614,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2656,7 +2656,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -2683,10 +2683,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -2699,8 +2699,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -2737,7 +2737,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2808,7 +2808,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2958,7 +2958,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3000,7 +3000,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -3027,10 +3027,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -3043,8 +3043,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -3078,7 +3078,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3119,7 +3119,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -3146,10 +3146,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -3162,8 +3162,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -3200,7 +3200,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3275,7 +3275,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3422,7 +3422,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'A');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3498,7 +3498,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3617,7 +3617,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3763,7 +3763,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3804,7 +3804,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -3831,10 +3831,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -3847,8 +3847,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -3885,7 +3885,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4034,7 +4034,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4183,7 +4183,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4227,7 +4227,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4298,7 +4298,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4339,7 +4339,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -4366,10 +4366,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -4382,8 +4382,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -4444,7 +4444,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4515,7 +4515,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4634,7 +4634,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4675,7 +4675,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -4702,10 +4702,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -4718,8 +4718,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -4783,7 +4783,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4932,7 +4932,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5081,7 +5081,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5122,7 +5122,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -5149,10 +5149,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -5165,8 +5165,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -5227,7 +5227,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5346,7 +5346,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5387,7 +5387,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -5414,10 +5414,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -5430,8 +5430,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -5492,7 +5492,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5638,7 +5638,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5712,7 +5712,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5783,7 +5783,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5830,7 +5830,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5976,7 +5976,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6122,7 +6122,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6268,7 +6268,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6414,7 +6414,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6455,7 +6455,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -6482,10 +6482,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -6498,8 +6498,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -6560,7 +6560,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6679,7 +6679,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6825,7 +6825,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6866,7 +6866,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2029
+        // Select date: 15/01/2030
         {
           // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
@@ -6893,10 +6893,10 @@ void main() {
             }
             waitAttempts++;
           }
-          // Scroll to find year 2029
+          // Scroll to find year 2030
           int scrollAttempts = 0;
           bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2029')) && scrollAttempts < 30) {
+          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
             final scrollable = find.byType(Scrollable);
             if (tester.any(scrollable)) {
               // Try scrolling up first (for older years), then down
@@ -6909,8 +6909,8 @@ void main() {
             scrollAttempts++;
           }
           // Tap the year
-          if (tester.any(find.text('2029'))) {
-            await tester.tap(find.text('2029'), warnIfMissed: false);
+          if (tester.any(find.text('2030'))) {
+            await tester.tap(find.text('2030'), warnIfMissed: false);
             await tester.pumpAndSettle();
           }
         }
@@ -6974,7 +6974,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7096,7 +7096,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7242,7 +7242,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7283,13 +7283,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อภิวัฒน์ จันทร์เพ็ญ สุขสำราญสุขจิตต์');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMax
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0987654321');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -7411,7 +7411,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีอาการแพ้ยาปฏิชีวนะ');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7435,10 +7435,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '0');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));

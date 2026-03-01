@@ -12,11 +12,11 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมศักดิ์ เจริญศรี",
-          "invalid": "ส",
+          "valid": "สมชาย ใจดี",
+          "invalid": "อ",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "ส",
-          "atMax": "สมศักดิ์ เจริญศรี ชัยวัฒน์ บุญมี สุขศรี สุวรรณมาลี"
+          "atMin": "อ",
+          "atMax": "สมชาย ใจดี"
         }
       ],
       "appt_02_id_card_textfield": [
@@ -24,16 +24,16 @@
           "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
+          "atMin": "0",
           "atMax": "1234567890123"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "081234567",
+          "invalid": "08123456",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "",
+          "atMin": "0",
           "atMax": "0812345678"
         }
       ],
@@ -43,7 +43,7 @@
           "invalid": "",
           "invalidRuleMessages": "",
           "atMin": "01/01/2000",
-          "atMax": "01/01/2030"
+          "atMax": "01/01/2031"
         }
       ],
       "appt_07_time_textfield": [
@@ -57,11 +57,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีอาการแพ้ยาพารา",
-          "invalid": "N/A",
+          "valid": "คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยมีอาการแพ้ยาพารา"
+          "atMax": "คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย"
         }
       ]
     }
@@ -71,7 +71,7 @@
       "tc": "pairwise_valid_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: invalid§081234567, department: surgery, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: surgery, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -187,7 +187,7 @@
       "tc": "pairwise_valid_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: null, time: null, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: null, time: null, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -287,7 +287,7 @@
       "tc": "pairwise_valid_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: invalid§081234567, department: orthopedics, appointmentType: tele, date: 01/03/2026, time: 14:30, insurance_switch: on, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: invalid§08123456, department: orthopedics, appointmentType: tele, date: 01/03/2026, time: 14:30, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -395,7 +395,7 @@
       "tc": "pairwise_valid_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: invalid§123456789012, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 15/01/2029, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: invalid§123456789012, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -447,7 +447,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -495,7 +495,7 @@
       "tc": "pairwise_valid_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: invalid§081234567, department: ent, appointmentType: opd, date: 15/01/2001, time: 18:00, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: invalid§08123456, department: ent, appointmentType: opd, date: 15/01/2001, time: 18:00, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -595,7 +595,7 @@
       "tc": "pairwise_valid_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 15/01/2029, time: 09:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 15/01/2030, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -647,7 +647,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -707,7 +707,7 @@
       "tc": "pairwise_valid_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: invalid§123456789012, phone: invalid§081234567, department: obstetrics, appointmentType: opd, date: null, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: invalid§123456789012, phone: invalid§08123456, department: obstetrics, appointmentType: opd, date: null, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -811,7 +811,7 @@
       "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 01/03/2026, time: 18:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 01/03/2026, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -923,7 +923,7 @@
       "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: invalid§123456789012, phone: invalid§081234567, department: medicine, appointmentType: opd, date: null, time: 09:00, insurance_switch: on, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: invalid§123456789012, phone: invalid§08123456, department: medicine, appointmentType: opd, date: null, time: 09:00, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1035,7 +1035,7 @@
       "tc": "pairwise_valid_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -1135,7 +1135,7 @@
       "tc": "pairwise_valid_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: null, time: 09:00, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: null, time: 09:00, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1230,7 +1230,7 @@
       "tc": "pairwise_valid_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: invalid§081234567, department: ophthalmology, appointmentType: tele, date: 15/01/2001, time: null, insurance_switch: on, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: invalid§08123456, department: ophthalmology, appointmentType: tele, date: 15/01/2001, time: null, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1338,7 +1338,7 @@
       "tc": "pairwise_valid_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: invalid§081234567, department: pediatrics, appointmentType: tele, date: 15/01/2029, time: 09:00, insurance_switch: on, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: invalid§08123456, department: pediatrics, appointmentType: tele, date: 15/01/2030, time: 09:00, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1390,7 +1390,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -1446,7 +1446,7 @@
       "tc": "pairwise_valid_invalid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 15/01/2029, time: 18:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 15/01/2030, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -1498,7 +1498,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -1554,7 +1554,7 @@
       "tc": "pairwise_valid_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 15/01/2001, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 15/01/2001, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -1658,7 +1658,7 @@
       "tc": "pairwise_valid_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: 01/03/2026, time: 18:00, insurance_switch: on, note: invalid§N/A",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: 01/03/2026, time: 18:00, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1766,7 +1766,7 @@
       "tc": "pairwise_valid_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: invalid§123456789012, phone: invalid§081234567, department: medicine, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: invalid§123456789012, phone: invalid§08123456, department: medicine, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -1870,7 +1870,7 @@
       "tc": "pairwise_valid_invalid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -1978,7 +1978,7 @@
       "tc": "pairwise_valid_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: invalid§081234567, department: orthopedics, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: invalid§08123456, department: orthopedics, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -2078,7 +2078,7 @@
       "tc": "pairwise_valid_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: invalid§081234567, department: obstetrics, appointmentType: tele, date: 15/01/2001, time: 09:00, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: invalid§08123456, department: obstetrics, appointmentType: tele, date: 15/01/2001, time: 09:00, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2178,7 +2178,7 @@
       "tc": "pairwise_valid_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: valid§0812345678, department: ent, appointmentType: tele, date: 01/03/2026, time: 09:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: valid§0812345678, department: ent, appointmentType: tele, date: 01/03/2026, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -2290,7 +2290,7 @@
       "tc": "pairwise_valid_invalid_cases_22",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 15/01/2029, time: null, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 15/01/2030, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -2342,7 +2342,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -2398,7 +2398,7 @@
       "tc": "pairwise_valid_invalid_cases_23",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: invalid§081234567, department: ophthalmology, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: invalid§08123456, department: ophthalmology, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2502,7 +2502,7 @@
       "tc": "pairwise_valid_invalid_cases_24",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 01/03/2026, time: 18:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 01/03/2026, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -2614,7 +2614,7 @@
       "tc": "pairwise_valid_invalid_cases_25",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: 15/01/2029, time: null, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: 15/01/2030, time: null, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2666,7 +2666,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -2714,7 +2714,7 @@
       "tc": "pairwise_valid_invalid_cases_26",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: invalid§123456789012, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2029, time: null, insurance_switch: on, note: invalid§N/A",
+      "description": "patient_name: invalid§อ, id_card: invalid§123456789012, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2030, time: null, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2766,7 +2766,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -2826,7 +2826,7 @@
       "tc": "pairwise_valid_invalid_cases_27",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: invalid§081234567, department: ent, appointmentType: tele, date: null, time: 14:30, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: invalid§08123456, department: ent, appointmentType: tele, date: null, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -2938,7 +2938,7 @@
       "tc": "pairwise_valid_invalid_cases_28",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "patient_name: invalid§ส, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 01/03/2026, time: 09:00, insurance_switch: off, note: invalid§N/A",
+      "description": "patient_name: invalid§อ, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 01/03/2026, time: 09:00, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -3038,7 +3038,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: null, time: 14:30, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: null, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3146,7 +3146,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3246,7 +3246,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 15/01/2001, time: 09:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 15/01/2001, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3346,7 +3346,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2029, time: null, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2030, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3398,7 +3398,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -3454,7 +3454,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 15/01/2001, time: 18:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 15/01/2001, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3562,7 +3562,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 01/03/2026, time: 09:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 01/03/2026, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3670,7 +3670,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: null, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: null, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3770,7 +3770,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: null, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: null, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3870,7 +3870,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2029, time: 18:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2030, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -3922,7 +3922,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -3970,7 +3970,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: null, time: 18:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: null, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4070,7 +4070,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 15/01/2001, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 15/01/2001, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4170,7 +4170,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 15/01/2029, time: 09:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 15/01/2030, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4222,7 +4222,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -4278,7 +4278,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 01/03/2026, time: 18:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 01/03/2026, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4386,7 +4386,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4494,7 +4494,7 @@
       "tc": "pairwise_valid_cases_15",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 15/01/2029, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4546,7 +4546,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -4594,7 +4594,7 @@
       "tc": "pairwise_valid_cases_16",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4694,7 +4694,7 @@
       "tc": "pairwise_valid_cases_17",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 15/01/2029, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4746,7 +4746,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -4794,7 +4794,7 @@
       "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 15/01/2001, time: 18:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 15/01/2001, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -4894,7 +4894,7 @@
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: opd, date: null, time: 09:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: opd, date: null, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5002,7 +5002,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5102,7 +5102,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: null, time: null, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: null, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5210,7 +5210,7 @@
       "tc": "pairwise_valid_cases_22",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 01/03/2026, time: 09:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 01/03/2026, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5310,7 +5310,7 @@
       "tc": "pairwise_valid_cases_23",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 01/03/2026, time: 18:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 01/03/2026, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5410,7 +5410,7 @@
       "tc": "pairwise_valid_cases_24",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 01/03/2026, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 01/03/2026, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5510,7 +5510,7 @@
       "tc": "pairwise_valid_cases_25",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5610,7 +5610,7 @@
       "tc": "pairwise_valid_cases_26",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2029, time: 09:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2030, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5662,7 +5662,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -5710,7 +5710,7 @@
       "tc": "pairwise_valid_cases_27",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 01/03/2026, time: null, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 01/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5810,7 +5810,7 @@
       "tc": "pairwise_valid_cases_28",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5910,7 +5910,7 @@
       "tc": "pairwise_valid_cases_29",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 15/01/2029, time: 18:00, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 15/01/2030, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -5962,7 +5962,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2029"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -6018,7 +6018,7 @@
       "tc": "pairwise_valid_cases_30",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: on, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: ent, appointmentType: opd, date: 01/03/2026, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -6126,7 +6126,7 @@
       "tc": "pairwise_valid_cases_31",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศักดิ์ เจริญศรี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 01/03/2026, time: 09:00, insurance_switch: off, note: valid§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1234567890123, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 01/03/2026, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -6249,7 +6249,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, patient_name: atMax§สมศักดิ์ เจริญศรี ชัยวัฒน์ บ…, id_card: atMax§1234567890123, phone: atMax§0812345678, note: atMax§ผู้ป่วยมีอาการแพ้ยาพารา",
+      "description": "type_opd: opd, department: อายุรกรรม, patient_name: atMax§สมชาย ใจดี, id_card: atMax§1234567890123, phone: atMax§0812345678, note: atMax§คนไข้มีอาการปวดหัวมา 3 วัน แ…",
       "steps": [
         {
           "enterText": {
@@ -6357,7 +6357,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, patient_name: atMin§ส, id_card: atMin§atMin, phone: atMin§atMin, note: atMin§atMin",
+      "description": "type_opd: opd, department: อายุรกรรม, patient_name: atMin§อ, id_card: atMin§0, phone: atMin§0, note: atMin§atMin",
       "steps": [
         {
           "enterText": {
