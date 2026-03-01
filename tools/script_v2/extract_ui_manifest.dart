@@ -463,6 +463,8 @@ class UiManifestExtractor {
       'ListTile',
       'Visibility',
       'SnackBar',
+      'AlertDialog',
+      'SimpleDialog',
     };
 
     final out = <Map<String, dynamic>>[];

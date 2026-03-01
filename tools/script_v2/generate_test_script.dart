@@ -657,6 +657,23 @@ class TestScriptGenerator {
           final textEquals = a['textEquals'];
           final textContains = a['textContains'];
           final textGlobal = a['text'];
+          final byType = a['byType'];
+          final dismiss = a['dismiss'] == true;
+
+          // Assert: by widget type (e.g. AlertDialog, SimpleDialog)
+          if (byType != null && exists is bool) {
+            b.writeln(
+                "      expect(find.byType($byType), ${exists ? 'findsOneWidget' : 'findsNothing'});");
+            if (exists && dismiss) {
+              b.writeln("      // Dismiss $byType");
+              b.writeln(
+                  "      final _dialogBtn = find.descendant(of: find.byType($byType), matching: find.byType(TextButton));");
+              b.writeln(
+                  "      if (_dialogBtn.evaluate().isNotEmpty) await tester.tap(_dialogBtn.last);");
+              b.writeln("      await tester.pumpAndSettle();");
+            }
+            continue;
+          }
 
           // Assert: widget exists/not exists by key
           if (byKey != null &&
@@ -665,6 +682,16 @@ class TestScriptGenerator {
               textContains == null) {
             b.writeln(
                 "      expect(find.byKey(const Key('$byKey')), ${exists ? 'findsOneWidget' : 'findsNothing'});");
+            // Auto-dismiss dialog after asserting it exists
+            if (exists && dismiss) {
+              b.writeln("      // Dismiss dialog");
+              b.writeln(
+                  "      final _dialogBtn = find.descendant(of: find.byType(AlertDialog), matching: find.byType(TextButton));");
+              b.writeln(
+                  "      if (_dialogBtn.evaluate().isNotEmpty) await tester.tap(_dialogBtn.last);");
+              b.writeln("      else await tester.tap(find.descendant(of: find.byType(SimpleDialog), matching: find.byType(TextButton)).last);");
+              b.writeln("      await tester.pumpAndSettle();");
+            }
             continue;
           }
 
@@ -1333,16 +1360,20 @@ class TestScriptGenerator {
             final byKey = a['byKey'];
             final exists = a['exists'];
             final textGlobal = a['text'];
+            final byType = a['byType'];
 
             // ข้าม non-exists assertions
             if (exists == false) continue;
 
-            if (byKey != null && exists is bool) {
+            if (byType != null && exists is bool) {
+              finders.add("find.byType($byType)");
+            } else if (byKey != null && exists is bool) {
               finders.add("find.byKey(const Key('$byKey'))");
             } else if (textGlobal is String && exists is bool) {
               final esc = utils.dartEscape(textGlobal);
               finders.add("find.text('$esc')");
             }
+            // Note: dismiss is handled after expectAny (see below)
           }
 
           // สร้าง expectAny check
@@ -1358,6 +1389,20 @@ class TestScriptGenerator {
                 '        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,');
             ib.writeln(
                 "            reason: 'Expected at least one of the elements to exist');");
+          }
+
+          // Dismiss any dialogs after expectAny
+          for (final a in asserts) {
+            if (a['dismiss'] == true && a['exists'] == true) {
+              final type = a['byType']?.toString() ?? 'AlertDialog';
+              ib.writeln('        // Dismiss $type');
+              ib.writeln(
+                  '        final _dialogBtn = find.descendant(of: find.byType($type), matching: find.byType(TextButton));');
+              ib.writeln(
+                  '        if (_dialogBtn.evaluate().isNotEmpty) await tester.tap(_dialogBtn.last);');
+              ib.writeln('        await tester.pumpAndSettle();');
+              break; // dismiss once is enough
+            }
           }
         }
 
