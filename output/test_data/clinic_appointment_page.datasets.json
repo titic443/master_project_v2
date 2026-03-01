@@ -31,20 +31,20 @@
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "25/12/2567",
-          "invalid": "วันนี้",
+          "valid": "01/03/2026",
+          "invalid": "",
           "invalidRuleMessages": "",
-          "atMin": "",
-          "atMax": "25/12/2567"
+          "atMin": "15/01/2001",
+          "atMax": "15/01/2029"
         }
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "14:30",
-          "invalid": "เมื่อเช้า",
+          "valid": "09:00",
+          "invalid": "",
           "invalidRuleMessages": "",
-          "atMin": "",
-          "atMax": "14:30"
+          "atMin": "00:00",
+          "atMax": "23:59"
         }
       ],
       "appt_09_note_textfield": [
