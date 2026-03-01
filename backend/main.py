@@ -1,9 +1,26 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
+from bson import ObjectId
+import os
 import re
 
-app = FastAPI(title="Buttons Demo Backend", version="0.1.0")
+app = FastAPI(title="Demo Backend", version="0.2.0")
+
+# ---------------------------------------------------------------------------
+# MongoDB connection
+# ---------------------------------------------------------------------------
+_MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+_mongo_client: MongoClient | None = None
+
+
+def get_db():
+    global _mongo_client
+    if _mongo_client is None:
+        _mongo_client = MongoClient(_MONGO_URI, serverSelectionTimeoutMS=3000)
+    return _mongo_client["clinic_db"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -236,6 +253,109 @@ def _response_for_code(code: int):
     if code == 400:
         raise HTTPException(status_code=400, detail={"message": "bad_request", "code": 400})
     raise HTTPException(status_code=500, detail={"message": "server_error", "code": 500})
+
+
+# ---------------------------------------------------------------------------
+# Clinic Appointment
+# ---------------------------------------------------------------------------
+
+VALID_DEPARTMENTS = {
+    "internal_medicine", "surgery", "pediatrics",
+    "obstetrics", "ophthalmology", "ent", "orthopedics",
+}
+VALID_APPOINTMENT_TYPES = {"OPD", "Telemedicine"}
+
+
+class ClinicAppointmentRequest(BaseModel):
+    patientName: str | None = Field(default=None)
+    idCard: str | None = Field(default=None)
+    phone: str | None = Field(default=None)
+    department: str | None = Field(default=None)
+    appointmentType: str | None = Field(default=None, description="OPD|Telemedicine")
+    appointmentDate: str | None = Field(default=None, description="YYYY-MM-DD")
+    appointmentTime: str | None = Field(default=None, description="HH:mm")
+    hasInsurance: bool | None = Field(default=None)
+    note: str | None = Field(default=None)
+    forceCode: int | None = Field(default=None, description="200|400|500")
+
+
+@app.post("/api/demo/clinic/appointments")
+def create_appointment(req: ClinicAppointmentRequest):
+    print(req)
+
+    if req.forceCode in (200, 400, 500):
+        if req.forceCode == 200:
+            return {"message": "ok", "code": 200}
+        return _response_for_code(req.forceCode)
+
+    # Validate patientName (required, min 2 chars)
+    if not req.patientName or not req.patientName.strip():
+        return {"message": "กรุณากรอกชื่อ-นามสกุล", "code": 400}
+    if len(req.patientName.strip()) < 2:
+        return {"message": "อย่างน้อย 2 ตัวอักษร", "code": 400}
+
+    # Validate idCard (required, exactly 13 digits)
+    if not req.idCard or not req.idCard.strip():
+        return {"message": "กรุณากรอกเลขบัตรประชาชน", "code": 400}
+    if not re.fullmatch(r"\d{13}", req.idCard.strip()):
+        return {"message": "ต้องมี 13 หลัก", "code": 400}
+
+    # Validate phone (required, 9-10 digits)
+    if not req.phone or not req.phone.strip():
+        return {"message": "กรุณากรอกเบอร์โทรศัพท์", "code": 400}
+    if not re.fullmatch(r"\d{9,10}", req.phone.strip()):
+        return {"message": "เบอร์โทรไม่ถูกต้อง", "code": 400}
+
+    # Validate department (required, must be one of valid values)
+    if not req.department or req.department.strip() not in VALID_DEPARTMENTS:
+        return {"message": "กรุณาเลือกแผนก", "code": 400}
+
+    # Validate appointmentType (required, OPD or Telemedicine)
+    if not req.appointmentType or req.appointmentType not in VALID_APPOINTMENT_TYPES:
+        return {"message": "กรุณาเลือกประเภทการนัดหมาย", "code": 400}
+
+    # Validate appointmentDate (required, format YYYY-MM-DD)
+    if not req.appointmentDate or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", req.appointmentDate):
+        return {"message": "กรุณาเลือกวันที่นัดหมาย", "code": 400}
+
+    # Validate appointmentTime (required, format HH:mm)
+    if not req.appointmentTime or not re.fullmatch(r"\d{2}:\d{2}", req.appointmentTime):
+        return {"message": "กรุณาเลือกช่วงเวลา", "code": 400}
+
+    # Save to MongoDB
+    try:
+        db = get_db()
+        doc = {
+            "patientName": req.patientName.strip(),
+            "idCard": req.idCard.strip(),
+            "phone": req.phone.strip(),
+            "department": req.department,
+            "appointmentType": req.appointmentType,
+            "appointmentDate": req.appointmentDate,
+            "appointmentTime": req.appointmentTime,
+            "hasInsurance": req.hasInsurance or False,
+            "note": (req.note or "").strip(),
+        }
+        result = db["appointments"].insert_one(doc)
+        return {"message": "ok", "code": 200, "id": str(result.inserted_id)}
+    except PyMongoError as e:
+        print(f"MongoDB error: {e}")
+        raise HTTPException(status_code=500, detail={"message": "database_error", "code": 500})
+
+
+@app.get("/api/demo/clinic/appointments")
+def list_appointments():
+    try:
+        db = get_db()
+        docs = list(db["appointments"].find().sort("_id", -1))
+        appointments = []
+        for doc in docs:
+            doc["id"] = str(doc.pop("_id"))
+            appointments.append(doc)
+        return {"appointments": appointments, "total": len(appointments), "code": 200}
+    except PyMongoError as e:
+        print(f"MongoDB error: {e}")
+        raise HTTPException(status_code=500, detail={"message": "database_error", "code": 500})
 
 
 if __name__ == "__main__":
