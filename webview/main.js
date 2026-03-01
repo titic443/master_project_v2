@@ -413,7 +413,7 @@ class WebUI {
       const [fileHandle] = await window.showOpenFilePicker({
         types: [{
           description: 'Text Files',
-          accept: { 'text/plain': ['.txt', '.pict'] }
+          // accept: { 'text/plain': ['.txt', '.pict'] }
         }],
         multiple: false
       });

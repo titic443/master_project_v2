@@ -4,65 +4,65 @@
     "byKey": {
       "job_01_title_textfield": [
         {
-          "valid": "Software Engineer",
-          "invalid": "Jo",
+          "valid": "Senior Software Engineer",
+          "invalid": "Jr",
           "invalidRuleMessages": "At least 3 characters",
-          "atMin": "Jo",
-          "atMax": "Software Engineer"
+          "atMin": "Ab",
+          "atMax": "Senior Software Engineer"
         }
       ],
       "job_02_company_textfield": [
         {
-          "valid": "Google",
-          "invalid": "C",
+          "valid": "Tech Innovations Inc.",
+          "invalid": "A",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "C",
-          "atMax": "Google"
+          "atMin": "T",
+          "atMax": "Tech Innovations Inc."
         }
       ],
       "job_03_location_textfield": [
         {
-          "valid": "Bangkok",
+          "valid": "Bangkok, Thailand",
           "invalid": "B",
           "invalidRuleMessages": "At least 2 characters",
           "atMin": "B",
-          "atMax": "Bangkok"
+          "atMax": "Bangkok, Thailand"
         }
       ],
       "job_07_salary_min_textfield": [
         {
-          "valid": "100000",
+          "valid": "40000",
           "invalid": "1",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "100000"
+          "atMax": "40000"
         }
       ],
       "job_08_salary_max_textfield": [
         {
-          "valid": "150000",
-          "invalid": "99999",
+          "valid": "60000",
+          "invalid": "40000",
           "invalidRuleMessages": "Must be ≥ min",
           "atMin": "",
-          "atMax": "150000"
+          "atMax": "60000"
         }
       ],
       "job_09_desc_textfield": [
         {
-          "valid": "We are looking for a highly motivated and experien",
-          "invalid": "This is a short des.",
+          "valid": "We are looking for a highly motivated individual t",
+          "invalid": "This job descriptio.",
           "invalidRuleMessages": "At least 20 characters",
-          "atMin": "This is a short des.",
-          "atMax": "We are looking for a highly motivated and experien"
+          "atMin": "This job description.",
+          "atMax": "We are looking for a highly motivated individual t"
         }
       ],
       "job_10_skills_textfield": [
         {
-          "valid": "Dart, Flutter, Firebase",
-          "invalid": "S",
+          "valid": "Flutter, Dart, Firebase, AWS",
+          "invalid": "F",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "S",
-          "atMax": "Dart, Flutter, Firebase"
+          "atMin": "F",
+          "atMax": "Flutter, Dart, Firebase, AWS"
         }
       ]
     }

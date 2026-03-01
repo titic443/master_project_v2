@@ -8,3 +8,7 @@ linkedin_06_experience_textfield: valid, invalid
 linkedin_07_employment_dropdown: Full-time, Part-time, Contract, Freelance
 linkedin_09_university_textfield: valid, invalid
 linkedin_11_open_to_work_checkbox: checked, unchecked
+
+IF [linkedin_10_agree_terms_checkbox] = "unchecked" THEN [linkedin_11_open_to_work_checkbox] = "unchecked";
+IF [linkedin_11_open_to_work_checkbox] = "checked" THEN [linkedin_07_employment_dropdown] <> "Full-time";
+IF [state.educationLevel] = "education_phd_radio" THEN [linkedin_06_experience_textfield] = "valid";
