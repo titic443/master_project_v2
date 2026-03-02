@@ -557,12 +557,12 @@ class GeneratorPict {
     // null (cancel) - always include
     values.add('null');
 
-    // past_date - close to firstDate
-    final pastDate = DateTime(
-      firstDate.year + 1,
-      firstDate.month,
-      15.clamp(1, 28),
-    );
+    // past_date: ใช้ปีที่ไม่เกิน 2 ปีก่อนปีปัจจุบัน เพื่อให้ year picker ใน test scroll ถึง
+    // (firstDate อาจอยู่ไกลมาก เช่น DateTime(2000) ทำให้ปี 2001 scroll ไม่ถึงใน test)
+    final pastYear = firstDate.year + 1 > now.year - 2
+        ? firstDate.year + 1
+        : now.year - 2;
+    final pastDate = DateTime(pastYear, 1, 15);
     if (pastDate.isAfter(firstDate) && pastDate.isBefore(lastDate)) {
       values.add('${pastDate.day.toString().padLeft(2, '0')}/${pastDate.month.toString().padLeft(2, '0')}/${pastDate.year}');
     }
@@ -572,19 +572,17 @@ class GeneratorPict {
       values.add('${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}');
     }
 
-    // future_date - close to lastDate
-    final futureDate = DateTime(
-      lastDate.year - 1,
-      lastDate.month,
-      15.clamp(1, 28),
-    );
+    // future_date: ใช้ปีที่ไม่เกิน 2 ปีหลังปีปัจจุบัน เพื่อให้ year picker ใน test scroll ถึง
+    final futureYear = lastDate.year - 1 < now.year + 2
+        ? lastDate.year - 1
+        : now.year + 2;
+    final futureDate = DateTime(futureYear, 12, 15);
     if (futureDate.isAfter(firstDate) && futureDate.isBefore(lastDate) && futureDate.isAfter(now)) {
       values.add('${futureDate.day.toString().padLeft(2, '0')}/${futureDate.month.toString().padLeft(2, '0')}/${futureDate.year}');
     }
 
     // Ensure we have at least 2 non-null values
     if (values.length < 3) {
-      // Add a middle date
       final middleDate = DateTime(
         (firstDate.year + lastDate.year) ~/ 2,
         6,
