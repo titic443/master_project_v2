@@ -17,7 +17,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -37,77 +37,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -145,7 +92,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -168,10 +115,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -215,7 +162,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -232,77 +179,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -381,77 +275,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -486,7 +327,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -510,7 +351,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -527,77 +368,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -653,7 +441,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -673,77 +461,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -781,7 +516,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -853,7 +588,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -875,7 +610,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -895,77 +630,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1003,7 +685,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1100,10 +782,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -1120,77 +802,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1198,7 +827,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1222,7 +851,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -1287,7 +916,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -1304,77 +933,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1409,7 +985,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -1426,77 +1002,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1558,7 +1081,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -1575,77 +1098,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1683,7 +1153,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1704,7 +1174,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -1724,77 +1194,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1802,7 +1219,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -1824,10 +1241,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -1844,77 +1261,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -1993,77 +1357,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -2098,7 +1409,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2123,7 +1434,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2140,77 +1451,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -2248,7 +1506,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2272,7 +1530,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -2319,7 +1577,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2343,7 +1601,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -2360,77 +1618,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -2486,7 +1691,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -2506,77 +1711,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -2614,7 +1766,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2636,10 +1788,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2656,77 +1808,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -2737,7 +1836,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2758,10 +1857,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -2830,7 +1929,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -2850,77 +1949,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -2958,7 +2004,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -2980,10 +2026,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3000,77 +2046,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -3099,7 +2092,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
@@ -3119,77 +2112,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -3222,10 +2162,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
@@ -3275,7 +2215,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3297,10 +2237,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3317,77 +2257,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -3448,7 +2335,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3498,7 +2385,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3522,7 +2409,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3539,77 +2426,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -3617,7 +2451,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3641,7 +2475,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3658,77 +2492,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -3763,7 +2544,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3787,7 +2568,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3804,77 +2585,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -3885,7 +2613,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -3909,7 +2637,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3926,77 +2654,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -4034,7 +2709,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4058,7 +2733,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4075,77 +2750,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -4183,7 +2805,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4207,7 +2829,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4227,7 +2849,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4251,7 +2873,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4298,7 +2920,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4322,7 +2944,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4339,77 +2961,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -4444,7 +3013,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4468,7 +3037,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4515,7 +3084,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4539,7 +3108,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4556,77 +3125,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -4634,7 +3150,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4658,7 +3174,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4675,77 +3191,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -4783,7 +3246,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4807,7 +3270,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4824,77 +3287,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -4932,7 +3342,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -4956,7 +3366,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4973,77 +3383,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -5081,7 +3438,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5105,7 +3462,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5122,77 +3479,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -5227,7 +3531,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5251,7 +3555,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5268,77 +3572,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -5346,7 +3597,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5370,7 +3621,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5387,77 +3638,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -5492,7 +3690,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5516,7 +3714,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5533,77 +3731,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -5638,7 +3783,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5662,7 +3807,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5712,7 +3857,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5736,7 +3881,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5783,7 +3928,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5807,7 +3952,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5830,7 +3975,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -5854,7 +3999,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -5871,77 +4016,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -5976,7 +4068,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6000,7 +4092,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6017,77 +4109,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6122,7 +4161,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6146,7 +4185,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6163,77 +4202,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6268,7 +4254,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6292,7 +4278,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6309,77 +4295,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6414,7 +4347,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6438,7 +4371,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6455,77 +4388,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6560,7 +4440,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6584,7 +4464,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6601,77 +4481,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6679,7 +4506,7 @@ void main() {
         // Skip time selection (null/cancel)
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6703,7 +4530,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6720,77 +4547,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2001
+        // Select date: 15/01/2001 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2001
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2001')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2001'))) {
-            await tester.tap(find.text('2001'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6825,7 +4599,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6849,7 +4623,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -6866,77 +4640,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 15/01/2030
+        // Select date: 15/01/2030 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2030
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2030')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2030'))) {
-            await tester.tap(find.text('2030'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2030');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Jan
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Jan')) && !tester.any(find.textContaining('ม.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('15').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -6974,7 +4695,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -6998,7 +4719,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -7015,77 +4736,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -7096,7 +4764,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7120,7 +4788,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102001234567');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -7137,77 +4805,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -7242,7 +4857,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7289,7 +4904,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0987654321');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -7306,77 +4921,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();
@@ -7411,7 +4973,7 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
         await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
@@ -7432,13 +4994,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -7455,77 +5017,24 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pump();
         await tester.pumpAndSettle();
-        // Select date: 01/03/2026
+        // Select date: 03/03/2026 (text input mode)
         {
-          // Wait for DatePicker to appear
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
-          // Find and tap the year in header (e.g., '202x') to open year picker
-          final yearInHeader = find.byWidgetPredicate(
-            (widget) => widget is Text && (widget.data ?? '').contains('202'),
-          );
-          if (tester.any(yearInHeader)) {
-            await tester.tap(yearInHeader.first);
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
             await tester.pumpAndSettle();
           }
-          // Wait until year picker is fully loaded (check for year items)
-          int waitAttempts = 0;
-          while (waitAttempts < 50) {
-            await tester.pump(const Duration(milliseconds: 50));
-            // Check if year picker has loaded by finding any 4-digit year
-            final yearItems = find.byWidgetPredicate(
-              (w) => w is Text && RegExp(r'^\d{4}$').hasMatch(w.data ?? ''),
-            );
-            if (tester.any(yearItems)) {
-              // Found year items, picker is ready
-              await tester.pumpAndSettle();
-              break;
-            }
-            waitAttempts++;
-          }
-          // Scroll to find year 2026
-          int scrollAttempts = 0;
-          bool scrollingUp = true; // Start by scrolling up
-          while (!tester.any(find.text('2026')) && scrollAttempts < 30) {
-            final scrollable = find.byType(Scrollable);
-            if (tester.any(scrollable)) {
-              // Try scrolling up first (for older years), then down
-              final offset = scrollingUp ? const Offset(0, -300) : const Offset(0, 300);
-              await tester.drag(scrollable.first, offset);
-              await tester.pumpAndSettle();
-              // After 15 attempts scrolling up, try scrolling down
-              if (scrollAttempts == 15) scrollingUp = false;
-            }
-            scrollAttempts++;
-          }
-          // Tap the year
-          if (tester.any(find.text('2026'))) {
-            await tester.tap(find.text('2026'), warnIfMissed: false);
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '03/03/2026');
             await tester.pumpAndSettle();
           }
         }
-        // Navigate to Mar
-        {
-          // Try going backward (chevron_left) up to 6 months first
-          int backAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && backAttempts < 6) {
-            if (tester.any(find.byIcon(Icons.chevron_left))) {
-              await tester.tap(find.byIcon(Icons.chevron_left).first);
-              await tester.pumpAndSettle();
-            }
-            backAttempts++;
-          }
-          // If not found, try going forward (chevron_right)
-          int fwdAttempts = 0;
-          while (!tester.any(find.textContaining('Mar')) && !tester.any(find.textContaining('มี.ค.')) && fwdAttempts < 12) {
-            if (tester.any(find.byIcon(Icons.chevron_right))) {
-              await tester.tap(find.byIcon(Icons.chevron_right).first);
-              await tester.pumpAndSettle();
-            }
-            fwdAttempts++;
-          }
-        }
-        await tester.tap(find.text('1').first);
-        await tester.pumpAndSettle();
         await tester.tap(find.text('OK'));
         await tester.pump();
         await tester.pumpAndSettle();

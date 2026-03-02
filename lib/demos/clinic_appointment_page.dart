@@ -69,6 +69,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
       initialDate: now.add(const Duration(days: 1)),
       firstDate: DateTime(2000),
       lastDate: DateTime(2031),
+      initialEntryMode: DatePickerEntryMode.input,
     );
     if (picked != null && context.mounted) {
       context.read<ClinicAppointmentCubit>().onDateChanged(picked);

@@ -13,64 +13,64 @@
       "job_01_title_textfield": [
         {
           "valid": "Senior Software Engineer",
-          "invalid": "SE",
+          "invalid": "AI",
           "invalidRuleMessages": "At least 3 characters",
-          "atMin": "SE",
+          "atMin": "AI",
           "atMax": "Senior Software Engineer"
         }
       ],
       "job_02_company_textfield": [
         {
-          "valid": "Agoda",
+          "valid": "Acme Corp.",
           "invalid": "A",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "A",
-          "atMax": "Agoda"
+          "atMin": "AA",
+          "atMax": "Acme Corp."
         }
       ],
       "job_03_location_textfield": [
         {
-          "valid": "Bangkok",
+          "valid": "Bangkok, Thailand",
           "invalid": "B",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "B",
-          "atMax": "Bangkok"
+          "atMin": "Kr",
+          "atMax": "Bangkok, Thailand"
         }
       ],
       "job_07_salary_min_textfield": [
         {
-          "valid": "50000",
-          "invalid": "1",
+          "valid": "45000",
+          "invalid": "0",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "50000"
+          "atMax": "45000"
         }
       ],
       "job_08_salary_max_textfield": [
         {
-          "valid": "75000",
-          "invalid": "40000",
+          "valid": "50000",
+          "invalid": "30000",
           "invalidRuleMessages": "Must be ≥ min",
           "atMin": "",
-          "atMax": "75000"
+          "atMax": "50000"
         }
       ],
       "job_09_desc_textfield": [
         {
           "valid": "We are seeking a highly motivated and experienced ",
-          "invalid": "Need more details",
+          "invalid": "Good job.",
           "invalidRuleMessages": "At least 20 characters",
-          "atMin": "This is too short...",
+          "atMin": "1234567890123456789",
           "atMax": "We are seeking a highly motivated and experienced "
         }
       ],
       "job_10_skills_textfield": [
         {
-          "valid": "Flutter, Dart, Firebase, AWS",
-          "invalid": "F",
+          "valid": "Dart, Flutter, Firebase, APIs, SQL",
+          "invalid": "A",
           "invalidRuleMessages": "At least 2 characters",
-          "atMin": "F",
-          "atMax": "Flutter, Dart, Firebase, AWS"
+          "atMin": "C#",
+          "atMax": "Dart, Flutter, Firebase, APIs, SQL"
         }
       ]
     }
@@ -80,7 +80,7 @@
       "tc": "pairwise_valid_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Part-time, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Part-time, exp: Senior, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -215,7 +215,7 @@
       "tc": "pairwise_valid_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: invalid§B, category: Education, type: Full-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: invalid§Need more details, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: invalid§B, category: Education, type: Full-time, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: invalid§Good job., skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -358,7 +358,7 @@
       "tc": "pairwise_valid_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: invalid§B, category: Healthcare, type: Freelance, exp: Junior, salary_min: invalid§1, salary_max: valid§75000, remote_switch: off, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: invalid§B, category: Healthcare, type: Freelance, exp: Junior, salary_min: invalid§0, salary_max: valid§50000, remote_switch: off, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -493,7 +493,7 @@
       "tc": "pairwise_valid_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: valid§Bangkok, category: Finance, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: invalid§AI, company: invalid§A, location: valid§Bangkok, Thailand, category: Finance, type: Full-time, exp: Level, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -636,7 +636,7 @@
       "tc": "pairwise_valid_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: invalid§B, category: Education, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: invalid§AI, company: invalid§A, location: invalid§B, category: Education, type: Contract, exp: Junior, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -779,7 +779,7 @@
       "tc": "pairwise_valid_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Engineering, type: Contract, exp: Senior, salary_min: invalid§1, salary_max: valid§75000, remote_switch: on, desc: invalid§Need more details, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Engineering, type: Contract, exp: Senior, salary_min: invalid§0, salary_max: valid§50000, remote_switch: on, desc: invalid§Good job., skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -914,7 +914,7 @@
       "tc": "pairwise_valid_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: invalid§B, category: Engineering, type: Part-time, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: invalid§B, category: Engineering, type: Part-time, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -1057,7 +1057,7 @@
       "tc": "pairwise_valid_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Internship, exp: Mid-Level, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: invalid§Need more details, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Internship, exp: Mid-Level, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: invalid§Good job., skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -1188,7 +1188,7 @@
       "tc": "pairwise_valid_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: invalid§B, category: Tech, type: Full-time, exp: Level, salary_min: invalid§1, salary_max: valid§75000, remote_switch: off, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: invalid§B, category: Tech, type: Full-time, exp: Level, salary_min: invalid§0, salary_max: valid§50000, remote_switch: off, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -1327,7 +1327,7 @@
       "tc": "pairwise_valid_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, category: Tech, type: Part-time, exp: Junior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, Thailand, category: Tech, type: Part-time, exp: Junior, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -1466,7 +1466,7 @@
       "tc": "pairwise_valid_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: invalid§B, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: invalid§B, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -1605,7 +1605,7 @@
       "tc": "pairwise_valid_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: valid§Bangkok, category: Engineering, type: Freelance, exp: Mid-Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: invalid§AI, company: invalid§A, location: valid§Bangkok, Thailand, category: Engineering, type: Freelance, exp: Mid-Level, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -1748,7 +1748,7 @@
       "tc": "pairwise_valid_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: valid§Bangkok, category: Education, type: Freelance, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: invalid§AI, company: invalid§A, location: valid§Bangkok, Thailand, category: Education, type: Freelance, exp: Senior, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -1883,7 +1883,7 @@
       "tc": "pairwise_valid_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: invalid§B, category: Engineering, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: invalid§AI, company: invalid§A, location: invalid§B, category: Engineering, type: Internship, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -2030,7 +2030,7 @@
       "tc": "pairwise_valid_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: invalid§B, category: Tech, type: Freelance, exp: Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: invalid§B, category: Tech, type: Freelance, exp: Level, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -2173,7 +2173,7 @@
       "tc": "pairwise_valid_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: invalid§B, category: Finance, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: invalid§B, category: Finance, type: Contract, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -2320,7 +2320,7 @@
       "tc": "pairwise_valid_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: valid§Bangkok, category: Healthcare, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: invalid§AI, company: invalid§A, location: valid§Bangkok, Thailand, category: Healthcare, type: Part-time, exp: Senior, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -2463,7 +2463,7 @@
       "tc": "pairwise_valid_invalid_cases_18",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, category: Marketing, type: Freelance, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, Thailand, category: Marketing, type: Freelance, exp: Senior, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -2602,7 +2602,7 @@
       "tc": "pairwise_valid_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Full-time, exp: Junior, salary_min: invalid§1, salary_max: valid§75000, remote_switch: off, desc: invalid§Need more details, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Full-time, exp: Junior, salary_min: invalid§0, salary_max: valid§50000, remote_switch: off, desc: invalid§Good job., skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -2729,7 +2729,7 @@
       "tc": "pairwise_valid_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Internship, exp: Level, salary_min: invalid§1, salary_max: valid§75000, remote_switch: off, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Internship, exp: Level, salary_min: invalid§0, salary_max: valid§50000, remote_switch: off, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -2864,7 +2864,7 @@
       "tc": "pairwise_valid_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, category: Tech, type: Contract, exp: Senior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, Thailand, category: Tech, type: Contract, exp: Senior, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -2995,7 +2995,7 @@
       "tc": "pairwise_valid_invalid_cases_22",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: valid§Bangkok, category: Finance, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: invalid§AI, company: invalid§A, location: valid§Bangkok, Thailand, category: Finance, type: Freelance, exp: Junior, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: off, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -3138,7 +3138,7 @@
       "tc": "pairwise_valid_invalid_cases_23",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Contract, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Contract, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -3273,7 +3273,7 @@
       "tc": "pairwise_valid_invalid_cases_24",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: invalid§A, location: valid§Bangkok, category: Healthcare, type: Contract, exp: Level, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: invalid§AI, company: invalid§A, location: valid§Bangkok, Thailand, category: Healthcare, type: Contract, exp: Level, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -3412,7 +3412,7 @@
       "tc": "pairwise_valid_invalid_cases_25",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: invalid§B, category: Education, type: Internship, exp: Junior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: invalid§Need more details, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: invalid§B, category: Education, type: Internship, exp: Junior, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: invalid§Good job., skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -3551,7 +3551,7 @@
       "tc": "pairwise_valid_invalid_cases_26",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, category: Healthcare, type: Internship, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: invalid§A, location: valid§Bangkok, Thailand, category: Healthcare, type: Internship, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -3678,7 +3678,7 @@
       "tc": "pairwise_valid_invalid_cases_27",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: invalid§B, category: Healthcare, type: Full-time, exp: Senior, salary_min: valid§50000, salary_max: invalid§40000, remote_switch: off, desc: invalid§Need more details, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: invalid§B, category: Healthcare, type: Full-time, exp: Senior, salary_min: valid§45000, salary_max: invalid§30000, remote_switch: off, desc: invalid§Good job., skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -3813,7 +3813,7 @@
       "tc": "pairwise_valid_invalid_cases_28",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: invalid§B, category: Education, type: Part-time, exp: Level, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: invalid§B, category: Education, type: Part-time, exp: Level, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -3960,7 +3960,7 @@
       "tc": "pairwise_valid_invalid_cases_29",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: invalid§B, category: Engineering, type: Full-time, exp: Junior, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§F",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: invalid§B, category: Engineering, type: Full-time, exp: Junior, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -4095,7 +4095,7 @@
       "tc": "pairwise_valid_invalid_cases_30",
       "kind": "failed",
       "group": "pairwise_valid_invalid_cases",
-      "description": "title: invalid§SE, company: valid§Agoda, location: invalid§B, category: Tech, type: Internship, exp: Mid-Level, salary_min: invalid§1, salary_max: invalid§40000, remote_switch: off, desc: invalid§Need more details, skills: invalid§F",
+      "description": "title: invalid§AI, company: valid§Acme Corp., location: invalid§B, category: Tech, type: Internship, exp: Mid-Level, salary_min: invalid§0, salary_max: invalid§30000, remote_switch: off, desc: invalid§Good job., skills: invalid§A",
       "steps": [
         {
           "enterText": {
@@ -4365,7 +4365,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Engineering, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Engineering, type: Freelance, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -4500,7 +4500,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Healthcare, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Healthcare, type: Contract, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -4627,7 +4627,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Healthcare, type: Freelance, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Healthcare, type: Freelance, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -4754,7 +4754,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Education, type: Contract, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Education, type: Contract, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -4889,7 +4889,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Tech, type: Part-time, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Tech, type: Part-time, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5016,7 +5016,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Freelance, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Freelance, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5151,7 +5151,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Engineering, type: Internship, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Engineering, type: Internship, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5278,7 +5278,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Contract, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Contract, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5413,7 +5413,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Tech, type: Full-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Tech, type: Full-time, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5548,7 +5548,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Freelance, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5675,7 +5675,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Education, type: Freelance, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Education, type: Freelance, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5802,7 +5802,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Tech, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Tech, type: Contract, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -5929,7 +5929,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Internship, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Internship, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6064,7 +6064,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Education, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Education, type: Internship, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6191,7 +6191,7 @@
       "tc": "pairwise_valid_cases_15",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Healthcare, type: Part-time, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Healthcare, type: Part-time, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6326,7 +6326,7 @@
       "tc": "pairwise_valid_cases_16",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Part-time, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6461,7 +6461,7 @@
       "tc": "pairwise_valid_cases_17",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Engineering, type: Contract, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Engineering, type: Contract, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6596,7 +6596,7 @@
       "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Full-time, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6723,7 +6723,7 @@
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Healthcare, type: Internship, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Healthcare, type: Internship, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6850,7 +6850,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Engineering, type: Full-time, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Engineering, type: Full-time, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -6977,7 +6977,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Healthcare, type: Full-time, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Healthcare, type: Full-time, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7112,7 +7112,7 @@
       "tc": "pairwise_valid_cases_22",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Education, type: Part-time, exp: Mid-Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Education, type: Part-time, exp: Mid-Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7247,7 +7247,7 @@
       "tc": "pairwise_valid_cases_23",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Internship, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Internship, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7374,7 +7374,7 @@
       "tc": "pairwise_valid_cases_24",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Tech, type: Freelance, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Tech, type: Freelance, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7509,7 +7509,7 @@
       "tc": "pairwise_valid_cases_25",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Marketing, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Marketing, type: Full-time, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7636,7 +7636,7 @@
       "tc": "pairwise_valid_cases_26",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Tech, type: Internship, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Tech, type: Internship, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7763,7 +7763,7 @@
       "tc": "pairwise_valid_cases_27",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Part-time, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -7890,7 +7890,7 @@
       "tc": "pairwise_valid_cases_28",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Engineering, type: Part-time, exp: Senior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Engineering, type: Part-time, exp: Senior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -8017,7 +8017,7 @@
       "tc": "pairwise_valid_cases_29",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Finance, type: Contract, exp: Junior, salary_min: valid§50000, salary_max: valid§75000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Finance, type: Contract, exp: Junior, salary_min: valid§45000, salary_max: valid§50000, remote_switch: off, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -8144,7 +8144,7 @@
       "tc": "pairwise_valid_cases_30",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§Senior Software Engineer, company: valid§Agoda, location: valid§Bangkok, category: Education, type: Full-time, exp: Level, salary_min: valid§50000, salary_max: valid§75000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Flutter, Dart, Firebase, AWS",
+      "description": "title: valid§Senior Software Engineer, company: valid§Acme Corp., location: valid§Bangkok, Thailand, category: Education, type: Full-time, exp: Level, salary_min: valid§45000, salary_max: valid§50000, remote_switch: on, desc: valid§We are seeking a highly moti…, skills: valid§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -8302,7 +8302,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: atMax§Senior Software Engineer, company: atMax§Agoda, location: atMax§Bangkok, salary_min: atMax§50000, salary_max: atMax§75000, desc: atMax§We are seeking a highly moti…, skills: atMax§Flutter, Dart, Firebase, AWS",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: atMax§Senior Software Engineer, company: atMax§Acme Corp., location: atMax§Bangkok, Thailand, salary_min: atMax§45000, salary_max: atMax§50000, desc: atMax§We are seeking a highly moti…, skills: atMax§Dart, Flutter, Firebase, API…",
       "steps": [
         {
           "enterText": {
@@ -8429,7 +8429,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: atMin§SE, company: atMin§A, location: atMin§B, salary_min: atMin§\"\", salary_max: atMin§\"\", desc: atMin§This is too short..., skills: atMin§F",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: atMin§AI, company: atMin§AA, location: atMin§Kr, salary_min: atMin§\"\", salary_max: atMin§\"\", desc: atMin§1234567890123456789, skills: atMin§C#",
       "steps": [
         {
           "enterText": {
