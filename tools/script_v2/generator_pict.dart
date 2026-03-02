@@ -88,8 +88,27 @@ class GeneratorPict {
           buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
         }
       } else {
-        // For non-TEXT factors (Radio, Dropdown, optional Checkbox), keep all values
-        buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
+        // For non-TEXT factors (Radio, Dropdown, DatePicker, TimePicker, optional Checkbox)
+        // Exclude 'null' (cancel/skip) and past dates — valid model needs only real valid values
+        final today = DateTime.now();
+        final todayOnly = DateTime(today.year, today.month, today.day);
+        final validValues = entry.value.where((v) {
+          if (v == 'null') return false;
+          // Parse dd/mm/yyyy — exclude past dates
+          final parts = v.split('/');
+          if (parts.length == 3) {
+            final d = int.tryParse(parts[0]);
+            final m = int.tryParse(parts[1]);
+            final y = int.tryParse(parts[2]);
+            if (d != null && m != null && y != null) {
+              return !DateTime(y, m, d).isBefore(todayOnly);
+            }
+          }
+          return true;
+        }).toList();
+        if (validValues.isNotEmpty) {
+          buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
+        }
       }
     }
 

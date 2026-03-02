@@ -94,11 +94,18 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
 
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          key: Key('appt_10_expected_fail'),
-          content: Text('กรุณากรอกข้อมูลให้ครบถ้วน'),
-          backgroundColor: Colors.red,
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          key: const Key('appt_10_expected_fail'),
+          title: const Text('ข้อมูลไม่ครบถ้วน'),
+          content: const Text('กรุณากรอกข้อมูลให้ครบถ้วน'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('ตกลง'),
+            ),
+          ],
         ),
       );
       return;
@@ -121,19 +128,33 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
             curr.status != ClinicAppointmentStatus.loading,
         listener: (context, state) {
           if (state.status == ClinicAppointmentStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                key: Key('appt_10_expected_success'),
-                content: Text('นัดหมายสำเร็จ! ระบบจะส่ง SMS ยืนยันให้ท่าน'),
-                backgroundColor: Colors.green,
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                key: const Key('appt_10_expected_success'),
+                title: const Text('นัดหมายสำเร็จ'),
+                content: const Text('ระบบจะส่ง SMS ยืนยันให้ท่าน'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('ตกลง'),
+                  ),
+                ],
               ),
             );
           } else if (state.status == ClinicAppointmentStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('appt_10_expected_fail'),
+                title: const Text('เกิดข้อผิดพลาด'),
                 content: Text(state.errorMessage ?? 'ไม่สามารถจองนัดหมายได้'),
-                backgroundColor: Colors.red,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('ตกลง'),
+                  ),
+                ],
               ),
             );
           }

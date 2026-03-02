@@ -3038,7 +3038,523 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: tele, date: null, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 03/03/2026, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อายุรกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "09:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 15/01/2030, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กุมารเวชศาสตร์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "15/01/2030"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "09:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_3",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 03/03/2026, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กระดูกและข้อ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "09:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_4",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2030, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กุมารเวชศาสตร์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "15/01/2030"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "18:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_5",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 15/01/2030, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กระดูกและข้อ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "15/01/2030"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "18:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 15/01/2030, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -3090,7 +3606,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -3143,10 +3659,418 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_2",
+      "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 03/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 03/03/2026, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กระดูกและข้อ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:30"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อายุรกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "15/01/2030"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:30"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_9",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 03/03/2026, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "จักษุวิทยา"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "18:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_10",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 03/03/2026, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กุมารเวชศาสตร์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:30"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_11",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 03/03/2026, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -3212,7 +4136,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "18:00"
         },
         {
           "pumpAndSettle": true
@@ -3243,10 +4167,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_3",
+      "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 15/01/2001, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 03/03/2026, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -3284,7 +4208,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "อายุรกรรม"
+          "scrollAndTapText": "ศัลยกรรม"
         },
         {
           "pumpAndSettle": true
@@ -3298,7 +4222,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2001"
+          "selectDate": "03/03/2026"
         },
         {
           "pumpAndSettle": true
@@ -3316,6 +4240,14 @@
         },
         {
           "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
         },
         {
           "enterText": {
@@ -3343,10 +4275,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_4",
+      "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2030, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: 15/01/2030, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -3412,7 +4344,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "18:00"
         },
         {
           "pumpAndSettle": true
@@ -3451,10 +4383,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_5",
+      "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 15/01/2001, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 03/03/2026, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -3492,7 +4424,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "กระดูกและข้อ"
+          "scrollAndTapText": "สูติ-นรีเวช"
         },
         {
           "pumpAndSettle": true
@@ -3506,7 +4438,215 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "15/01/2001"
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:30"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_15",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 15/01/2030, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "จักษุวิทยา"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "15/01/2030"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:30"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_16",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: tele, date: 03/03/2026, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "หู คอ จมูก"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
         },
         {
           "pumpAndSettle": true
@@ -3559,7 +4699,115 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_6",
+      "tc": "pairwise_valid_cases_17",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 03/03/2026, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อายุรกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "03/03/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "18:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
       "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 03/03/2026, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
@@ -3667,1234 +4915,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_7",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: null, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "จักษุวิทยา"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_8",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: null, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_9",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2030, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "หู คอ จมูก"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2030"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "18:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_10",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: null, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "18:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_11",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 15/01/2001, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ศัลยกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2001"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_12",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: opd, date: 15/01/2030, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ศัลยกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2030"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "09:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_13",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: surgery, appointmentType: tele, date: 03/03/2026, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ศัลยกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "18:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_14",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2001, time: 14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2001"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_15",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2030"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_16",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: opd, date: 03/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_17",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ophthalmology, appointmentType: opd, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "จักษุวิทยา"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2030"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_18",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ophthalmology, appointmentType: tele, date: 15/01/2001, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "จักษุวิทยา"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2001"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "18:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: opd, date: null, time: 09:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: opd, date: 15/01/2030, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -4946,7 +4970,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "15/01/2030"
         },
         {
           "pumpAndSettle": true
@@ -4960,18 +4984,10 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "09:00"
+          "selectTime": "14:30"
         },
         {
           "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
         },
         {
           "enterText": {
@@ -5002,7 +5018,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: tele, date: null, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: opd, date: 03/03/2026, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -5040,7 +5056,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สูติ-นรีเวช"
+          "scrollAndTapText": "หู คอ จมูก"
         },
         {
           "pumpAndSettle": true
@@ -5054,7 +5070,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "03/03/2026"
         },
         {
           "pumpAndSettle": true
@@ -5068,7 +5084,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "18:00"
+          "selectTime": "09:00"
         },
         {
           "pumpAndSettle": true
@@ -5102,115 +5118,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: opd, date: null, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_22",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 03/03/2026, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
+      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2030, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
       "steps": [
         {
           "enterText": {
@@ -5262,923 +5170,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "09:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_23",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 03/03/2026, time: 18:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "18:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_24",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: tele, date: 03/03/2026, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_25",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: obstetrics, appointmentType: opd, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "สูติ-นรีเวช"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2001"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_26",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: pediatrics, appointmentType: tele, date: 15/01/2030, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
           "selectDate": "15/01/2030"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "09:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_27",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: tele, date: 03/03/2026, time: null, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_28",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: tele, date: 15/01/2001, time: 14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "หู คอ จมูก"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2001"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "14:30"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_29",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: medicine, appointmentType: opd, date: 15/01/2030, time: 18:00, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "15/01/2030"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "18:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_30",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: ent, appointmentType: opd, date: 03/03/2026, time: null, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "หู คอ จมูก"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_31",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมชาย ใจดี, id_card: valid§1102001234567, phone: valid§0812345678, department: orthopedics, appointmentType: opd, date: 03/03/2026, time: 09:00, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเรื้อรัง",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "03/03/2026"
         },
         {
           "pumpAndSettle": true
