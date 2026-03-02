@@ -8279,7 +8279,7 @@
       "tc": "edge_cases_empty_all_fields",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: empty§\"\", company: empty§\"\", location: empty§\"\", salary_min: empty§\"\", salary_max: empty§\"\", desc: empty§\"\", skills: empty§\"\"",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: empty§\"\", company: empty§\"\", location: empty§\"\", salary_min: empty§\"\", salary_max: empty§\"\", desc: empty§\"\", skills: empty§\"\"",
       "steps": [
         {
           "tap": {
@@ -8302,7 +8302,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: atMax§Senior Software Engineer, company: atMax§Agoda, location: atMax§Bangkok, salary_min: atMax§50000, salary_max: atMax§75000, desc: atMax§We are seeking a highly moti…, skills: atMax§Flutter, Dart, Firebase, AWS",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: atMax§Senior Software Engineer, company: atMax§Agoda, location: atMax§Bangkok, salary_min: atMax§50000, salary_max: atMax§75000, desc: atMax§We are seeking a highly moti…, skills: atMax§Flutter, Dart, Firebase, AWS",
       "steps": [
         {
           "enterText": {
@@ -8429,7 +8429,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, title: atMin§SE, company: atMin§A, location: atMin§B, salary_min: atMin§atMin, salary_max: atMin§atMin, desc: atMin§This is too short..., skills: atMin§F",
+      "description": "category: IT & Tech, type: Full-time, exp: Entry Level, remote_switch: off, title: atMin§SE, company: atMin§A, location: atMin§B, salary_min: atMin§\"\", salary_max: atMin§\"\", desc: atMin§This is too short..., skills: atMin§F",
       "steps": [
         {
           "enterText": {

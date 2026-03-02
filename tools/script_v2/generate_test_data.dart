@@ -306,6 +306,7 @@ class TestDataGenerator {
     final textKeys = <String>[]; // TextFormField, TextField keys
     final radioKeys = <String>[]; // Radio button keys
     final checkboxKeys = <String>[]; // Checkbox keys
+    final switchKeys = <String>[]; // Switch, SwitchListTile keys
     final primaryButtons = <String>[]; // ปุ่มอื่นๆ ที่ไม่ใช่ end button
     final datePickerKeys = <String>[]; // DatePicker keys
     final timePickerKeys = <String>[]; // TimePicker keys
@@ -370,6 +371,12 @@ class TestDataGenerator {
       else if ((t.startsWith('Checkbox') || t == 'CheckboxListTile') &&
           k.isNotEmpty) {
         checkboxKeys.add(k);
+      }
+      // ---------------------------------------------------------------------
+      // Switch / SwitchListTile
+      // ---------------------------------------------------------------------
+      else if ((t == 'Switch' || t == 'SwitchListTile') && k.isNotEmpty) {
+        switchKeys.add(k);
       }
       // ---------------------------------------------------------------------
       // Buttons - ปุ่มต่างๆ (ยกเว้น end button)
@@ -852,7 +859,7 @@ class TestDataGenerator {
                   ? (actual.length > 28
                       ? '${actual.substring(0, 28)}…'
                       : actual)
-                  : raw); // fallback label ถ้าไม่มี dataset
+                  : '""'); // actual ว่าง → แสดง "" เพื่อสื่อว่าค่าเป็น empty string
           value = '$raw§$display';
         } else {
           // radio/dropdown: ใช้ _shortValue (ไม่มี label prefix)
@@ -1702,6 +1709,10 @@ class TestDataGenerator {
       }
       for (final ck in requiredCheckboxValidation.keys) {
         combo[ck] = 'checked';
+      }
+      // Switch: default off (ไม่ tap → ค่าเริ่มต้นของ Switch ใน Flutter คือ false)
+      for (final sk in switchKeys) {
+        combo[sk] = 'off';
       }
       return combo;
     }
