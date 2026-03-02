@@ -4235,6 +4235,133 @@
       ]
     },
     {
+      "tc": "pairwise_valid_invalid_cases_31",
+      "kind": "success",
+      "group": "pairwise_valid_invalid_cases",
+      "description": "All fields valid — expect success",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "job_01_title_textfield",
+            "dataset": "byKey.job_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "job_02_company_textfield",
+            "dataset": "byKey.job_02_company_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "job_03_location_textfield",
+            "dataset": "byKey.job_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "job_04_category_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "IT & Tech"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "job_05_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Full-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "job_06_exp_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Entry Level"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "job_07_salary_min_textfield",
+            "dataset": "byKey.job_07_salary_min_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "job_08_salary_max_textfield",
+            "dataset": "byKey.job_08_salary_max_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "job_09_desc_textfield",
+            "dataset": "byKey.job_09_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "job_10_skills_textfield",
+            "dataset": "byKey.job_10_skills_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "job_12_xxx_button"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "job_12_expected_success",
+          "exists": true
+        }
+      ]
+    },
+    {
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",

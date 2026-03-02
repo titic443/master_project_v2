@@ -1404,6 +1404,98 @@ class TestDataGenerator {
             'asserts': asserts,
           });
         }
+
+        // ── Inject all-valid success case ──────────────────────────────────────
+        // PICT ไม่สร้าง all-valid combo ใน full model → inject เองให้ครบ
+        // rule: ถ้า group pairwise_valid_invalid_cases ไม่มี kind==success เลย
+        //       และมี expectedSuccessKeys → เพิ่ม 1 case ที่ valid ทุก field
+        final alreadyHasSuccess = cases.any((c) =>
+            c['group'] == 'pairwise_valid_invalid_cases' &&
+            c['kind'] == 'success');
+
+        if (!alreadyHasSuccess && expectedSuccessKeys.isNotEmpty) {
+          final st = <Map<String, dynamic>>[];
+          final stepsByKey = <String, List<Map<String, dynamic>>>{};
+
+          // Text fields — valid dataset
+          for (final key in textKeys) {
+            stepsByKey[key] = [
+              {
+                'enterText': {
+                  'byKey': key,
+                  'dataset': 'byKey.$key[0].valid'
+                }
+              },
+              {'pump': true}
+            ];
+          }
+
+          // Dropdowns — เลือก option แรกที่ไม่ใช่ null
+          for (int idx = 0; idx < dropdownKeys.length; idx++) {
+            final key = dropdownKeys[idx];
+            final opts = idx < dropdownValuesList.length
+                ? dropdownValuesList[idx]
+                : <String>[];
+            final firstOpt = opts.firstWhere(
+              (v) => v != 'null' && v.isNotEmpty,
+              orElse: () => '',
+            );
+            if (firstOpt.isNotEmpty) {
+              String textToTap = firstOpt;
+              if (idx < dropdownValueToTextMaps.length) {
+                final mapping = dropdownValueToTextMaps[idx];
+                final clean = firstOpt.replaceAll('"', '');
+                textToTap = mapping[clean.replaceAll('_', ' ')] ??
+                    mapping[clean] ??
+                    firstOpt;
+              }
+              stepsByKey[key] = [
+                {'tap': {'byKey': key}},
+                {'pumpAndSettle': true},
+                {'scrollAndTapText': textToTap},
+                {'pumpAndSettle': true}
+              ];
+            }
+          }
+
+          // Required checkboxes — ต้อง checked
+          for (final ck in requiredCheckboxValidation.keys) {
+            stepsByKey[ck] = [
+              {'tap': {'byKey': ck}},
+              {'pump': true}
+            ];
+          }
+
+          // เรียง steps ตาม widget order
+          final sorted = List<Map<String, dynamic>>.from(widgets)
+            ..sort((a, b) => (a['key'] ?? '')
+                .toString()
+                .compareTo((b['key'] ?? '').toString()));
+          for (final w in sorted) {
+            final k = (w['key'] ?? '').toString();
+            if (stepsByKey.containsKey(k)) st.addAll(stepsByKey[k]!);
+          }
+
+          // End button
+          if (hasEndButton && endKey != null) {
+            st.add({'tap': {'byKey': endKey}});
+            st.add({'pumpAndSettle': true});
+          } else {
+            st.add({'pump': true});
+          }
+
+          final successAsserts = [
+            for (final sk in expectedSuccessKeys) buildAssert(sk)
+          ];
+          cases.add({
+            'tc': 'pairwise_valid_invalid_cases_${combos.length + 1}',
+            'kind': 'success',
+            'group': 'pairwise_valid_invalid_cases',
+            'description': 'All fields valid — expect success',
+            'steps': st,
+            'asserts': successAsserts,
+          });
+        }
       }
 
       // ── STEP 14: Build Valid-Only Cases ───────────────────────────────────────
