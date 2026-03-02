@@ -5,18 +5,18 @@
       "appt_01_patient_name_textfield": [
         {
           "valid": "สมชาย ใจดี",
-          "invalid": "อ",
+          "invalid": "ส",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "อ",
+          "atMin": "ส",
           "atMax": "สมชาย ใจดี"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1234567890123",
+          "valid": "1102001234567",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "0",
+          "atMin": "",
           "atMax": "1234567890123"
         }
       ],
@@ -25,13 +25,13 @@
           "valid": "0812345678",
           "invalid": "08123456",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "0",
-          "atMax": "0812345678"
+          "atMin": "12345678",
+          "atMax": "0987654321"
         }
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "01/03/2026",
+          "valid": "03/03/2026",
           "invalid": "",
           "invalidRuleMessages": "",
           "atMin": "01/01/2000",
@@ -49,11 +49,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย",
+          "valid": "คนไข้มีอาการปวดหัวเรื้อรัง",
           "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "คนไข้มีอาการปวดหัวมา 3 วัน และมีไข้เล็กน้อย"
+          "atMax": "คนไข้มีอาการปวดหัวเรื้อรัง"
         }
       ]
     }
