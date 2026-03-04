@@ -743,12 +743,8 @@ class WebUI {
   }
 
   #getChipClass(label) {
-    if (label === 'valid' || label === 'checked') return 'val-success';
     if (label === 'invalid' || label === 'unchecked') return 'val-error';
-    if (label === 'atMax') return 'val-primary';
-    if (label === 'atMin') return 'val-warning';
-    if (label === 'empty') return 'val-neutral';
-    return 'val-data'; // radio/dropdown actual values
+    return 'val-success'; // all other values (valid, checked, atMax, atMin, empty, on/off, dropdown, etc.)
   }
 
   #getGroupLabel(name) {
