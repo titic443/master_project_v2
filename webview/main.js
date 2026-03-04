@@ -762,7 +762,9 @@ class WebUI {
 
   #renderDescription(description) {
     if (!description) return '';
-    return description.split(', ').map(pair => {
+    // Split only at ", " that is immediately followed by a field name pattern (word: )
+    // This avoids splitting values that contain commas, e.g. "Bangkok, Thailand"
+    return description.split(/,\s*(?=[\w]+:\s)/).map(pair => {
       const colonIdx = pair.indexOf(': ');
       if (colonIdx === -1) return `<span class="desc-chip val-neutral"><span class="desc-chip-val">${pair}</span></span>`;
       const field = pair.substring(0, colonIdx);

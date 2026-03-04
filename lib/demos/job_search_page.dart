@@ -187,9 +187,11 @@ class _SearchPanel extends StatelessWidget {
                   key: const Key('search_02_location_textfield'),
                   controller: locationCtrl,
                   style: const TextStyle(fontSize: 14),
+                  autocorrect: false,
+                  enableSuggestions: false,
                   decoration: _searchDec(
                     label: 'Location',
-                    hint: 'Bangkok',
+                    hint: 'Bangkok, Thailand',
                     icon: Icons.location_on_outlined,
                   ),
                   onChanged: cubit.onLocationChanged,

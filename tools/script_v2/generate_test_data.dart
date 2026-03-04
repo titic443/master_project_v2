@@ -343,6 +343,24 @@ class TestDataGenerator {
     // ถ้าไม่มี = widget demo (ไม่มี form submission)
     final hasEndButton = endKey != null;
 
+    // Fallback success key: ถ้า manifest ไม่มี _expected_success key เลย
+    // → derive จาก page prefix ของ endKey เช่น "search_07_end_button" → "search_expected_success"
+    // เพื่อ force ให้ success cases มี assert เสมอ (rule: all-valid + no-validation → assert success)
+    final String? _fallbackSuccessKey = (expectedSuccessKeys.isEmpty && endKey != null)
+        ? '${endKey.split('_').first}_expected_success'
+        : null;
+
+    // Helper: สร้าง asserts สำหรับ success case
+    // ถ้า expectedSuccessKeys ว่าง → ใช้ fallback key แทน
+    List<Map<String, dynamic>> buildSuccessAsserts() {
+      if (expectedSuccessKeys.isNotEmpty) {
+        return [for (final sk in expectedSuccessKeys) buildAssert(sk)];
+      } else if (_fallbackSuccessKey != null) {
+        return [{'byKey': _fallbackSuccessKey, 'exists': true}];
+      }
+      return [];
+    }
+
     // วนลูปครั้งที่สอง: จัดหมวดหมู่ widgets ตาม type
     for (final w in widgets) {
       final t = (w['widgetType'] ?? '').toString(); // widget type
@@ -1395,9 +1413,7 @@ class TestDataGenerator {
               }
             }
           } else {
-            for (final sk in expectedSuccessKeys) {
-              asserts.add(buildAssert(sk));
-            }
+            asserts.addAll(buildSuccessAsserts());
           }
 
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
@@ -1491,9 +1507,7 @@ class TestDataGenerator {
             st.add({'pump': true});
           }
 
-          final successAsserts = [
-            for (final sk in expectedSuccessKeys) buildAssert(sk)
-          ];
+          final successAsserts = buildSuccessAsserts();
           cases.add({
             'tc': 'pairwise_valid_invalid_cases_${combos.length + 1}',
             'kind': 'success',
@@ -1638,10 +1652,7 @@ class TestDataGenerator {
           }
 
           final id = 'pairwise_valid_cases_${i + 1}';
-          final asserts = <Map<String, dynamic>>[];
-          for (final sk in expectedSuccessKeys) {
-            asserts.add(buildAssert(sk));
-          }
+          final asserts = buildSuccessAsserts();
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
           cases.add({
             'tc': id,
@@ -1899,9 +1910,7 @@ class TestDataGenerator {
           'tap': {'byKey': endKey}
         })
         ..add({'pumpAndSettle': true});
-      final maxAsserts = <Map<String, dynamic>>[
-        for (final sk in expectedSuccessKeys) buildAssert(sk)
-      ];
+      final maxAsserts = buildSuccessAsserts();
       final maxCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
         for (final k in textKeys)
@@ -1985,7 +1994,7 @@ class TestDataGenerator {
         if (minHasInvalidFields)
           for (final fk in expectedFailKeys) buildAssert(fk)
         else
-          for (final sk in expectedSuccessKeys) buildAssert(sk)
+          ...buildSuccessAsserts()
       ];
       final minCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
