@@ -3,16 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/clinic_appointment_cubit.dart';
 import 'cubit/clinic_search_cubit.dart';
-import 'cubit/linkedin_cubit.dart';
-import 'cubit/linkedin_search_cubit.dart';
 import 'cubit/job_post_cubit.dart';
 import 'cubit/job_search_cubit.dart';
 import 'cubit/property_post_cubit.dart';
 import 'cubit/property_search_cubit.dart';
 import 'demos/clinic_appointment_page.dart';
 import 'demos/clinic_search_page.dart';
-import 'demos/linkedin_profile_page.dart';
-import 'demos/linkedin_search_page.dart';
 import 'demos/job_post_page.dart';
 import 'demos/job_search_page.dart';
 import 'demos/property_post_page.dart';
@@ -56,45 +52,6 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 20),
-
-              // ── LinkedIn ────────────────────────────────────────────────
-              _AppGroupHeader(
-                title: 'LinkedIn',
-                icon: Icons.work,
-                color: Colors.indigo,
-              ),
-              const SizedBox(height: 12),
-              _buildCard(
-                context,
-                title: 'LinkedIn Profile Registration',
-                description: 'Register your professional profile',
-                icon: Icons.person_add_outlined,
-                color: Colors.indigo,
-                onTap: () => _go(
-                  context,
-                  BlocProvider(
-                    create: (_) => LinkedinCubit(),
-                    child: const LinkedinProfilePage(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              _buildCard(
-                context,
-                title: 'LinkedIn Profile Search',
-                description: 'Search profiles by name or email',
-                icon: Icons.manage_search,
-                color: Colors.indigo,
-                onTap: () => _go(
-                  context,
-                  BlocProvider(
-                    create: (_) => LinkedinSearchCubit(),
-                    child: const LinkedinSearchPage(),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 32),
 
               // ── Job Board ───────────────────────────────────────────────
               _AppGroupHeader(
@@ -161,7 +118,8 @@ class HomePage extends StatelessWidget {
               _buildCard(
                 context,
                 title: 'ค้นหานัดหมาย',
-                description: 'ค้นหาด้วยชื่อผู้ป่วย แผนก วันที่ หรือประเภทการนัด',
+                description:
+                    'ค้นหาด้วยชื่อผู้ป่วย แผนก วันที่ หรือประเภทการนัด',
                 icon: Icons.manage_search,
                 color: Colors.teal,
                 onTap: () => _go(
