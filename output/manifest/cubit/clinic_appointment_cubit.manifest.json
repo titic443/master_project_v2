@@ -1,7 +1,0 @@
-{
-  "source": {
-    "file": "lib/cubit/clinic_appointment_cubit.dart",
-    "pageClass": "clinic_appointment_cubit"
-  },
-  "widgets": []
-}

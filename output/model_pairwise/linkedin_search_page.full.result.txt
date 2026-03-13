@@ -1,5 +1,0 @@
-search_01_name_textfield	search_02_email_textfield
-valid	invalid
-valid	valid
-invalid	invalid
-invalid	valid
