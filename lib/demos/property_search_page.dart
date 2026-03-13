@@ -59,22 +59,38 @@ class _PropertySearchViewState extends State<_PropertySearchView> {
             curr.status != PropertySearchStatus.loading,
         listener: (context, state) {
           if (state.status == PropertySearchStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_success'),
+                title: const Text('Search Successful'),
                 content: Text('Found ${state.properties.length} propert${state.properties.length == 1 ? 'y' : 'ies'}'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           } else if (state.status == PropertySearchStatus.error ||
               state.status == PropertySearchStatus.empty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_fail'),
+                title: const Text('Search Failed'),
                 content: Text(
                   state.status == PropertySearchStatus.empty
                       ? 'No properties found matching your criteria'
                       : state.errorMessage ?? 'Search failed',
                 ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           }

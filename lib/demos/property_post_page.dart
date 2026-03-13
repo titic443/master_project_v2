@@ -59,11 +59,18 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
 
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          key: Key('prop_13_expected_fail'),
-          content: Text('Please correct the highlighted fields'),
-          backgroundColor: Colors.red,
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          key: const Key('prop_13_expected_fail'),
+          title: const Text('Validation Error'),
+          content: const Text('Please correct the highlighted fields'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
         ),
       );
       return;
@@ -86,19 +93,33 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
             curr.status != PropertyPostStatus.loading,
         listener: (context, state) {
           if (state.status == PropertyPostStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                key: Key('prop_13_expected_success'),
-                content: Text('Property listed successfully!'),
-                backgroundColor: Colors.green,
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                key: const Key('prop_13_expected_success'),
+                title: const Text('Success'),
+                content: const Text('Property listed successfully!'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           } else if (state.status == PropertyPostStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('prop_13_expected_fail'),
+                title: const Text('Error'),
                 content: Text(state.errorMessage ?? 'Failed to list property'),
-                backgroundColor: Colors.red,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           }

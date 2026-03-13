@@ -64,11 +64,18 @@ class _JobPostViewState extends State<_JobPostView> {
 
   void _onSubmit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          key: Key('job_12_expected_fail'),
-          content: Text('Please correct the highlighted fields'),
-          backgroundColor: Colors.red,
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          key: const Key('job_12_expected_fail'),
+          title: const Text('Validation Error'),
+          content: const Text('Please correct the highlighted fields'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
         ),
       );
       return;
@@ -91,19 +98,33 @@ class _JobPostViewState extends State<_JobPostView> {
             curr.status != JobPostStatus.loading,
         listener: (context, state) {
           if (state.status == JobPostStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                key: Key('job_12_expected_success'),
-                content: Text('Job posted successfully!'),
-                backgroundColor: Colors.green,
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                key: const Key('job_12_expected_success'),
+                title: const Text('Success'),
+                content: const Text('Job posted successfully!'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           } else if (state.status == JobPostStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('job_12_expected_fail'),
+                title: const Text('Error'),
                 content: Text(state.errorMessage ?? 'Failed to post job'),
-                backgroundColor: Colors.red,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           }
