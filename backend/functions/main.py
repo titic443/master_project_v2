@@ -420,6 +420,41 @@ async def book_appointment(appt: AppointmentIn):
     return ApiResponse(message="Appointment booked successfully", code=200)
 
 
+@app.get("/api/demo/clinic/appointments/search")
+async def search_appointments(
+    patient_name: Optional[str] = None,
+    department: Optional[str] = None,
+    appointment_date: Optional[str] = None,
+    appointment_type: Optional[str] = None,
+):
+    """Search clinic appointments — all params optional, at least one required"""
+    conditions = []
+
+    if patient_name:
+        conditions.append(
+            {"patientName": {"$regex": patient_name, "$options": "i"}}
+        )
+    if department:
+        conditions.append({"department": department})
+    if appointment_date:
+        conditions.append({"appointmentDate": appointment_date})
+    if appointment_type:
+        conditions.append({"appointmentType": appointment_type})
+
+    if not conditions:
+        raise HTTPException(
+            status_code=400,
+            detail="At least one search filter is required",
+        )
+
+    query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
+    items = []
+    async for doc in db.appointments_collection.find(query).sort("_id", -1).limit(50):
+        doc["id"] = str(doc.pop("_id"))
+        items.append(doc)
+    return {"appointments": items, "total": len(items)}
+
+
 @app.get("/api/demo/clinic/appointments")
 async def list_appointments():
     """List all clinic appointments"""

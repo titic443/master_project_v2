@@ -1,0 +1,27 @@
+# PICT Constraints for Job Search Page
+# ======================================
+# อ้างอิงข้อมูลจริงใน DB:
+#   title: "Software Engineer"  category: "Engineering"  employmentType: "Freelance"
+#   location: "Bangkok, Thailand"  salaryMin: 30000  salaryMax: 70000  isRemote: true
+
+# ─── Dataset Constraints (Format A: key = value) ──────────────────────────────
+# ค่าตายตัวที่ตรงกับข้อมูลจริงใน DB สำหรับ text fields
+
+search_01_keyword_textfield = Software Engineer
+search_02_location_textfield = Bangkok, Thailand
+# search_05_salary_min_textfield = 30000
+
+# # ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────
+# # ทุก constraint ต้องอยู่บรรทัดเดียว และลงท้ายด้วย ;
+
+# # ถ้า keyword invalid → ต้องมี filter อื่นมาช่วย (location ต้อง valid)
+# IF [search_01_keyword_textfield] = "invalid" THEN [search_02_location_textfield] = "valid";
+
+# # ถ้า remote switch เปิด → keyword ไม่จำเป็นต้อง valid ก็ได้
+# IF [search_06_remote_switch] = "on" THEN [search_01_keyword_textfield] <> "invalid";
+
+# # ถ้า salary_min invalid → keyword ต้อง valid เพื่อไม่ให้ทุก filter ว่างพร้อมกัน
+# IF [search_05_salary_min_textfield] = "invalid" THEN [search_01_keyword_textfield] = "valid";
+
+# # ถ้า category เลือก Engineering → employment type ควรเป็น Freelance (ตรงกับ DB)
+# IF [search_03_category_dropdown] = "Engineering" THEN [search_04_type_dropdown] = "Freelance";
