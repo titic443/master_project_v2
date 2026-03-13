@@ -5,16 +5,15 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings
-from bson import ObjectId
 import uvicorn
 
 
 # ─── Settings ─────────────────────────────────────────────────────────────────
 
 class Settings(BaseSettings):
-    mongo_uri: str = "mongodb://localhost:27017/linkedin_profiles"
+    mongo_uri: str = "mongodb://localhost:27017/master_project_demo"
     port: int = 8000
 
     class Config:
@@ -28,7 +27,6 @@ settings = Settings()
 
 class Database:
     client: AsyncIOMotorClient = None
-    collection = None
     jobs_collection = None
     properties_collection = None
     appointments_collection = None
@@ -41,7 +39,6 @@ db = Database()
 async def lifespan(app: FastAPI):
     # Startup
     db.client = AsyncIOMotorClient(settings.mongo_uri)
-    db.collection = db.client.get_default_database()["profiles"]
     db.jobs_collection = db.client.get_default_database()["jobs"]
     db.properties_collection = db.client.get_default_database()["properties"]
     db.appointments_collection = db.client.get_default_database()["clinic_appointments"]
@@ -54,7 +51,7 @@ async def lifespan(app: FastAPI):
 
 # ─── App ──────────────────────────────────────────────────────────────────────
 
-app = FastAPI(title="LinkedIn Profile API", lifespan=lifespan)
+app = FastAPI(title="Master Project Demo API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -84,42 +81,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # ─── Schemas ──────────────────────────────────────────────────────────────────
 
-class ProfileIn(BaseModel):
-    fullName: str = Field(..., min_length=2, max_length=100)
-    email: str = Field(..., max_length=50)
-    position: str = Field(..., min_length=2, max_length=100)
-    company: str = Field(..., min_length=2, max_length=100)
-    experience: int = Field(..., ge=0, le=50)
-    employmentType: Literal["Full-time", "Part-time", "Contract", "Freelance"]
-    educationLevel: Literal[1, 2, 3]  # 1=Bachelor, 2=Master, 3=PhD
-    university: str = Field(..., min_length=2, max_length=100)
-    agreeTerms: bool
-    openToWork: bool = False
-
-    @field_validator("fullName")
-    @classmethod
-    def full_name_letters_only(cls, v: str) -> str:
-        import re
-        if not re.fullmatch(r"[a-zA-Z\s]+", v):
-            raise ValueError("Full name must contain only letters and spaces")
-        return v
-
-    @field_validator("email")
-    @classmethod
-    def valid_email(cls, v: str) -> str:
-        import re
-        if not re.fullmatch(r"[\w.\-]+@[\w.\-]+\.\w{2,}", v):
-            raise ValueError("Please enter a valid email address")
-        return v
-
-    @field_validator("agreeTerms")
-    @classmethod
-    def must_agree(cls, v: bool) -> bool:
-        if not v:
-            raise ValueError("You must agree to terms")
-        return v
-
-
 class ApiResponse(BaseModel):
     message: str
     code: int
@@ -145,64 +106,6 @@ class JobIn(BaseModel):
         if self.salaryMax < self.salaryMin:
             raise ValueError("Max salary must be >= min salary")
         return self
-
-
-# ─── Routes ───────────────────────────────────────────────────────────────────
-
-@app.post("/api/demo/linkedin", response_model=ApiResponse)
-async def submit_profile(profile: ProfileIn):
-    """Submit LinkedIn profile — called by Flutter cubit"""
-    doc = profile.model_dump()
-    result = await db.collection.insert_one(doc)
-    print(f"📥 Profile saved: {result.inserted_id}")
-    return ApiResponse(message="Profile submitted successfully", code=200)
-
-
-@app.get("/api/demo/linkedin")
-async def list_profiles():
-    """List all saved profiles"""
-    profiles = []
-    async for doc in db.collection.find().sort("_id", -1):
-        doc["id"] = str(doc.pop("_id"))
-        profiles.append(doc)
-    return {"profiles": profiles, "total": len(profiles)}
-
-
-@app.get("/api/demo/linkedin/search")
-async def search_profiles(email: Optional[str] = None, name: Optional[str] = None):
-    """Search profiles by email and/or name (case-insensitive, partial match)"""
-    if not email and not name:
-        raise HTTPException(status_code=400, detail="Please provide email or name to search")
-    conditions = []
-    if email:
-        conditions.append({"email": {"$regex": email, "$options": "i"}})
-    if name:
-        conditions.append({"fullName": {"$regex": name, "$options": "i"}})
-    query = {"$or": conditions} if len(conditions) > 1 else conditions[0]
-    profiles = []
-    async for doc in db.collection.find(query).sort("_id", -1):
-        doc["id"] = str(doc.pop("_id"))
-        profiles.append(doc)
-    return {"profiles": profiles, "total": len(profiles)}
-
-
-@app.get("/api/demo/linkedin/{profile_id}")
-async def get_profile(profile_id: str):
-    """Get a single profile by ID"""
-    doc = await db.collection.find_one({"_id": ObjectId(profile_id)})
-    if not doc:
-        raise HTTPException(status_code=404, detail="Profile not found")
-    doc["id"] = str(doc.pop("_id"))
-    return doc
-
-
-@app.delete("/api/demo/linkedin/{profile_id}", response_model=ApiResponse)
-async def delete_profile(profile_id: str):
-    """Delete a profile by ID"""
-    result = await db.collection.delete_one({"_id": ObjectId(profile_id)})
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Profile not found")
-    return ApiResponse(message="Deleted", code=200)
 
 
 # ─── Job Board Routes ─────────────────────────────────────────────────────────
