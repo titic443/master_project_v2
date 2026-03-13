@@ -48,7 +48,10 @@ app.*.map.json
 .env
 
 # Generated output files (manifests, test data, pairwise models, event chains)
-# output/
+output/manifest/
+output/test_data/*.datasets.json
+output/test_data/*.testdata.json
+output/model_pairwise/
 
 # Compiled executables and distribution packages
 /bin/
