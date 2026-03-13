@@ -60,22 +60,38 @@ class _JobSearchViewState extends State<_JobSearchView> {
             curr.status != JobSearchStatus.loading,
         listener: (context, state) {
           if (state.status == JobSearchStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_success'),
+                title: const Text('Search Successful'),
                 content: Text('Found ${state.jobs.length} job(s)'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           } else if (state.status == JobSearchStatus.error ||
               state.status == JobSearchStatus.empty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_fail'),
+                title: const Text('Search Failed'),
                 content: Text(
                   state.status == JobSearchStatus.empty
                       ? 'No jobs found matching your criteria'
                       : state.errorMessage ?? 'Search failed',
                 ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           }
