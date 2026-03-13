@@ -26,16 +26,6 @@ class PropertySearchCubit extends Cubit<PropertySearchState> {
   void onFurnishedOnlyChanged(bool v) => emit(state.copyWith(furnishedOnly: v));
 
   Future<void> search() async {
-    final hasFilter = state.location.trim().isNotEmpty ||
-        state.propertyType != null ||
-        state.bedrooms != null ||
-        state.minPrice.trim().isNotEmpty ||
-        state.maxPrice.trim().isNotEmpty ||
-        state.minArea.trim().isNotEmpty ||
-        state.furnishedOnly;
-
-    if (!hasFilter) return;
-
     emit(state.copyWith(status: PropertySearchStatus.loading, properties: []));
     try {
       final params = <String, String>{};
