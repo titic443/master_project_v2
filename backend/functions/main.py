@@ -150,13 +150,7 @@ async def search_jobs(
     if is_remote is not None:
         conditions.append({"isRemote": is_remote})
 
-    if not conditions:
-        raise HTTPException(
-            status_code=400,
-            detail="At least one search filter is required",
-        )
-
-    query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
+    query = {"$and": conditions} if len(conditions) > 1 else (conditions[0] if conditions else {})
     jobs = []
     async for doc in db.jobs_collection.find(query).sort("_id", -1).limit(50):
         doc["id"] = str(doc.pop("_id"))
@@ -235,13 +229,7 @@ async def search_properties(
     if is_furnished is not None:
         conditions.append({"isFurnished": is_furnished})
 
-    if not conditions:
-        raise HTTPException(
-            status_code=400,
-            detail="At least one search filter is required",
-        )
-
-    query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
+    query = {"$and": conditions} if len(conditions) > 1 else (conditions[0] if conditions else {})
     props = []
     async for doc in db.properties_collection.find(query).sort("_id", -1).limit(50):
         doc["id"] = str(doc.pop("_id"))
@@ -344,13 +332,7 @@ async def search_appointments(
     if appointment_type:
         conditions.append({"appointmentType": appointment_type})
 
-    if not conditions:
-        raise HTTPException(
-            status_code=400,
-            detail="At least one search filter is required",
-        )
-
-    query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
+    query = {"$and": conditions} if len(conditions) > 1 else (conditions[0] if conditions else {})
     items = []
     async for doc in db.appointments_collection.find(query).sort("_id", -1).limit(50):
         doc["id"] = str(doc.pop("_id"))
