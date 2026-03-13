@@ -26,15 +26,6 @@ class JobSearchCubit extends Cubit<JobSearchState> {
   void onRemoteOnlyChanged(bool v) => emit(state.copyWith(remoteOnly: v));
 
   Future<void> search() async {
-    final hasFilter = state.keyword.trim().isNotEmpty ||
-        state.location.trim().isNotEmpty ||
-        state.category != null ||
-        state.employmentType != null ||
-        state.salaryMin.trim().isNotEmpty ||
-        state.remoteOnly;
-
-    if (!hasFilter) return;
-
     emit(state.copyWith(status: JobSearchStatus.loading, jobs: []));
     try {
       final params = <String, String>{};

@@ -36,13 +36,6 @@ class ClinicSearchCubit extends Cubit<ClinicSearchState> {
       emit(state.copyWith(appointmentTypeOpd: v));
 
   Future<void> search() async {
-    final hasFilter = state.patientName.trim().isNotEmpty ||
-        state.department != null ||
-        state.appointmentDate.trim().isNotEmpty ||
-        state.appointmentTypeOpd != null;
-
-    if (!hasFilter) return;
-
     emit(state.copyWith(
         status: ClinicSearchStatus.loading, appointments: []));
 
