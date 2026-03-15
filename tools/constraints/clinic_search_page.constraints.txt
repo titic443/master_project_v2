@@ -1,0 +1,17 @@
+# PICT Constraints for Clinic Search Page
+# ======================================
+# อ้างอิงข้อมูลจริงใน DB:
+#   patientName: "สมชาย ใจดี"
+
+# ─── Dataset Constraints (Format A) ───────────────────────────────────────────
+# key = value         → override slot 'valid'
+# key.slot = value    → override slot โดยตรง (valid / invalid / atMin / atMax)
+
+search_01_patient_name_textfield.valid   = สมชาย ใจดี
+search_01_patient_name_textfield.invalid = สxddasd
+
+# ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────
+# ทุก constraint ต้องอยู่บรรทัดเดียว และลงท้ายด้วย ;
+# (uncomment เมื่อ page มีหลาย fields)
+
+# IF [search_01_patient_name_textfield] = "invalid" THEN [search_02_department_dropdown] = "valid";

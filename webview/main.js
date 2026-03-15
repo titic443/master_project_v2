@@ -229,11 +229,12 @@ class WebUI {
       const testDataParams = { manifest: manifestResult.manifestPath };
 
       if (this.#el.useConstraints.checked && this.#el.constraintsTextArea.value.trim()) {
-        const { pictConstraints } = this.#parseConstraints(this.#el.constraintsTextArea.value);
-        if (pictConstraints.trim()) {
-          testDataParams.constraints = pictConstraints;
-          this.#log('Using custom PICT constraints', 'info');
-        }
+        // Send the FULL constraints text (Format A + Format B).
+        // The server-side generator_pict.dart filters Format A out before passing
+        // to PICT, and generate_test_data.dart STEP 3b applies Format A overrides
+        // (including key.slot = value) to the in-memory datasets.
+        testDataParams.constraints = this.#el.constraintsTextArea.value;
+        this.#log('Using constraints (Format A dataset overrides + Format B PICT constraints)', 'info');
       }
 
       const testDataResult = await this.#runStep('generate-test-data', testDataParams);

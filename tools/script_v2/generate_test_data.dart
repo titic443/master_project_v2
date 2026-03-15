@@ -216,6 +216,47 @@ class TestDataGenerator {
     }
 
     // ---------------------------------------------------------------------------
+    // STEP 3b: Apply Format A dataset overrides from constraints file
+    // ---------------------------------------------------------------------------
+    // Format A lines: key = value         → override 'valid' slot
+    //                 key.slot = value    → override specific slot (valid/invalid/atMin/atMax)
+    // These lines are filtered OUT of the PICT model — they only affect datasets here.
+    if (constraints != null && constraints.trim().isNotEmpty) {
+      final byKey = datasets['byKey'] as Map<String, dynamic>;
+
+      for (final rawLine in constraints.split('\n')) {
+        final line = rawLine.trim();
+        if (line.isEmpty || line.startsWith('#')) continue;
+        // Skip Format B lines (passed to PICT separately)
+        if (line.toUpperCase().contains('IF') && line.toUpperCase().contains('THEN')) continue;
+
+        // Parse: key[.slot] = value
+        final eqIdx = line.indexOf('=');
+        if (eqIdx <= 0) continue;
+
+        final lhs = line.substring(0, eqIdx).trim();   // e.g. "key.invalid"
+        final rhs = line.substring(eqIdx + 1).trim();  // e.g. "ส"
+
+        final dotIdx = lhs.indexOf('.');
+        final key  = dotIdx > 0 ? lhs.substring(0, dotIdx) : lhs;
+        final slot = dotIdx > 0 ? lhs.substring(dotIdx + 1) : 'valid';
+
+        // Ensure entry exists as List<Map>
+        if (!byKey.containsKey(key)) {
+          byKey[key] = [<String, dynamic>{}];
+        }
+        final entry = byKey[key] as List;
+        if (entry.isEmpty) entry.add(<String, dynamic>{});
+        final map = Map<String, dynamic>.from(entry[0] as Map? ?? {});
+        map[slot] = rhs;
+        entry[0] = map;
+        byKey[key] = entry;
+
+        stderr.writeln('[DEBUG] Format A override: $key.$slot = "$rhs"');
+      }
+    }
+
+    // ---------------------------------------------------------------------------
     // STEP 4: Helper Functions สำหรับวิเคราะห์ widget keys
     // ---------------------------------------------------------------------------
 
