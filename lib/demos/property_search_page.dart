@@ -49,7 +49,7 @@ class _PropertySearchViewState extends State<_PropertySearchView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Find Properties',
+          'ค้นหาอสังหาริมทรัพย์',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -63,8 +63,8 @@ class _PropertySearchViewState extends State<_PropertySearchView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_success'),
-                title: const Text('Search Successful'),
-                content: Text('Found ${state.properties.length} propert${state.properties.length == 1 ? 'y' : 'ies'}'),
+                title: const Text('ค้นหาสำเร็จ'),
+                content: Text('พบ ${state.properties.length} รายการ'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -79,11 +79,11 @@ class _PropertySearchViewState extends State<_PropertySearchView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_fail'),
-                title: const Text('Search Failed'),
+                title: const Text('ค้นหาไม่สำเร็จ'),
                 content: Text(
                   state.status == PropertySearchStatus.empty
-                      ? 'No properties found matching your criteria'
-                      : state.errorMessage ?? 'Search failed',
+                      ? 'ไม่พบอสังหาริมทรัพย์ที่ตรงกับเงื่อนไข'
+                      : state.errorMessage ?? 'ค้นหาไม่สำเร็จ',
                 ),
                 actions: [
                   TextButton(
@@ -134,11 +134,11 @@ class _SearchPanel extends StatelessWidget {
   });
 
   static const _types = [
-    null, 'Condo', 'House', 'Townhouse', 'Land', 'Commercial',
+    null, 'คอนโด', 'บ้านเดี่ยว', 'ทาวน์เฮาส์', 'ที่ดิน', 'อาคารพาณิชย์',
   ];
 
   static const _bedroomOptions = [
-    null, 'Studio', '1', '2', '3', '4+',
+    null, 'สตูดิโอ', '1', '2', '3', '4+',
   ];
 
   InputDecoration _sDec({
@@ -179,8 +179,8 @@ class _SearchPanel extends StatelessWidget {
                   controller: locationCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _sDec(
-                    label: 'Location / Province',
-                    hint: 'e.g. Bangkok, Chiang Mai',
+                    label: 'สถานที่ / จังหวัด',
+                    hint: 'เช่น กรุงเทพฯ, เชียงใหม่',
                     icon: Icons.location_on_outlined,
                   ),
                   onChanged: cubit.onLocationChanged,
@@ -194,16 +194,16 @@ class _SearchPanel extends StatelessWidget {
                   key: const Key('search_02_type_dropdown'),
                   value: state.propertyType,
                   decoration: _sDec(
-                    label: 'Type',
+                    label: 'ประเภท',
                     icon: Icons.domain_outlined,
                   ),
-                  hint: const Text('All', style: TextStyle(fontSize: 13)),
+                  hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
                   items: _types
                       .map(
                         (e) => DropdownMenuItem<String>(
                           value: e,
                           child: Text(
-                            e ?? 'All',
+                            e ?? 'ทั้งหมด',
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
@@ -224,16 +224,16 @@ class _SearchPanel extends StatelessWidget {
                   key: const Key('search_03_bedrooms_dropdown'),
                   value: state.bedrooms,
                   decoration: _sDec(
-                    label: 'Bedrooms',
+                    label: 'ห้องนอน',
                     icon: Icons.bed_outlined,
                   ),
-                  hint: const Text('Any', style: TextStyle(fontSize: 13)),
+                  hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
                   items: _bedroomOptions
                       .map(
                         (e) => DropdownMenuItem<String>(
                           value: e,
                           child: Text(
-                            e ?? 'Any',
+                            e ?? 'ทั้งหมด',
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
@@ -249,7 +249,7 @@ class _SearchPanel extends StatelessWidget {
                   controller: minPriceCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _sDec(
-                    label: 'Min Price (THB)',
+                    label: 'ราคาต่ำสุด (บาท)',
                     hint: '1000000',
                     icon: Icons.south_outlined,
                   ),
@@ -266,7 +266,7 @@ class _SearchPanel extends StatelessWidget {
                   controller: maxPriceCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _sDec(
-                    label: 'Max Price (THB)',
+                    label: 'ราคาสูงสุด (บาท)',
                     hint: '5000000',
                     icon: Icons.north_outlined,
                   ),
@@ -289,7 +289,7 @@ class _SearchPanel extends StatelessWidget {
                   controller: minAreaCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _sDec(
-                    label: 'Min Area (sqm)',
+                    label: 'พื้นที่ขั้นต่ำ (ตร.ม.)',
                     hint: '40',
                     icon: Icons.square_foot_outlined,
                   ),
@@ -324,7 +324,7 @@ class _SearchPanel extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     const Text(
-                      'Furnished',
+                      'เฟอร์นิเจอร์ครบ',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -369,7 +369,7 @@ class _SearchPanel extends StatelessWidget {
                           Icon(Icons.search, size: 18),
                           SizedBox(width: 4),
                           Text(
-                            'Search',
+                            'ค้นหา',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -422,12 +422,12 @@ class _HintCard extends StatelessWidget {
           Icon(Icons.holiday_village_outlined, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
-            'Find your perfect property',
+            'ค้นหาอสังหาริมทรัพย์ที่ใช่สำหรับคุณ',
             style: TextStyle(fontSize: 16, color: Colors.grey[500]),
           ),
           const SizedBox(height: 8),
           Text(
-            'Use the filters above to search listings',
+            'ใช้ตัวกรองด้านบนเพื่อค้นหาประกาศ',
             style: TextStyle(fontSize: 13, color: Colors.grey[400]),
           ),
         ],
@@ -449,12 +449,12 @@ class _NotFoundCard extends StatelessWidget {
           Icon(Icons.search_off_outlined, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
-            'No properties found',
+            'ไม่พบอสังหาริมทรัพย์',
             style: TextStyle(fontSize: 16, color: Colors.grey[500]),
           ),
           const SizedBox(height: 8),
           Text(
-            'Try widening your search criteria',
+            'ลองขยายเงื่อนไขการค้นหา',
             style: TextStyle(fontSize: 13, color: Colors.grey[400]),
           ),
         ],
@@ -506,7 +506,7 @@ class _PropertyList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
           child: Text(
-            '${properties.length} propert${properties.length == 1 ? 'y' : 'ies'} found',
+            'พบ ${properties.length} รายการ',
             style: TextStyle(
               fontSize: 13,
               color: Colors.grey[600],
@@ -637,7 +637,7 @@ class _PropertyCard extends StatelessWidget {
                       border: Border.all(color: Colors.amber.shade400),
                     ),
                     child: const Text(
-                      'Furnished',
+                      'เฟอร์นิเจอร์ครบ',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -673,19 +673,19 @@ class _PropertyCard extends StatelessWidget {
                 if (bedrooms != null)
                   _Chip(
                     icon: Icons.bed_outlined,
-                    label: bedrooms == 'Studio' ? 'Studio' : '$bedrooms bed',
+                    label: bedrooms == 'สตูดิโอ' ? 'สตูดิโอ' : '$bedrooms ห้องนอน',
                     color: Colors.blue,
                   ),
                 if (bathrooms != null)
                   _Chip(
                     icon: Icons.bathtub_outlined,
-                    label: '$bathrooms bath',
+                    label: '$bathrooms ห้องน้ำ',
                     color: Colors.teal,
                   ),
                 if (area != null)
                   _Chip(
                     icon: Icons.square_foot_outlined,
-                    label: '${area}sqm',
+                    label: '$area ตร.ม.',
                     color: Colors.green,
                   ),
               ],
