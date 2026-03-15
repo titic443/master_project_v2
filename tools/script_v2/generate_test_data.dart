@@ -735,6 +735,63 @@ class TestDataGenerator {
     }
 
     // ---------------------------------------------------------------------------
+    // STEP 6c: Auto-fix datasets for keyboardType: number fields
+    //   ถ้า invalid value เป็นตัวเลขที่ parse ได้ → override เป็น "" (empty)
+    //   เพราะ number field ที่ submit ค่าว่างจะ trigger null/empty validator
+    //   ไม่ใช่ number-format validator
+    // ---------------------------------------------------------------------------
+    final numberFieldKeys = <String>[];
+    for (final w in widgets) {
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      if (meta['keyboardType']?.toString() == 'number') {
+        numberFieldKeys.add((w['key'] ?? '').toString());
+      }
+    }
+
+    if (numberFieldKeys.isNotEmpty) {
+      final byKey =
+          (datasets['byKey'] as Map<String, dynamic>);
+      for (final key in numberFieldKeys) {
+        final arr = byKey[key];
+        if (arr is List && arr.isNotEmpty && arr[0] is Map) {
+          final entry = Map<String, dynamic>.from(arr[0] as Map);
+          final invalidVal = entry['invalid']?.toString() ?? '';
+          // ถ้า invalid เป็นตัวเลขที่ parse ได้ → override เป็น ""
+          if (invalidVal.isNotEmpty && int.tryParse(invalidVal) != null) {
+            entry['invalid'] = '';
+            byKey[key] = [entry];
+          }
+        }
+      }
+
+      // Write back to datasets.json so the file stays in sync
+      try {
+        final extPath =
+            'output/test_data/${utils.basenameWithoutExtension(uiFile)}.datasets.json';
+        final f = File(extPath);
+        if (f.existsSync()) {
+          final existing =
+              jsonDecode(f.readAsStringSync()) as Map<String, dynamic>;
+          final extDatasets =
+              (existing['datasets'] as Map?)?.cast<String, dynamic>() ?? {};
+          final extByKey =
+              (extDatasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+          for (final key in numberFieldKeys) {
+            if (byKey.containsKey(key)) {
+              extByKey[key] = byKey[key];
+            }
+          }
+          extDatasets['byKey'] = extByKey;
+          existing['datasets'] = extDatasets;
+          f.writeAsStringSync(
+              const JsonEncoder.withIndent('  ').convert(existing));
+        }
+      } catch (_) {
+        // ignore write errors
+      }
+    }
+
+    // ---------------------------------------------------------------------------
     // STEP 7: ตรวจจับ Required Checkboxes
     // ---------------------------------------------------------------------------
 
@@ -1443,6 +1500,39 @@ class TestDataGenerator {
                       !msg.toLowerCase().contains('required') &&
                       !msg.toLowerCase().contains('กรุณา')) {
                     asserts.add({'text': msg, 'exists': true});
+                  }
+                }
+              }
+
+              // ── keyboardType: number → add null/empty validator message ─────
+              // ถ้า field มี keyboardType == number ให้ดึง validator message
+              // ของ condition null/empty จาก manifest มาใส่ใน asserts เสมอ
+              final widget = widgets.firstWhere(
+                (w) => (w['key'] ?? '').toString() == fieldKey,
+                orElse: () => <String, dynamic>{},
+              );
+              if (widget.isNotEmpty) {
+                final meta =
+                    (widget['meta'] as Map?)?.cast<String, dynamic>() ??
+                        const {};
+                if (meta['keyboardType']?.toString() == 'number') {
+                  final rules =
+                      (meta['validatorRules'] as List?) ?? const [];
+                  for (final rule in rules) {
+                    if (rule is Map) {
+                      final condition =
+                          (rule['condition']?.toString() ?? '')
+                              .toLowerCase()
+                              .replaceAll(' ', '');
+                      if (condition.contains('null') ||
+                          condition.contains('isempty')) {
+                        final nullMsg = rule['message']?.toString() ?? '';
+                        if (nullMsg.isNotEmpty) {
+                          asserts.add({'text': nullMsg, 'exists': true});
+                        }
+                        break;
+                      }
+                    }
                   }
                 }
               }
