@@ -50,7 +50,7 @@ class _JobSearchViewState extends State<_JobSearchView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Find Jobs',
+          'ค้นหางาน',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -64,8 +64,8 @@ class _JobSearchViewState extends State<_JobSearchView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_success'),
-                title: const Text('Search Successful'),
-                content: Text('Found ${state.jobs.length} job(s)'),
+                title: const Text('ค้นหาสำเร็จ'),
+                content: Text('พบ ${state.jobs.length} ตำแหน่งงาน'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -80,11 +80,11 @@ class _JobSearchViewState extends State<_JobSearchView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_fail'),
-                title: const Text('Search Failed'),
+                title: const Text('ค้นหาไม่สำเร็จ'),
                 content: Text(
                   state.status == JobSearchStatus.empty
-                      ? 'No jobs found matching your criteria'
-                      : state.errorMessage ?? 'Search failed',
+                      ? 'ไม่พบตำแหน่งงานที่ตรงกับเงื่อนไข'
+                      : state.errorMessage ?? 'ค้นหาไม่สำเร็จ',
                 ),
                 actions: [
                   TextButton(
@@ -188,8 +188,8 @@ class _SearchPanel extends StatelessWidget {
                   controller: keywordCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _searchDec(
-                    label: 'Job Title / Keyword',
-                    hint: 'e.g. Flutter Developer, Data Analyst',
+                    label: 'ตำแหน่งงาน / คีย์เวิร์ด',
+                    hint: 'เช่น นักพัฒนา Flutter, นักวิเคราะห์ข้อมูล',
                     icon: Icons.search,
                   ),
                   onChanged: cubit.onKeywordChanged,
@@ -206,8 +206,8 @@ class _SearchPanel extends StatelessWidget {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration: _searchDec(
-                    label: 'Location',
-                    hint: 'Bangkok, Thailand',
+                    label: 'สถานที่',
+                    hint: 'กรุงเทพฯ, เชียงใหม่',
                     icon: Icons.location_on_outlined,
                   ),
                   onChanged: cubit.onLocationChanged,
@@ -226,16 +226,16 @@ class _SearchPanel extends StatelessWidget {
                   key: const Key('search_03_category_dropdown'),
                   value: state.category,
                   decoration: _searchDec(
-                    label: 'Category',
+                    label: 'สาขางาน',
                     icon: Icons.category_outlined,
                   ),
-                  hint: const Text('All', style: TextStyle(fontSize: 13)),
+                  hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
                   items: _categories
                       .map(
                         (e) => DropdownMenuItem<String>(
                           value: e,
                           child: Text(
-                            e ?? 'All',
+                            e ?? 'ทั้งหมด',
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
@@ -250,16 +250,16 @@ class _SearchPanel extends StatelessWidget {
                   key: const Key('search_04_type_dropdown'),
                   value: state.employmentType,
                   decoration: _searchDec(
-                    label: 'Type',
+                    label: 'ประเภทงาน',
                     icon: Icons.badge_outlined,
                   ),
-                  hint: const Text('All', style: TextStyle(fontSize: 13)),
+                  hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
                   items: _types
                       .map(
                         (e) => DropdownMenuItem<String>(
                           value: e,
                           child: Text(
-                            e ?? 'All',
+                            e ?? 'ทั้งหมด',
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
@@ -281,7 +281,7 @@ class _SearchPanel extends StatelessWidget {
                   controller: salaryMinCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _searchDec(
-                    label: 'Min Salary (THB)',
+                    label: 'เงินเดือนขั้นต่ำ (บาท)',
                     hint: '25000',
                     icon: Icons.payments_outlined,
                   ),
@@ -309,7 +309,7 @@ class _SearchPanel extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     const Text(
-                      'Remote',
+                      'ทำงานระยะไกล',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -354,7 +354,7 @@ class _SearchPanel extends StatelessWidget {
                           Icon(Icons.search, size: 18),
                           SizedBox(width: 4),
                           Text(
-                            'Search',
+                            'ค้นหา',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -407,12 +407,12 @@ class _HintCard extends StatelessWidget {
           Icon(Icons.manage_search, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
-            'Search for your next opportunity',
+            'ค้นหาโอกาสงานที่ใช่สำหรับคุณ',
             style: TextStyle(fontSize: 16, color: Colors.grey[500]),
           ),
           const SizedBox(height: 8),
           Text(
-            'Use the filters above to find matching jobs',
+            'ใช้ตัวกรองด้านบนเพื่อค้นหางานที่ตรงใจ',
             style: TextStyle(fontSize: 13, color: Colors.grey[400]),
           ),
         ],
@@ -434,12 +434,12 @@ class _NotFoundCard extends StatelessWidget {
           Icon(Icons.find_in_page_outlined, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
-            'No jobs found',
+            'ไม่พบตำแหน่งงาน',
             style: TextStyle(fontSize: 16, color: Colors.grey[500]),
           ),
           const SizedBox(height: 8),
           Text(
-            'Try adjusting your filters',
+            'ลองปรับเงื่อนไขการค้นหาใหม่',
             style: TextStyle(fontSize: 13, color: Colors.grey[400]),
           ),
         ],
@@ -491,7 +491,7 @@ class _JobList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
           child: Text(
-            '${jobs.length} job${jobs.length == 1 ? '' : 's'} found',
+            'พบ ${jobs.length} ตำแหน่งงาน',
             style: TextStyle(
               fontSize: 13,
               color: Colors.grey[600],
@@ -624,7 +624,7 @@ class _JobCard extends StatelessWidget {
                       border: Border.all(color: Colors.teal.shade300),
                     ),
                     child: const Text(
-                      'Remote',
+                      'ทำงานระยะไกล',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,

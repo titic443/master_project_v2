@@ -63,8 +63,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
         context: context,
         builder: (_) => AlertDialog(
           key: const Key('prop_13_expected_fail'),
-          title: const Text('Validation Error'),
-          content: const Text('Please correct the highlighted fields'),
+          title: const Text('ข้อมูลไม่ถูกต้อง'),
+          content: const Text('กรุณาแก้ไขข้อมูลในช่องที่ระบุ'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -83,7 +83,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'List a Property',
+          'ลงประกาศอสังหาริมทรัพย์',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -97,8 +97,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('prop_13_expected_success'),
-                title: const Text('Success'),
-                content: const Text('Property listed successfully!'),
+                title: const Text('สำเร็จ'),
+                content: const Text('ลงประกาศอสังหาริมทรัพย์สำเร็จแล้ว!'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -112,8 +112,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('prop_13_expected_fail'),
-                title: const Text('Error'),
-                content: Text(state.errorMessage ?? 'Failed to list property'),
+                title: const Text('เกิดข้อผิดพลาด'),
+                content: Text(state.errorMessage ?? 'ไม่สามารถลงประกาศได้'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -136,7 +136,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
               children: [
                 // ── Section 1: Listing Info ──────────────────────────────
                 const _SectionHeader(
-                  title: 'Listing Information',
+                  title: 'ข้อมูลประกาศ',
                   icon: Icons.home_outlined,
                 ),
                 const SizedBox(height: 12),
@@ -144,15 +144,15 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_01_title_textfield'),
                   controller: _titleCtrl,
                   decoration: _dec(
-                    label: 'Listing Title',
-                    hint: 'e.g. Modern 2-Bed Condo near BTS Asok',
+                    label: 'หัวข้อประกาศ',
+                    hint: 'เช่น คอนโดใหม่ 2 ห้องนอน ใกล้ BTS อโศก',
                     icon: Icons.title,
                   ),
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: cubit.onTitleChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 5) return 'At least 5 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                    if (v.trim().length < 5) return 'กรุณากรอกอย่างน้อย 5 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -161,25 +161,25 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_02_type_dropdown'),
                   value: state.propertyType,
                   decoration: _dec(
-                    label: 'Property Type',
+                    label: 'ประเภทอสังหาริมทรัพย์',
                     icon: Icons.domain_outlined,
                   ),
-                  hint: const Text('Select type'),
+                  hint: const Text('เลือกประเภท'),
                   items: const [
-                    DropdownMenuItem(value: 'Condo', child: Text('Condo')),
-                    DropdownMenuItem(value: 'House', child: Text('House')),
-                    DropdownMenuItem(value: 'Townhouse', child: Text('Townhouse')),
-                    DropdownMenuItem(value: 'Land', child: Text('Land')),
-                    DropdownMenuItem(value: 'Commercial', child: Text('Commercial')),
+                    DropdownMenuItem(value: 'คอนโด', child: Text('คอนโด')),
+                    DropdownMenuItem(value: 'บ้านเดี่ยว', child: Text('บ้านเดี่ยว')),
+                    DropdownMenuItem(value: 'ทาวน์เฮาส์', child: Text('ทาวน์เฮาส์')),
+                    DropdownMenuItem(value: 'ที่ดิน', child: Text('ที่ดิน')),
+                    DropdownMenuItem(value: 'อาคารพาณิชย์', child: Text('อาคารพาณิชย์')),
                   ],
                   onChanged: cubit.onPropertyTypeChanged,
-                  validator: (v) => v == null ? 'Required' : null,
+                  validator: (v) => v == null ? 'กรุณาเลือกประเภท' : null,
                 ),
 
                 // ── Section 2: Location ──────────────────────────────────
                 const SizedBox(height: 28),
                 const _SectionHeader(
-                  title: 'Location',
+                  title: 'ที่ตั้ง',
                   icon: Icons.location_on_outlined,
                 ),
                 const SizedBox(height: 12),
@@ -187,14 +187,14 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_03_location_textfield'),
                   controller: _locationCtrl,
                   decoration: _dec(
-                    label: 'Province / City',
-                    hint: 'e.g. Bangkok',
+                    label: 'จังหวัด / เมือง',
+                    hint: 'เช่น กรุงเทพมหานคร',
                     icon: Icons.location_city_outlined,
                   ),
                   onChanged: cubit.onLocationChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 2) return 'At least 2 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -203,14 +203,14 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_04_district_textfield'),
                   controller: _districtCtrl,
                   decoration: _dec(
-                    label: 'District / Area',
-                    hint: 'e.g. Watthana, Sukhumvit',
+                    label: 'เขต / ย่าน',
+                    hint: 'เช่น วัฒนา, สุขุมวิท',
                     icon: Icons.map_outlined,
                   ),
                   onChanged: cubit.onDistrictChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 2) return 'At least 2 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -218,7 +218,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                 // ── Section 3: Property Details ──────────────────────────
                 const SizedBox(height: 28),
                 const _SectionHeader(
-                  title: 'Property Details',
+                  title: 'รายละเอียดอสังหาริมทรัพย์',
                   icon: Icons.info_outline,
                 ),
                 const SizedBox(height: 12),
@@ -226,7 +226,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_05_price_textfield'),
                   controller: _priceCtrl,
                   decoration: _dec(
-                    label: 'Price (THB)',
+                    label: 'ราคา (บาท)',
                     hint: '3500000',
                     icon: Icons.attach_money,
                   ),
@@ -234,9 +234,9 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: cubit.onPriceChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
                     final n = int.tryParse(v);
-                    if (n == null || n < 100000) return 'Min 100,000 THB';
+                    if (n == null || n < 100000) return 'ราคาขั้นต่ำ 100,000 บาท';
                     return null;
                   },
                 ),
@@ -249,19 +249,19 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         key: const Key('prop_06_bedrooms_dropdown'),
                         value: state.bedrooms,
                         decoration: _dec(
-                          label: 'Bedrooms',
+                          label: 'ห้องนอน',
                           icon: Icons.bed_outlined,
                         ),
-                        hint: const Text('Select'),
+                        hint: const Text('เลือก'),
                         items: const [
-                          DropdownMenuItem(value: 'Studio', child: Text('Studio')),
+                          DropdownMenuItem(value: 'สตูดิโอ', child: Text('สตูดิโอ')),
                           DropdownMenuItem(value: '1', child: Text('1')),
                           DropdownMenuItem(value: '2', child: Text('2')),
                           DropdownMenuItem(value: '3', child: Text('3')),
                           DropdownMenuItem(value: '4+', child: Text('4+')),
                         ],
                         onChanged: cubit.onBedroomsChanged,
-                        validator: (v) => v == null ? 'Required' : null,
+                        validator: (v) => v == null ? 'กรุณาเลือกจำนวนห้องนอน' : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -270,10 +270,10 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         key: const Key('prop_07_bathrooms_dropdown'),
                         value: state.bathrooms,
                         decoration: _dec(
-                          label: 'Bathrooms',
+                          label: 'ห้องน้ำ',
                           icon: Icons.bathtub_outlined,
                         ),
-                        hint: const Text('Select'),
+                        hint: const Text('เลือก'),
                         items: const [
                           DropdownMenuItem(value: '1', child: Text('1')),
                           DropdownMenuItem(value: '2', child: Text('2')),
@@ -281,7 +281,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                           DropdownMenuItem(value: '4+', child: Text('4+')),
                         ],
                         onChanged: cubit.onBathroomsChanged,
-                        validator: (v) => v == null ? 'Required' : null,
+                        validator: (v) => v == null ? 'กรุณาเลือกจำนวนห้องน้ำ' : null,
                       ),
                     ),
                   ],
@@ -295,7 +295,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         key: const Key('prop_08_area_textfield'),
                         controller: _areaCtrl,
                         decoration: _dec(
-                          label: 'Area (sqm)',
+                          label: 'พื้นที่ใช้สอย (ตร.ม.)',
                           hint: '65',
                           icon: Icons.square_foot_outlined,
                         ),
@@ -309,9 +309,9 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         ],
                         onChanged: cubit.onAreaSqmChanged,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'Required';
+                          if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
                           final n = double.tryParse(v);
-                          if (n == null || n < 10) return 'Min 10 sqm';
+                          if (n == null || n < 10) return 'พื้นที่ขั้นต่ำ 10 ตร.ม.';
                           return null;
                         },
                       ),
@@ -322,13 +322,13 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         key: const Key('prop_09_floor_textfield'),
                         controller: _floorCtrl,
                         decoration: _dec(
-                          label: 'Floor / Storey',
-                          hint: 'e.g. 12 or 2-storey',
+                          label: 'ชั้น',
+                          hint: 'เช่น ชั้น 12 หรือ บ้าน 2 ชั้น',
                           icon: Icons.layers_outlined,
                         ),
                         onChanged: cubit.onFloorChanged,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'Required';
+                          if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
                           return null;
                         },
                       ),
@@ -362,14 +362,14 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Fully Furnished',
+                                'เฟอร์นิเจอร์ครบ',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Text(
-                                'Property comes with furniture & appliances',
+                                'มาพร้อมเฟอร์นิเจอร์และเครื่องใช้ไฟฟ้าครบชุด',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[600],
@@ -391,7 +391,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                 // ── Section 4: Description & Contact ────────────────────
                 const SizedBox(height: 28),
                 const _SectionHeader(
-                  title: 'Description & Contact',
+                  title: 'รายละเอียดและข้อมูลติดต่อ',
                   icon: Icons.description_outlined,
                 ),
                 const SizedBox(height: 12),
@@ -399,17 +399,17 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_11_desc_textfield'),
                   controller: _descCtrl,
                   decoration: _dec(
-                    label: 'Description',
+                    label: 'รายละเอียด',
                     hint:
-                        'Describe the property condition, nearby amenities, highlights...',
+                        'อธิบายสภาพทรัพย์สิน สิ่งอำนวยความสะดวกใกล้เคียง จุดเด่น...',
                     icon: Icons.description_outlined,
                   ),
                   maxLines: 4,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: cubit.onDescriptionChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 20) return 'At least 20 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                    if (v.trim().length < 20) return 'กรุณากรอกอย่างน้อย 20 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -418,15 +418,15 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   key: const Key('prop_12_contact_textfield'),
                   controller: _contactCtrl,
                   decoration: _dec(
-                    label: 'Contact Name',
-                    hint: 'e.g. Somchai Jaidee (Agent)',
+                    label: 'ชื่อผู้ติดต่อ',
+                    hint: 'เช่น สมชาย ใจดี (นายหน้า)',
                     icon: Icons.person_outline,
                   ),
                   textCapitalization: TextCapitalization.words,
                   onChanged: cubit.onContactNameChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 2) return 'At least 2 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -459,7 +459,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                             Icon(Icons.home_work_outlined),
                             SizedBox(width: 8),
                             Text(
-                              'List Property',
+                              'ลงประกาศ',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

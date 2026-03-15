@@ -68,12 +68,12 @@ class _JobPostViewState extends State<_JobPostView> {
         context: context,
         builder: (_) => AlertDialog(
           key: const Key('job_12_expected_fail'),
-          title: const Text('Validation Error'),
-          content: const Text('Please correct the highlighted fields'),
+          title: const Text('ข้อมูลไม่ถูกต้อง'),
+          content: const Text('กรุณาตรวจสอบและแก้ไขข้อมูลที่ไฮไลต์'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              child: const Text('ตกลง'),
             ),
           ],
         ),
@@ -88,7 +88,7 @@ class _JobPostViewState extends State<_JobPostView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Post a Job',
+          'ลงประกาศงาน',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -102,12 +102,12 @@ class _JobPostViewState extends State<_JobPostView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('job_12_expected_success'),
-                title: const Text('Success'),
-                content: const Text('Job posted successfully!'),
+                title: const Text('สำเร็จ'),
+                content: const Text('ลงประกาศงานเรียบร้อยแล้ว'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
+                    child: const Text('ตกลง'),
                   ),
                 ],
               ),
@@ -117,12 +117,12 @@ class _JobPostViewState extends State<_JobPostView> {
               context: context,
               builder: (_) => AlertDialog(
                 key: const Key('job_12_expected_fail'),
-                title: const Text('Error'),
-                content: Text(state.errorMessage ?? 'Failed to post job'),
+                title: const Text('เกิดข้อผิดพลาด'),
+                content: Text(state.errorMessage ?? 'ไม่สามารถลงประกาศงานได้'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
+                    child: const Text('ตกลง'),
                   ),
                 ],
               ),
@@ -141,7 +141,7 @@ class _JobPostViewState extends State<_JobPostView> {
               children: [
                 // ── Section 1: Job Information ───────────────────────────
                 const _SectionHeader(
-                  title: 'Job Information',
+                  title: 'ข้อมูลงาน',
                   icon: Icons.work_outline,
                 ),
                 const SizedBox(height: 12),
@@ -149,15 +149,15 @@ class _JobPostViewState extends State<_JobPostView> {
                   key: const Key('job_01_title_textfield'),
                   controller: _titleCtrl,
                   decoration: _dec(
-                    label: 'Job Title',
-                    hint: 'e.g. Senior Flutter Developer',
+                    label: 'ตำแหน่งงาน',
+                    hint: 'เช่น Senior Flutter Developer',
                     icon: Icons.title,
                   ),
                   textCapitalization: TextCapitalization.words,
                   onChanged: cubit.onTitleChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 3) return 'At least 3 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกตำแหน่งงาน';
+                    if (v.trim().length < 3) return 'กรุณากรอกอย่างน้อย 3 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -166,15 +166,15 @@ class _JobPostViewState extends State<_JobPostView> {
                   key: const Key('job_02_company_textfield'),
                   controller: _companyCtrl,
                   decoration: _dec(
-                    label: 'Company Name',
-                    hint: 'e.g. Acme Corporation',
+                    label: 'ชื่อบริษัท',
+                    hint: 'เช่น Acme Corporation',
                     icon: Icons.business_outlined,
                   ),
                   textCapitalization: TextCapitalization.words,
                   onChanged: cubit.onCompanyChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 2) return 'At least 2 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกชื่อบริษัท';
+                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -183,14 +183,14 @@ class _JobPostViewState extends State<_JobPostView> {
                   key: const Key('job_03_location_textfield'),
                   controller: _locationCtrl,
                   decoration: _dec(
-                    label: 'Location',
-                    hint: 'e.g. Bangkok, Thailand',
+                    label: 'สถานที่ทำงาน',
+                    hint: 'เช่น กรุงเทพฯ, ไทย',
                     icon: Icons.location_on_outlined,
                   ),
                   onChanged: cubit.onLocationChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 2) return 'At least 2 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกสถานที่ทำงาน';
+                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -198,7 +198,7 @@ class _JobPostViewState extends State<_JobPostView> {
                 // ── Section 2: Role Details ──────────────────────────────
                 const SizedBox(height: 28),
                 const _SectionHeader(
-                  title: 'Role Details',
+                  title: 'รายละเอียดตำแหน่ง',
                   icon: Icons.category_outlined,
                 ),
                 const SizedBox(height: 12),
@@ -206,10 +206,10 @@ class _JobPostViewState extends State<_JobPostView> {
                   key: const Key('job_04_category_dropdown'),
                   value: state.category,
                   decoration: _dec(
-                    label: 'Job Category',
+                    label: 'หมวดหมู่งาน',
                     icon: Icons.category_outlined,
                   ),
-                  hint: const Text('Select category'),
+                  hint: const Text('เลือกหมวดหมู่'),
                   items: const [
                     DropdownMenuItem(
                         value: 'IT & Tech', child: Text('IT & Tech')),
@@ -224,17 +224,17 @@ class _JobPostViewState extends State<_JobPostView> {
                         value: 'Education', child: Text('Education')),
                   ],
                   onChanged: cubit.onCategoryChanged,
-                  validator: (v) => v == null ? 'Required' : null,
+                  validator: (v) => v == null ? 'กรุณาเลือกหมวดหมู่งาน' : null,
                 ),
                 const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
                   key: const Key('job_05_type_dropdown'),
                   value: state.employmentType,
                   decoration: _dec(
-                    label: 'Employment Type',
+                    label: 'ประเภทการจ้างงาน',
                     icon: Icons.badge_outlined,
                   ),
-                  hint: const Text('Select type'),
+                  hint: const Text('เลือกประเภท'),
                   items: const [
                     DropdownMenuItem(
                         value: 'Full-time', child: Text('Full-time')),
@@ -248,17 +248,17 @@ class _JobPostViewState extends State<_JobPostView> {
                         value: 'Internship', child: Text('Internship')),
                   ],
                   onChanged: cubit.onEmploymentTypeChanged,
-                  validator: (v) => v == null ? 'Required' : null,
+                  validator: (v) => v == null ? 'กรุณาเลือกประเภทการจ้างงาน' : null,
                 ),
                 const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
                   key: const Key('job_06_exp_dropdown'),
                   value: state.experienceLevel,
                   decoration: _dec(
-                    label: 'Experience Level',
+                    label: 'ระดับประสบการณ์',
                     icon: Icons.stairs_outlined,
                   ),
-                  hint: const Text('Select experience'),
+                  hint: const Text('เลือกระดับประสบการณ์'),
                   items: const [
                     DropdownMenuItem(
                         value: 'Entry Level', child: Text('Entry Level')),
@@ -268,13 +268,13 @@ class _JobPostViewState extends State<_JobPostView> {
                     DropdownMenuItem(value: 'Senior', child: Text('Senior')),
                   ],
                   onChanged: cubit.onExperienceLevelChanged,
-                  validator: (v) => v == null ? 'Required' : null,
+                  validator: (v) => v == null ? 'กรุณาเลือกระดับประสบการณ์' : null,
                 ),
 
                 // ── Section 3: Compensation ──────────────────────────────
                 const SizedBox(height: 28),
                 const _SectionHeader(
-                  title: 'Compensation',
+                  title: 'ค่าตอบแทน',
                   icon: Icons.payments_outlined,
                 ),
                 const SizedBox(height: 12),
@@ -286,7 +286,7 @@ class _JobPostViewState extends State<_JobPostView> {
                         key: const Key('job_07_salary_min_textfield'),
                         controller: _salaryMinCtrl,
                         decoration: _dec(
-                          label: 'Min Salary (THB)',
+                          label: 'เงินเดือนขั้นต่ำ (บาท)',
                           hint: '25000',
                           icon: Icons.south_outlined,
                         ),
@@ -296,8 +296,8 @@ class _JobPostViewState extends State<_JobPostView> {
                         ],
                         onChanged: cubit.onSalaryMinChanged,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'Required';
-                          if (int.tryParse(v) == null) return 'Invalid';
+                          if (v == null || v.trim().isEmpty) return 'กรุณากรอกเงินเดือนขั้นต่ำ';
+                          if (int.tryParse(v) == null) return 'กรุณากรอกเป็นตัวเลข';
                           return null;
                         },
                       ),
@@ -308,7 +308,7 @@ class _JobPostViewState extends State<_JobPostView> {
                         key: const Key('job_08_salary_max_textfield'),
                         controller: _salaryMaxCtrl,
                         decoration: _dec(
-                          label: 'Max Salary (THB)',
+                          label: 'เงินเดือนสูงสุด (บาท)',
                           hint: '50000',
                           icon: Icons.north_outlined,
                         ),
@@ -318,11 +318,11 @@ class _JobPostViewState extends State<_JobPostView> {
                         ],
                         onChanged: cubit.onSalaryMaxChanged,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'Required';
+                          if (v == null || v.trim().isEmpty) return 'กรุณากรอกเงินเดือนสูงสุด';
                           final max = int.tryParse(v);
-                          if (max == null) return 'Invalid';
+                          if (max == null) return 'กรุณากรอกเป็นตัวเลข';
                           final min = int.tryParse(_salaryMinCtrl.text);
-                          if (min != null && max < min) return 'Must be ≥ min';
+                          if (min != null && max < min) return 'ต้องมากกว่าหรือเท่ากับเงินเดือนขั้นต่ำ';
                           return null;
                         },
                       ),
@@ -356,14 +356,14 @@ class _JobPostViewState extends State<_JobPostView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Remote Friendly',
+                                'ทำงานจากที่บ้านได้',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Text(
-                                'Allow candidates to work remotely',
+                                'เปิดรับผู้สมัครที่ทำงานแบบ Remote',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[600],
@@ -385,7 +385,7 @@ class _JobPostViewState extends State<_JobPostView> {
                 // ── Section 4: Job Details ───────────────────────────────
                 const SizedBox(height: 28),
                 const _SectionHeader(
-                  title: 'Job Details',
+                  title: 'รายละเอียดงาน',
                   icon: Icons.description_outlined,
                 ),
                 const SizedBox(height: 12),
@@ -393,17 +393,16 @@ class _JobPostViewState extends State<_JobPostView> {
                   key: const Key('job_09_desc_textfield'),
                   controller: _descCtrl,
                   decoration: _dec(
-                    label: 'Job Description',
-                    hint:
-                        'Describe responsibilities, qualifications, and benefits...',
+                    label: 'รายละเอียดงาน',
+                    hint: 'อธิบายหน้าที่ คุณสมบัติ และสวัสดิการ...',
                     icon: Icons.description_outlined,
                   ),
                   maxLines: 5,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: cubit.onDescriptionChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 20) return 'At least 20 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกรายละเอียดงาน';
+                    if (v.trim().length < 20) return 'กรุณากรอกอย่างน้อย 20 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -412,14 +411,14 @@ class _JobPostViewState extends State<_JobPostView> {
                   key: const Key('job_10_skills_textfield'),
                   controller: _skillsCtrl,
                   decoration: _dec(
-                    label: 'Required Skills',
-                    hint: 'e.g. Flutter, Dart, Firebase, REST API',
+                    label: 'ทักษะที่ต้องการ',
+                    hint: 'เช่น Flutter, Dart, Firebase, REST API',
                     icon: Icons.code_outlined,
                   ),
                   onChanged: cubit.onSkillsChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Required';
-                    if (v.trim().length < 2) return 'At least 2 characters';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกทักษะที่ต้องการ';
+                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -452,7 +451,7 @@ class _JobPostViewState extends State<_JobPostView> {
                             Icon(Icons.send_rounded),
                             SizedBox(width: 8),
                             Text(
-                              'Post Job',
+                              'ลงประกาศงาน',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
