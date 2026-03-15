@@ -598,20 +598,28 @@ class PipelineController {
         <String, dynamic>{};
 
     for (final entry in overrides.entries) {
-      final key = entry.key;
+      final rawKey = entry.key;     // may be "fieldKey" or "fieldKey.slot"
       final newValue = entry.value.toString();
-      final pairs = byKey[key];
 
+      // Support key.slot = value format (e.g. "field.invalid", "field.valid")
+      final dotIdx = rawKey.indexOf('.');
+      final fieldKey = dotIdx > 0 ? rawKey.substring(0, dotIdx) : rawKey;
+      final slot     = dotIdx > 0 ? rawKey.substring(dotIdx + 1) : 'valid';
+
+      final pairs = byKey[fieldKey];
       if (pairs is List && pairs.isNotEmpty) {
         final first = pairs[0] as Map<String, dynamic>;
-        final oldValid = first['valid']?.toString() ?? '';
 
-        // Override valid
-        first['valid'] = newValue;
-
-        // Override atMax ถ้าเดิมเท่ากับ valid (boundary value ขอบบน)
-        if (first['atMax']?.toString() == oldValid) {
-          first['atMax'] = newValue;
+        if (slot == 'valid') {
+          final oldValid = first['valid']?.toString() ?? '';
+          first['valid'] = newValue;
+          // Override atMax ถ้าเดิมเท่ากับ valid (boundary value ขอบบน)
+          if (first['atMax']?.toString() == oldValid) {
+            first['atMax'] = newValue;
+          }
+        } else {
+          // Override the specific slot directly (invalid / atMin / atMax / etc.)
+          first[slot] = newValue;
         }
       }
     }

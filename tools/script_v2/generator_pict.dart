@@ -55,10 +55,20 @@ class GeneratorPict {
       buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
     }
 
-    // Add constraints if provided
+    // Add constraints if provided — only pass Format B (IF/THEN) lines to PICT.
+    // Format A lines (key = value  or  key.slot = value) are dataset overrides
+    // consumed by generate_test_data.dart and must NOT be forwarded to PICT.
     if (constraints != null && constraints.trim().isNotEmpty) {
-      buffer.writeln('');
-      buffer.writeln(constraints.trim());
+      final pictLines = constraints
+          .split('\n')
+          .map((l) => l.trim())
+          .where((l) => l.isNotEmpty && !l.startsWith('#'))
+          .where((l) => l.toUpperCase().contains('IF') && l.toUpperCase().contains('THEN'))
+          .join('\n');
+      if (pictLines.isNotEmpty) {
+        buffer.writeln('');
+        buffer.writeln(pictLines);
+      }
     }
 
     return buffer.toString();
@@ -112,10 +122,18 @@ class GeneratorPict {
       }
     }
 
-    // Add constraints if provided
+    // Add constraints if provided — only pass Format B (IF/THEN) lines to PICT.
     if (constraints != null && constraints.trim().isNotEmpty) {
-      buffer.writeln('');
-      buffer.writeln(constraints.trim());
+      final pictLines = constraints
+          .split('\n')
+          .map((l) => l.trim())
+          .where((l) => l.isNotEmpty && !l.startsWith('#'))
+          .where((l) => l.toUpperCase().contains('IF') && l.toUpperCase().contains('THEN'))
+          .join('\n');
+      if (pictLines.isNotEmpty) {
+        buffer.writeln('');
+        buffer.writeln(pictLines);
+      }
     }
 
     return buffer.toString();
@@ -283,10 +301,10 @@ class GeneratorPict {
       final hasIf = line.contains('IF');
       final hasThen = line.contains('THEN');
 
-      // Format A: Dataset constraint  key = value
+      // Format A: Dataset constraint  key = value  OR  key.slot = value
       if (!hasIf && !hasThen) {
-        if (!RegExp(r'^\w+\s*=\s*.+$').hasMatch(line)) {
-          return 'Line $lineNum: Expected "key = value" or PICT "IF [...] = "..." THEN [...] = "...";"\n"$line"';
+        if (!RegExp(r'^[\w.]+\s*=\s*.+$').hasMatch(line)) {
+          return 'Line $lineNum: Expected "key = value", "key.slot = value", or PICT "IF [...] = "..." THEN [...] = "...";"\n"$line"';
         }
         continue;
       }
