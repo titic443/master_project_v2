@@ -69,9 +69,74 @@ class _ClinicSearchView extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final cubit = context.read<ClinicSearchCubit>();
+          final isLoading = state.status == ClinicSearchStatus.loading;
           return Column(
             children: [
               const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        key: const Key('search_01_patient_name_textfield'),
+                        style: const TextStyle(fontSize: 14),
+                        decoration: const InputDecoration(
+                          labelText: 'ชื่อผู้ป่วย',
+                          labelStyle: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w600),
+                          hintText: 'เช่น สมชาย',
+                          hintStyle:
+                              TextStyle(fontSize: 12, color: Colors.grey),
+                          prefixIcon:
+                              Icon(Icons.person_search_outlined, size: 18),
+                          border: OutlineInputBorder(),
+                          isDense: true,
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 10),
+                        ),
+                        onChanged: cubit.onPatientNameChanged,
+                        onSubmitted: (_) => cubit.search(),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      key: const Key('search_05_end_button'),
+                      onPressed: isLoading ? null : cubit.search,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 18),
+                        backgroundColor: Colors.teal,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.search, size: 18),
+                                SizedBox(width: 4),
+                                Text('ค้นหา',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(child: _ResultSection(state: state)),
             ],
           );
