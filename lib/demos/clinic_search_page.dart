@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:master_project/cubit/clinic_search_cubit.dart';
 import 'package:master_project/cubit/clinic_search_state.dart';
 
@@ -15,46 +14,8 @@ class ClinicSearchPage extends StatelessWidget {
 
 // ─── Private View ─────────────────────────────────────────────────────────────
 
-class _ClinicSearchView extends StatefulWidget {
+class _ClinicSearchView extends StatelessWidget {
   const _ClinicSearchView();
-
-  @override
-  State<_ClinicSearchView> createState() => _ClinicSearchViewState();
-}
-
-class _ClinicSearchViewState extends State<_ClinicSearchView> {
-  final _patientNameCtrl = TextEditingController();
-  final _dateCtrl = TextEditingController();
-
-  @override
-  void dispose() {
-    _patientNameCtrl.dispose();
-    _dateCtrl.dispose();
-    super.dispose();
-  }
-
-  void _sync(ClinicSearchState state) {
-    if (_patientNameCtrl.text != state.patientName) {
-      _patientNameCtrl.text = state.patientName;
-    }
-    if (_dateCtrl.text != state.appointmentDate) {
-      _dateCtrl.text = state.appointmentDate;
-    }
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final now = DateTime.now();
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2031),
-      initialEntryMode: DatePickerEntryMode.input,
-    );
-    if (picked != null && context.mounted) {
-      context.read<ClinicSearchCubit>().onAppointmentDateChanged(picked);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,140 +69,13 @@ class _ClinicSearchViewState extends State<_ClinicSearchView> {
           }
         },
         builder: (context, state) {
-          _sync(state);
           return Column(
             children: [
-              _SearchPanel(
-                patientNameCtrl: _patientNameCtrl,
-                dateCtrl: _dateCtrl,
-                state: state,
-                onSelectDate: () => _selectDate(context),
-              ),
               const Divider(height: 1),
               Expanded(child: _ResultSection(state: state)),
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-// ─── Search Panel ─────────────────────────────────────────────────────────────
-
-class _SearchPanel extends StatelessWidget {
-  final TextEditingController patientNameCtrl;
-  final TextEditingController dateCtrl;
-  final ClinicSearchState state;
-  final VoidCallback onSelectDate;
-
-  const _SearchPanel({
-    required this.patientNameCtrl,
-    required this.dateCtrl,
-    required this.state,
-    required this.onSelectDate,
-  });
-
-  static const _departments = <String?, String>{
-    null: 'ทุกแผนก',
-    'internal_medicine': 'อายุรกรรม',
-    'surgery': 'ศัลยกรรม',
-    'pediatrics': 'กุมารเวชศาสตร์',
-    'obstetrics': 'สูติ-นรีเวช',
-    'ophthalmology': 'จักษุวิทยา',
-    'ent': 'หู คอ จมูก',
-    'orthopedics': 'กระดูกและข้อ',
-  };
-
-  InputDecoration _searchDec({
-    required String label,
-    String? hint,
-    required IconData icon,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-      hintText: hint,
-      hintStyle: const TextStyle(fontSize: 12, color: Colors.grey),
-      prefixIcon: Icon(icon, size: 18),
-      border: const OutlineInputBorder(),
-      isDense: true,
-      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<ClinicSearchCubit>();
-    final isLoading = state.status == ClinicSearchStatus.loading;
-
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Row 1: Patient name + Department
-          Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: TextField(
-                  key: const Key('search_01_patient_name_textfield'),
-                  controller: patientNameCtrl,
-                  style: const TextStyle(fontSize: 14),
-                  decoration: _searchDec(
-                    label: 'ชื่อผู้ป่วย',
-                    hint: 'เช่น สมชาย',
-                    icon: Icons.person_search_outlined,
-                  ),
-                  onChanged: cubit.onPatientNameChanged,
-                  onSubmitted: (_) => cubit.search(),
-                ),
-              ),
-              Row(
-                children: [
-                  ElevatedButton(
-                    key: const Key('search_05_end_button'),
-                    onPressed: isLoading ? null : cubit.search,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 18),
-                      backgroundColor: Colors.teal,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: isLoading
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.search, size: 18),
-                              SizedBox(width: 4),
-                              Text('ค้นหา',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-
-          // Row 2: Date + Type switch + Search button
-        ],
       ),
     );
   }
