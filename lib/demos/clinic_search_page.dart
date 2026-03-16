@@ -76,8 +76,7 @@ class _ClinicSearchViewState extends State<_ClinicSearchView> {
               builder: (_) => AlertDialog(
                 key: const Key('search_01_expected_success'),
                 title: const Text('ค้นหาสำเร็จ'),
-                content: Text(
-                    'พบนัดหมาย ${state.appointments.length} รายการ'),
+                content: Text('พบนัดหมาย ${state.appointments.length} รายการ'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
@@ -167,8 +166,7 @@ class _SearchPanel extends StatelessWidget {
       prefixIcon: Icon(icon, size: 18),
       border: const OutlineInputBorder(),
       isDense: true,
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
     );
   }
 
@@ -201,138 +199,48 @@ class _SearchPanel extends StatelessWidget {
                   onSubmitted: (_) => cubit.search(),
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                flex: 2,
-                child: DropdownButtonFormField<String>(
-                  key: const Key('search_02_department_dropdown'),
-                  value: state.department,
-                  decoration: _searchDec(
-                    label: 'แผนก',
-                    icon: Icons.local_hospital_outlined,
+              Row(
+                children: [
+                  ElevatedButton(
+                    key: const Key('search_05_end_button'),
+                    onPressed: isLoading ? null : cubit.search,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 18),
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: isLoading
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.search, size: 18),
+                              SizedBox(width: 4),
+                              Text('ค้นหา',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                   ),
-                  hint: const Text('ทุกแผนก',
-                      style: TextStyle(fontSize: 13)),
-                  items: _departments.entries
-                      .map((e) => DropdownMenuItem<String>(
-                            value: e.key,
-                            child: Text(e.value,
-                                style: const TextStyle(fontSize: 13)),
-                          ))
-                      .toList(),
-                  onChanged: cubit.onDepartmentChanged,
-                ),
+                ],
               ),
             ],
           ),
           const SizedBox(height: 10),
 
           // Row 2: Date + Type switch + Search button
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  key: const Key('search_03_date_textfield'),
-                  controller: dateCtrl,
-                  readOnly: true,
-                  style: const TextStyle(fontSize: 14),
-                  decoration: _searchDec(
-                    label: 'วันที่นัดหมาย',
-                    hint: 'เลือกวันที่',
-                    icon: Icons.calendar_today_outlined,
-                  ).copyWith(
-                    suffixIcon: dateCtrl.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, size: 16),
-                            onPressed: cubit.clearAppointmentDate,
-                          )
-                        : null,
-                  ),
-                  onTap: onSelectDate,
-                ),
-              ),
-              const SizedBox(width: 10),
-
-              // Appointment type switch pill
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade400),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.video_call_outlined,
-                        size: 16, color: Colors.grey),
-                    const SizedBox(width: 4),
-                    const Text('Tele',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600)),
-                    Switch(
-                      key: const Key('search_04_type_switch'),
-                      value: state.appointmentTypeOpd ?? false,
-                      onChanged: (v) {
-                        // Toggle: if already set to this value and tapped
-                        // same, reset to null (show all)
-                        final current = state.appointmentTypeOpd;
-                        if (current == null) {
-                          cubit.onAppointmentTypeOpdChanged(v);
-                        } else if (current == v) {
-                          cubit.onAppointmentTypeOpdChanged(null);
-                        } else {
-                          cubit.onAppointmentTypeOpdChanged(v);
-                        }
-                      },
-                      materialTapTargetSize:
-                          MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    const Text('OPD',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600)),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 10),
-
-              ElevatedButton(
-                key: const Key('search_05_end_button'),
-                onPressed: isLoading ? null : cubit.search,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 14, horizontal: 18),
-                  backgroundColor: Colors.teal,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: isLoading
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.search, size: 18),
-                          SizedBox(width: 4),
-                          Text('ค้นหา',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -356,8 +264,7 @@ class _ResultSection extends StatelessWidget {
       case ClinicSearchStatus.empty:
         return const _NotFoundCard();
       case ClinicSearchStatus.error:
-        return _ErrorCard(
-            message: state.errorMessage ?? 'เกิดข้อผิดพลาด');
+        return _ErrorCard(message: state.errorMessage ?? 'เกิดข้อผิดพลาด');
       case ClinicSearchStatus.success:
         return _AppointmentList(appointments: state.appointments);
     }
@@ -373,16 +280,13 @@ class _HintCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.event_note_outlined,
-              size: 64, color: Colors.grey[300]),
+          Icon(Icons.event_note_outlined, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text('ค้นหานัดหมายผู้ป่วย',
-              style:
-                  TextStyle(fontSize: 16, color: Colors.grey[500])),
+              style: TextStyle(fontSize: 16, color: Colors.grey[500])),
           const SizedBox(height: 8),
           Text('ใช้ตัวกรองด้านบนเพื่อค้นหา',
-              style:
-                  TextStyle(fontSize: 13, color: Colors.grey[400])),
+              style: TextStyle(fontSize: 13, color: Colors.grey[400])),
         ],
       ),
     );
@@ -399,16 +303,13 @@ class _NotFoundCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.find_in_page_outlined,
-              size: 64, color: Colors.grey[300]),
+          Icon(Icons.find_in_page_outlined, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text('ไม่พบนัดหมาย',
-              style:
-                  TextStyle(fontSize: 16, color: Colors.grey[500])),
+              style: TextStyle(fontSize: 16, color: Colors.grey[500])),
           const SizedBox(height: 8),
           Text('ลองปรับเงื่อนไขการค้นหา',
-              style:
-                  TextStyle(fontSize: 13, color: Colors.grey[400])),
+              style: TextStyle(fontSize: 13, color: Colors.grey[400])),
         ],
       ),
     );
@@ -517,8 +418,7 @@ class _AppointmentCard extends StatelessWidget {
     return Card(
       key: Key('search_appt_card_$index'),
       elevation: 2,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -552,32 +452,27 @@ class _AppointmentCard extends StatelessWidget {
                     children: [
                       Text(name,
                           style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold)),
+                              fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 2),
                       Row(children: [
-                        const Icon(
-                            Icons.local_hospital_outlined,
-                            size: 13,
-                            color: Colors.grey),
+                        const Icon(Icons.local_hospital_outlined,
+                            size: 13, color: Colors.grey),
                         const SizedBox(width: 3),
                         Text(dept,
                             style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey[600])),
+                                fontSize: 13, color: Colors.grey[600])),
                       ]),
                     ],
                   ),
                 ),
                 // Type badge
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: typeColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color: typeColor.withOpacity(0.4)),
+                    border: Border.all(color: typeColor.withOpacity(0.4)),
                   ),
                   child: Text(
                     type,
@@ -612,8 +507,8 @@ class _AppointmentCard extends StatelessWidget {
                 const Spacer(),
                 if (hasInsurance)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: Colors.green.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6),
@@ -645,8 +540,7 @@ class _AppointmentCard extends StatelessWidget {
                   const SizedBox(width: 5),
                   Expanded(
                     child: Text(note,
-                        style: TextStyle(
-                            fontSize: 12, color: Colors.grey[600]),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis),
                   ),
