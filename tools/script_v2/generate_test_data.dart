@@ -1950,7 +1950,7 @@ class TestDataGenerator {
 
     // ── STEP 15: Empty All Fields ──────────────────────────────────────────────
 
-    Map<String, dynamic> buildEdgeCaseEmptyFields() {
+    Map<String, dynamic>? buildEdgeCaseEmptyFields() {
       final expectedMsgsCount = <String, int>{};
       for (final w in widgets) {
         try {
@@ -1986,16 +1986,22 @@ class TestDataGenerator {
           }
         } catch (_) {}
       }
-      if (expectedMsgsCount.isEmpty && textKeys.isNotEmpty) {
-        for (final _ in textKeys) {
-          expectedMsgsCount['Required'] =
-              (expectedMsgsCount['Required'] ?? 0) + 1;
+      // สร้าง emptyAsserts:
+      // - ถ้ามี validatorRules → ใช้ validation messages
+      // - ถ้าไม่มี validator เลย (เช่น search page) → fallback ใช้ expectedFailKeys
+      //   เพราะ submit empty จะ trigger fail dialog แทน
+      // - ถ้าทั้งคู่ไม่มี → ข้ามไม่สร้าง test case นี้
+      final emptyAsserts = <Map<String, dynamic>>[];
+      if (expectedMsgsCount.isNotEmpty) {
+        for (final entry in expectedMsgsCount.entries) {
+          emptyAsserts.add({'text': entry.key, 'exists': true, 'count': entry.value});
+        }
+      } else {
+        for (final fk in expectedFailKeys) {
+          emptyAsserts.add(buildAssert(fk));
         }
       }
-      final emptyAsserts = [
-        for (final entry in expectedMsgsCount.entries)
-          {'text': entry.key, 'exists': true, 'count': entry.value}
-      ];
+      if (emptyAsserts.isEmpty) return null;
       final emptySteps = <Map<String, dynamic>>[];
       if (endKey != null) {
         emptySteps.add({
@@ -2159,7 +2165,8 @@ class TestDataGenerator {
     // ── STEP 15c: Group all edge case builders ────────────────────────────────────
 
     void _buildAllEdgeCases() {
-      cases.add(buildEdgeCaseEmptyFields());
+      final emptyCase = buildEdgeCaseEmptyFields();
+      if (emptyCase != null) cases.add(emptyCase);
 
       final maxCase = buildEdgeCaseBoundaryAtMax();
       if (maxCase != null) cases.add(maxCase);
