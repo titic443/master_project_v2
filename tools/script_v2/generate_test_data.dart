@@ -485,7 +485,11 @@ class TestDataGenerator {
       return normalized.contains('value==null') ||
           normalized.contains('value.isempty') ||
           normalized.contains('valuenull') ||
-          normalized.contains('valueisempty');
+          normalized.contains('valueisempty') ||
+          // รองรับ short-form parameter name "v" ที่ใช้ใน validator จริง
+          normalized.contains('v==null') ||
+          normalized.contains('v.isempty') ||
+          normalized.contains('v.trim().isempty');
     }
 
     /// สร้าง date values สำหรับ DatePicker ตาม firstDate/lastDate constraints
@@ -1999,9 +2003,18 @@ class TestDataGenerator {
         });
         emptySteps.add({'pumpAndSettle': true});
       }
+      // emptyCombo: ทุก field เป็น empty จริงๆ ไม่ใช่ค่า default
+      // - textKeys, datePickerKeys, timePickerKeys, dropdownKeys → 'empty'
+      // - switchKeys → 'off' (ค่า default = false, ไม่นับเป็น required field)
+      // - checkboxKeys → 'unchecked'
+      // - radioKeys → ไม่ใส่ในcombo (no selection = unset group)
       final emptyCombo = <String, String>{
-        ...buildNonTextDefaultCombo(),
         for (final k in textKeys) k: 'empty',
+        for (final k in datePickerKeys) k: 'empty',
+        for (final k in timePickerKeys) k: 'empty',
+        for (final dk in dropdownKeys) dk: 'empty',
+        for (final sk in switchKeys) sk: 'off',
+        for (final ck in checkboxKeys) ck: 'unchecked',
       };
       return {
         'tc': 'edge_cases_empty_all_fields',

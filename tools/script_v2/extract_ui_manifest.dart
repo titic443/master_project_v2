@@ -1178,6 +1178,22 @@ class UiManifestExtractor {
           }
         }
 
+        // ----- Arrow-Function Ternary Pattern -----
+        // Pattern: => condition ? 'Message' : null
+        // รองรับ validator แบบ arrow: validator: (v) => v == null ? 'msg' : null
+        if (rules.isEmpty) {
+          for (final m in RegExp(
+                  "=>\\s*(.*?)\\s*\\?\\s*(['\"])((?:\\\\.|[^\\\\])*?)\\2\\s*:\\s*null",
+                  dotAll: true)
+              .allMatches(body)) {
+            final cond = (m.group(1) ?? '').trim();
+            final msg = (m.group(3) ?? '').trim();
+            if (cond.isNotEmpty && msg.isNotEmpty) {
+              rules.add({'condition': cond, 'message': msg});
+            }
+          }
+        }
+
         // ----- Fallback: Synthesize Rule from RegExp -----
         // ถ้าไม่เจอ rules แต่เจอ RegExp pattern และ message
         // สร้าง rule อัตโนมัติ
