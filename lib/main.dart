@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 12),
               _buildCard(
                 context,
-                title: 'Post a Job',
+                title: 'ประกาศหางาน',
                 description: 'Create a job listing with full position details',
                 icon: Icons.post_add,
                 color: Colors.deepOrange,

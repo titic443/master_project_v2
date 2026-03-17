@@ -152,7 +152,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   onChanged: cubit.onTitleChanged,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 5) return 'กรุณากรอกอย่างน้อย 5 ตัวอักษร';
+                    // if (v.trim().length < 5) return 'กรุณากรอกอย่างน้อย 5 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -167,10 +167,13 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   hint: const Text('เลือกประเภท'),
                   items: const [
                     DropdownMenuItem(value: 'คอนโด', child: Text('คอนโด')),
-                    DropdownMenuItem(value: 'บ้านเดี่ยว', child: Text('บ้านเดี่ยว')),
-                    DropdownMenuItem(value: 'ทาวน์เฮาส์', child: Text('ทาวน์เฮาส์')),
+                    DropdownMenuItem(
+                        value: 'บ้านเดี่ยว', child: Text('บ้านเดี่ยว')),
+                    DropdownMenuItem(
+                        value: 'ทาวน์เฮาส์', child: Text('ทาวน์เฮาส์')),
                     DropdownMenuItem(value: 'ที่ดิน', child: Text('ที่ดิน')),
-                    DropdownMenuItem(value: 'อาคารพาณิชย์', child: Text('อาคารพาณิชย์')),
+                    DropdownMenuItem(
+                        value: 'อาคารพาณิชย์', child: Text('อาคารพาณิชย์')),
                   ],
                   onChanged: cubit.onPropertyTypeChanged,
                   validator: (v) => v == null ? 'กรุณาเลือกประเภท' : null,
@@ -194,7 +197,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   onChanged: cubit.onLocationChanged,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
+                    if (v.trim().length < 2)
+                      return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -210,7 +214,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   onChanged: cubit.onDistrictChanged,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
+                    if (v.trim().length < 2)
+                      return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -236,7 +241,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
                     final n = int.tryParse(v);
-                    if (n == null || n < 100000) return 'ราคาขั้นต่ำ 100,000 บาท';
+                    if (n == null || n < 100000)
+                      return 'ราคาขั้นต่ำ 100,000 บาท';
                     return null;
                   },
                 ),
@@ -254,14 +260,16 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         ),
                         hint: const Text('เลือก'),
                         items: const [
-                          DropdownMenuItem(value: 'สตูดิโอ', child: Text('สตูดิโอ')),
+                          DropdownMenuItem(
+                              value: 'สตูดิโอ', child: Text('สตูดิโอ')),
                           DropdownMenuItem(value: '1', child: Text('1')),
                           DropdownMenuItem(value: '2', child: Text('2')),
                           DropdownMenuItem(value: '3', child: Text('3')),
                           DropdownMenuItem(value: '4+', child: Text('4+')),
                         ],
                         onChanged: cubit.onBedroomsChanged,
-                        validator: (v) => v == null ? 'กรุณาเลือกจำนวนห้องนอน' : null,
+                        validator: (v) =>
+                            v == null ? 'กรุณาเลือกจำนวนห้องนอน' : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -281,7 +289,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                           DropdownMenuItem(value: '4+', child: Text('4+')),
                         ],
                         onChanged: cubit.onBathroomsChanged,
-                        validator: (v) => v == null ? 'กรุณาเลือกจำนวนห้องน้ำ' : null,
+                        validator: (v) =>
+                            v == null ? 'กรุณาเลือกจำนวนห้องน้ำ' : null,
                       ),
                     ),
                   ],
@@ -309,9 +318,11 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         ],
                         onChanged: cubit.onAreaSqmChanged,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                          if (v == null || v.trim().isEmpty)
+                            return 'กรุณากรอกข้อมูล';
                           final n = double.tryParse(v);
-                          if (n == null || n < 10) return 'พื้นที่ขั้นต่ำ 10 ตร.ม.';
+                          // if (n == null || n < 10)
+                          //   return 'พื้นที่ขั้นต่ำ 10 ตร.ม.';
                           return null;
                         },
                       ),
@@ -328,7 +339,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         ),
                         onChanged: cubit.onFloorChanged,
                         validator: (v) {
-                          if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                          if (v == null || v.trim().isEmpty)
+                            return 'กรุณากรอกข้อมูล';
                           return null;
                         },
                       ),
@@ -407,11 +419,12 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   maxLines: 4,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: cubit.onDescriptionChanged,
-                  validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 20) return 'กรุณากรอกอย่างน้อย 20 ตัวอักษร';
-                    return null;
-                  },
+                  // validator: (v) {
+                  //   if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                  //   if (v.trim().length < 20)
+                  //     return 'กรุณากรอกอย่างน้อย 20 ตัวอักษร';
+                  //   return null;
+                  // },
                 ),
                 const SizedBox(height: 14),
                 TextFormField(
@@ -426,7 +439,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   onChanged: cubit.onContactNameChanged,
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 2) return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
+                    // if (v.trim().length < 2)
+                    //   return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
