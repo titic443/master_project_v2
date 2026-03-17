@@ -761,7 +761,12 @@ class TestDataGenerator {
           final entry = Map<String, dynamic>.from(arr[0] as Map);
           final invalidVal = entry['invalid']?.toString() ?? '';
           // ถ้า invalid เป็นตัวเลขที่ parse ได้ → override เป็น ""
-          if (invalidVal.isNotEmpty && int.tryParse(invalidVal) != null) {
+          // แต่ต้องข้ามกรณีที่ invalidRuleMessages บอกว่ามี threshold rule เฉพาะ
+          // เช่น price.invalid = "50000" ที่ตั้งใจทดสอบกฎ "ราคาขั้นต่ำ 100,000 บาท"
+          final invalidRuleMsg = entry['invalidRuleMessages']?.toString() ?? '';
+          if (invalidVal.isNotEmpty &&
+              int.tryParse(invalidVal) != null &&
+              invalidRuleMsg.isEmpty) {
             entry['invalid'] = '';
             byKey[key] = [entry];
           }
