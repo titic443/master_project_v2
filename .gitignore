@@ -56,3 +56,12 @@ output/model_pairwise/
 # Compiled executables and distribution packages
 /bin/
 /dist/
+
+# Code coverage reports
+coverage/
+
+# Generated integration tests (auto-generated, do not commit)
+integration_test/
+
+# Microsoft Office temp/lock files
+~$*

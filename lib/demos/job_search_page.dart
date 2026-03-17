@@ -131,25 +131,6 @@ class _SearchPanel extends StatelessWidget {
     required this.state,
   });
 
-  static const _categories = [
-    null,
-    'IT & Tech',
-    'Finance',
-    'Marketing',
-    'Engineering',
-    'Healthcare',
-    'Education',
-  ];
-
-  static const _types = [
-    null,
-    'Full-time',
-    'Part-time',
-    'Contract',
-    'Freelance',
-    'Internship',
-  ];
-
   InputDecoration _searchDec({
     required String label,
     String? hint,
@@ -196,24 +177,24 @@ class _SearchPanel extends StatelessWidget {
                   onSubmitted: (_) => cubit.search(),
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                flex: 2,
-                child: TextField(
-                  key: const Key('search_02_location_textfield'),
-                  controller: locationCtrl,
-                  style: const TextStyle(fontSize: 14),
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  decoration: _searchDec(
-                    label: 'สถานที่',
-                    hint: 'กรุงเทพฯ, เชียงใหม่',
-                    icon: Icons.location_on_outlined,
-                  ),
-                  onChanged: cubit.onLocationChanged,
-                  onSubmitted: (_) => cubit.search(),
-                ),
-              ),
+              // const SizedBox(width: 10),
+              // Expanded(
+              //   flex: 2,
+              //   child: TextField(
+              //     key: const Key('search_02_location_textfield'),
+              //     controller: locationCtrl,
+              //     style: const TextStyle(fontSize: 14),
+              //     autocorrect: false,
+              //     enableSuggestions: false,
+              //     decoration: _searchDec(
+              //       label: 'สถานที่',
+              //       hint: 'กรุงเทพฯ, เชียงใหม่',
+              //       icon: Icons.location_on_outlined,
+              //     ),
+              //     onChanged: cubit.onLocationChanged,
+              //     onSubmitted: (_) => cubit.search(),
+              //   ),
+              // ),
             ],
           ),
           const SizedBox(height: 10),
@@ -223,48 +204,73 @@ class _SearchPanel extends StatelessWidget {
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  key: const Key('search_03_category_dropdown'),
+                  key: const Key('search_02_category_dropdown'),
                   value: state.category,
                   decoration: _searchDec(
-                    label: 'สาขางาน',
+                    label: 'หมวดหมู่งาน',
                     icon: Icons.category_outlined,
                   ),
                   hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
-                  items: _categories
-                      .map(
-                        (e) => DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(
-                            e ?? 'ทั้งหมด',
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  items: const [
+                    DropdownMenuItem(
+                        value: 'IT & Tech',
+                        child:
+                            Text('IT & Tech', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Finance',
+                        child: Text('Finance', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Marketing',
+                        child:
+                            Text('Marketing', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Engineering',
+                        child: Text('Engineering',
+                            style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Healthcare',
+                        child:
+                            Text('Healthcare', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Education',
+                        child:
+                            Text('Education', style: TextStyle(fontSize: 13))),
+                  ],
                   onChanged: cubit.onCategoryChanged,
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  key: const Key('search_04_type_dropdown'),
+                  key: const Key('search_03_type_dropdown'),
                   value: state.employmentType,
                   decoration: _searchDec(
-                    label: 'ประเภทงาน',
+                    label: 'ประเภทการจ้างงาน',
                     icon: Icons.badge_outlined,
                   ),
                   hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
-                  items: _types
-                      .map(
-                        (e) => DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(
-                            e ?? 'ทั้งหมด',
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  items: const [
+                    DropdownMenuItem(
+                        value: 'Full-time',
+                        child:
+                            Text('Full-time', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Part-time',
+                        child:
+                            Text('Part-time', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Contract',
+                        child:
+                            Text('Contract', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Freelance',
+                        child:
+                            Text('Freelance', style: TextStyle(fontSize: 13))),
+                    DropdownMenuItem(
+                        value: 'Internship',
+                        child:
+                            Text('Internship', style: TextStyle(fontSize: 13))),
+                  ],
                   onChanged: cubit.onEmploymentTypeChanged,
                 ),
               ),
@@ -277,7 +283,7 @@ class _SearchPanel extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
-                  key: const Key('search_05_salary_min_textfield'),
+                  key: const Key('search_04_salary_min_textfield'),
                   controller: salaryMinCtrl,
                   style: const TextStyle(fontSize: 14),
                   decoration: _searchDec(
@@ -294,7 +300,8 @@ class _SearchPanel extends StatelessWidget {
               const SizedBox(width: 10),
               // Remote switch pill
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade400),
                   borderRadius: BorderRadius.circular(8),
@@ -316,7 +323,7 @@ class _SearchPanel extends StatelessWidget {
                       ),
                     ),
                     Switch(
-                      key: const Key('search_06_remote_switch'),
+                      key: const Key('search_05_remote_switch'),
                       value: state.remoteOnly,
                       onChanged: cubit.onRemoteOnlyChanged,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -326,7 +333,7 @@ class _SearchPanel extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               ElevatedButton(
-                key: const Key('search_07_end_button'),
+                key: const Key('search_06_end_button'),
                 onPressed: isLoading ? null : cubit.search,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

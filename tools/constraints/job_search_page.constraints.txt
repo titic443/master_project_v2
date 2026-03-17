@@ -7,8 +7,9 @@
 # ─── Dataset Constraints (Format A: key = value) ──────────────────────────────
 # ค่าตายตัวที่ตรงกับข้อมูลจริงใน DB สำหรับ text fields
 
-search_01_keyword_textfield = Software Engineer
-search_02_location_textfield = Bangkok, Thailand
+search_01_keyword_textfield.valid = วิศวกรซอฟต์แวร์
+search_01_keyword_textfield.invalid = Software Engineer
+search_04_salary_min_textfield.valid = 30000
 # search_05_salary_min_textfield = 30000
 
 # # ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────
