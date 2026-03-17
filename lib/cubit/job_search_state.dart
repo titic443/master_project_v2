@@ -25,27 +25,33 @@ class JobSearchState extends Equatable {
     this.errorMessage,
   });
 
+  // sentinel — ใช้แยก "ไม่ได้ส่งมา" ออกจาก "ส่ง null มา"
+  static const _unset = Object();
+
   JobSearchState copyWith({
     JobSearchStatus? status,
     String? keyword,
     String? location,
-    String? category,
-    String? employmentType,
+    Object? category = _unset,
+    Object? employmentType = _unset,
     String? salaryMin,
     bool? remoteOnly,
     List<Map<String, dynamic>>? jobs,
-    String? errorMessage,
+    Object? errorMessage = _unset,
   }) {
     return JobSearchState(
       status: status ?? this.status,
       keyword: keyword ?? this.keyword,
       location: location ?? this.location,
-      category: category ?? this.category,
-      employmentType: employmentType ?? this.employmentType,
+      category:
+          category == _unset ? this.category : category as String?,
+      employmentType:
+          employmentType == _unset ? this.employmentType : employmentType as String?,
       salaryMin: salaryMin ?? this.salaryMin,
       remoteOnly: remoteOnly ?? this.remoteOnly,
       jobs: jobs ?? this.jobs,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage:
+          errorMessage == _unset ? this.errorMessage : errorMessage as String?,
     );
   }
 

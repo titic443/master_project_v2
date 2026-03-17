@@ -210,8 +210,12 @@ class _SearchPanel extends StatelessWidget {
                     label: 'หมวดหมู่งาน',
                     icon: Icons.category_outlined,
                   ),
-                  hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
                   items: const [
+                    DropdownMenuItem(
+                        value: null,
+                        child: Text('ทั้งหมด',
+                            style: TextStyle(
+                                fontSize: 13, color: Colors.grey))),
                     DropdownMenuItem(
                         value: 'IT & Tech',
                         child:
@@ -248,8 +252,12 @@ class _SearchPanel extends StatelessWidget {
                     label: 'ประเภทการจ้างงาน',
                     icon: Icons.badge_outlined,
                   ),
-                  hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
                   items: const [
+                    DropdownMenuItem(
+                        value: null,
+                        child: Text('ทั้งหมด',
+                            style: TextStyle(
+                                fontSize: 13, color: Colors.grey))),
                     DropdownMenuItem(
                         value: 'Full-time',
                         child:
