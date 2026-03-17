@@ -151,8 +151,10 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: cubit.onTitleChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    // if (v.trim().length < 5) return 'กรุณากรอกอย่างน้อย 5 ตัวอักษร';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกหัวข้อประกาศ';
+                    // if (v.trim().length < 5)
+                    //   return 'กรุณากรอกอย่างน้อย 5 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -196,9 +198,10 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   ),
                   onChanged: cubit.onLocationChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 2)
-                      return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกจังหวัด / เมือง';
+                    // if (v.trim().length < 2)
+                    //   return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -213,9 +216,10 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   ),
                   onChanged: cubit.onDistrictChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    if (v.trim().length < 2)
-                      return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกเขต / ย่าน';
+                    // if (v.trim().length < 2)
+                    //   return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),
@@ -239,7 +243,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: cubit.onPriceChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
+                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกราคา';
                     final n = int.tryParse(v);
                     if (n == null || n < 100000)
                       return 'ราคาขั้นต่ำ 100,000 บาท';
@@ -319,8 +323,8 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         onChanged: cubit.onAreaSqmChanged,
                         validator: (v) {
                           if (v == null || v.trim().isEmpty)
-                            return 'กรุณากรอกข้อมูล';
-                          final n = double.tryParse(v);
+                            return 'กรุณากรอกพื้นที่ใช้สอย';
+                          // final n = double.tryParse(v);
                           // if (n == null || n < 10)
                           //   return 'พื้นที่ขั้นต่ำ 10 ตร.ม.';
                           return null;
@@ -340,7 +344,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         onChanged: cubit.onFloorChanged,
                         validator: (v) {
                           if (v == null || v.trim().isEmpty)
-                            return 'กรุณากรอกข้อมูล';
+                            return 'กรุณากรอกชั้น';
                           return null;
                         },
                       ),
@@ -419,12 +423,13 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   maxLines: 4,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: cubit.onDescriptionChanged,
-                  // validator: (v) {
-                  //   if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                  //   if (v.trim().length < 20)
-                  //     return 'กรุณากรอกอย่างน้อย 20 ตัวอักษร';
-                  //   return null;
-                  // },
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกรายละเอียด';
+                    if (v.trim().length < 20)
+                      return 'กรุณากรอกอย่างน้อย 20 ตัวอักษร';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 14),
                 TextFormField(
@@ -438,9 +443,10 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   textCapitalization: TextCapitalization.words,
                   onChanged: cubit.onContactNameChanged,
                   validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'กรุณากรอกข้อมูล';
-                    // if (v.trim().length < 2)
-                    //   return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
+                    if (v == null || v.trim().isEmpty)
+                      return 'กรุณากรอกชื่อผู้ติดต่อ';
+                    if (v.trim().length < 2)
+                      return 'กรุณากรอกอย่างน้อย 2 ตัวอักษร';
                     return null;
                   },
                 ),

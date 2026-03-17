@@ -139,12 +139,23 @@ class GeneratorPict {
     return buffer.toString();
   }
 
-  /// Format values for PICT model syntax
-  /// Dropdown values are quoted, others are comma-separated
+  /// Format values for PICT model syntax.
+  ///
+  /// Detection is value-content-based (not factor-name-based):
+  /// - "Bucket" factors (text fields, switches, checkboxes) use symbolic sentinel
+  ///   values like 'valid'/'invalid'/'on'/'off'/'checked'/'unchecked'.
+  ///   These are plain ASCII and do NOT need quoting.
+  /// - All other factors (dropdowns, radios) carry actual option values which may
+  ///   contain Thai characters, spaces, or special strings like "4+" that PICT
+  ///   cannot parse without double-quotes. These MUST be quoted.
   String _formatValuesForModel(String factorName, List<String> values) {
-    if (!factorName.startsWith('Dropdown')) {
+    const bucketValues = {'valid', 'invalid', 'on', 'off', 'checked', 'unchecked'};
+    final isBucketFactor = values.any((v) => bucketValues.contains(v));
+    if (isBucketFactor) {
       return values.join(', ');
     }
+    // Dropdown / radio actual option values — quote for PICT compatibility
+    // (handles Thai characters, spaces, "4+", and other special strings)
     final quoted = values.map((v) {
       final escaped = v.replaceAll('"', '\\"');
       return '"$escaped"';
