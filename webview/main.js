@@ -750,8 +750,8 @@ class WebUI {
 
   #getGroupLabel(name) {
     const labels = {
-      'pairwise_valid_cases': 'Pairwise (All Valid)',
-      'pairwise_valid_invalid_cases': 'Pairwise (Valid/Invalid)',
+      'pairwise_valid_cases': 'Pairwise (Valid)',
+      'pairwise_valid_invalid_cases': 'Pairwise (Valid+Invalid)',
       'edge_cases': 'Edge Cases',
     };
     return labels[name] ?? name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());

@@ -1,0 +1,87 @@
+sequenceDiagram
+    actor User
+    participant WebUI as WebUI<br/>(main.js)
+    participant PC as PipelineController<br/>(server.dart)
+    participant CR as CoverageRunner<br/>(coverage_runner.dart)
+    participant Flutter as «flutter CLI»
+    participant LG as «lcov / genhtml»
+    participant FS as «FileSystem»
+
+    %% ─────────────────────────────────────────────
+    %% WebUI: User trigger
+    %% ─────────────────────────────────────────────
+    User->>WebUI: click "Run Coverage Test"
+    activate WebUI
+    WebUI->>WebUI: runCoverageTest()
+    WebUI->>WebUI: #setSummaryRunningState()
+    WebUI->>WebUI: #runStep('run-tests',<br/>{testScript, withCoverage:true, useDevice:true})
+
+    WebUI->>+PC: HTTP POST /run-tests<br/>{testScript, withCoverage, useDevice}
+    deactivate WebUI
+
+    %% ─────────────────────────────────────────────
+    %% PipelineController: handleRunTests()
+    %% ─────────────────────────────────────────────
+    PC->>PC: handleRunTests(request)
+
+    %% ── Step 0 ────────────────────────────────────
+    Note over PC,CR: Step 0 : ลบ coverage data เก่า
+    PC->>+CR: clearCoverage()
+    CR->>FS: delete coverage/ (recursive)
+    CR-->>-PC: void
+
+    %% ── Step 1 ────────────────────────────────────
+    Note over PC,CR: Step 1 : หา device / emulator
+    PC->>+CR: findMobileDevice()
+    CR->>+Flutter: flutter devices --machine
+    Flutter-->>-CR: devices JSON list
+    CR->>CR: prefer emulator → pick deviceId
+    CR-->>-PC: deviceId (String?)
+
+    %% ── Step 2 ────────────────────────────────────
+    Note over PC,CR: Step 2 : รัน Flutter test พร้อม coverage flag
+    PC->>+CR: runFlutterTest(testScript, withCoverage:true, deviceId)
+    CR->>+Flutter: flutter test <script> --coverage -d <deviceId>
+    Flutter->>FS: write coverage/lcov.info
+    Flutter-->>-CR: stdout / stderr / exitCode
+    CR->>CR: _parseTestCases(stdout)
+    CR-->>-PC: TestRunResult<br/>{exitCode, passed, failed, testCases, stdout}
+
+    %% ── Step 3 ────────────────────────────────────
+    Note over PC,CR: Step 3 : สร้าง HTML Coverage Report
+    PC->>+CR: generateCoverageReport()
+
+    CR->>CR: _waitForLcovFile()
+    loop retry (max 10 × 500 ms)
+        CR->>FS: read coverage/lcov.info
+        FS-->>CR: content (empty → retry)
+    end
+
+    CR->>CR: _filterCubitCoverage()
+    CR->>+LG: lcov --remove coverage/lcov.info<br/>*/cubit/* -o lcov_ui_only.info
+    LG-->>-CR: lcov_ui_only.info (exitCode)
+
+    CR->>CR: _runGenHtml(lcov_ui_only.info)
+    CR->>+LG: genhtml lcov_ui_only.info -o coverage/html
+    LG->>FS: write coverage/html/index.html
+    LG-->>-CR: exitCode
+
+    CR-->>-PC: coverageHtmlPath<br/>'coverage/html/index.html'
+
+    %% ── Step 4 ────────────────────────────────────
+    Note over PC,CR: Step 4 : เปิด browser
+    PC->>+CR: openCoverageReport('http://localhost:8080/coverage/index.html')
+    CR->>CR: Platform.isMacOS → open url
+    CR-->>-PC: void
+
+    %% ─────────────────────────────────────────────
+    %% Response กลับ WebUI
+    %% ─────────────────────────────────────────────
+    PC-->>-WebUI: HTTP 200 JSON<br/>{success, passed, failed,<br/>testCases, coverageHtmlPath}
+
+    activate WebUI
+    WebUI->>WebUI: #log(results)
+    WebUI->>WebUI: #showCoverageSection()
+    WebUI->>WebUI: #updateSummaryFromCoverage(testCases)
+    WebUI-->>User: แสดงผล pass/fail + Coverage Report
+    deactivate WebUI

@@ -134,11 +134,21 @@ class _SearchPanel extends StatelessWidget {
   });
 
   static const _types = [
-    null, 'คอนโด', 'บ้านเดี่ยว', 'ทาวน์เฮาส์', 'ที่ดิน', 'อาคารพาณิชย์',
+    null,
+    'คอนโด',
+    'บ้านเดี่ยว',
+    'ทาวน์เฮาส์',
+    'ที่ดิน',
+    'อาคารพาณิชย์',
   ];
 
   static const _bedroomOptions = [
-    null, 'สตูดิโอ', '1', '2', '3', '4+',
+    null,
+    'สตูดิโอ',
+    '1',
+    '2',
+    '3',
+    '4+',
   ];
 
   InputDecoration _sDec({
@@ -198,17 +208,16 @@ class _SearchPanel extends StatelessWidget {
                     icon: Icons.domain_outlined,
                   ),
                   hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
-                  items: _types
-                      .map(
-                        (e) => DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(
-                            e ?? 'ทั้งหมด',
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  items: const [
+                    DropdownMenuItem(value: 'condo', child: Text('คอนโด')),
+                    DropdownMenuItem(
+                        value: 'detached', child: Text('บ้านเดี่ยว')),
+                    DropdownMenuItem(
+                        value: 'townhouse', child: Text('ทาวน์เฮาส์')),
+                    DropdownMenuItem(value: 'land', child: Text('ที่ดิน')),
+                    DropdownMenuItem(
+                        value: 'commercial', child: Text('อาคารพาณิชย์')),
+                  ],
                   onChanged: cubit.onPropertyTypeChanged,
                 ),
               ),
@@ -228,17 +237,13 @@ class _SearchPanel extends StatelessWidget {
                     icon: Icons.bed_outlined,
                   ),
                   hint: const Text('ทั้งหมด', style: TextStyle(fontSize: 13)),
-                  items: _bedroomOptions
-                      .map(
-                        (e) => DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(
-                            e ?? 'ทั้งหมด',
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  items: const [
+                    DropdownMenuItem(value: 'studio', child: Text('สตูดิโอ')),
+                    DropdownMenuItem(value: '1', child: Text('1')),
+                    DropdownMenuItem(value: '2', child: Text('2')),
+                    DropdownMenuItem(value: '3', child: Text('3')),
+                    DropdownMenuItem(value: '4plus', child: Text('4+')),
+                  ],
                   onChanged: cubit.onBedroomsChanged,
                 ),
               ),
@@ -419,7 +424,8 @@ class _HintCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.holiday_village_outlined, size: 64, color: Colors.grey[300]),
+          Icon(Icons.holiday_village_outlined,
+              size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
             'ค้นหาอสังหาริมทรัพย์ที่ใช่สำหรับคุณ',
@@ -673,7 +679,8 @@ class _PropertyCard extends StatelessWidget {
                 if (bedrooms != null)
                   _Chip(
                     icon: Icons.bed_outlined,
-                    label: bedrooms == 'สตูดิโอ' ? 'สตูดิโอ' : '$bedrooms ห้องนอน',
+                    label:
+                        bedrooms == 'สตูดิโอ' ? 'สตูดิโอ' : '$bedrooms ห้องนอน',
                     color: Colors.blue,
                   ),
                 if (bathrooms != null)
