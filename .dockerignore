@@ -1,0 +1,39 @@
+# Flutter build output
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Test output (generated at runtime)
+coverage/
+integration_test/
+output/
+test/generated/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Other tools
+android/
+ios/
+linux/
+macos/
+windows/
+web/
+
+# Node
+node_modules/
+
+# Logs
+*.log
