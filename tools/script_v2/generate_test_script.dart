@@ -443,12 +443,21 @@ class TestScriptGenerator {
             final m = (s['tap'] as Map).cast<String, dynamic>();
             final k = m['byKey']; // key ของ widget
 
-            b
-              // ให้แน่ใจว่า widget visible ก่อน tap
-              ..writeln(
-                  "      await tester.ensureVisible(find.byKey(const Key('$k')));")
-              // tap widget
-              ..writeln("      await tester.tap(find.byKey(const Key('$k')));");
+            // สำหรับ end_button: settle layout ก่อน + ใช้ skipOffstage:false
+            // เพราะ keyboard อาจทำให้ button หลุด viewport (offstage)
+            if (k.toString().contains('_end_button')) {
+              b.writeln('      await tester.pumpAndSettle();');
+              b.writeln(
+                  "      await tester.ensureVisible(find.byKey(const Key('$k'), skipOffstage: false));");
+              b.writeln(
+                  "      await tester.tap(find.byKey(const Key('$k'), skipOffstage: false));");
+            } else {
+              b
+                ..writeln(
+                    "      await tester.ensureVisible(find.byKey(const Key('$k')));")
+                ..writeln(
+                    "      await tester.tap(find.byKey(const Key('$k')));");
+            }
 
             if (!nextIsPump) b.writeln('      await tester.pump();');
           }
@@ -1057,11 +1066,21 @@ class TestScriptGenerator {
             } else {
               final m = (s['tap'] as Map).cast<String, dynamic>();
               final k = m['byKey'];
-              ib
-                ..writeln(
-                    "        await tester.ensureVisible(find.byKey(const Key('$k')));")
-                ..writeln(
-                    "        await tester.tap(find.byKey(const Key('$k')));");
+              // สำหรับ end_button: settle layout ก่อน + ใช้ skipOffstage:false
+              // เพราะ keyboard อาจทำให้ button หลุด viewport (offstage)
+              if (k.toString().contains('_end_button')) {
+                ib.writeln('        await tester.pumpAndSettle();');
+                ib.writeln(
+                    "        await tester.ensureVisible(find.byKey(const Key('$k'), skipOffstage: false));");
+                ib.writeln(
+                    "        await tester.tap(find.byKey(const Key('$k'), skipOffstage: false));");
+              } else {
+                ib
+                  ..writeln(
+                      "        await tester.ensureVisible(find.byKey(const Key('$k')));")
+                  ..writeln(
+                      "        await tester.tap(find.byKey(const Key('$k')));");
+              }
               if (!nextIsPump) ib.writeln('        await tester.pump();');
             }
           }

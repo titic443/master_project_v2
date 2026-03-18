@@ -185,6 +185,25 @@ class PropertyIn(BaseModel):
     contactName: str = Field(..., min_length=2, max_length=100)
 
 
+# ─── Real Estate Normalisation Maps ──────────────────────────────────────────
+# Flutter sends lowercase/camelCase values; MongoDB stores the canonical forms
+# defined in PropertyIn.  These maps translate before querying.
+
+_PROPERTY_TYPE_MAP: dict[str, str] = {
+    "condo":      "Condo",
+    "detached":   "House",       # Flutter key → stored label
+    "townhouse":  "Townhouse",
+    "land":       "Land",
+    "commercial": "Commercial",
+}
+
+_BEDROOMS_MAP: dict[str, str] = {
+    "studio": "Studio",          # case fix
+    "4plus":  "4+",              # Flutter key → stored label
+    # "1", "2", "3" match as-is
+}
+
+
 # ─── Real Estate Routes ───────────────────────────────────────────────────────
 
 @app.post("/api/demo/properties", response_model=ApiResponse)
@@ -217,9 +236,11 @@ async def search_properties(
             ]
         })
     if property_type:
-        conditions.append({"propertyType": property_type})
+        normalized_type = _PROPERTY_TYPE_MAP.get(property_type.lower(), property_type)
+        conditions.append({"propertyType": normalized_type})
     if bedrooms:
-        conditions.append({"bedrooms": bedrooms})
+        normalized_bedrooms = _BEDROOMS_MAP.get(bedrooms.lower(), bedrooms)
+        conditions.append({"bedrooms": normalized_bedrooms})
     if min_price is not None:
         conditions.append({"price": {"$gte": min_price}})
     if max_price is not None:

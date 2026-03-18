@@ -1499,32 +1499,27 @@ class TestDataGenerator {
                 const {};
             for (final fieldKey in invalidFields) {
               final dataArray = ds[fieldKey];
+
+              // 1. ดึง invalidRuleMessages จาก datasets (ไม่กรอง กรุณา/required)
+              String msg = '';
               if (dataArray is List && dataArray.isNotEmpty) {
                 final firstPair = dataArray[0];
                 if (firstPair is Map) {
-                  final msg = firstPair['invalidRuleMessages']?.toString();
-                  if (msg != null &&
-                      msg.isNotEmpty &&
-                      msg.toLowerCase() != 'general' &&
-                      !msg.toLowerCase().contains('required') &&
-                      !msg.toLowerCase().contains('กรุณา')) {
-                    asserts.add({'text': msg, 'exists': true});
-                  }
+                  msg = firstPair['invalidRuleMessages']?.toString() ?? '';
                 }
               }
 
-              // ── keyboardType: number → add null/empty validator message ─────
-              // ถ้า field มี keyboardType == number ให้ดึง validator message
-              // ของ condition null/empty จาก manifest มาใส่ใน asserts เสมอ
-              final widget = widgets.firstWhere(
-                (w) => (w['key'] ?? '').toString() == fieldKey,
-                orElse: () => <String, dynamic>{},
-              );
-              if (widget.isNotEmpty) {
-                final meta =
-                    (widget['meta'] as Map?)?.cast<String, dynamic>() ??
-                        const {};
-                if (meta['keyboardType']?.toString() == 'number') {
+              // 2. ถ้าไม่มี message จาก datasets → fallback หา isEmpty/null rule
+              //    จาก manifest เพื่อครอบคลุมทุก field type (ไม่เฉพาะ number)
+              if (msg.isEmpty || msg.toLowerCase() == 'general') {
+                final widget = widgets.firstWhere(
+                  (w) => (w['key'] ?? '').toString() == fieldKey,
+                  orElse: () => <String, dynamic>{},
+                );
+                if (widget.isNotEmpty) {
+                  final meta =
+                      (widget['meta'] as Map?)?.cast<String, dynamic>() ??
+                          const {};
                   final rules =
                       (meta['validatorRules'] as List?) ?? const [];
                   for (final rule in rules) {
@@ -1535,15 +1530,17 @@ class TestDataGenerator {
                               .replaceAll(' ', '');
                       if (condition.contains('null') ||
                           condition.contains('isempty')) {
-                        final nullMsg = rule['message']?.toString() ?? '';
-                        if (nullMsg.isNotEmpty) {
-                          asserts.add({'text': nullMsg, 'exists': true});
-                        }
+                        final fallback = rule['message']?.toString() ?? '';
+                        if (fallback.isNotEmpty) msg = fallback;
                         break;
                       }
                     }
                   }
                 }
+              }
+
+              if (msg.isNotEmpty && msg.toLowerCase() != 'general') {
+                asserts.add({'text': msg, 'exists': true});
               }
             }
             for (final ck in uncheckedRequiredCheckboxes) {
