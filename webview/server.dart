@@ -54,6 +54,7 @@ import '../tools/script_v2/generate_datasets.dart' show DatasetGenerator;
 import '../tools/script_v2/generate_test_data.dart' show TestDataGenerator;
 import '../tools/script_v2/generate_test_script.dart' show TestScriptGenerator;
 import '../tools/script_v2/generator_pict.dart' show GeneratorPict;
+import 'coverage_runner.dart' show CoverageRunner;
 
 // =============================================================================
 // MAIN FUNCTION - Server Entry Point
@@ -114,16 +115,19 @@ class PipelineController {
   final DatasetGenerator _datasetGenerator;
   final TestDataGenerator _testDataGenerator;
   final TestScriptGenerator _testScriptGenerator;
+  final CoverageRunner _coverageRunner;
 
   PipelineController({
     UiManifestExtractor? extractor,
     DatasetGenerator? datasetGenerator,
     TestDataGenerator? testDataGenerator,
     TestScriptGenerator? testScriptGenerator,
+    CoverageRunner? coverageRunner,
   })  : _extractor = extractor ?? const UiManifestExtractor(),
         _datasetGenerator = datasetGenerator ?? const DatasetGenerator(),
         _testDataGenerator = testDataGenerator ?? const TestDataGenerator(),
-        _testScriptGenerator = testScriptGenerator ?? TestScriptGenerator();
+        _testScriptGenerator = testScriptGenerator ?? TestScriptGenerator(),
+        _coverageRunner = coverageRunner ?? const CoverageRunner();
 
 // =============================================================================
 // REQUEST ROUTER - Main Handler
@@ -810,6 +814,13 @@ class PipelineController {
 
   /// POST /run-tests - รัน Flutter tests (optional with coverage)
   ///
+  /// Orchestrate การทำงานของ [CoverageRunner] ตามลำดับขั้นตอน:
+  ///   Step 0: _coverageRunner.clearCoverage()        - ลบ coverage data เก่า
+  ///   Step 1: _coverageRunner.findMobileDevice()     - หา device (ถ้า useDevice)
+  ///   Step 2: _coverageRunner.runFlutterTest()       - รัน flutter test
+  ///   Step 3: _coverageRunner.generateCoverageReport() - lcov + genhtml
+  ///   Step 4: _coverageRunner.openCoverageReport()   - เปิด browser
+  ///
   /// Request body:
   ///   {
   ///     "testScript": "test/page_flow_test.dart",
@@ -835,152 +846,32 @@ class PipelineController {
     }
 
     // ---------------------------------------------------------------------------
-    // Step 0: ลบ coverage folder เก่าออกก่อน เพื่อกันสับสนระหว่างผลเก่า/ใหม่
+    // Step 0: ลบ coverage data เก่าออกก่อน เพื่อกันสับสนระหว่างผลเก่า/ใหม่
     // ---------------------------------------------------------------------------
 
     if (withCoverage) {
-      final coverageDir = Directory('coverage');
-      if (await coverageDir.exists()) {
-        await coverageDir.delete(recursive: true);
-        print('  ✓ Cleared old coverage data');
-      }
+      await _coverageRunner.clearCoverage();
     }
 
     // ---------------------------------------------------------------------------
-    // Step 1: รัน flutter test
+    // Step 1: หา device/emulator สำหรับ integration test (ถ้า useDevice)
     // ---------------------------------------------------------------------------
 
-    // สร้าง arguments สำหรับ flutter test command
-    final args = ['test', testScript];
-    if (withCoverage) {
-      args.add('--coverage'); // เพิ่ม flag เพื่อสร้าง coverage data
-    }
+    final String? deviceId =
+        useDevice ? await _coverageRunner.findMobileDevice() : null;
 
     // ---------------------------------------------------------------------------
-    // Integration test: หา device/emulator ที่รันอยู่
+    // Step 2: รัน flutter test (พร้อม/ไม่พร้อม --coverage ตาม withCoverage)
     // ---------------------------------------------------------------------------
 
-    String? deviceId;
-    if (useDevice) {
-      // รัน flutter devices เพื่อหา emulator
-      final devicesResult =
-          await Process.run('flutter', ['devices', '--machine']);
-      if (devicesResult.exitCode == 0) {
-        try {
-          final devices = jsonDecode(devicesResult.stdout.toString()) as List;
-          // หา emulator ก่อน ถ้าไม่มีค่อยใช้ device อื่น
-          for (final device in devices) {
-            if (device is Map) {
-              final isEmulator = device['emulator'] == true;
-              final isSupported = device['isSupported'] == true;
-              final id = device['id'] as String?;
-              // ข้าม web และ desktop devices
-              final targetPlatform = device['targetPlatform'] as String? ?? '';
-              final isMobile = targetPlatform.contains('android') ||
-                  targetPlatform.contains('ios');
-
-              if (isSupported && isMobile && id != null) {
-                deviceId = id;
-                if (isEmulator) break; // prefer emulator
-              }
-            }
-          }
-        } catch (e) {
-          print('  ✗ Failed to parse devices: $e');
-        }
-      }
-
-      if (deviceId != null) {
-        args.addAll(['-d', deviceId]);
-        print('  > Using device: $deviceId');
-      } else {
-        print('  ⚠ No mobile device/emulator found, running on VM');
-      }
-    }
-
-    // Log command
-    print('  > flutter ${args.join(' ')}');
-
-    // รัน flutter test (ใช้ timeout นานขึ้นสำหรับ integration test)
-    final timeout =
-        useDevice ? 600 : 300; // 10 นาที สำหรับ device, 5 นาที สำหรับ VM
-    final result = await Process.run(
-      'flutter',
-      args,
-      workingDirectory: Directory.current.path,
-    ).timeout(Duration(seconds: timeout), onTimeout: () {
-      return ProcessResult(0, -1, '', 'Test timeout after $timeout seconds');
-    });
+    final testResult = await _coverageRunner.runFlutterTest(
+      testScript,
+      withCoverage,
+      deviceId: deviceId,
+    );
 
     // ---------------------------------------------------------------------------
-    // Parse test results จาก output
-    // ---------------------------------------------------------------------------
-
-    final output = result.stdout.toString();
-
-    // ใช้ RegExp หาจำนวน tests ที่ passed และ failed
-    // Pattern: "X tests passed" หรือ "X test passed"
-    final passedMatch = RegExp(r'(\d+) tests? passed').firstMatch(output);
-    final failedMatch = RegExp(r'(\d+) tests? failed').firstMatch(output);
-
-    // ---------------------------------------------------------------------------
-    // Parse test case names จาก output
-    // Flutter test output format: "00:00 +N: Test Case Name"
-    // หรือ "00:00 +N -M: Test Case Name" (เมื่อมี failures)
-    // ---------------------------------------------------------------------------
-
-    final testCases = <Map<String, dynamic>>[];
-
-    // Pattern จับชื่อ test case จาก output
-    // ตัวอย่าง: "00:01 +1: Case 1: Submit with valid data"
-    // ไม่รวม "loading", "All tests passed" และบรรทัดสรุป
-    final testCaseRegex = RegExp(
-        r'^\d{2}:\d{2}\s+\+(\d+)(?:\s+-(\d+))?:\s+(.+)$',
-        multiLine: true);
-
-    // prevFailCount ใช้ track cumulative failures เพื่อหา delta
-    // (Flutter output แสดง -N แบบ cumulative ไม่ใช่ per-test)
-    int prevFailCount = 0;
-
-    for (final match in testCaseRegex.allMatches(output)) {
-      final testName = match.group(3)?.trim() ?? '';
-
-      // กรองออก: loading, All tests passed, Some tests failed, และบรรทัดที่ไม่ใช่ชื่อ test
-      if (testName.isNotEmpty &&
-          !testName.startsWith('loading') &&
-          !testName.contains('All tests passed') &&
-          !testName.contains('Some tests failed')) {
-        // คำนวณ delta ของ fail count เพื่อตรวจว่า test นี้ fail หรือไม่
-        // Bug เดิม: ใช้ cumulative -N > 0 → test ที่ pass หลัง fail อื่น ถูก mark ว่า failed
-        // Fix: ใช้ delta (เพิ่มขึ้นจาก prev หรือไม่)
-        final currFailCount = int.tryParse(match.group(2) ?? '0') ?? 0;
-        final thisTestFailed = currFailCount > prevFailCount;
-
-        // Normalize: Flutter เพิ่ม " [E]" suffix เมื่อ test fail
-        // เช่น "test_1" (บรรทัดแรก) และ "test_1 [E]" (บรรทัดสอง)
-        // ต้อง strip [E] เพื่อ match กับ entry เดิม
-        final normalizedName = testName.endsWith(' [E]')
-            ? testName.substring(0, testName.length - 4)
-            : testName;
-
-        final idx = testCases.indexWhere((tc) => tc['name'] == normalizedName);
-        if (idx == -1) {
-          // เพิ่มครั้งแรก (ใช้ normalizedName เสมอ)
-          testCases.add({
-            'name': normalizedName,
-            'status': thisTestFailed ? 'failed' : 'passed',
-          });
-        } else if (thisTestFailed) {
-          // บรรทัดที่ 2 (มี [E]) → update status เดิมเป็น "failed"
-          testCases[idx]['status'] = 'failed';
-        }
-
-        if (currFailCount > prevFailCount) prevFailCount = currFailCount;
-      }
-    }
-
-    // ---------------------------------------------------------------------------
-    // Step 2: Generate HTML coverage report (ถ้า coverage enabled)
+    // Step 3: Generate HTML Coverage Report (ถ้า coverage enabled)
     // Generate แม้ test fail เพราะ coverage data ยังมีประโยชน์สำหรับ debug
     // ---------------------------------------------------------------------------
 
@@ -988,114 +879,19 @@ class PipelineController {
     String coverageOutput = '';
 
     if (withCoverage) {
-      print('  > Waiting for coverage/lcov.info...');
-      final lcovFile = File('coverage/lcov.info');
+      coverageHtmlPath = await _coverageRunner.generateCoverageReport();
+      coverageOutput = coverageHtmlPath != null
+          ? 'Coverage HTML generated: $coverageHtmlPath'
+          : 'Coverage generation failed';
 
       // -------------------------------------------------------------------------
-      // Retry loop: รอให้ lcov.info ถูกสร้างและมี content
-      // บางครั้ง flutter test เสร็จแล้วแต่ไฟล์ยังเขียนไม่เสร็จ
+      // Step 4: เปิด coverage report ใน browser ผ่าน server URL
+      // ใช้ server URL แทน local file เพื่อให้ CSS/JS ทำงานถูกต้อง
       // -------------------------------------------------------------------------
 
-      int retries = 0;
-      const maxRetries = 10; // ลองสูงสุด 10 ครั้ง
-      const retryDelay = Duration(milliseconds: 500); // รอ 500ms ต่อครั้ง
-      bool lcovReady = false;
-
-      while (retries < maxRetries) {
-        if (await lcovFile.exists()) {
-          final content = await lcovFile.readAsString();
-          if (content.isNotEmpty) {
-            lcovReady = true;
-            break; // lcov.info พร้อมแล้ว
-          }
-        }
-        // รอแล้วลองใหม่
-        await Future.delayed(retryDelay);
-        retries++;
-        print('  ... waiting for lcov.info ($retries/$maxRetries)');
-      }
-
-      // ตรวจสอบว่า lcov.info พร้อมหรือไม่
-      if (lcovReady) {
-        print('  ✓ Found lcov.info');
-
-        // -------------------------------------------------------------------------
-        // กรอง cubit/state files ออก เพื่อให้ coverage focus เฉพาะ UI layer
-        // ใช้ lcov --remove เพื่อตัด files ที่อยู่ใน */cubit/* ออก
-        // -------------------------------------------------------------------------
-
-        print(
-            '  > lcov --remove coverage/lcov.info */cubit/* -o coverage/lcov_ui_only.info');
-        final lcovFilterResult = await Process.run(
-          'lcov',
-          [
-            '--remove',
-            'coverage/lcov.info',
-            '*/cubit/*',
-            '-o',
-            'coverage/lcov_ui_only.info'
-          ],
-        );
-
-        // เลือกใช้ไฟล์ที่กรองแล้ว ถ้า filter สำเร็จ หรือ fallback ใช้ไฟล์เดิม
-        final lcovForHtml = lcovFilterResult.exitCode == 0
-            ? 'coverage/lcov_ui_only.info'
-            : 'coverage/lcov.info';
-
-        if (lcovFilterResult.exitCode == 0) {
-          print('  ✓ Filtered cubit files from coverage (UI-only)');
-        } else {
-          print('  ⚠ lcov filter failed, using unfiltered coverage');
-        }
-
-        // -------------------------------------------------------------------------
-        // รัน genhtml เพื่อแปลง lcov.info เป็น HTML report
-        // genhtml เป็น tool จาก lcov package
-        // -------------------------------------------------------------------------
-
-        print('  > genhtml $lcovForHtml -o coverage/html');
-        final genHtmlResult = await Process.run(
-          'genhtml',
-          [lcovForHtml, '-o', 'coverage/html'],
-        );
-
-        if (genHtmlResult.exitCode == 0) {
-          coverageHtmlPath = 'coverage/html/index.html';
-          coverageOutput = genHtmlResult.stdout.toString();
-
-          // แสดง warning ถ้า test failed
-          if (result.exitCode != 0) {
-            print('  ⚠ Coverage HTML generated (but some tests failed)');
-          } else {
-            print('  ✓ Coverage HTML generated: $coverageHtmlPath');
-          }
-
-          // -----------------------------------------------------------------------
-          // Step 3: เปิด coverage report ใน browser ผ่าน server URL
-          // ใช้ server URL แทน local file เพื่อให้ CSS/JS ทำงานถูกต้อง
-          // -----------------------------------------------------------------------
-
-          const coverageUrl = 'http://localhost:8080/coverage/index.html';
-          print('  > open $coverageUrl');
-          if (Platform.isMacOS) {
-            // macOS: ใช้ 'open' command
-            await Process.run('open', [coverageUrl]);
-          } else if (Platform.isWindows) {
-            // Windows: ใช้ 'start' command (ต้อง runInShell)
-            await Process.run('start', [coverageUrl], runInShell: true);
-          } else if (Platform.isLinux) {
-            // Linux: ใช้ 'xdg-open' command
-            await Process.run('xdg-open', [coverageUrl]);
-          }
-          print('  ✓ Opened coverage report in browser');
-        } else {
-          // genhtml failed
-          coverageOutput = 'genhtml failed: ${genHtmlResult.stderr}';
-          print('  ✗ genhtml failed: ${genHtmlResult.stderr}');
-        }
-      } else {
-        print('  ✗ lcov.info not found or empty after $maxRetries retries');
-        coverageOutput = 'Coverage file not ready after waiting';
+      if (coverageHtmlPath != null) {
+        await _coverageRunner
+            .openCoverageReport('http://localhost:8080/coverage/index.html');
       }
     }
 
@@ -1104,13 +900,13 @@ class PipelineController {
     // ---------------------------------------------------------------------------
 
     request.response.write(jsonEncode({
-      'success': result.exitCode == 0,
-      'passed': passedMatch != null ? int.parse(passedMatch.group(1)!) : 0,
-      'failed': failedMatch != null ? int.parse(failedMatch.group(1)!) : 0,
-      'testCases': testCases,
-      'totalTests': testCases.length,
-      'output': output,
-      'error': result.stderr.toString(),
+      'success': testResult.exitCode == 0,
+      'passed': testResult.passed,
+      'failed': testResult.failed,
+      'testCases': testResult.testCases,
+      'totalTests': testResult.testCases.length,
+      'output': testResult.stdout,
+      'error': testResult.stderr,
       'coverageHtmlPath': coverageHtmlPath,
       'coverageOutput': coverageOutput,
     }));
