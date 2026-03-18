@@ -168,14 +168,11 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                   ),
                   hint: const Text('เลือกประเภท'),
                   items: const [
-                    DropdownMenuItem(value: 'คอนโด', child: Text('คอนโด')),
-                    DropdownMenuItem(
-                        value: 'บ้านเดี่ยว', child: Text('บ้านเดี่ยว')),
-                    DropdownMenuItem(
-                        value: 'ทาวน์เฮาส์', child: Text('ทาวน์เฮาส์')),
-                    DropdownMenuItem(value: 'ที่ดิน', child: Text('ที่ดิน')),
-                    DropdownMenuItem(
-                        value: 'อาคารพาณิชย์', child: Text('อาคารพาณิชย์')),
+                    DropdownMenuItem(value: 'condo', child: Text('คอนโด')),
+                    DropdownMenuItem(value: 'detached', child: Text('บ้านเดี่ยว')),
+                    DropdownMenuItem(value: 'townhouse', child: Text('ทาวน์เฮาส์')),
+                    DropdownMenuItem(value: 'land', child: Text('ที่ดิน')),
+                    DropdownMenuItem(value: 'commercial', child: Text('อาคารพาณิชย์')),
                   ],
                   onChanged: cubit.onPropertyTypeChanged,
                   validator: (v) => v == null ? 'กรุณาเลือกประเภท' : null,
@@ -264,12 +261,11 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                         ),
                         hint: const Text('เลือก'),
                         items: const [
-                          DropdownMenuItem(
-                              value: 'สตูดิโอ', child: Text('สตูดิโอ')),
+                          DropdownMenuItem(value: 'studio', child: Text('สตูดิโอ')),
                           DropdownMenuItem(value: '1', child: Text('1')),
                           DropdownMenuItem(value: '2', child: Text('2')),
                           DropdownMenuItem(value: '3', child: Text('3')),
-                          DropdownMenuItem(value: '4+', child: Text('4+')),
+                          DropdownMenuItem(value: '4plus', child: Text('4+')),
                         ],
                         onChanged: cubit.onBedroomsChanged,
                         validator: (v) =>
@@ -290,7 +286,7 @@ class _PropertyPostViewState extends State<_PropertyPostView> {
                           DropdownMenuItem(value: '1', child: Text('1')),
                           DropdownMenuItem(value: '2', child: Text('2')),
                           DropdownMenuItem(value: '3', child: Text('3')),
-                          DropdownMenuItem(value: '4+', child: Text('4+')),
+                          DropdownMenuItem(value: '4plus', child: Text('4+')),
                         ],
                         onChanged: cubit.onBathroomsChanged,
                         validator: (v) =>
