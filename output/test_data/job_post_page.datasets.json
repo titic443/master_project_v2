@@ -1,0 +1,70 @@
+{
+  "file": "lib/demos/job_post_page.dart",
+  "datasets": {
+    "byKey": {
+      "job_01_title_textfield": [
+        {
+          "valid": "วิศวกรซอฟต์แวร์อาวุโส",
+          "invalid": "QA",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 3 ตัวอักษร",
+          "atMin": "พส",
+          "atMax": "วิศวกรซอฟต์แวร์อาวุโส"
+        }
+      ],
+      "job_02_company_textfield": [
+        {
+          "valid": "บริษัท นวัตกรรม จำกัด",
+          "invalid": "บ",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "atMin": "อ",
+          "atMax": "บริษัท นวัตกรรม จำกัด"
+        }
+      ],
+      "job_03_location_textfield": [
+        {
+          "valid": "กรุงเทพมหานคร",
+          "invalid": "ธ",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "atMin": "ช",
+          "atMax": "กรุงเทพมหานคร"
+        }
+      ],
+      "job_07_salary_min_textfield": [
+        {
+          "valid": "35000",
+          "invalid": "",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "35000"
+        }
+      ],
+      "job_08_salary_max_textfield": [
+        {
+          "valid": "50000",
+          "invalid": "30000",
+          "invalidRuleMessages": "ต้องมากกว่าหรือเท่ากับเงินเดือนขั้นต่ำ",
+          "atMin": "",
+          "atMax": "50000"
+        }
+      ],
+      "job_09_desc_textfield": [
+        {
+          "valid": "รับผิดชอบในการพัฒนาและบำรุงรักษาซอฟต์แวร์ตามที่ได้",
+          "invalid": "รายละเอียดงานสั้นไป",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "atMin": "รายละเอียดงานไม่ถึง 20",
+          "atMax": "รับผิดชอบในการพัฒนาและบำรุงรักษาซอฟต์แวร์ตามที่ได้"
+        }
+      ],
+      "job_10_skills_textfield": [
+        {
+          "valid": "Python, SQL, AWS, Docker",
+          "invalid": "C",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "atMin": "J",
+          "atMax": "Python, SQL, AWS, Docker"
+        }
+      ]
+    }
+  }
+}

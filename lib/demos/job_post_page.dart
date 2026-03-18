@@ -426,7 +426,7 @@ class _JobPostViewState extends State<_JobPostView> {
                 // ── Submit ───────────────────────────────────────────────
                 const SizedBox(height: 36),
                 ElevatedButton(
-                  key: const Key('job_12_xxx_button'),
+                  key: const Key('job_12_end_button'),
                   onPressed: isLoading ? null : () => _onSubmit(context),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
