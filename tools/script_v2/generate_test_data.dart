@@ -1483,7 +1483,7 @@ class TestDataGenerator {
 
           if (hasEndButton && endKey != null) {
             st.add({
-              'tap': {'byKey': endKey}
+              'tap': {'byKey': endKey, 'isSubmit': true}
             });
             st.add({'pumpAndSettle': true});
           } else {
@@ -1638,7 +1638,7 @@ class TestDataGenerator {
 
           // End button
           if (hasEndButton && endKey != null) {
-            st.add({'tap': {'byKey': endKey}});
+            st.add({'tap': {'byKey': endKey, 'isSubmit': true}});
             st.add({'pumpAndSettle': true});
           } else {
             st.add({'pump': true});
@@ -1781,7 +1781,7 @@ class TestDataGenerator {
 
           if (hasEndButton && endKey != null) {
             st.add({
-              'tap': {'byKey': endKey}
+              'tap': {'byKey': endKey, 'isSubmit': true}
             });
             st.add({'pumpAndSettle': true});
           } else {
@@ -2007,7 +2007,7 @@ class TestDataGenerator {
       final emptySteps = <Map<String, dynamic>>[];
       if (endKey != null) {
         emptySteps.add({
-          'tap': {'byKey': endKey}
+          'tap': {'byKey': endKey, 'isSubmit': true}
         });
         emptySteps.add({'pumpAndSettle': true});
       }
@@ -2059,7 +2059,7 @@ class TestDataGenerator {
       }
       final maxSteps = buildOrderedSteps(maxStepsByKey)
         ..add({
-          'tap': {'byKey': endKey}
+          'tap': {'byKey': endKey, 'isSubmit': true}
         })
         ..add({'pumpAndSettle': true});
       final maxAsserts = buildSuccessAsserts();
@@ -2138,7 +2138,7 @@ class TestDataGenerator {
       }
       final minSteps = buildOrderedSteps(minStepsByKey)
         ..add({
-          'tap': {'byKey': endKey}
+          'tap': {'byKey': endKey, 'isSubmit': true}
         })
         ..add({'pumpAndSettle': true});
       final minKind = minHasInvalidFields ? 'failed' : 'success';
