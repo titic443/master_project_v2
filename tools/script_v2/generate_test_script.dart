@@ -385,10 +385,11 @@ class TestScriptGenerator {
         // -------------------------------------------------------------------------
         for (var i = 0; i < steps.length; i++) {
           final s = steps[i];
-          // ตรวจสอบว่า step ถัดไปเป็น pump หรือไม่
-          // ถ้าใช่ ไม่ต้องเพิ่ม pump หลัง action นี้
-          final nextIsPump =
-              (i + 1 < steps.length) && (steps[i + 1].containsKey('pump'));
+          // ตรวจสอบว่า step ถัดไปเป็น pump หรือ pumpAndSettle หรือไม่
+          // ถ้าใช่ ไม่ต้องเพิ่ม pump หลัง action นี้ (pumpAndSettle ครอบคลุม pump อยู่แล้ว)
+          final nextIsPump = (i + 1 < steps.length) &&
+              (steps[i + 1].containsKey('pump') ||
+                  steps[i + 1].containsKey('pumpAndSettle'));
 
           // ---------------------------------------------------------------------
           // enterText: กรอกข้อความใน TextField
@@ -1001,8 +1002,9 @@ class TestScriptGenerator {
         // -------------------------------------------------------------------------
         for (var i = 0; i < steps.length; i++) {
           final s = steps[i];
-          final nextIsPump =
-              (i + 1 < steps.length) && (steps[i + 1].containsKey('pump'));
+          final nextIsPump = (i + 1 < steps.length) &&
+              (steps[i + 1].containsKey('pump') ||
+                  steps[i + 1].containsKey('pumpAndSettle'));
 
           // ตรวจสอบว่า step ถัดไปเป็น null selection หรือไม่
           // ถ้าใช่ ให้ skip tap action
