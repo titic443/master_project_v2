@@ -48,36 +48,58 @@
 │  │ - _datasetGenerator           │──▶│ + extractManifest()      ││
 │  │ - _testDataGenerator          │   │ - _processOne()          ││
 │  │ - _testScriptGenerator        │   └─────────────────────────┘│
-│  │ + handleRequest()             │                               │
-│  │ + handleScan()                │   ┌─Generator────────────────┐│
-│  │ + handleExtractManifest()     │   │ DatasetGenerator          ││
-│  │ + handleGenerateDatasets()    │──▶│  (generate_datasets)      ││
-│  │ + handleGenerateTestData()    │   │ - model / - apiKey        ││
-│  │ + handleGenerateTestScript()  │   │ + generateDatasets()      ││
-│  │ + handleRunTests()            │   │ - _processManifest()      ││
-│  │ + handleGenerateAll()         │   │ - _callGeminiForDatasets()││
-│  │ + handleFindFile()            │   │ - _extractTextFromGemini()││
-│  │ + handleOpenCoverage()        │   │ - _stripCodeFences()      ││
-│  │                               │   │        │                  ││
-│  └───────────────┬───────────────┘   │        │ HTTP             ││
-│                  │                   │        ▼                  ││
-│                  │                   │   Gemini AI API           ││
-│                  │                   │                           ││
-│                  │                   │ TestDataGenerator         ││
-│                  │                   │  (generate_test_data)     ││
-│                  │                   │ + generateTestData()      ││
-│                  │                   │   │                       ││
-│                  │                   │   └──▶ GeneratorPict      ││
-│                  │                   │        (generator_pict)   ││
-│                  │                   │        + executePict()    ││
-│                  │                   │        + generatePairwise()│
-│                  │                   │                           ││
-│                  │                   │ TestScriptGenerator       ││
-│                  │                   │  (generate_test_script)   ││
-│                  │                   │ + generateScript()        ││
-│                  │                   │ - _processOne()           ││
-│                  │                   └───────────────────────────┘│
-└──────────────────┼───────────────────────────────────────────────┘
+│  │ - _coverageRunner             │                               │
+│  │ + handleRequest()             │   ┌─Generator────────────────┐│
+│  │ + handleScan()                │   │ DatasetGenerator          ││
+│  │ + handleExtractManifest()     │   │  (generate_datasets)      ││
+│  │ + handleGenerateDatasets()    │──▶│ - model / - apiKey        ││
+│  │ + handleGenerateTestData()    │   │ + generateDatasets()      ││
+│  │ + handleGenerateTestScript()  │   │ - _processManifest()      ││
+│  │ + handleRunTests()            │   │ - _callGeminiForDatasets()││
+│  │ + handleGenerateAll()         │   │ - _extractTextFromGemini()││
+│  │ + handleFindFile()            │   │ - _stripCodeFences()      ││
+│  │ + handleOpenCoverage()        │   │        │                  ││
+│  │                               │   │        │ HTTP             ││
+│  └──────┬──────────┬─────────────┘   │        ▼                  ││
+│         │          │                 │   Gemini AI API           ││
+│         │          │                 │                           ││
+│         │          │                 │ TestDataGenerator         ││
+│         │          │                 │  (generate_test_data)     ││
+│         │          │                 │ + generateTestData()      ││
+│         │          └────────────────▶│   │                       ││
+│         │                            │   └──▶ GeneratorPict      ││
+│         │                            │        (generator_pict)   ││
+│         │                            │        + executePict()    ││
+│         │                            │        + generatePairwise()│
+│         │                            │                           ││
+│         │                            │ TestScriptGenerator       ││
+│         │                            │  (generate_test_script)   ││
+│         │                            │ + generateScript()        ││
+│         │                            │ - _processOne()           ││
+│         │                            └───────────────────────────┘│
+│         │                                                         │
+│         │          ┌─Runner────────────────────────────────────┐  │
+│         └─────────▶│ CoverageRunner                            │  │
+│                    │  (coverage_runner.dart)                   │  │
+│                    │                                           │  │
+│                    │ + clearCoverage()                         │  │
+│                    │ + findMobileDevice()                      │  │
+│                    │ + runFlutterTest(script, withCov, device) │  │
+│                    │ + generateCoverageReport()                │  │
+│                    │ + openCoverageReport(url)                 │  │
+│                    │ - _parseTestCases(output)                 │  │
+│                    │ - _waitForLcovFile()                      │  │
+│                    │ - _filterCubitCoverage()                  │  │
+│                    │ - _runGenHtml(lcovFile)                   │  │
+│                    │         │                                 │  │
+│                    └─────────┼─────────────────────────────────┘  │
+│                              │ Process.run (CLI Tools)             │
+│                              ├──▶ flutter test --coverage          │
+│                              ├──▶ flutter devices --machine        │
+│                              ├──▶ lcov --remove                    │
+│                              ├──▶ genhtml                          │
+│                              └──▶ open / start / xdg-open          │
+└──────────────────────────────────────────────────────────────────┘
                    │
 ┌──────────────────┼───────────────────────────────────────────────┐
 │ Connection       │                                               │
@@ -195,10 +217,12 @@ Orchestrate การทำงานระหว่าง Extractor และ Ge
 | `handleGenerateDatasets()` | `setConnectionStatus()` |
 | `handleGenerateTestData()` | `createOutputFileName()` |
 | `handleGenerateTestScript()` | `updateOutputFileName()` |
-| `handleRunTests()` | - (feature เพิ่มเติม) |
+| `handleRunTests()` | - delegate ไปยัง `CoverageRunner` (4 steps) |
 | `handleGenerateAll()` | `generateOutput()` |
 | `handleFindFile()` | `createJFileChooser()` |
 | `handleOpenCoverage()` | - (feature เพิ่มเติม) |
+
+> **หมายเหตุ**: `handleRunTests()` ทำหน้าที่เป็น **orchestrator เท่านั้น** — logic ทั้งหมดถูก delegate ไปยัง `CoverageRunner._coverageRunner` ด้วย 4 method calls ที่ชัดเจน ได้แก่ `clearCoverage()`, `findMobileDevice()`, `runFlutterTest()`, `generateCoverageReport()`, และ `openCoverageReport()`
 
 ---
 
@@ -309,7 +333,79 @@ Orchestrate การทำงานระหว่าง Extractor และ Ge
 
 ---
 
-### 2.3 Sub-package Generator
+### 2.3 Sub-package Runner
+
+> รัน Test และสร้าง Coverage Report — sub-package ใหม่ที่แยกออกจาก Controller
+
+#### ไฟล์ในกลุ่มนี้
+
+| ไฟล์ | Class | หน้าที่ |
+|---|---|---|
+| `webview/coverage_runner.dart` | `CoverageRunner` | จัดการ CLI tool execution: flutter test, lcov, genhtml, open browser |
+| `webview/coverage_runner.dart` | `TestRunResult` | Data class สำหรับผลลัพธ์จากการรัน flutter test |
+
+#### Class: CoverageRunner
+
+Encapsulate การเรียก external CLI tools ที่เกี่ยวกับ test execution และ coverage report
+
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `flutterBin` | `String` | path ของ flutter executable (default: `'flutter'`) |
+
+#### Public Methods
+
+| Visibility | Method | หน้าที่ | CLI Tool ที่เรียก |
+|---|---|---|---|
+| `public` | `clearCoverage()` | ลบ `coverage/` folder เก่าทิ้ง (idempotent) | FileSystem |
+| `public` | `findMobileDevice()` | ค้นหา Android/iOS device หรือ emulator | `flutter devices --machine` |
+| `public` | `runFlutterTest(script, withCoverage, {deviceId})` | รัน flutter test แล้วคืน `TestRunResult` | `flutter test [--coverage] [-d id]` |
+| `public` | `generateCoverageReport()` | รัน lcov filter + genhtml → สร้าง HTML report | `lcov --remove`, `genhtml` |
+| `public` | `openCoverageReport(url)` | เปิด coverage report ใน browser ตาม OS | `open` / `start` / `xdg-open` |
+
+#### Private Methods
+
+| Method | หน้าที่ |
+|---|---|
+| `_parseTestCases(output)` | Parse flutter test stdout → `List<{name, status}>` โดยใช้ delta fail count |
+| `_waitForLcovFile()` | Retry loop รอให้ `coverage/lcov.info` ถูกเขียนสมบูรณ์ (max 10 ครั้ง, 500ms/ครั้ง) |
+| `_filterCubitCoverage()` | ใช้ `lcov --remove */cubit/*` กรอง business logic ออก → UI-only coverage |
+| `_runGenHtml(lcovFile)` | ใช้ `genhtml` แปลง lcov.info → `coverage/html/index.html` |
+
+#### Data Class: TestRunResult
+
+ผลลัพธ์จาก `runFlutterTest()` ที่ส่งกลับไปยัง `PipelineController`
+
+| Field | Type | หน้าที่ |
+|---|---|---|
+| `exitCode` | `int` | exit code ของ flutter test (0 = all passed) |
+| `stdout` | `String` | output ทั้งหมดสำหรับ log และ debug |
+| `stderr` | `String` | error output |
+| `testCases` | `List<Map<String, dynamic>>` | รายการ `{name, status}` ของแต่ละ test case |
+| `passed` | `int` | จำนวน tests ที่ผ่าน |
+| `failed` | `int` | จำนวน tests ที่ไม่ผ่าน |
+
+#### Input / Output
+
+- **Input**: test script path (เช่น `test/buttons_page_flow_test.dart`)
+- **Output**: `coverage/html/index.html` (HTML report)
+- **External Tools**: `flutter`, `lcov`, `genhtml`, OS browser opener
+
+#### ความสัมพันธ์กับ PipelineController
+
+`handleRunTests()` ใน `PipelineController` ทำหน้าที่ **orchestrate เท่านั้น** โดย delegate 5 ขั้นตอนไปยัง `CoverageRunner`:
+
+```
+handleRunTests()
+  ├── Step 0: _coverageRunner.clearCoverage()
+  ├── Step 1: _coverageRunner.findMobileDevice()        (ถ้า useDevice)
+  ├── Step 2: _coverageRunner.runFlutterTest(...)       → TestRunResult
+  ├── Step 3: _coverageRunner.generateCoverageReport()  → coverageHtmlPath
+  └── Step 4: _coverageRunner.openCoverageReport(url)  (ถ้า report พร้อม)
+```
+
+---
+
+### 2.4 Sub-package Generator
 
 > สร้าง Test Data และ Test Script - เทียบกับ **TestDataGenerator** + **RobotGenerator** ใน reference
 
@@ -554,12 +650,15 @@ PICT algorithm module — สร้าง pairwise test combinations
 | **Domain** | Generator | `tools/script_v2/generate_test_data.dart` | `TestDataGenerator` |
 | **Domain** | Generator | `tools/script_v2/generator_pict.dart` | `GeneratorPict`, `PairwiseResult`, `FactorExtractionResult` *(internal dependency ของ `TestDataGenerator` — ไม่ได้ถูกเรียกจาก Controller โดยตรง)* |
 | **Domain** | Generator | `tools/script_v2/generate_test_script.dart` | `TestScriptGenerator` |
+| **Domain** | Runner | `webview/coverage_runner.dart` | `CoverageRunner`, `TestRunResult` |
 | **Connection** | - | (private methods ใน `DatasetGenerator` class, `generate_datasets.dart`) | `_callGeminiForDatasets()`, `_extractTextFromGemini()`, `_stripCodeFences()` |
 | Utility | - | `tools/script_v2/utils.dart`, `tools/script_v2/clear_manifest.dart` | - |
 
 ---
 
 ## Data Flow (Pipeline)
+
+### Generation Pipeline (generateTests → /generate-all)
 
 ```
 User (Browser)
@@ -570,7 +669,7 @@ User (Browser)
   ▼
 [Controller] PipelineController (server.dart) ─── handleRequest()
   │
-  ├──1──▶ [Extractor] UiManifestExtractor.processUiFile()
+  ├──1──▶ [Extractor] UiManifestExtractor.extractManifest()
   │         lib/demos/page.dart → output/manifest/demos/page.manifest.json
   │
   ├──2──▶ [Generator] DatasetGenerator.generateDatasets()
@@ -583,5 +682,36 @@ User (Browser)
   │         manifest.json + datasets.json → page.testdata.json
   │
   └──4──▶ [Generator] TestScriptGenerator.generateScript()
-            testdata.json → integration_test/page_flow_test.dart
+            testdata.json → test/page_flow_test.dart
+```
+
+### Run Coverage Test Pipeline (runCoverageTest → /run-tests)
+
+```
+User (Browser)
+  │  click "Run Coverage Test"
+  ▼
+[View] WebUI.runCoverageTest()
+  │  HTTP POST /run-tests {testScript, withCoverage:true, useDevice:true}
+  ▼
+[Controller] PipelineController.handleRunTests()
+  │
+  ├──Step 0──▶ [Runner] CoverageRunner.clearCoverage()
+  │              delete coverage/ folder
+  │
+  ├──Step 1──▶ [Runner] CoverageRunner.findMobileDevice()
+  │              flutter devices --machine → deviceId
+  │
+  ├──Step 2──▶ [Runner] CoverageRunner.runFlutterTest(script, true, deviceId)
+  │              flutter test <script> --coverage -d <deviceId>
+  │              → TestRunResult {exitCode, passed, failed, testCases, stdout}
+  │
+  ├──Step 3──▶ [Runner] CoverageRunner.generateCoverageReport()
+  │              ├── _waitForLcovFile()      → wait coverage/lcov.info
+  │              ├── _filterCubitCoverage()  → lcov --remove */cubit/*
+  │              └── _runGenHtml()           → genhtml → coverage/html/index.html
+  │              → coverageHtmlPath
+  │
+  └──Step 4──▶ [Runner] CoverageRunner.openCoverageReport(url)
+                 open http://localhost:8080/coverage/index.html
 ```
