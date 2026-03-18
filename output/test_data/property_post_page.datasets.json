@@ -1,0 +1,79 @@
+{
+  "file": "lib/demos/property_post_page.dart",
+  "datasets": {
+    "byKey": {
+      "prop_01_title_textfield": [
+        {
+          "valid": "ขายบ้านเดี่ยวใกล้ BTS อ่อนนุช",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกหัวข้อประกาศ",
+          "atMin": "",
+          "atMax": "ขายบ้านเดี่ยวใกล้ BTS อ่อนนุช"
+        }
+      ],
+      "prop_03_location_textfield": [
+        {
+          "valid": "กรุงเทพมหานคร",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกจังหวัด / เมือง",
+          "atMin": "",
+          "atMax": "กรุงเทพมหานคร"
+        }
+      ],
+      "prop_04_district_textfield": [
+        {
+          "valid": "พระโขนง",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกเขต / ย่าน",
+          "atMin": "",
+          "atMax": "พระโขนง"
+        }
+      ],
+      "prop_05_price_textfield": [
+        {
+          "valid": "5500000",
+          "invalid": "99999",
+          "invalidRuleMessages": "ราคาขั้นต่ำ 100,000 บาท",
+          "atMin": "",
+          "atMax": "5500000"
+        }
+      ],
+      "prop_08_area_textfield": [
+        {
+          "valid": "120.50",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกพื้นที่ใช้สอย",
+          "atMin": "",
+          "atMax": "120.50"
+        }
+      ],
+      "prop_09_floor_textfield": [
+        {
+          "valid": "3",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกชั้น",
+          "atMin": "",
+          "atMax": "3"
+        }
+      ],
+      "prop_11_desc_textfield": [
+        {
+          "valid": "บ้านเดี่ยว 2 ชั้น ใกล้รถไฟฟ้า BTS อ่อนนุช เดินทางส",
+          "invalid": "สวัสดี นี่คือข้อความทดสอบสั้นๆ",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "atMin": "นี่คือข้อความที่ยาว 19 ตัวอักษร",
+          "atMax": "บ้านเดี่ยว 2 ชั้น ใกล้รถไฟฟ้า BTS อ่อนนุช เดินทางส"
+        }
+      ],
+      "prop_12_contact_textfield": [
+        {
+          "valid": "สมศักดิ์ เจริญพร",
+          "invalid": "ส",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "atMin": "อ",
+          "atMax": "สมศักดิ์ เจริญพร"
+        }
+      ]
+    }
+  }
+}
