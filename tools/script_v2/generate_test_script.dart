@@ -443,14 +443,17 @@ class TestScriptGenerator {
             final m = (s['tap'] as Map).cast<String, dynamic>();
             final k = m['byKey']; // key ของ widget
 
-            // สำหรับ end_button: settle layout ก่อน + ใช้ skipOffstage:false
-            // เพราะ keyboard อาจทำให้ button หลุด viewport (offstage)
-            if (k.toString().contains('_end_button')) {
+            // สำหรับ submit button (isSubmit:true): dismiss keyboard ก่อน
+            // เพื่อให้ button กลับมาอยู่ใน viewport แล้วค่อย ensureVisible
+            final isSubmit = m['isSubmit'] == true;
+            if (isSubmit) {
+              b.writeln(
+                  '      FocusManager.instance.primaryFocus?.unfocus();');
               b.writeln('      await tester.pumpAndSettle();');
               b.writeln(
-                  "      await tester.ensureVisible(find.byKey(const Key('$k'), skipOffstage: false));");
+                  "      await tester.ensureVisible(find.byKey(const Key('$k')));");
               b.writeln(
-                  "      await tester.tap(find.byKey(const Key('$k'), skipOffstage: false));");
+                  "      await tester.tap(find.byKey(const Key('$k')));");
             } else {
               b
                 ..writeln(
@@ -1066,14 +1069,17 @@ class TestScriptGenerator {
             } else {
               final m = (s['tap'] as Map).cast<String, dynamic>();
               final k = m['byKey'];
-              // สำหรับ end_button: settle layout ก่อน + ใช้ skipOffstage:false
-              // เพราะ keyboard อาจทำให้ button หลุด viewport (offstage)
-              if (k.toString().contains('_end_button')) {
+              // สำหรับ submit button (isSubmit:true): dismiss keyboard ก่อน
+              // เพื่อให้ button กลับมาอยู่ใน viewport แล้วค่อย ensureVisible
+              final isSubmit = m['isSubmit'] == true;
+              if (isSubmit) {
+                ib.writeln(
+                    '        FocusManager.instance.primaryFocus?.unfocus();');
                 ib.writeln('        await tester.pumpAndSettle();');
                 ib.writeln(
-                    "        await tester.ensureVisible(find.byKey(const Key('$k'), skipOffstage: false));");
+                    "        await tester.ensureVisible(find.byKey(const Key('$k')));");
                 ib.writeln(
-                    "        await tester.tap(find.byKey(const Key('$k'), skipOffstage: false));");
+                    "        await tester.tap(find.byKey(const Key('$k')));");
               } else {
                 ib
                   ..writeln(
