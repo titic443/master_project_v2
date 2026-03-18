@@ -59,7 +59,7 @@ import 'utils.dart' as utils;
 
 // ค่าคงที่สำหรับเก็บ API key แบบ hardcode (ใช้เป็น fallback)
 // SECURITY WARNING: ไม่ควรใช้ในโปรดักชัน ควรใช้ environment variable แทน
-const String hardcodedApiKey = 'AIzaSyAXbTCPgwM3mph4VHTwpxbxXrABhu1ecSk';
+const String hardcodedApiKey = 'AIzaSyBmyjhXruJ6fSyLSURmmk2t6UQgW9oFZPU';
 
 // =============================================================================
 // MAIN FUNCTION - Entry Point
@@ -536,11 +536,12 @@ class DatasetGenerator {
       '1. Analyze field key name to understand field purpose (e.g., "firstname" → person name)',
       '2. Analyze constraints (maxLength, inputFormatters, validatorRules)',
       '3. Generate REALISTIC valid/invalid pairs for ALL fields',
-      '4. For fields WITH validatorRules: generate pairs based on rules (skip isEmpty/null rules)',
-      '5. For fields WITHOUT validatorRules: generate 1 realistic valid + 1 common invalid',
-      '6. CRITICAL: Invalid values MUST pass inputFormatters but represent bad data',
-      '7. Also generate boundary values: atMin and atMax for each field',
-      '8. Output valid JSON',
+      '4. For fields WITH validatorRules: generate pairs based on rules (skip isEmpty/null rules UNLESS they are the ONLY rule)',
+      '5. For fields with ONLY isEmpty/null rule: invalid = "" (empty string), invalidRuleMessages = that rule\'s message',
+      '6. For fields WITHOUT validatorRules: generate 1 realistic valid + 1 common invalid, invalidRuleMessages = ""',
+      '7. CRITICAL: Invalid values MUST pass inputFormatters but represent bad data',
+      '8. Also generate boundary values: atMin and atMax for each field',
+      '9. Output valid JSON',
       '',
 
       // === EXECUTION: ขั้นตอนการทำงาน ===
@@ -554,7 +555,12 @@ class DatasetGenerator {
       '     - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase',
       '  3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)',
       '',
-      'For fields WITHOUT validatorRules (or only isEmpty/null rules):',
+      'For fields with ONLY isEmpty/null rules (all non-empty rules are absent):',
+      '  1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule',
+      '  2. invalidRuleMessages = EXACT message from that isEmpty/null rule',
+      '  3. Generate 1 realistic valid value',
+      '',
+      'For fields WITHOUT validatorRules at all:',
       '  1. Infer field type from key name (firstname→name, phone→phone number, email→email)',
       '  2. Generate 1 pair with realistic valid value',
       '  3. Generate common invalid value (e.g., too short, wrong format) that respects inputFormatters',
@@ -597,6 +603,12 @@ class DatasetGenerator {
       'Input: {"key":"nickname_textfield","meta":{}}',
       'Reasoning: No validatorRules → invalidRuleMessages = "".',
       'Output: {"nickname_textfield":[{"valid":"Johnny","invalid":"X","invalidRuleMessages":"","atMin":"","atMax":"Johnny"}]}',
+      '',
+      'Example 4 (field with ONLY isEmpty/null rule):',
+      'Input: {"key":"prop_03_location_textfield","meta":{"validatorRules":[',
+      '  {"condition":"v == null || v.trim().isEmpty","message":"กรุณากรอกจังหวัด / เมือง"}]}}',
+      'Reasoning: Only rule is isEmpty/null → skip it as a non-empty rule, BUT since it is the ONLY rule, invalid must be "" to trigger it. Message = exact "กรุณากรอกจังหวัด / เมือง".',
+      'Output: {"prop_03_location_textfield":[{"valid":"กรุงเทพมหานคร","invalid":"","invalidRuleMessages":"กรุณากรอกจังหวัด / เมือง","atMin":"","atMax":"กรุงเทพมหานคร"}]}',
       '',
 
       // === STYLE: รูปแบบ output ===
