@@ -23,7 +23,10 @@ RUN git clone https://github.com/microsoft/pict.git /pict --depth 1 \
     && cd /pict \
     && cmake -DCMAKE_BUILD_TYPE=Release . \
     && make -j$(nproc) \
-    && strip pict
+    && PICT_BIN=$(find /pict -maxdepth 3 -type f \( -name "pict" -o -name "pict_cli" \) | head -1) \
+    && echo "Found PICT binary at: $PICT_BIN" \
+    && strip "$PICT_BIN" \
+    && cp "$PICT_BIN" /pict_binary
 
 # -----------------------------------------------------------------------------
 # Stage 2: Final image — Dart + Flutter + tool
@@ -40,7 +43,7 @@ RUN apt-get update && apt-get install -y \
 # Install Flutter SDK
 ENV FLUTTER_HOME=/flutter
 RUN git clone https://github.com/flutter/flutter.git $FLUTTER_HOME \
-    --branch stable --depth 1 --no-tags \
+    --branch stable --depth 1 \
     && $FLUTTER_HOME/bin/flutter precache \
         --no-ios --no-android --no-fuchsia \
     && $FLUTTER_HOME/bin/flutter --version
@@ -48,7 +51,7 @@ RUN git clone https://github.com/flutter/flutter.git $FLUTTER_HOME \
 ENV PATH="$FLUTTER_HOME/bin:${PATH}"
 
 # Copy PICT binary from build stage
-COPY --from=pict-builder /pict/pict /usr/local/bin/pict
+COPY --from=pict-builder /pict_binary /usr/local/bin/pict
 RUN chmod +x /usr/local/bin/pict
 
 # Copy tool files into image
@@ -62,7 +65,7 @@ COPY webview/coverage_runner.dart ./webview/coverage_runner.dart
 
 # Pre-fetch Dart dependencies using the project's pubspec
 COPY pubspec.yaml pubspec.lock ./
-RUN dart pub get
+RUN flutter pub get
 
 # Entrypoint script
 COPY docker-entrypoint.sh /tool/entrypoint.sh

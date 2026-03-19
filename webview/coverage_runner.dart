@@ -30,7 +30,7 @@ import 'dart:io';
 
 /// ผลลัพธ์จากการรัน Flutter test
 ///
-/// ใช้ส่งกลับจาก [CoverageRunner.runFlutterTest] ไปยัง [PipelineController]
+/// ใช้ส่งกลับจาก [CoverageGenerator.runFlutterTest] ไปยัง [PipelineController]
 /// เพื่อให้ Controller ประมวลผลและส่ง HTTP response กลับไปยัง WebUI
 class TestRunResult {
   /// exit code จาก flutter test process (0 = all passed, non-0 = some failed)
@@ -78,11 +78,11 @@ class TestRunResult {
 /// เทียบกับ Reference Architecture:
 ///   - คล้าย TestDataGenerator แต่ focus ที่ CLI tool execution
 ///   - เป็น Runner layer ใหม่ระหว่าง Controller กับ External Tools
-class CoverageRunner {
+class CoverageGenerator {
   /// Path ของ flutter executable (override ได้สำหรับ testing)
   final String flutterBin;
 
-  const CoverageRunner({this.flutterBin = 'flutter'});
+  const CoverageGenerator({this.flutterBin = 'flutter'});
 
   // ---------------------------------------------------------------------------
   // Step 0: clearCoverage
@@ -181,8 +181,7 @@ class CoverageRunner {
     if (deviceId != null) args.addAll(['-d', deviceId]);
 
     // กำหนด timeout: integration test ใช้เวลานานกว่า widget test
-    final timeout =
-        timeoutSeconds ?? (deviceId != null ? 600 : 300);
+    final timeout = timeoutSeconds ?? (deviceId != null ? 600 : 300);
 
     print('  > $flutterBin ${args.join(' ')}');
 
@@ -352,7 +351,7 @@ class CoverageRunner {
         }
       }
       await Future.delayed(retryDelay);
-      print('  ... waiting for lcov.info (${ retries + 1}/$maxRetries)');
+      print('  ... waiting for lcov.info (${retries + 1}/$maxRetries)');
     }
 
     return false;

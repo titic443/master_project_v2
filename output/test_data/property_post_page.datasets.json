@@ -4,11 +4,11 @@
     "byKey": {
       "prop_01_title_textfield": [
         {
-          "valid": "ขายบ้านเดี่ยวใกล้ BTS อ่อนนุช",
+          "valid": "คอนโดหรูใจกลางสุขุมวิท พร้อมอยู่ วิวเมือง",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกหัวข้อประกาศ",
           "atMin": "",
-          "atMax": "ขายบ้านเดี่ยวใกล้ BTS อ่อนนุช"
+          "atMax": "คอนโดหรูใจกลางสุขุมวิท พร้อมอยู่ วิวเมือง"
         }
       ],
       "prop_03_location_textfield": [
@@ -22,20 +22,20 @@
       ],
       "prop_04_district_textfield": [
         {
-          "valid": "พระโขนง",
+          "valid": "วัฒนา",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกเขต / ย่าน",
           "atMin": "",
-          "atMax": "พระโขนง"
+          "atMax": "วัฒนา"
         }
       ],
       "prop_05_price_textfield": [
         {
-          "valid": "5500000",
+          "valid": "1500000",
           "invalid": "99999",
           "invalidRuleMessages": "ราคาขั้นต่ำ 100,000 บาท",
           "atMin": "",
-          "atMax": "5500000"
+          "atMax": "99999999999"
         }
       ],
       "prop_08_area_textfield": [
@@ -44,34 +44,34 @@
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกพื้นที่ใช้สอย",
           "atMin": "",
-          "atMax": "120.50"
+          "atMax": "99999999999.99"
         }
       ],
       "prop_09_floor_textfield": [
         {
-          "valid": "3",
+          "valid": "15",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกชั้น",
           "atMin": "",
-          "atMax": "3"
+          "atMax": "15"
         }
       ],
       "prop_11_desc_textfield": [
         {
-          "valid": "บ้านเดี่ยว 2 ชั้น ใกล้รถไฟฟ้า BTS อ่อนนุช เดินทางส",
-          "invalid": "สวัสดี นี่คือข้อความทดสอบสั้นๆ",
+          "valid": "คอนโดนี้ตั้งอยู่ใจกลางเมือง เดินทางสะดวกสบายมาก ใก",
+          "invalid": "รายละเอียดสั้นไป",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "atMin": "นี่คือข้อความที่ยาว 19 ตัวอักษร",
-          "atMax": "บ้านเดี่ยว 2 ชั้น ใกล้รถไฟฟ้า BTS อ่อนนุช เดินทางส"
+          "atMin": "กรุณากรอกให้ยาวขึ้น",
+          "atMax": "คอนโดนี้ตั้งอยู่ใจกลางเมือง เดินทางสะดวกสบายมาก ใก"
         }
       ],
       "prop_12_contact_textfield": [
         {
-          "valid": "สมศักดิ์ เจริญพร",
-          "invalid": "ส",
+          "valid": "สมชาย",
+          "invalid": "A",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "อ",
-          "atMax": "สมศักดิ์ เจริญพร"
+          "atMin": "ส",
+          "atMax": "สมชาย เจริญสุข"
         }
       ]
     }

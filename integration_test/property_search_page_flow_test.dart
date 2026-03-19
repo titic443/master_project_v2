@@ -17,11 +17,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -29,7 +28,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -44,9 +42,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -61,7 +60,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -69,7 +67,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -82,14 +79,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -110,11 +108,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -122,7 +119,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -140,9 +136,10 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -153,11 +150,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -165,7 +161,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -178,11 +173,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -197,7 +193,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -205,7 +200,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -220,9 +214,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -237,7 +232,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -245,7 +239,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -258,14 +251,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -280,7 +274,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -288,7 +281,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -303,9 +295,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -316,11 +309,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -328,7 +320,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -341,11 +332,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -356,11 +348,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -368,7 +359,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -381,14 +371,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -403,7 +394,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -411,7 +401,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -424,11 +413,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -443,7 +433,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -451,7 +440,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -469,9 +457,10 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -486,7 +475,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -494,7 +482,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -509,9 +496,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -522,11 +510,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -534,7 +521,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -547,14 +533,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -569,7 +556,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -577,7 +563,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -590,14 +575,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -618,11 +604,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -630,7 +615,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -643,14 +627,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -665,7 +650,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -673,7 +657,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -686,14 +669,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -718,7 +702,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -726,7 +709,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -741,9 +723,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -754,11 +737,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -766,7 +748,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -781,9 +762,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -798,7 +780,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -806,7 +787,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -819,11 +799,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -838,7 +819,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -846,7 +826,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -861,9 +840,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -874,11 +854,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -886,7 +865,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -899,11 +877,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -914,11 +893,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -926,7 +904,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -944,9 +921,10 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -957,11 +935,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_location_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'น');
+        await tester.enterText(find.byKey(const Key('search_01_location_textfield')), 'X');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -969,7 +946,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -982,14 +958,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -1004,7 +981,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -1012,7 +988,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -1027,9 +1002,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '0');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -1044,7 +1020,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -1052,7 +1027,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -1065,11 +1039,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -1086,7 +1061,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -1094,7 +1068,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -1107,14 +1080,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1139,7 +1113,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -1147,7 +1120,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -1160,11 +1132,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1189,7 +1162,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -1197,7 +1169,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -1210,14 +1181,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1242,7 +1214,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -1250,7 +1221,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -1263,14 +1233,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1295,7 +1266,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -1303,7 +1273,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -1316,11 +1285,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1345,7 +1315,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -1353,7 +1322,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -1366,11 +1334,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1395,7 +1364,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -1403,7 +1371,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -1416,14 +1383,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1448,7 +1416,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -1456,7 +1423,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -1469,11 +1435,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1498,7 +1465,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -1506,7 +1472,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -1519,11 +1484,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1548,7 +1514,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -1556,7 +1521,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -1569,14 +1533,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1601,7 +1566,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -1609,7 +1573,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -1622,14 +1585,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1654,7 +1618,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -1662,7 +1625,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -1675,14 +1637,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1707,7 +1670,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -1715,7 +1677,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -1728,14 +1689,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1760,7 +1722,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -1768,7 +1729,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -1781,11 +1741,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1810,7 +1771,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -1818,7 +1778,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -1831,14 +1790,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1863,7 +1823,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('อาคารพาณิชย์').last);
         await tester.tap(find.text('อาคารพาณิชย์').last);
@@ -1871,7 +1830,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -1884,11 +1842,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1913,7 +1872,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -1921,7 +1879,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -1934,11 +1891,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -1963,7 +1921,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -1971,7 +1928,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -1984,14 +1940,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2016,7 +1973,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -2024,7 +1980,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -2037,14 +1992,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2069,7 +2025,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -2077,7 +2032,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -2090,14 +2044,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2122,7 +2077,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ทาวน์เฮาส์').last);
         await tester.tap(find.text('ทาวน์เฮาส์').last);
@@ -2130,7 +2084,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -2143,14 +2096,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2175,7 +2129,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -2183,7 +2136,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('4+').last);
         await tester.tap(find.text('4+').last);
@@ -2196,11 +2148,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2225,7 +2178,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('บ้านเดี่ยว').last);
         await tester.tap(find.text('บ้านเดี่ยว').last);
@@ -2233,7 +2185,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('1').last);
         await tester.tap(find.text('1').last);
@@ -2246,14 +2197,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2278,7 +2230,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('ที่ดิน').last);
         await tester.tap(find.text('ที่ดิน').last);
@@ -2286,7 +2237,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('3').last);
         await tester.tap(find.text('3').last);
@@ -2299,14 +2249,15 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_07_furnished_switch')));
         await tester.tap(find.byKey(const Key('search_07_furnished_switch')));
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2331,7 +2282,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -2339,7 +2289,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('2').last);
         await tester.tap(find.text('2').last);
@@ -2352,11 +2301,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '75.50');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2378,9 +2328,10 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: PropertySearchPage()));
         await tester.pumpWidget(w);
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2405,7 +2356,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -2413,7 +2363,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -2426,11 +2375,12 @@ void main() {
         await tester.enterText(find.byKey(const Key('search_05_max_price_textfield')), '10000000');
         await tester.pump();
         // dataset: byKey.search_06_min_area_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '123456789.01');
+        await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '50.50');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -2455,7 +2405,6 @@ void main() {
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('search_02_type_dropdown')));
         await tester.tap(find.byKey(const Key('search_02_type_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('คอนโด').last);
         await tester.tap(find.text('คอนโด').last);
@@ -2463,7 +2412,6 @@ void main() {
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_03_bedrooms_dropdown')));
         await tester.tap(find.byKey(const Key('search_03_bedrooms_dropdown')));
-        await tester.pump();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.text('สตูดิโอ').last);
         await tester.tap(find.text('สตูดิโอ').last);
@@ -2478,9 +2426,10 @@ void main() {
         // dataset: byKey.search_06_min_area_textfield[0].atMin
         await tester.enterText(find.byKey(const Key('search_06_min_area_textfield')), '');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_08_end_button')));
         await tester.tap(find.byKey(const Key('search_08_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [

@@ -54,7 +54,7 @@ import '../tools/script_v2/generate_datasets.dart' show DatasetGenerator;
 import '../tools/script_v2/generate_test_data.dart' show TestDataGenerator;
 import '../tools/script_v2/generate_test_script.dart' show TestScriptGenerator;
 import '../tools/script_v2/generator_pict.dart' show GeneratorPict;
-import 'coverage_runner.dart' show CoverageRunner;
+import 'coverage_runner.dart' show CoverageGenerator;
 
 // =============================================================================
 // MAIN FUNCTION - Server Entry Point
@@ -68,7 +68,7 @@ void main() async {
   final controller = PipelineController();
 
   // HttpServer.bind() สร้าง server ที่ listen บน IP และ port ที่กำหนด
-  final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
+  final server = await HttpServer.bind(InternetAddress.anyIPv4, 8080);
 
   print('Server running at http://localhost:8080');
   print('Open webview/index.html in your browser\n');
@@ -115,19 +115,19 @@ class PipelineController {
   final DatasetGenerator _datasetGenerator;
   final TestDataGenerator _testDataGenerator;
   final TestScriptGenerator _testScriptGenerator;
-  final CoverageRunner _coverageRunner;
+  final CoverageGenerator _coverageRunner;
 
   PipelineController({
     UiManifestExtractor? extractor,
     DatasetGenerator? datasetGenerator,
     TestDataGenerator? testDataGenerator,
     TestScriptGenerator? testScriptGenerator,
-    CoverageRunner? coverageRunner,
+    CoverageGenerator? coverageRunner,
   })  : _extractor = extractor ?? const UiManifestExtractor(),
         _datasetGenerator = datasetGenerator ?? const DatasetGenerator(),
         _testDataGenerator = testDataGenerator ?? const TestDataGenerator(),
         _testScriptGenerator = testScriptGenerator ?? TestScriptGenerator(),
-        _coverageRunner = coverageRunner ?? const CoverageRunner();
+        _coverageRunner = coverageRunner ?? const CoverageGenerator();
 
 // =============================================================================
 // REQUEST ROUTER - Main Handler
@@ -602,13 +602,13 @@ class PipelineController {
         <String, dynamic>{};
 
     for (final entry in overrides.entries) {
-      final rawKey = entry.key;     // may be "fieldKey" or "fieldKey.slot"
+      final rawKey = entry.key; // may be "fieldKey" or "fieldKey.slot"
       final newValue = entry.value.toString();
 
       // Support key.slot = value format (e.g. "field.invalid", "field.valid")
       final dotIdx = rawKey.indexOf('.');
       final fieldKey = dotIdx > 0 ? rawKey.substring(0, dotIdx) : rawKey;
-      final slot     = dotIdx > 0 ? rawKey.substring(dotIdx + 1) : 'valid';
+      final slot = dotIdx > 0 ? rawKey.substring(dotIdx + 1) : 'valid';
 
       final pairs = byKey[fieldKey];
       if (pairs is List && pairs.isNotEmpty) {
@@ -814,7 +814,7 @@ class PipelineController {
 
   /// POST /run-tests - รัน Flutter tests (optional with coverage)
   ///
-  /// Orchestrate การทำงานของ [CoverageRunner] ตามลำดับขั้นตอน:
+  /// Orchestrate การทำงานของ [CoverageGenerator] ตามลำดับขั้นตอน:
   ///   Step 0: _coverageRunner.clearCoverage()        - ลบ coverage data เก่า
   ///   Step 1: _coverageRunner.findMobileDevice()     - หา device (ถ้า useDevice)
   ///   Step 2: _coverageRunner.runFlutterTest()       - รัน flutter test
