@@ -54,13 +54,100 @@ output/
 
 ### Quick Reference: Commands Summary
 
-| Step | Specific File | All Files |
-|------|--------------|-----------|
-| 1. Extract Manifest | `dart run tools/script_v2/extract_ui_manifest.dart lib/demos/customer_details_page.dart` | `dart run tools/script_v2/extract_ui_manifest.dart` |
-| 2. Generate Datasets | `dart run tools/script_v2/generate_datasets.dart output/manifest/demos/customer_details_page.manifest.json` | `dart run tools/script_v2/generate_datasets.dart` |
-| 3. Generate Test Plan | `dart run tools/script_v2/generate_test_data.dart output/manifest/demos/customer_details_page.manifest.json` | `dart run tools/script_v2/generate_test_data.dart` |
-| 4. Generate Tests | `dart run tools/script_v2/generate_test_script.dart output/test_data/customer_details_page.testdata.json` | `dart run tools/script_v2/generate_test_script.dart` |
-| 5. Run Tests | `flutter test integration_test/page_flow_test.dart` | `flutter test integration_test/` |
+      testWidgets('pairwise_valid_invalid_cases_1', (tester) async {
+        final providers = <BlocProvider>[
+          BlocProvider<ClinicAppointmentCubit>(create: (_)=> ClinicAppointmentCubit()),
+        ];
+        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
+        await tester.pumpWidget(w);
+        // dataset: byKey.appt_01_patient_name_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
+        await tester.pump();
+        // dataset: byKey.appt_02_id_card_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
+        await tester.pump();
+        // dataset: byKey.appt_03_phone_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
+        await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.text('ศัลยกรรม').last);
+        await tester.tap(find.text('ศัลยกรรม').last);
+        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
+        await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
+        await tester.pumpAndSettle();
+        // Select date: 15/01/2001 (text input mode)
+        {
+          await tester.pumpAndSettle(const Duration(milliseconds: 500));
+          // Switch DatePicker to text-input mode via edit icon
+          final editIcon = find.byIcon(Icons.edit);
+          if (tester.any(editIcon)) {
+            await tester.tap(editIcon.first);
+            await tester.pumpAndSettle();
+          }
+          // Enter date as MM/DD/YYYY in the text field
+          final dateTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (tester.any(dateTF)) {
+            await tester.tap(dateTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dateTF.first, '01/15/2001');
+            await tester.pumpAndSettle();
+          }
+        }
+        await tester.tap(find.text('OK'));
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
+        await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
+        await tester.pumpAndSettle();
+        // Select time: 14:30
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '14');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '30');
+            await tester.pumpAndSettle();
+          }
+        }
+        await tester.tap(find.text('OK'));
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
+        await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
+        await tester.pump();
+        // dataset: byKey.appt_09_note_textfield[0].valid
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'ผู้ป่วยมีประวัติแพ้ยาเพนิซิลลิน');
+        await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byKey(const Key('appt_10_confirm_button')));
+        await tester.tap(find.byKey(const Key('appt_10_confirm_button')));
+        await tester.pumpAndSettle();
+        // Check if any expected element exists (OR logic)
+        final expected = [
+          find.text('อย่างน้อย 2 ตัวอักษร'),
+          find.text('ต้องมี 13 หลัก'),
+          find.text('เบอร์โทรไม่ถูกต้อง'),
+        ];
+        expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
+            reason: 'Expected at least one of the elements to exist');
+      });
+
 
 ---
 

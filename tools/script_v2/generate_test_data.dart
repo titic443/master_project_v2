@@ -1097,7 +1097,8 @@ class TestDataGenerator {
               factorTypes[name] = 'checkbox';
             } else if (values.contains('on') && values.contains('off')) {
               factorTypes[name] = 'switch';
-            } else if (values.any((v) => v.endsWith('_radio'))) {
+            } else if (values.any((v) => v.endsWith('_radio')) ||
+                radioKeys.any((rk) => values.any((v) => rk.endsWith('_$v') || rk == v))) {
               factorTypes[name] = 'radio';
             } else if (datePickerKeys.contains(name)) {
               factorTypes[name] = 'datepicker';
@@ -1273,7 +1274,12 @@ class TestDataGenerator {
             final stepsByKey = <String, List<Map<String, dynamic>>>{};
             for (final factorName in c.keys) {
               final factorType = factorTypes[factorName];
-              final pick = (c[factorName] ?? '').toString();
+              // Strip surrounding quotes added by PICT for non-bucket values
+              // e.g., '"type_radio_opd"' → 'type_radio_opd', '"15/01/2001"' → '15/01/2001'
+              final rawPick = (c[factorName] ?? '').toString();
+              final pick = rawPick.startsWith('"') && rawPick.endsWith('"')
+                  ? rawPick.substring(1, rawPick.length - 1)
+                  : rawPick;
               if (pick.isEmpty) continue;
               if (factorType == 'text') {
                 final bucket = pick == 'invalid' ? 'invalid' : 'valid';
@@ -1413,7 +1419,10 @@ class TestDataGenerator {
             }
             for (final factorName in c.keys) {
               if (factorName.startsWith('Radio')) {
-                final pick = (c[factorName] ?? '').toString();
+                final rawPick = (c[factorName] ?? '').toString();
+                final pick = rawPick.startsWith('"') && rawPick.endsWith('"')
+                    ? rawPick.substring(1, rawPick.length - 1)
+                    : rawPick;
                 if (pick.isNotEmpty) {
                   final mk = radioKeyForSuffix(radioKeys, pick);
                   if (mk != null) {
@@ -1690,7 +1699,11 @@ class TestDataGenerator {
 
           final stepsByKey = <String, List<Map<String, dynamic>>>{};
           for (final factorName in headerOrder) {
-            final pick = (c[factorName] ?? '').toString();
+            // Strip surrounding quotes added by PICT for non-bucket values
+            final rawPick = (c[factorName] ?? '').toString();
+            final pick = rawPick.startsWith('"') && rawPick.endsWith('"')
+                ? rawPick.substring(1, rawPick.length - 1)
+                : rawPick;
             if (pick.isEmpty) continue;
             final factorType = factorTypes[factorName];
             if (factorType == 'text') {
