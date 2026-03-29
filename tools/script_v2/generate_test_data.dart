@@ -1558,6 +1558,14 @@ class TestDataGenerator {
                 asserts.add({'text': msg, 'exists': true});
               }
             }
+            // Fallback: ถ้าไม่มี validation message เลย (field ไม่มี validatorRules)
+            // ให้ fallback ใช้ expectedFailKeys เช่น search_01_expected_fail
+            // เพราะ submit invalid data จะ trigger fail dialog แทน
+            if (asserts.isEmpty) {
+              for (final fk in expectedFailKeys) {
+                asserts.add(buildAssert(fk));
+              }
+            }
           } else {
             asserts.addAll(buildSuccessAsserts());
           }
