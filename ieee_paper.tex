@@ -82,7 +82,7 @@ testing is therefore essential, yet designing test cases manually is
 time-consuming and demands deep expertise from developers \cite{b1}.
 
 Within the Flutter framework \cite{b1}, developers write integration and
-widget test scripts in Dart to simulate user interactions on the UI. However,
+widget test scripts in Dart to simulate user interactions on the user interface (UI). However,
 crafting these scripts requires developers to (1) understand widget structure
 and validation rules in the source code, (2) define appropriate input data
 covering valid and invalid boundary conditions, and (3) sequence test actions
@@ -114,7 +114,7 @@ concludes the paper.
 Flutter \cite{b1} is Google's open-source UI toolkit for building
 cross-platform applications from a single Dart codebase. The framework
 provides the \texttt{flutter\_test} library, which exposes a
-\texttt{WidgetTester} API and a rich set of Finders (\texttt{find.byKey},
+\texttt{WidgetTester} application programming interface (API) and a rich set of Finders (\texttt{find.byKey},
 \texttt{find.byType}, etc.) for locating and interacting with widgets during
 testing.
 
@@ -122,7 +122,7 @@ testing.
 Ekakrachawakitti \cite{b2} proposed a method for generating Robot Framework test
 scripts from web front-end files by extracting HTML elements and input
 constraints from a database schema. Srivichayanun \cite{b3} extended this concept
-by importing XSD schemas and applying Boundary Value Analysis to produce test
+by importing XML Schema Definition (XSD) schemas and applying Boundary Value Analysis to produce test
 data for web applications. These works motivate adapting similar extraction
 techniques to Flutter's Dart-based widget structure.
 
@@ -195,12 +195,13 @@ per widget.
 \subsection{Phase 2 -- Generate Datasets}
 
 Given the manifest, the tool constructs a structured LLM prompt following
-the CO-STEP framework \cite{b4}, which organises the prompt into five
+the CO-STEP (Context, Objective, Scenario, Task, Example, Polish) framework \cite{b4},
+which organises the prompt into five
 sections: \textit{context} (describes the Flutter screen under test),
 \textit{persona} (instructs the model to act as a QA engineer),
 \textit{objective} (requests realistic test data for each widget),
 \textit{action} (specifies the generation procedure), and
-\textit{format} (enforces a JSON output schema).
+\textit{format} (enforces a JavaScript Object Notation (JSON) output schema).
 
 The prompt is submitted to \textit{Google Gemini gemini-2.5-flash}
 \cite{b5} via the Gemini API. The model returns a
@@ -262,7 +263,7 @@ matches the actual UI state.
 The tool adopts a client--server architecture. The back end is implemented as
 a \textbf{FastAPI} (v0.114.1) service running inside a \textbf{Docker}
 (v28.0.0) container, exposing REST endpoints for each pipeline step. The
-front end is a desktop GUI application that guides the user through three
+front end is a desktop graphical user interface (GUI) application that guides the user through three
 inputs: (1) the Flutter front-end file(s), (2) an optional condition JSON
 file for custom validation rules, and (3) an output directory path.
 
