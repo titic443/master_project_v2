@@ -174,10 +174,11 @@ The extracted metadata is serialised into a \texttt{manifest.json} file
 grouped by screen name. Table~\ref{tab:manifest} lists the fields recorded
 per widget.
 
-\begin{table}[H]
+\begin{table}[!t]
   \caption{Metadata Fields in the Manifest File}
   \label{tab:manifest}
   \centering
+  \renewcommand{\arraystretch}{1.3}
   \begin{tabular}{ll}
     \toprule
     \textbf{Field} & \textbf{Description} \\
@@ -284,12 +285,12 @@ lists each widget together with its PICT role, the \texttt{WidgetTester}
 interaction command used in the generated test, and whether the widget acts
 as a PICT factor or is handled as a fixed trigger.
 
-\begin{table}[H]
+\begin{table}[!t]
   \caption{Supported Flutter Widgets and Generated Test Interactions}
   \label{tab:widgets}
   \centering
   \footnotesize
-  \renewcommand{\arraystretch}{1.1}
+  \renewcommand{\arraystretch}{1.3}
   \begin{tabular}{p{2.9cm}p{2.3cm}p{1.8cm}}
     \toprule
     \textbf{Widget} & \textbf{PICT Role} & \textbf{Test Command} \\
@@ -382,7 +383,7 @@ achieved across all six evaluated screens (two per application). Coverage was
 measured using the Flutter \texttt{--coverage} flag with \texttt{lcov
 --remove} to isolate \texttt{*\_page.dart} UI files from Cubit/State layers.
 
-\begin{table}[H]
+\begin{table}[!t]
   \caption{Test Coverage Summary}
   \label{tab:coverage}
   \centering
@@ -411,7 +412,7 @@ measured using the Flutter \texttt{--coverage} flag with \texttt{lcov
 the pairwise-generated test scripts exercise the vast majority of UI code
 paths despite the reduced test-case count.
 
-\begin{table}[H]
+\begin{table}[!t]
   \caption{Pairwise Test-Case Reduction per Screen}
   \label{tab:reduction}
   \centering
