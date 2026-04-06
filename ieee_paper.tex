@@ -158,7 +158,7 @@ through four sequential phases, as illustrated in Fig.~\ref{fig:overview}.
 
 \subsection{Phase 1 -- Extract Manifest}
 
-The tool statically analyses every \texttt{.dart} file under the
+The tool statically analyzes every \texttt{.dart} file under the
 \texttt{lib/} directory of the target Flutter project. Only widgets that
 carry a \texttt{Key} property are considered, as the key is required to
 locate a widget during test execution via \texttt{find.byKey()}.
@@ -170,7 +170,7 @@ enumerated), (iv)~validation rules parsed from \texttt{validator} or
 numeric range), and (v)~the selectable options list for
 \texttt{DropdownButtonFormField} and \texttt{Radio} widgets.
 
-The extracted metadata is serialised into a \texttt{manifest.json} file
+The extracted metadata is serialized into a \texttt{manifest.json} file
 grouped by screen name. Table~\ref{tab:manifest} lists the fields recorded
 per widget.
 
@@ -196,7 +196,7 @@ per widget.
 
 Given the manifest, the tool constructs a structured LLM prompt following
 the CO-STEP (Context, Objective, Scenario, Task, Example, Polish) framework \cite{b4},
-which organises the prompt into five
+which organizes the prompt into five
 sections: \textit{context} (describes the Flutter screen under test),
 \textit{persona} (instructs the model to act as a QA engineer),
 \textit{objective} (requests realistic test data for each widget),
