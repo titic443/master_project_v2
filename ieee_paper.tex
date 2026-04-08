@@ -14,6 +14,29 @@
 \usepackage{array}
 \usepackage{url}
 \usepackage{float}
+\usepackage{listings}
+\usepackage{courier}
+
+% -----------------------------------------------
+%  Listing style (Dart / Java-like syntax)
+% -----------------------------------------------
+\lstset{
+  language=Java,
+  basicstyle=\scriptsize\ttfamily,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=4pt,
+  tabsize=2,
+  showstringspaces=false,
+  commentstyle=\color{gray}\itshape,
+  keywordstyle=\bfseries,
+  morekeywords={await,async,final,const,true,false,
+                testWidgets,MaterialApp,WidgetTester,
+                MultiBlockProvider,Key,void,if}
+}
 
 % -----------------------------------------------
 %  Document
@@ -103,7 +126,8 @@ This paper addresses these challenges by proposing an automated tool that:
 
 The remainder of this paper is organized as follows. Section~II reviews
 related work. Section~III describes the proposed methodology. Section~IV
-discusses tool design. Section~V presents evaluation results, and Section~VI
+discusses tool design. Section~V presents evaluation results.
+Section~VI illustrates a concrete generated test script, and Section~VII
 concludes the paper.
 
 % ===============================================
@@ -438,6 +462,113 @@ the breakdown of VI, V, and Edge test cases generated per screen.
     V = pairwise valid cases; Edge = edge cases.} \\
   \end{tabular}
 \end{table}
+
+% ===============================================
+\section{Generated Test Script Example}
+% ===============================================
+
+This section illustrates the concrete Dart test script produced by the
+tool for the Medical Appointment application booking screen.
+The tool generates two groups of scripts in a single run:
+\textbf{pairwise\_valid\_invalid\_cases} mixes valid and invalid values
+across widget pairs to verify that the application correctly rejects
+erroneous input, while \textbf{pairwise\_valid\_cases} uses only valid
+values to verify the happy-path flow.
+
+\subsection{Script Structure}
+Each generated \texttt{.dart} file follows a fixed skeleton:
+(i)~a \texttt{testWidgets} block named after its pairwise-combination
+index, (ii)~widget-pump setup via \texttt{MaterialApp} and
+\texttt{MultiBlockProvider}, and (iii)~a sequential interaction body
+that mirrors the UI flow of the target screen.
+Listing~\ref{lst:example} shows an abbreviated excerpt of one
+\texttt{pairwise\_valid\_invalid\_cases} test case.
+
+\begin{lstlisting}[caption={Abbreviated Dart test script -- \texttt{pairwise\_valid\_invalid\_cases\_1} (Medical Appointment screen).}, label=lst:example, captionpos=b, float=!t]
+testWidgets('pairwise_valid_invalid_cases_1',
+    (tester) async {
+  final w = MaterialApp(
+    home: MultiBlockProvider(
+      providers: providers,
+      child: ClinicAppointmentPage()));
+  await tester.pumpWidget(w);
+
+  // INVALID: patient name too short (1 char)
+  await tester.enterText(
+    find.byKey(Key('apt_01_patient_name_textfield')),
+    'a');
+  await tester.pump();
+
+  // INVALID: ID card only 11 digits (expects 13)
+  await tester.enterText(
+    find.byKey(Key('apt_02_id_card_textfield')),
+    '12345678901');
+  await tester.pump();
+
+  // VALID: select department via Dropdown
+  await tester.ensureVisible(
+    find.byKey(Key('apt_B1_id_department_dropdown')));
+  await tester.tap(
+    find.byKey(Key('apt_B1_id_department_dropdown')));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Neuros', last));
+  await tester.pumpAndSettle();
+
+  // VALID: pick date via DatePicker dialog
+  await tester.tap(
+    find.byKey(Key('apt_B8_date_textfield')));
+  await tester.pumpAndSettle(
+    Duration(milliseconds: 5000));
+  final editIcon =
+    find.byKey(Key('DatePicker_edit_icon'));
+  if (tester.any(editIcon)) {
+    await tester.tap(editIcon.first);
+    await tester.pumpAndSettle();
+  }
+  final dateField = find.descendant(
+    of: find.byType(Dialog),
+    matching: find.byType(TextField));
+  await tester.enterText(
+    dateField.first, '01/15/2001');
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('OK'));
+  await tester.pumpAndSettle();
+
+  // Tap submit button (always last)
+  await tester.tap(
+    find.byKey(Key('apt_B9_button')));
+  await tester.pumpAndSettle();
+});
+\end{lstlisting}
+
+\subsection{Full Script Output}
+Fig.~\ref{fig:script_output} shows the complete
+\texttt{pairwise\_valid\_cases} output file as rendered by the tool
+for the Medical Appointment booking screen. Each \texttt{testWidgets}
+block is independently executable; the blocks are ordered by pairwise
+combination index and cover all valid input-value pairs produced by
+PICT.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{figure5.png}
+  \caption{Generated \texttt{pairwise\_valid\_cases} test script for the
+           Medical Appointment application (tool output file).}
+  \label{fig:script_output}
+\end{figure}
+
+\subsection{Key Observations}
+Three characteristics of the generated scripts are noteworthy.
+First, every widget interaction uses \texttt{find.byKey}, providing a
+stable locator that is independent of widget text or position and
+tolerates UI refactoring without breaking the test.
+Second, the \texttt{DatePicker} interaction is fully automated: the
+tool injects a mode-switch step (tap the edit icon) before entering
+the date string, eliminating a common source of flaky tests in
+calendar-dialog scenarios.
+Third, both valid-only and valid/invalid script groups are produced in
+a single invocation, giving teams immediate coverage of positive and
+negative test paths with no additional authoring effort.
 
 % ===============================================
 \section{Conclusion}
