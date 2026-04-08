@@ -1,0 +1,10 @@
+
+paper : Generating a Robot Framework Test Script for Web Application Based on Database Constraints
+paper : Generating Test Scripts for Web-Based Applications
+paper : CO-STEP: A Prompt Engineering Framework Improving LLM’s Response
+paper : Comparative Analysis of ChatGPT, DeepSeek, and Gemini for Automated Code Generation
+url : https://docs.flutter.dev/ui/interactivity
+url : https://docs.flutter.dev/testing/overview
+book : K. Naik และ P. Tripathy, Software Testing and Quality Assurance: Theory and Practice
+git : https://github.com/microsoft/pic
+url : https://pairwise.yuuniworks.com
