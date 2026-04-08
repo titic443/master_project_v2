@@ -187,31 +187,47 @@ The tool statically analyzes every \texttt{.dart} file under the
 carry a \texttt{Key} property are considered, as the key is required to
 locate a widget during test execution via \texttt{find.byKey()}.
 
-For each discovered widget the tool records: (i)~the unique widget key,
-(ii)~the widget class name, (iii)~the input type (text, numeric, boolean,
-enumerated), (iv)~validation rules parsed from \texttt{validator} or
-\texttt{onChanged} callbacks (e.g., required, minLength, regex pattern,
-numeric range), and (v)~the selectable options list for
-\texttt{DropdownButtonFormField} and \texttt{Radio} widgets.
+At the \textit{screen level}, the tool records BLoC/Cubit metadata required
+to construct the test environment: the page widget class name
+(\texttt{pageClass}), the Cubit class (\texttt{cubitClass}), the associated
+State class (\texttt{stateClass}), and the paths to the Cubit and State
+source files (\texttt{fileCubit}, \texttt{fileState}). These fields allow
+the generated test script to import the correct files and instantiate a
+\texttt{BlocProvider} wrapper automatically.
+
+At the \textit{widget level}, the tool records: (i)~the unique widget key,
+(ii)~the widget class name, (iii)~allowed character or length patterns
+from \texttt{inputFormatters}, (iv)~validation rules and error messages
+parsed from \texttt{validator} callbacks (\texttt{validatorRules}), and
+(v)~the selectable options list for \texttt{DropdownButtonFormField} and
+\texttt{Radio} widgets.
 
 The extracted metadata is serialized into a \texttt{manifest.json} file
 grouped by screen name. Table~\ref{tab:manifest} lists the fields recorded
-per widget.
+per screen and per widget.
 
 \begin{table}[!t]
   \caption{Metadata Fields in the Manifest File}
   \label{tab:manifest}
   \centering
   \renewcommand{\arraystretch}{1.3}
-  \begin{tabular}{ll}
+  \begin{tabular}{lp{4.6cm}}
     \toprule
     \textbf{Field} & \textbf{Description} \\
     \midrule
-    \texttt{key}         & Unique Flutter widget key \\
-    \texttt{widgetType}  & Widget class name \\
-    \texttt{inputType}   & Data type: text, number, bool, enum \\
-    \texttt{validations} & Parsed validation rules (required, regex, etc.) \\
-    \texttt{options}     & Enumerated choices for Radio / Dropdown \\
+    \multicolumn{2}{l}{\textit{Screen-level (BLoC metadata)}} \\
+    \texttt{pageClass}      & UI page widget class name \\
+    \texttt{cubitClass}     & BLoC Cubit class for the screen \\
+    \texttt{stateClass}     & State class associated with the Cubit \\
+    \texttt{fileCubit}      & Path to the Cubit source file \\
+    \texttt{fileState}      & Path to the State source file \\
+    \midrule
+    \multicolumn{2}{l}{\textit{Widget-level}} \\
+    \texttt{key}            & Unique Flutter widget key \\
+    \texttt{widgetType}     & Widget class name \\
+    \texttt{inputFormatters}& Allowed character patterns and length limits \\
+    \texttt{validatorRules} & Validation conditions and error messages \\
+    \texttt{options}        & Enumerated choices for Radio / Dropdown \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -219,22 +235,41 @@ per widget.
 \subsection{Phase 2 -- Generate Datasets}
 
 Given the manifest, the tool constructs a structured LLM prompt following
-the CO-STEP (Context, Objective, Scenario, Task, Example, Polish) framework \cite{b4},
-which organizes the prompt into five
-sections: \textit{context} (describes the Flutter screen under test),
-\textit{persona} (instructs the model to act as a QA engineer),
-\textit{objective} (requests realistic test data for each widget),
-\textit{action} (specifies the generation procedure), and
-\textit{format} (enforces a JavaScript Object Notation (JSON) output schema).
+the CO-STEP (Context, Objective, Style, Target, Execution, Polish)
+framework \cite{b4}, which organizes the prompt into six
+components: \textit{context} (describes the Flutter screen under test and
+its widget validation structure), \textit{objective} (requests valid and
+invalid value pairs for each \texttt{TextFormField}, one pair per
+non-empty validation rule), \textit{style} (enforces a
+JavaScript Object Notation (JSON)-only output schema with realistic,
+typeable values and no markdown), \textit{target} (instructs the model to
+act as a QA engineer generating happy-path and error-path data),
+\textit{execution} (provides step-by-step instructions for counting
+non-empty validation rules and constructing $N$ valid/invalid pairs), and
+\textit{polish} (embedded via few-shot examples that constrain output
+format and prevent hallucinated values). The widget metadata extracted in
+Phase~1 is appended as the \textit{input data} payload.
 
 The prompt is submitted to \textit{Google Gemini gemini-2.5-flash}
-\cite{b5} via the Gemini API. The model returns a
-\texttt{datasets.json} file containing, for each widget field, a set of
-\textit{valid} values (conforming to all validation rules), a set of
-\textit{invalid} values (violating at least one rule), and the
-corresponding expected validation outcome. For \texttt{Dropdown} and
-\texttt{Radio} widgets, the LLM-generated values are merged with the
-option list extracted in Phase~1 to ensure full enumeration coverage.
+\cite{b5} via the Gemini API (HTTP POST). The model returns a
+\texttt{<page>.datasets.json} file with the following top-level
+structure:
+\begin{itemize}
+  \item \textbf{file:} path to the front-end source file that was
+        analyzed.
+  \item \textbf{datasets $\to$ byKey:} a map from each
+        \texttt{TextFormField} widget key to an array of value-pair
+        objects. Each object contains \texttt{valid} (a value that
+        satisfies all validation rules), \texttt{invalid} (a value that
+        violates exactly one rule while still conforming to
+        \texttt{inputFormatters}), and \texttt{invalidRuleMessages}
+        (the specific error message that would be triggered). One
+        pair is generated per non-empty validation rule.
+\end{itemize}
+\texttt{Dropdown} and \texttt{Radio} widgets are not sent to the LLM;
+their factor levels are drawn directly from the \texttt{options} list
+extracted in Phase~1, ensuring complete enumeration coverage without
+LLM hallucination risk.
 
 \subsection{Phase 3 -- Generate Test Data}
 
@@ -250,34 +285,88 @@ to one \textit{level}. Three model variants are built independently:
         (empty input, maximum-length, special characters) are appended.
 \end{enumerate}
 
-PICT is invoked as a subprocess with the model file as input. Its
-tab-delimited output---one row per test case---is parsed and each row is
-mapped to a structured JSON object that records, for every widget: the
-widget key, the assigned value, the expected outcome
-(\texttt{pass}/\texttt{fail}), and the \texttt{WidgetTester} interaction
-command (\texttt{enterText} for \texttt{TextFormField};
-\texttt{tap} for \texttt{Radio}, \texttt{Checkbox}, \texttt{Switch}, and
-\texttt{ElevatedButton}; sequential \texttt{tap} for
-\texttt{DropdownButtonFormField}). The collected rows constitute the
-\texttt{testdata.json} file.
+PICT is invoked as a subprocess once per model file
+(\texttt{<page>.full.model.txt} for VI and
+\texttt{<page>.valid.model.txt} for V). Its tab-delimited
+output---one row per test case---is parsed, and each row is assembled
+into a \textit{case} object together with the widget interaction steps
+and expected assertions. The three result arrays (VI, V, Edge) are then
+merged into a single \texttt{<page>.test\_data.json} file that contains
+three top-level keys:
+\begin{itemize}
+  \item \textbf{source:} the screen-level BLoC metadata propagated from
+        Phase~1 (\texttt{pageClass}, \texttt{cubitClass},
+        \texttt{stateClass}, \texttt{fileCubit}, \texttt{fileState}).
+        Phase~4 reads this key to emit \texttt{import} statements and
+        instantiate the \texttt{BlocProvider} wrapper.
+  \item \textbf{datasets:} the valid/invalid value pairs produced in
+        Phase~2, keyed by widget key (\texttt{byKey}). Phase~4 reads
+        this key to resolve concrete values when rendering
+        \texttt{enterText} calls.
+  \item \textbf{cases:} the ordered list of test-case objects. Each
+        object carries five fields: \texttt{tc} (a unique identifier
+        such as \texttt{pairwise\_valid\_invalid\_cases\_1}),
+        \texttt{kind} (\texttt{success} or \texttt{failed}),
+        \texttt{group} (one of \texttt{pairwise\_valid\_invalid\_cases},
+        \texttt{pairwise\_valid\_cases}, or \texttt{edge\_cases}),
+        \texttt{steps}, and \texttt{asserts}.
+\end{itemize}
+
+Each \texttt{steps} entry maps widget type to a
+\texttt{WidgetTester} command: \texttt{enterText} (with
+\texttt{byKey} and a \texttt{dataset} reference) for
+\texttt{TextFormField}; \texttt{tap} (byKey) then \texttt{tapText}
+(item label) for \texttt{DropdownButtonFormField}; \texttt{tap}
+(byKey) for \texttt{Radio}, \texttt{Checkbox}, and \texttt{Switch};
+and \texttt{pump} or \texttt{pumpAndSettle} for UI refresh. Widget
+steps are ordered by a \texttt{sequence} value extracted from the
+source file, with the \texttt{ElevatedButton} step always placed last.
+Each \texttt{asserts} entry specifies either a \texttt{text}
+string with an \texttt{exists} flag (verifying a visible error message)
+or a \texttt{byKey} widget identifier with an \texttt{exists} flag
+(verifying the presence of a success or failure indicator widget).
 
 \subsection{Phase 4 -- Generate Test Script}
 
-The \texttt{testdata.json} is rendered into a syntactically valid Dart test
-file. Each JSON row becomes one independent \texttt{testWidgets} block
-structured as follows:
+The \texttt{<page>.test\_data.json} produced in Phase~3 is rendered
+into a syntactically valid Dart test file named
+\texttt{<page>\_test.dart}. The \texttt{TestScriptGenerator} class
+first reads the \textbf{source} key to emit three \texttt{import}
+statements (\texttt{fileCubit}, \texttt{fileState}, and the page
+source file) and to declare a
+\texttt{BlocProvider\textless CubitClass\textgreater} wrapper that is
+reused across all test cases on the same screen.
+
+Test cases are partitioned by their \texttt{group} field into three
+\texttt{group()} blocks in the output file:
+\texttt{pairwise\_valid\_invalid\_cases} (VI cases that verify form
+rejection on invalid input), \texttt{pairwise\_valid\_cases} (V cases
+that verify successful submission on valid input), and
+\texttt{edge\_cases} (boundary-value cases). Each entry in the
+\texttt{cases} array becomes one independent \texttt{testWidgets}
+block named after its \texttt{tc} identifier. The block is structured
+as follows:
 \begin{enumerate}
-  \item \textbf{Setup:} the target screen widget is pumped into the test
-        environment with \texttt{tester.pumpWidget()}.
-  \item \textbf{Interact:} for each widget in the test case, the
-        appropriate \texttt{WidgetTester} command is emitted (e.g.,
-        \texttt{tester.enterText(find.byKey(Key(`k')), value)}).
-  \item \textbf{Assert:} validation-error messages or success indicators
-        are verified with \texttt{expect(find.text(`msg'), findsOneWidget)}.
+  \item \textbf{Setup:} \texttt{tester.pumpWidget()} pumps a
+        \texttt{MaterialApp} with the page wrapped in the
+        \texttt{BlocProvider} declared from \texttt{source} metadata.
+  \item \textbf{Interact:} each \texttt{steps} entry is translated
+        to the corresponding \texttt{WidgetTester} call in sequence
+        order---\texttt{enterText} resolves its value from the
+        \texttt{datasets} key; \texttt{tap} and \texttt{tapText}
+        locate widgets by key or label text; \texttt{pump} and
+        \texttt{pumpAndSettle} synchronise the UI between interactions.
+  \item \textbf{Assert:} each \texttt{asserts} entry is rendered as
+        an \texttt{expect()} call. A \texttt{text}-based entry becomes
+        \texttt{expect(find.text(`msg'),} \texttt{findsOneWidget)} and
+        a \texttt{byKey}-based entry becomes
+        \texttt{expect(find.byKey(Key(`k')),} \texttt{findsOneWidget)};
+        the matcher switches between \texttt{findsOneWidget} and
+        \texttt{findsNothing} according to the \texttt{exists} flag.
 \end{enumerate}
-The \texttt{ElevatedButton} widget is always tapped last to trigger form
-submission, after which the assertion checks whether the expected outcome
-matches the actual UI state.
+The \texttt{ElevatedButton} step is always the last interaction,
+followed by \texttt{pumpAndSettle()}, ensuring all asynchronous UI
+updates settle before the assertions execute.
 
 % ===============================================
 \section{Tool Design and Implementation}
