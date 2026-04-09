@@ -196,11 +196,13 @@ the generated test script to import the correct files and instantiate a
 \texttt{BlocProvider} wrapper automatically.
 
 At the \textit{widget level}, the tool records: (i)~the unique widget key,
-(ii)~the widget class name, (iii)~allowed character or length patterns
-from \texttt{inputFormatters}, (iv)~validation rules and error messages
-parsed from \texttt{validator} callbacks (\texttt{validatorRules}), and
-(v)~the selectable options list for \texttt{DropdownButtonFormField} and
-\texttt{Radio} widgets.
+(ii)~the widget class name, (iii)~a \texttt{sequence} integer that encodes
+the widget's top-to-bottom position within the form (used in Phase~3 to
+order \texttt{WidgetTester} interaction steps), (iv)~allowed character or
+length patterns from \texttt{inputFormatters}, (v)~validation rules and
+error messages parsed from \texttt{validator} callbacks
+(\texttt{validatorRules}), and (vi)~the selectable options list for
+\texttt{DropdownButtonFormField} and \texttt{Radio} widgets.
 
 The extracted metadata is serialized into a \texttt{manifest.json} file
 grouped by screen name. Table~\ref{tab:manifest} lists the fields recorded
@@ -225,6 +227,7 @@ per screen and per widget.
     \multicolumn{2}{l}{\textit{Widget-level}} \\
     \texttt{key}            & Unique Flutter widget key \\
     \texttt{widgetType}     & Widget class name \\
+    \texttt{sequence}       & Top-to-bottom position in the form (used to order test steps) \\
     \texttt{inputFormatters}& Allowed character patterns and length limits \\
     \texttt{validatorRules} & Validation conditions and error messages \\
     \texttt{options}        & Enumerated choices for Radio / Dropdown \\
@@ -285,7 +288,19 @@ to one \textit{level}. Three model variants are built independently:
         (empty input, maximum-length, special characters) are appended.
 \end{enumerate}
 
-PICT is invoked as a subprocess once per model file
+Before invoking PICT, if the developer supplies an optional
+\textit{condition file} (a JSON file that declares additional validation
+rules for widgets whose logic resides in the Cubit layer rather than in
+the widget's own \texttt{validator} callback), the tool merges those
+extra \texttt{validatorRules} entries into the corresponding widget
+metadata. This allows the tool to generate test data that covers
+business-logic constraints that are invisible to static analysis of the
+front-end file alone. The condition file follows the same
+\texttt{byKey} keying scheme as the manifest, and its rules are
+validated for correct syntax before merging; an invalid file triggers an
+error message and the pipeline halts.
+
+PICT is then invoked as a subprocess once per model file
 (\texttt{<page>.full.model.txt} for VI and
 \texttt{<page>.valid.model.txt} for V). Its tab-delimited
 output---one row per test case---is parsed, and each row is assembled
@@ -325,6 +340,32 @@ Each \texttt{asserts} entry specifies either a \texttt{text}
 string with an \texttt{exists} flag (verifying a visible error message)
 or a \texttt{byKey} widget identifier with an \texttt{exists} flag
 (verifying the presence of a success or failure indicator widget).
+
+Table~\ref{tab:widgets} summarises how each supported widget type is
+mapped to its PICT role and to the corresponding \texttt{WidgetTester}
+interaction command used when constructing the \texttt{steps} entries
+above.
+
+\begin{table}[!t]
+  \caption{Supported Flutter Widgets and Generated Test Interactions}
+  \label{tab:widgets}
+  \centering
+  \footnotesize
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{p{2.9cm}p{2.3cm}p{1.8cm}}
+    \toprule
+    \textbf{Widget} & \textbf{PICT Role} & \textbf{Test Command} \\
+    \midrule
+    \texttt{TextFormField}           & Factor (N levels) & \texttt{enterText} \\
+    \texttt{DropdownButton}\newline\texttt{FormField} & Factor (enum) & \texttt{tap} $\times$2 \\
+    \texttt{Radio}                   & Factor (enum)     & \texttt{tap} \\
+    \texttt{Checkbox}                & Factor \{on,off\} & \texttt{tap} \\
+    \texttt{Switch}                  & Factor \{on,off\} & \texttt{tap} \\
+    \texttt{ElevatedButton}          & Trigger (fixed)   & \texttt{tap} (last) \\
+    \texttt{Text}                    & Assertion target  & \texttt{find.text} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \subsection{Phase 4 -- Generate Test Script}
 
@@ -394,31 +435,12 @@ Flutter source file, optionally supply a condition file, and click
 \end{figure}
 
 \subsection{Supported Widgets}
-The current version supports seven widget types. Table~\ref{tab:widgets}
-lists each widget together with its PICT role, the \texttt{WidgetTester}
-interaction command used in the generated test, and whether the widget acts
-as a PICT factor or is handled as a fixed trigger.
-
-\begin{table}[!t]
-  \caption{Supported Flutter Widgets and Generated Test Interactions}
-  \label{tab:widgets}
-  \centering
-  \footnotesize
-  \renewcommand{\arraystretch}{1.3}
-  \begin{tabular}{p{2.9cm}p{2.3cm}p{1.8cm}}
-    \toprule
-    \textbf{Widget} & \textbf{PICT Role} & \textbf{Test Command} \\
-    \midrule
-    \texttt{TextFormField}           & Factor (N levels) & \texttt{enterText} \\
-    \texttt{DropdownButton}\newline\texttt{FormField} & Factor (enum) & \texttt{tap} $\times$2 \\
-    \texttt{Radio}                   & Factor (enum)     & \texttt{tap} \\
-    \texttt{Checkbox}                & Factor \{on,off\} & \texttt{tap} \\
-    \texttt{Switch}                  & Factor \{on,off\} & \texttt{tap} \\
-    \texttt{ElevatedButton}          & Trigger (fixed)   & \texttt{tap} (last) \\
-    \texttt{Text}                    & Assertion target  & \texttt{find.text} \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+The current version supports seven widget types, as detailed in
+Table~\ref{tab:widgets} (Section~III). Five widget types act as PICT
+factors (\texttt{TextFormField}, \texttt{DropdownButtonFormField},
+\texttt{Radio}, \texttt{Checkbox}, \texttt{Switch}), one acts as a
+fixed trigger (\texttt{ElevatedButton}), and one serves as an assertion
+target (\texttt{Text}).
 
 \subsection{PICT Model Construction}
 For a screen with $n$ non-button widgets, the PICT model file contains $n$
