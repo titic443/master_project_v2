@@ -419,14 +419,56 @@ updates settle before the assertions execute.
 The tool adopts a client--server architecture. The back end is implemented as
 a \textbf{FastAPI} (v0.114.1) service running inside a \textbf{Docker}
 (v28.0.0) container, exposing REST endpoints for each pipeline step. The
-front end is a desktop graphical user interface (GUI) application that guides the user through three
-inputs: (1) the Flutter front-end file(s), (2) an optional condition JSON
-file for custom validation rules, and (3) an output directory path.
+front end is a desktop graphical user interface (GUI) application that guides
+the developer through the inputs required to trigger the full pipeline.
+
+\subsection{Use Cases}
+The tool defines five use cases for a single actor---the
+\textit{developer}---as illustrated in Fig.~\ref{fig:usecase}.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{figure_usecase.png}
+  \caption{Use-case diagram of the automated test-script generation tool.}
+  \label{fig:usecase}
+\end{figure}
+
+\begin{enumerate}
+  \item \textbf{Supply Flutter front-end file:} The developer provides the
+        path to the target \texttt{.dart} screen file. The tool validates
+        the file type and checks that at least one supported widget with a
+        \texttt{Key} is present; an invalid file halts the pipeline with an
+        explanatory message.
+  \item \textbf{Supply output directory:} The developer specifies the
+        directory where all generated artefacts
+        (\texttt{manifest.json}, \texttt{datasets.json},
+        \texttt{test\_data.json}, and \texttt{\_test.dart}) will be written.
+  \item \textbf{Supply condition file (optional):} This use case
+        \textit{extends} UC1. The developer may provide a condition file
+        containing PICT constraint syntax (\texttt{IF\ldots THEN\ldots})
+        to encode business-logic rules not visible in the front-end source.
+        The tool validates the constraint syntax; an \textit{``Invalid
+        Constraint Syntax''} error halts the pipeline.
+  \item \textbf{Generate test script:} The core use case that
+        \textit{includes} four sub-steps executed in sequence:
+        (i)~create manifest file (Phase~1),
+        (ii)~create dataset file via LLM (Phase~2),
+        (iii)~create pairwise results via PICT (Phase~3), and
+        (iv)~create test-data file and render the Dart test script
+        (Phase~4).
+  \item \textbf{Execute test script:} The developer runs the generated
+        \texttt{<page>\_test.dart} file inside the Flutter testing
+        framework using \texttt{flutter test} to verify the target screen.
+\end{enumerate}
 
 \subsection{User Interface}
-Fig.~\ref{fig:ui_main} shows the main window of the tool. Users import the
-Flutter source file, optionally supply a condition file, and click
-\textit{Generate} to trigger the full pipeline.
+Fig.~\ref{fig:ui_main} shows the main window of the tool, which maps
+directly to the three input use cases (UC1--UC3). The window provides
+(1)~a file-picker control for the Flutter front-end source file (UC1),
+(2)~an optional file-picker for the condition file (UC3), and
+(3)~a directory-picker for the output path (UC2). Clicking
+\textit{Generate} triggers UC4, invoking the full four-phase pipeline;
+progress and any error messages are displayed inline.
 
 % --- FIGURE 2: Main UI ---
 \begin{figure}[!t]
