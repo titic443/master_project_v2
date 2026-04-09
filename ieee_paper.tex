@@ -639,62 +639,7 @@ that mirrors the UI flow of the target screen.
 Listing~\ref{lst:example} shows an abbreviated excerpt of one
 \texttt{pairwise\_valid\_invalid\_cases} test case.
 
-\begin{lstlisting}[caption={Abbreviated Dart test script -- \texttt{pairwise\_valid\_invalid\_cases\_1} (Medical Appointment screen).}, label=lst:example, captionpos=b, float=!t]
-testWidgets('pairwise_valid_invalid_cases_1',
-    (tester) async {
-  final w = MaterialApp(
-    home: MultiBlockProvider(
-      providers: providers,
-      child: ClinicAppointmentPage()));
-  await tester.pumpWidget(w);
 
-  // INVALID: patient name too short (1 char)
-  await tester.enterText(
-    find.byKey(Key('apt_01_patient_name_textfield')),
-    'a');
-  await tester.pump();
-
-  // INVALID: ID card only 11 digits (expects 13)
-  await tester.enterText(
-    find.byKey(Key('apt_02_id_card_textfield')),
-    '12345678901');
-  await tester.pump();
-
-  // VALID: select department via Dropdown
-  await tester.ensureVisible(
-    find.byKey(Key('apt_B1_id_department_dropdown')));
-  await tester.tap(
-    find.byKey(Key('apt_B1_id_department_dropdown')));
-  await tester.pumpAndSettle();
-  await tester.tap(find.text('Neuros', last));
-  await tester.pumpAndSettle();
-
-  // VALID: pick date via DatePicker dialog
-  await tester.tap(
-    find.byKey(Key('apt_B8_date_textfield')));
-  await tester.pumpAndSettle(
-    Duration(milliseconds: 5000));
-  final editIcon =
-    find.byKey(Key('DatePicker_edit_icon'));
-  if (tester.any(editIcon)) {
-    await tester.tap(editIcon.first);
-    await tester.pumpAndSettle();
-  }
-  final dateField = find.descendant(
-    of: find.byType(Dialog),
-    matching: find.byType(TextField));
-  await tester.enterText(
-    dateField.first, '01/15/2001');
-  await tester.pumpAndSettle();
-  await tester.tap(find.text('OK'));
-  await tester.pumpAndSettle();
-
-  // Tap submit button (always last)
-  await tester.tap(
-    find.byKey(Key('apt_B9_button')));
-  await tester.pumpAndSettle();
-});
-\end{lstlisting}
 
 \subsection{Full Script Output}
 Fig.~\ref{fig:script_output} shows the complete
