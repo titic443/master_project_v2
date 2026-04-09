@@ -289,16 +289,18 @@ to one \textit{level}. Three model variants are built independently:
 \end{enumerate}
 
 Before invoking PICT, if the developer supplies an optional
-\textit{condition file} (a JSON file that declares additional validation
-rules for widgets whose logic resides in the Cubit layer rather than in
-the widget's own \texttt{validator} callback), the tool merges those
-extra \texttt{validatorRules} entries into the corresponding widget
-metadata. This allows the tool to generate test data that covers
-business-logic constraints that are invisible to static analysis of the
-front-end file alone. The condition file follows the same
-\texttt{byKey} keying scheme as the manifest, and its rules are
-validated for correct syntax before merging; an invalid file triggers an
-error message and the pipeline halts.
+\textit{condition file}, the tool appends its contents directly to
+the PICT model file as a \texttt{[Constraints]} section.
+The condition file is written in PICT constraint syntax
+(\texttt{IF \textlangle param\textrangle = \textlangle value\textrangle\ THEN \textlangle param\textrangle = \textlangle value\textrangle;})
+and is used to encode business-logic rules that reside in the Cubit
+layer and are therefore invisible to static analysis of the front-end
+file alone---for example, restricting the pairwise engine so that only
+one factor carries an invalid value per test case, or expressing
+mutual-exclusion dependencies between fields.
+The tool validates the constraint syntax before appending; a syntax
+error triggers an \textit{``Invalid Constraint Syntax''} message and
+the pipeline halts.
 
 PICT is then invoked as a subprocess once per model file
 (\texttt{<page>.full.model.txt} for VI and
