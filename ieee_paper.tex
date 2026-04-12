@@ -415,60 +415,29 @@ updates settle before the assertions execute.
 \section{Tool Design and Implementation}
 % ===============================================
 
-\subsection{Architecture}
-The tool adopts a client--server architecture. The back end is implemented as
-a \textbf{FastAPI} (v0.114.1) service running inside a \textbf{Docker}
-(v28.0.0) container, exposing REST endpoints for each pipeline step. The
-front end is a desktop graphical user interface (GUI) application that guides
-the developer through the inputs required to trigger the full pipeline.
-
-\subsection{Use Cases}
-The tool defines five use cases for a single actor---the
-\textit{developer}---as illustrated in Fig.~\ref{fig:usecase}.
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure_usecase.png}
-  \caption{Use-case diagram of the automated test-script generation tool.}
-  \label{fig:usecase}
-\end{figure}
-
-\begin{enumerate}
-  \item \textbf{Supply Flutter front-end file:} The developer provides the
-        path to the target \texttt{.dart} screen file. The tool validates
-        the file type and checks that at least one supported widget with a
-        \texttt{Key} is present; an invalid file halts the pipeline with an
-        explanatory message.
-  \item \textbf{Supply output directory:} The developer specifies the
-        directory where all generated artefacts
-        (\texttt{manifest.json}, \texttt{datasets.json},
-        \texttt{test\_data.json}, and \texttt{\_test.dart}) will be written.
-  \item \textbf{Supply condition file (optional):} This use case
-        \textit{extends} UC1. The developer may provide a condition file
-        containing PICT constraint syntax (\texttt{IF\ldots THEN\ldots})
-        to encode business-logic rules not visible in the front-end source.
-        The tool validates the constraint syntax; an \textit{``Invalid
-        Constraint Syntax''} error halts the pipeline.
-  \item \textbf{Generate test script:} The core use case that
-        \textit{includes} four sub-steps executed in sequence:
-        (i)~create manifest file (Phase~1),
-        (ii)~create dataset file via LLM (Phase~2),
-        (iii)~create pairwise results via PICT (Phase~3), and
-        (iv)~create test-data file and render the Dart test script
-        (Phase~4).
-  \item \textbf{Execute test script:} The developer runs the generated
-        \texttt{<page>\_test.dart} file inside the Flutter testing
-        framework using \texttt{flutter test} to verify the target screen.
-\end{enumerate}
-
 \subsection{User Interface}
-Fig.~\ref{fig:ui_main} shows the main window of the tool, which maps
-directly to the three input use cases (UC1--UC3). The window provides
-(1)~a file-picker control for the Flutter front-end source file (UC1),
-(2)~an optional file-picker for the condition file (UC3), and
-(3)~a directory-picker for the output path (UC2). Clicking
-\textit{Generate} triggers UC4, invoking the full four-phase pipeline;
-progress and any error messages are displayed inline.
+Fig.~\ref{fig:ui_main} shows the main window of the tool. The interface
+provides three inputs and one action that together cover the full
+test-generation workflow:
+\begin{enumerate}
+  \item \textbf{Flutter front-end file:} A file-picker for the target
+        \texttt{.dart} screen file. The tool validates the file type and
+        confirms that at least one supported, keyed widget is present;
+        an unsupported file type displays an \textit{``Invalid File
+        Type''} message and blocks further processing.
+  \item \textbf{Condition file (optional):} A second file-picker for an
+        optional PICT constraint file written in
+        \texttt{IF\ldots THEN\ldots} syntax. If supplied, the tool
+        validates the constraint syntax before proceeding; a malformed
+        file displays an \textit{``Invalid Constraint Syntax''} message.
+  \item \textbf{Output directory:} A directory-picker that sets the
+        destination folder for all generated artefacts---
+        \texttt{manifest.json}, \texttt{datasets.json},
+        \texttt{test\_data.json}, and \texttt{<page>\_test.dart}.
+  \item \textbf{Generate button:} Clicking \textit{Generate} triggers
+        the full four-phase pipeline. Progress status and any error
+        messages are displayed inline in the main window.
+\end{enumerate}
 
 % --- FIGURE 2: Main UI ---
 \begin{figure}[!t]
@@ -477,6 +446,24 @@ progress and any error messages are displayed inline.
   \caption{Main window of the automated test-script generation tool.}
   \label{fig:ui_main}
 \end{figure}
+
+\subsection{Installation}
+The following prerequisites must be in place before using the tool:
+\begin{enumerate}
+  \item \textbf{Docker} (v28.0.0 or later): Start the back-end
+        container, which hosts a \textbf{FastAPI} (v0.114.1) service
+        exposing REST endpoints for each pipeline phase, with the
+        command \texttt{docker run -p 8000:8000 <image>}.
+  \item \textbf{PICT}: Install the Microsoft PICT binary and ensure it
+        is accessible on the system \texttt{PATH}. The tool invokes
+        PICT as a subprocess during Phase~3.
+  \item \textbf{Gemini API key}: Configure the key as an environment
+        variable or enter it in the tool settings panel. The key is
+        required for the LLM call in Phase~2.
+  \item \textbf{Desktop application}: Launch the front-end GUI
+        executable. On first run the tool prompts for the back-end
+        service URL (default: \texttt{http://localhost:8000}).
+\end{enumerate}
 
 \subsection{Supported Widgets}
 The current version supports seven widget types, as detailed in
@@ -487,23 +474,23 @@ fixed trigger (\texttt{ElevatedButton}), and one serves as an assertion
 target (\texttt{Text}).
 
 \subsection{PICT Model Construction}
-For a screen with $n$ non-button widgets, the PICT model file contains $n$
-parameter lines of the form \texttt{<key>: v1, v2, \ldots, vk}, where each
-$v_i$ is a distinct value level. The tool builds three separate model
-files---VI, V, and Edge---and invokes PICT once per file. Each PICT run
-returns a minimal covering array; the three arrays are concatenated to form
-the complete test suite for the screen. For a \texttt{TextFormField} with
-five LLM-generated values (three valid, two invalid), the corresponding
-PICT factor has five levels. \texttt{DropdownButtonFormField} and
-\texttt{Radio} factors enumerate all available options extracted from the
-source code.
+For a screen with $n$ non-button widgets, the PICT model file contains
+$n$ parameter lines of the form \texttt{<key>: v1, v2, \ldots, vk},
+where each $v_i$ is a distinct value level. The tool builds three
+separate model files---VI, V, and Edge---and invokes PICT once per
+file. Each PICT run returns a minimal covering array; the three arrays
+are concatenated to form the complete test suite for the screen. For a
+\texttt{TextFormField} with five LLM-generated values (three valid, two
+invalid), the corresponding PICT factor has five levels.
+\texttt{DropdownButtonFormField} and \texttt{Radio} factors enumerate
+all available options extracted from the source code.
 
 \subsection{Implementation Constraints}
-Each generated script covers \emph{one} application screen per execution.
-Every target widget must carry a unique \texttt{Key} property; widgets
-without a key are silently skipped. The LLM call uses the Gemini API and
-requires an API key at runtime. PICT must be installed on the host system
-and accessible on the \texttt{PATH}.
+Each generated script covers \emph{one} application screen per
+execution. Every target widget must carry a unique \texttt{Key}
+property; widgets without a key are silently skipped. The LLM call
+requires a valid Gemini API key at runtime, and PICT must be installed
+and accessible on the system \texttt{PATH}.
 
 % ===============================================
 \section{Evaluation}
@@ -512,56 +499,154 @@ and accessible on the \texttt{PATH}.
 \subsection{Experimental Setup}
 The tool was evaluated on three real-world Flutter applications: a
 \textit{Medical Appointment} app, a \textit{Job Listing} app, and a
-\textit{Real-Estate Listing} app. Two screens per application were selected,
-yielding six screen-level evaluations in total. The test environment used
-Flutter~v3.27.3 running on macOS Sequoia~15.4.1. Line coverage was measured
-using the Flutter \texttt{--coverage} flag combined with \texttt{lcov} to
-filter results to UI page files only.
+\textit{Real-Estate Listing} app. Two screens per application were
+selected, yielding six screen-level evaluations in total. The test
+environment used Flutter~v3.27.3 running on macOS Sequoia~15.4.1.
+Line coverage was measured using the Flutter \texttt{--coverage} flag
+combined with \texttt{lcov} to filter results to UI page files only.
+
+\subsection{Case Studies Overview}
+The three applications represent increasing levels of form-validation
+complexity. The \textit{Medical Appointment} app contains a booking
+screen with seven input widgets (TextFormField, Dropdown, DatePicker)
+and a lighter search screen. The \textit{Job Listing} app includes a
+posting screen with complex cross-field validation rules
+(e.g., salary range constraints) and a search screen with a higher
+widget count. The \textit{Real-Estate Listing} app presents two screens
+of similar complexity, each combining text, dropdown, and toggle
+widgets.
 
 \subsection{Case Study 1: Medical Appointment Application}
-The appointment-booking screen exposes seven input widgets. The tool
-generated 52 test cases (28 pairwise valid/invalid, 21 pairwise valid, and 3
-edge cases) for the booking screen, and 6 test cases for the lighter search
-screen. Fig.~\ref{fig:result_medical} shows an excerpt of the generated Dart
-test script and its execution log.
 
-% --- FIGURE 3: Medical test output ---
+The appointment-booking screen exposes seven input widgets. The tool
+generated 52 test cases (28~VI, 21~V, 3~Edge) for the booking screen
+and 6 test cases for the lighter search screen.
+
+\subsubsection{Generated Test Script}
+The tool outputs a \texttt{<page>\_test.dart} file structured into
+three \texttt{group()} blocks:
+\texttt{pairwise\_valid\_invalid\_cases} (VI),
+\texttt{pairwise\_valid\_cases} (V), and \texttt{edge\_cases}.
+Each entry in the \texttt{cases} array becomes one independent
+\texttt{testWidgets} block. Listing~\ref{lst:example} shows an
+abbreviated excerpt of \texttt{pairwise\_valid\_invalid\_cases\_1}:
+two fields receive invalid values---a one-character patient name
+(violates minimum-length rule) and an 11-digit ID card (expects
+13~digits)---while the remaining fields receive valid values;
+the submit button is tapped last and the form-rejection widget is
+asserted.
+
+\begin{lstlisting}[caption={Abbreviated Dart test script ---
+  \texttt{pairwise\_valid\_invalid\_cases\_1}
+  (Medical Appointment booking screen).},
+  label=lst:example, captionpos=b, float=!t]
+testWidgets('pairwise_valid_invalid_cases_1',
+    (tester) async {
+  final w = MaterialApp(
+    home: MultiBlockProvider(
+      providers: providers,
+      child: ClinicAppointmentPage()));
+  await tester.pumpWidget(w);
+
+  // INVALID: patient name too short (1 char)
+  await tester.enterText(
+    find.byKey(Key('apt_01_patient_name_textfield')),
+    'a');
+  await tester.pump();
+
+  // INVALID: ID card only 11 digits (expects 13)
+  await tester.enterText(
+    find.byKey(Key('apt_02_id_card_textfield')),
+    '12345678901');
+  await tester.pump();
+
+  // VALID: select department via Dropdown
+  await tester.ensureVisible(
+    find.byKey(Key('apt_B1_id_department_dropdown')));
+  await tester.tap(
+    find.byKey(Key('apt_B1_id_department_dropdown')));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Neuros', last));
+  await tester.pumpAndSettle();
+
+  // Tap submit button (always last)
+  await tester.tap(
+    find.byKey(Key('apt_B9_button')));
+  await tester.pumpAndSettle();
+});
+\end{lstlisting}
+
+\subsubsection{Test Execution Result}
+Fig.~\ref{fig:result_medical} shows the execution log produced by
+\texttt{flutter test}. Each \texttt{testWidgets} block is reported
+individually; all 52 test cases pass, confirming that the script
+correctly drives the UI through both valid and invalid input paths.
+Fig.~\ref{fig:script_output} shows the complete
+\texttt{pairwise\_valid\_cases} output file as rendered by the tool;
+each \texttt{testWidgets} block is ordered by pairwise combination
+index and covers all valid input-value pairs produced by PICT.
+
+% --- FIGURE 3: Medical execution log ---
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figure3.png}
-  \caption{Excerpt of the generated test script and execution log for the
-           Medical Appointment application.}
+  \caption{Test execution log for the Medical Appointment application
+           (52 test cases, all passing).}
   \label{fig:result_medical}
 \end{figure}
 
+% --- FIGURE 5: Full valid script output ---
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{figure5.png}
+  \caption{Generated \texttt{pairwise\_valid\_cases} test script for
+           the Medical Appointment booking screen (tool output file).}
+  \label{fig:script_output}
+\end{figure}
+
+\subsubsection{Coverage Result}
+Executing the 52 generated test cases against the booking screen
+achieved \textbf{96.0\%} line coverage (166/173 lines); the search
+screen reached \textbf{91.6\%} (141/154 lines). Three characteristics
+of the generated scripts contributed to this result. First, every
+widget interaction uses \texttt{find.byKey}, providing a stable locator
+that tolerates UI refactoring. Second, the \texttt{DatePicker}
+interaction is fully automated: the tool injects a mode-switch step
+before entering the date string, eliminating a common source of flaky
+tests. Third, both VI and V script groups are produced in a single
+invocation, giving teams immediate coverage of positive and negative
+test paths.
+
 \subsection{Case Study 2: Job Listing Application}
 The job-posting screen includes multiple widgets with complex mutual
-validation rules between fields (e.g., salary range constraints). The tool
-generated 64 test cases for the posting screen (31 pairwise valid/invalid,
-30 pairwise valid, 3 edge) and 63 test cases for the search screen (30, 30,
-and 3 respectively), demonstrating that pairwise coverage adapts naturally
+validation rules between fields (e.g., salary range constraints). The
+tool generated 64 test cases for the posting screen (31~VI, 30~V,
+3~Edge) and 63 test cases for the search screen (30, 30, and 3
+respectively), demonstrating that pairwise coverage adapts naturally
 to screens with higher widget counts.
 
 \subsection{Case Study 3: Real-Estate Listing Application}
-Both the posting and search screens of the real-estate application yielded
-55 test cases each (27 pairwise valid/invalid, 25 pairwise valid, 3 edge),
-reflecting similar widget complexity across the two screens.
-Fig.~\ref{fig:result_realestate} shows the coverage report produced after
-executing the generated scripts.
+Both screens of the real-estate application yielded 55 test cases each
+(27~VI, 25~V, 3~Edge), reflecting similar widget complexity across
+the two screens. Fig.~\ref{fig:result_realestate} shows the coverage
+report produced after executing the generated scripts.
 
 % --- FIGURE 4: Real-estate coverage ---
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figure4.png}
-  \caption{Code-coverage report for the Real-Estate Listing application.}
+  \caption{Code-coverage report for the Real-Estate Listing
+           application.}
   \label{fig:result_realestate}
 \end{figure}
 
 \subsection{Coverage Results}
-Table~\ref{tab:coverage} summarises the line coverage and test-case counts
-achieved across all six evaluated screens (two per application). Coverage was
-measured using the Flutter \texttt{--coverage} flag with \texttt{lcov
---remove} to isolate \texttt{*\_page.dart} UI files from Cubit/State layers.
+Table~\ref{tab:coverage} summarises the line coverage and test-case
+counts across all six evaluated screens. All six screens achieved line
+coverage above \textbf{91\%}, confirming that the pairwise-generated
+scripts exercise the vast majority of UI code paths despite the
+reduced test-case count. Table~\ref{tab:reduction} details the VI, V,
+and Edge breakdown per screen.
 
 \begin{table}[!t]
   \caption{Test Coverage Summary}
@@ -588,13 +673,8 @@ measured using the Flutter \texttt{--coverage} flag with \texttt{lcov
   \end{tabular}
 \end{table}
 
-\noindent All six screens achieved line coverage above 91\%, confirming that
-the pairwise-generated test scripts exercise the vast majority of UI code
-paths despite the reduced test-case count. Table~\ref{tab:reduction} details
-the breakdown of VI, V, and Edge test cases generated per screen.
-
 \begin{table}[!t]
-  \caption{Pairwise Test-Case Reduction per Screen}
+  \caption{Pairwise Test-Case Breakdown per Screen}
   \label{tab:reduction}
   \centering
   \renewcommand{\arraystretch}{1.15}
@@ -613,62 +693,10 @@ the breakdown of VI, V, and Edge test cases generated per screen.
       & Posting & 27 & 25 & 3 \\
       & Search  & 27 & 25 & 3 \\
     \bottomrule
-    \multicolumn{5}{l}{\footnotesize VI = pairwise valid/invalid cases;\
-    V = pairwise valid cases; Edge = edge cases.} \\
+    \multicolumn{5}{l}{\footnotesize VI\,=\,pairwise valid/invalid;\
+    V\,=\,pairwise valid; Edge\,=\,edge cases.} \\
   \end{tabular}
 \end{table}
-
-% ===============================================
-\section{Generated Test Script Example}
-% ===============================================
-
-This section illustrates the concrete Dart test script produced by the
-tool for the Medical Appointment application booking screen.
-The tool generates two groups of scripts in a single run:
-\textbf{pairwise\_valid\_invalid\_cases} mixes valid and invalid values
-across widget pairs to verify that the application correctly rejects
-erroneous input, while \textbf{pairwise\_valid\_cases} uses only valid
-values to verify the happy-path flow.
-
-\subsection{Script Structure}
-Each generated \texttt{.dart} file follows a fixed skeleton:
-(i)~a \texttt{testWidgets} block named after its pairwise-combination
-index, (ii)~widget-pump setup via \texttt{MaterialApp} and
-\texttt{MultiBlockProvider}, and (iii)~a sequential interaction body
-that mirrors the UI flow of the target screen.
-Listing~\ref{lst:example} shows an abbreviated excerpt of one
-\texttt{pairwise\_valid\_invalid\_cases} test case.
-
-
-
-\subsection{Full Script Output}
-Fig.~\ref{fig:script_output} shows the complete
-\texttt{pairwise\_valid\_cases} output file as rendered by the tool
-for the Medical Appointment booking screen. Each \texttt{testWidgets}
-block is independently executable; the blocks are ordered by pairwise
-combination index and cover all valid input-value pairs produced by
-PICT.
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure5.png}
-  \caption{Generated \texttt{pairwise\_valid\_cases} test script for the
-           Medical Appointment application (tool output file).}
-  \label{fig:script_output}
-\end{figure}
-
-\subsection{Key Observations}
-Three characteristics of the generated scripts are noteworthy.
-First, every widget interaction uses \texttt{find.byKey}, providing a
-stable locator that is independent of widget text or position and
-tolerates UI refactoring without breaking the test.
-Second, the \texttt{DatePicker} interaction is fully automated: the
-tool injects a mode-switch step (tap the edit icon) before entering
-the date string, eliminating a common source of flaky tests in
-calendar-dialog scenarios.
-Third, both valid-only and valid/invalid script groups are produced in
-a single invocation, giving teams immediate coverage of positive and
-negative test paths with no additional authoring effort.
 
 % ===============================================
 \section{Conclusion}
