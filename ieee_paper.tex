@@ -196,13 +196,11 @@ the generated test script to import the correct files and instantiate a
 \texttt{BlocProvider} wrapper automatically.
 
 At the \textit{widget level}, the tool records: (i)~the unique widget key,
-(ii)~the widget class name, (iii)~a \texttt{sequence} integer that encodes
-the widget's top-to-bottom position within the form (used in Phase~3 to
-order \texttt{WidgetTester} interaction steps), (iv)~allowed character or
-length patterns from \texttt{inputFormatters}, (v)~validation rules and
-error messages parsed from \texttt{validator} callbacks
-(\texttt{validatorRules}), and (vi)~the selectable options list for
-\texttt{DropdownButtonFormField} and \texttt{Radio} widgets.
+(ii)~the widget class name, (iii)~allowed character patterns from
+\texttt{inputFormatters}, (iv)~the maximum input length
+(\texttt{maxLength}) for \texttt{TextFormField} widgets, and
+(v)~validation rules and error messages parsed from \texttt{validator}
+callbacks (\texttt{validatorRules}).
 
 The extracted metadata is serialized into a \texttt{manifest.json} file
 grouped by screen name. Table~\ref{tab:manifest} lists the fields recorded
@@ -213,24 +211,24 @@ per screen and per widget.
   \label{tab:manifest}
   \centering
   \renewcommand{\arraystretch}{1.3}
-  \begin{tabular}{lp{4.6cm}}
+  \begin{tabular}{lp{3.8cm}c}
     \toprule
-    \textbf{Field} & \textbf{Description} \\
+    \textbf{Field} & \textbf{Description} & \textbf{Req.} \\
     \midrule
-    \multicolumn{2}{l}{\textit{Screen-level (BLoC metadata)}} \\
-    \texttt{pageClass}      & UI page widget class name \\
-    \texttt{cubitClass}     & BLoC Cubit class for the screen \\
-    \texttt{stateClass}     & State class associated with the Cubit \\
-    \texttt{fileCubit}      & Path to the Cubit source file \\
-    \texttt{fileState}      & Path to the State source file \\
+    \multicolumn{3}{l}{\textit{Screen-level (source block)}} \\
+    \texttt{file}           & Path to the UI page source file & Y \\
+    \texttt{pageClass}      & UI page widget class name & Y \\
+    \texttt{cubitClass}     & BLoC Cubit class for the screen & Y \\
+    \texttt{stateClass}     & State class associated with the Cubit & Y \\
+    \texttt{fileCubit}      & Path to the Cubit source file & Y \\
+    \texttt{fileState}      & Path to the State source file & Y \\
     \midrule
-    \multicolumn{2}{l}{\textit{Widget-level}} \\
-    \texttt{key}            & Unique Flutter widget key \\
-    \texttt{widgetType}     & Widget class name \\
-    \texttt{sequence}       & Top-to-bottom position in the form (used to order test steps) \\
-    \texttt{inputFormatters}& Allowed character patterns and length limits \\
-    \texttt{validatorRules} & Validation conditions and error messages \\
-    \texttt{options}        & Enumerated choices for Radio / Dropdown \\
+    \multicolumn{3}{l}{\textit{Widget-level (widgets array)}} \\
+    \texttt{key}            & Unique Flutter widget key & Y \\
+    \texttt{widgetType}     & Widget class name & Y \\
+    \texttt{inputFormatters}& Allowed character patterns for input & N \\
+    \texttt{maxLength}      & Maximum character length for \texttt{TextFormField} & N \\
+    \texttt{validatorRules} & Validation conditions and error messages & N \\
     \bottomrule
   \end{tabular}
 \end{table}
