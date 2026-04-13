@@ -25,4 +25,4 @@ search_04_salary_min_textfield.valid = 30000
 # IF [search_05_salary_min_textfield] = "invalid" THEN [search_01_keyword_textfield] = "valid";
 
 # # ถ้า category เลือก Engineering → employment type ควรเป็น Freelance (ตรงกับ DB)
-# IF [search_03_category_dropdown] = "Engineering" THEN [search_04_type_dropdown] = "Freelance";
+IF [search_02_category_dropdown] = "Engineering" THEN [search_03_type_dropdown] = "Freelance";

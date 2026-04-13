@@ -721,6 +721,19 @@ class GeneratorPict {
       outPageValidModel,
       'output/model_pairwise/$pageBaseName.valid.result.txt',
     );
+
+    // Post-process: enforce IF/THEN constraints by filtering out any violating
+    // rows that PICT may have silently left in (observed with quoted values).
+    if (constraints != null && constraints.trim().isNotEmpty) {
+      _filterResultFile(
+        'output/model_pairwise/$pageBaseName.full.result.txt',
+        constraints,
+      );
+      _filterResultFile(
+        'output/model_pairwise/$pageBaseName.valid.result.txt',
+        constraints,
+      );
+    }
   }
 
   Future<void> _executePictToFile(String modelPath, String outputPath) async {
@@ -923,6 +936,130 @@ class GeneratorPict {
       method: method,
     );
   }
+
+  // ==========================================================================
+  // Constraint Enforcement (Post-Processing)
+  // ==========================================================================
+
+  /// Filter PICT combinations to remove rows that violate Format B IF/THEN
+  /// constraints. This is a safety net for cases where PICT silently ignores
+  /// constraints (observed with quoted values on some PICT builds).
+  ///
+  /// Supported operator: = and <>
+  /// Example constraint: IF [cat] = "Engineering" THEN [type] = "Freelance";
+  List<Map<String, String>> filterCombosAgainstConstraints(
+    List<Map<String, String>> combos,
+    String constraints,
+  ) {
+    if (combos.isEmpty || constraints.trim().isEmpty) return combos;
+
+    // Parse Format B (IF/THEN) rules only
+    final rules = <_ConstraintRule>[];
+    for (final rawLine in constraints.split('\n')) {
+      final line = rawLine.trim();
+      if (line.isEmpty || line.startsWith('#')) continue;
+      final up = line.toUpperCase();
+      if (!up.contains('IF') || !up.contains('THEN')) continue;
+
+      final thenIdx = up.indexOf('THEN');
+      final ifPart   = line.substring(0, thenIdx).trim();
+      final thenPart = line.substring(thenIdx + 4).trim();
+
+      // Match: [factorName] (=|<>) "value"
+      final re = RegExp(r'\[(.+?)\]\s*(<>|=)\s*"(.+?)"', caseSensitive: false);
+      final ifM   = re.firstMatch(ifPart);
+      final thenM = re.firstMatch(thenPart);
+      if (ifM == null || thenM == null) continue;
+
+      rules.add(_ConstraintRule(
+        ifFactor:   ifM.group(1)!,
+        ifOp:       ifM.group(2)!,
+        ifValue:    ifM.group(3)!,
+        thenFactor: thenM.group(1)!,
+        thenOp:     thenM.group(2)!,
+        thenValue:  thenM.group(3)!,
+      ));
+    }
+
+    if (rules.isEmpty) return combos;
+
+    // Strip surrounding double-quotes from a combo cell value
+    String unquote(String v) =>
+        (v.startsWith('"') && v.endsWith('"')) ? v.substring(1, v.length - 1) : v;
+
+    bool satisfies(Map<String, String> combo, _ConstraintRule r) {
+      // Evaluate IF condition
+      final ifVal = unquote(combo[r.ifFactor] ?? '');
+      final ifMet = r.ifOp == '=' ? ifVal == r.ifValue : ifVal != r.ifValue;
+      if (!ifMet) return true; // constraint does not apply
+
+      // Evaluate THEN condition
+      final thenVal = unquote(combo[r.thenFactor] ?? '');
+      return r.thenOp == '=' ? thenVal == r.thenValue : thenVal != r.thenValue;
+    }
+
+    final filtered = combos.where((c) => rules.every((r) => satisfies(c, r))).toList();
+
+    if (filtered.length < combos.length) {
+      stderr.writeln('[INFO] filterCombosAgainstConstraints: removed '
+          '${combos.length - filtered.length} constraint-violating row(s)');
+    }
+
+    return filtered;
+  }
+
+  /// Read a result file, filter it, and overwrite if any rows were removed.
+  void _filterResultFile(String resultPath, String constraints) {
+    final file = File(resultPath);
+    if (!file.existsSync()) return;
+
+    final content = file.readAsStringSync();
+    if (content.trim().isEmpty) return;
+
+    final lines = content.trim().split(RegExp(r'\r?\n'));
+    if (lines.length < 2) return; // header only — nothing to filter
+
+    final header  = lines.first;
+    final headers = header.split('\t').map((s) => s.trim()).toList();
+
+    // Re-parse combinations
+    final combos = <Map<String, String>>[];
+    for (int i = 1; i < lines.length; i++) {
+      if (lines[i].trim().isEmpty) continue;
+      final cols = lines[i].split('\t');
+      if (cols.length != headers.length) continue;
+      final m = <String, String>{};
+      for (int c = 0; c < headers.length; c++) m[headers[c]] = cols[c].trim();
+      combos.add(m);
+    }
+
+    final filtered = filterCombosAgainstConstraints(combos, constraints);
+    if (filtered.length == combos.length) return; // nothing changed
+
+    // Reconstruct and overwrite the file
+    final outLines = [
+      header,
+      ...filtered.map((row) => headers.map((h) => row[h] ?? '').join('\t')),
+    ];
+    file.writeAsStringSync(outLines.join('\n') + '\n');
+    stderr.writeln('[INFO] _filterResultFile: rewrote $resultPath '
+        '(${combos.length} → ${filtered.length} rows)');
+  }
+}
+
+// ==========================================================================
+// Internal helper — constraint rule parsed from Format B text
+// ==========================================================================
+class _ConstraintRule {
+  final String ifFactor, ifOp, ifValue, thenFactor, thenOp, thenValue;
+  const _ConstraintRule({
+    required this.ifFactor,
+    required this.ifOp,
+    required this.ifValue,
+    required this.thenFactor,
+    required this.thenOp,
+    required this.thenValue,
+  });
 }
 
 // Removed: _basenameWithoutExtension - now using utils.basenameWithoutExtension
