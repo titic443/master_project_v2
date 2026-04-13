@@ -235,42 +235,37 @@ per screen and per widget.
 
 \subsection{Phase 2 -- Generate Datasets}
 
-Given the manifest, the tool constructs a structured LLM prompt following
-the CO-STEP (Context, Objective, Style, Target, Execution, Polish)
-framework \cite{b4}, which organizes the prompt into six
-components: \textit{context} (describes the Flutter screen under test and
-its widget validation structure), \textit{objective} (requests valid and
-invalid value pairs for each \texttt{TextFormField}, one pair per
-non-empty validation rule), \textit{style} (enforces a
-JavaScript Object Notation (JSON)-only output schema with realistic,
-typeable values and no markdown), \textit{target} (instructs the model to
-act as a QA engineer generating happy-path and error-path data),
-\textit{execution} (provides step-by-step instructions for counting
-non-empty validation rules and constructing $N$ valid/invalid pairs), and
-\textit{polish} (embedded via few-shot examples that constrain output
-format and prevent hallucinated values). The widget metadata extracted in
-Phase~1 is appended as the \textit{input data} payload.
+Given the manifest, the tool filters out \emph{only}
+\texttt{TextFormField} widgets to serve as input to the LLM.
+\texttt{Dropdown} and \texttt{Radio} widgets are excluded from this
+step; their value levels are drawn directly from the \texttt{options}
+list extracted in Phase~1, eliminating any risk of LLM hallucination
+for enumerated choices.
 
-The prompt is submitted to \textit{Google Gemini gemini-2.5-flash}
-\cite{b5} via the Gemini API (HTTP POST). The model returns a
-\texttt{<page>.datasets.json} file with the following top-level
-structure:
+The filtered metadata is packaged into a structured prompt following
+the approach of Tuan Pham \cite{b4} and submitted to
+\textit{Google Gemini gemini-2.5-flash} \cite{b5} via the Gemini API
+(HTTP POST). The model returns a \texttt{<page>.datasets.json} file
+whose top-level structure is as follows:
+
 \begin{itemize}
   \item \textbf{file:} path to the front-end source file that was
         analyzed.
   \item \textbf{datasets $\to$ byKey:} a map from each
         \texttt{TextFormField} widget key to an array of value-pair
-        objects. Each object contains \texttt{valid} (a value that
-        satisfies all validation rules), \texttt{invalid} (a value that
-        violates exactly one rule while still conforming to
-        \texttt{inputFormatters}), and \texttt{invalidRuleMessages}
-        (the specific error message that would be triggered). One
-        pair is generated per non-empty validation rule.
+        objects. One pair is generated per non-empty validation rule;
+        each object contains three fields:
+        \begin{itemize}
+          \item \texttt{valid} --- a value that satisfies every
+                validation rule and conforms to \texttt{inputFormatters};
+          \item \texttt{invalid} --- a value that violates exactly one
+                rule while still conforming to \texttt{inputFormatters},
+                so that it is typeable by the user;
+          \item \texttt{invalidRuleMessages} --- the specific validator
+                error message that would be triggered by the invalid
+                value.
+        \end{itemize}
 \end{itemize}
-\texttt{Dropdown} and \texttt{Radio} widgets are not sent to the LLM;
-their factor levels are drawn directly from the \texttt{options} list
-extracted in Phase~1, ensuring complete enumeration coverage without
-LLM hallucination risk.
 
 \subsection{Phase 3 -- Generate Test Data}
 
