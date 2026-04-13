@@ -235,48 +235,35 @@ per screen and per widget.
 
 \subsection{Phase 2 -- Generate Datasets}
 
-Only \texttt{TextFormField} widgets are extracted from the manifest
-for this phase; \texttt{Dropdown} and \texttt{Radio} widgets are
-excluded because their enumerated levels are resolved directly from
-the \texttt{options} list in Phase~1.
+Given the manifest, the tool filters out \emph{only}
+\texttt{TextFormField} widgets to serve as input to the LLM.
+\texttt{Dropdown} and \texttt{Radio} widgets are excluded from this
+step; their value levels are drawn directly from the \texttt{options}
+list extracted in Phase~1, eliminating any risk of LLM hallucination
+for enumerated choices.
 
-The filtered metadata is assembled into a structured prompt composed
-of five components following the approach of Tuan Pham \cite{b4}:
-\textit{context} (``Test data generator for Flutter form
-validation.''), \textit{target} (instructs the model to act as a QA
-engineer generating data for happy-path and error-path scenarios),
-\textit{objective} (five rules: analyse \texttt{maxLength},
-\texttt{inputFormatters}, and \texttt{validatorRules}; skip
-\texttt{isEmpty}/\texttt{null} rules, which are handled separately by
-edge-case generation in Phase~3; generate one valid/invalid pair per
-non-empty rule; ensure invalid values still conform to
-\texttt{inputFormatters} so they remain typeable; and output valid
-JSON), \textit{execution} (step-by-step counting procedure
-accompanied by two few-shot examples that fix the output schema and
-prevent hallucinated values), and \textit{style} (JSON only, no
-markdown, realistic values, string arrays only). The widget metadata
-extracted in Phase~1 is appended as the input-data payload.
-
-The prompt is submitted to \textit{Google Gemini 2.5 Flash}
-\cite{b5} via the Gemini API (HTTP POST). The model returns a
-\texttt{<page>.datasets.json} file whose top-level fields are:
+The filtered metadata is packaged into a structured prompt following
+the approach of Tuan Pham \cite{b4} and submitted to
+\textit{Google Gemini gemini-2.5-flash} \cite{b5} via the Gemini API
+(HTTP POST). The model returns a \texttt{<page>.datasets.json} file
+whose top-level structure is as follows:
 
 \begin{itemize}
-  \item \textbf{file:} path to the front-end source file analyzed.
+  \item \textbf{file:} path to the front-end source file that was
+        analyzed.
   \item \textbf{datasets $\to$ byKey:} a map from each
         \texttt{TextFormField} widget key to an array of value-pair
-        objects. One pair is produced per non-empty validation rule;
+        objects. One pair is generated per non-empty validation rule;
         each object contains three fields:
         \begin{itemize}
           \item \texttt{valid} --- a value that satisfies every
-                validation rule and conforms to
-                \texttt{inputFormatters};
-          \item \texttt{invalid} --- a value that violates exactly
-                one rule while still conforming to
-                \texttt{inputFormatters}, ensuring it remains
-                typeable by the user;
-          \item \texttt{invalidRuleMessages} --- the specific error
-                message that the violated validator would display.
+                validation rule and conforms to \texttt{inputFormatters};
+          \item \texttt{invalid} --- a value that violates exactly one
+                rule while still conforming to \texttt{inputFormatters},
+                so that it is typeable by the user;
+          \item \texttt{invalidRuleMessages} --- the specific validator
+                error message that would be triggered by the invalid
+                value.
         \end{itemize}
 \end{itemize}
 

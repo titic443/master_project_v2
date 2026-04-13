@@ -95,25 +95,23 @@ Tuan Pham แสดงให้เห็นว่าการจัดโคร�
 
 ### Phase 2 — สร้างชุดข้อมูล (Datasets)
 
-ในขั้นตอนนี้ เครื่องมือจะคัดเฉพาะ widget ประเภท `TextFormField` ออกจาก manifest เท่านั้น widget ประเภท `Dropdown` และ `Radio` ถูกยกเว้น เนื่องจากค่าที่เป็นไปได้ถูกดึงมาจากรายการ `options` ใน Phase 1 โดยตรง
+เมื่อได้ manifest แล้ว เครื่องมือจะสร้าง LLM prompt ที่มีโครงสร้างตามกรอบ CO-STEP (Context, Objective, Style, Target, Execution, Polish) ซึ่งจัดระเบียบ prompt เป็นหกองค์ประกอบ:
 
-ข้อมูลเมตาที่กรองแล้วจะถูกประกอบเป็น prompt ที่มีโครงสร้าง 5 องค์ประกอบตามแนวทางของ Tuan Pham:
+- **Context (บริบท):** อธิบาย Flutter screen ที่กำลังทดสอบและโครงสร้างการตรวจสอบ widget
+- **Objective (วัตถุประสงค์):** ขอคู่ค่า valid และ invalid สำหรับแต่ละ `TextFormField` หนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า
+- **Style (รูปแบบ):** บังคับใช้ schema การส่งออกแบบ JSON เท่านั้น พร้อมค่าที่สมจริงพิมพ์ได้และไม่มี markdown
+- **Target (เป้าหมาย):** สั่งให้โมเดลทำหน้าที่เป็น QA engineer ที่สร้างข้อมูล happy-path และ error-path
+- **Execution (การดำเนินการ):** ให้คำแนะนำทีละขั้นตอนสำหรับการนับกฎการตรวจสอบที่ไม่ว่างเปล่าและสร้างคู่ valid/invalid จำนวน N คู่
+- **Polish (การปรับแต่ง):** ฝังผ่านตัวอย่าง few-shot ที่จำกัดรูปแบบการส่งออกและป้องกันค่าที่ LLM สร้างขึ้นผิดพลาด (hallucination)
 
-- **Context (บริบท):** `"Test data generator for Flutter form validation."`
-- **Target (กลุ่มเป้าหมาย):** สั่งให้โมเดลทำหน้าที่เป็น QA engineer ที่สร้างข้อมูลสำหรับ happy-path และ error-path
-- **Objective (วัตถุประสงค์):** กำหนด 5 กฎ ได้แก่ วิเคราะห์ `maxLength`, `inputFormatters` และ `validatorRules`; ข้ามกฎ `isEmpty`/`null` (จัดการแยกใน Phase 3 ด้วย edge cases); สร้างคู่ valid/invalid หนึ่งคู่ต่อกฎที่ไม่ว่างเปล่า; ค่า invalid ต้องยังผ่าน `inputFormatters` เพื่อให้พิมพ์ได้จริง; และส่งออกเป็น JSON
-- **Execution (การดำเนินการ):** คำแนะนำทีละขั้นตอนพร้อมตัวอย่าง few-shot 2 ตัวอย่าง เพื่อกำหนดรูปแบบผลลัพธ์และป้องกัน hallucination
-- **Style (รูปแบบ):** JSON เท่านั้น ไม่มี markdown, ค่าที่สมจริง, string arrays เท่านั้น
+ข้อมูลเมตา widget ที่ดึงมาใน Phase 1 จะถูกเพิ่มเป็น payload ข้อมูลอินพุต
 
-ข้อมูลเมตาของ widget ที่ดึงมาใน Phase 1 จะถูกแนบเป็น input data payload
-
-prompt ถูกส่งไปยัง **Google Gemini 2.5 Flash** ผ่าน Gemini API (HTTP POST) โมเดลส่งคืนไฟล์ `<page>.datasets.json` ที่มีฟิลด์ระดับบนสุดดังนี้:
+prompt ถูกส่งไปยัง Google Gemini gemini-2.5-flash ผ่าน Gemini API (HTTP POST) โมเดลส่งคืนไฟล์ `<page>.datasets.json` ที่มีโครงสร้างระดับบนสุดดังนี้:
 
 - **file:** เส้นทางไปยังไฟล์ซอร์ส front-end ที่วิเคราะห์
-- **datasets → byKey:** map จาก widget key ของแต่ละ `TextFormField` ไปยัง array ของ object คู่ค่า สร้างหนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า แต่ละ object มีสามฟิลด์:
-  - `valid` — ค่าที่ผ่านทุก validation rule และตรงตาม `inputFormatters`
-  - `invalid` — ค่าที่ละเมิดกฎเพียงข้อเดียว แต่ยังตรงตาม `inputFormatters` เพื่อให้พิมพ์ได้จริง
-  - `invalidRuleMessages` — ข้อความ error ที่ validator จะแสดงเมื่อพบค่า invalid นั้น
+- **datasets → byKey:** map จาก widget key ของแต่ละ `TextFormField` ไปยัง array ของ object คู่ค่า แต่ละ object มี `valid` (ค่าที่ผ่านกฎทุกข้อ), `invalid` (ค่าที่ละเมิดกฎเพียงข้อเดียวในขณะที่ยังตรงตาม `inputFormatters`) และ `invalidRuleMessages` (ข้อความแสดงข้อผิดพลาดเฉพาะที่จะถูกเรียกใช้) สร้างหนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า
+
+widget `Dropdown` และ `Radio` ไม่ถูกส่งไปยัง LLM ระดับ factor ของพวกมันถูกดึงโดยตรงจากรายการ `options` ที่ดึงมาใน Phase 1 เพื่อให้มั่นใจว่าครอบคลุมการระบุค่าทั้งหมดโดยไม่มีความเสี่ยงจาก LLM hallucination
 
 ### Phase 3 — สร้างข้อมูลทดสอบ
 
