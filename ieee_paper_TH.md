@@ -110,10 +110,12 @@ Tuan Pham แสดงให้เห็นว่าการจัดโคร�
 prompt ถูกส่งไปยัง **Google Gemini 2.5 Flash** ผ่าน Gemini API (HTTP POST) โมเดลส่งคืนไฟล์ `<page>.datasets.json` ที่มีฟิลด์ระดับบนสุดดังนี้:
 
 - **file:** เส้นทางไปยังไฟล์ซอร์ส front-end ที่วิเคราะห์
-- **datasets → byKey:** map จาก widget key ของแต่ละ `TextFormField` ไปยัง array ของ object คู่ค่า สร้างหนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า แต่ละ object มีสามฟิลด์:
+- **datasets → byKey:** map จาก widget key ของแต่ละ `TextFormField` ไปยัง array ของ object คู่ค่า สร้างหนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า แต่ละ object มีห้าฟิลด์:
   - `valid` — ค่าที่ผ่านทุก validation rule และตรงตาม `inputFormatters`
   - `invalid` — ค่าที่ละเมิดกฎเพียงข้อเดียว แต่ยังตรงตาม `inputFormatters` เพื่อให้พิมพ์ได้จริง
   - `invalidRuleMessages` — ข้อความ error ที่ validator จะแสดงเมื่อพบค่า invalid นั้น
+  - `atMax` — ค่าที่อยู่ที่ขอบเขตสูงสุดที่อนุญาต (edge-case data)
+  - `atMin` — ค่าที่อยู่ที่ขอบเขตต่ำสุดที่อนุญาต (edge-case data)
 
 ### Phase 3 — สร้างข้อมูลทดสอบ
 

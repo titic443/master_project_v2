@@ -266,7 +266,7 @@ The prompt is submitted to \textit{Google Gemini 2.5 Flash}
   \item \textbf{datasets $\to$ byKey:} a map from each
         \texttt{TextFormField} widget key to an array of value-pair
         objects. One pair is produced per non-empty validation rule;
-        each object contains three fields:
+        each object contains five fields:
         \begin{itemize}
           \item \texttt{valid} --- a value that satisfies every
                 validation rule and conforms to
@@ -276,7 +276,11 @@ The prompt is submitted to \textit{Google Gemini 2.5 Flash}
                 \texttt{inputFormatters}, ensuring it remains
                 typeable by the user;
           \item \texttt{invalidRuleMessages} --- the specific error
-                message that the violated validator would display.
+                message that the violated validator would display;
+          \item \texttt{atMax} --- a boundary value at the maximum
+                allowed length or limit (edge-case data);
+          \item \texttt{atMin} --- a boundary value at the minimum
+                allowed length or limit (edge-case data).
         \end{itemize}
 \end{itemize}
 
