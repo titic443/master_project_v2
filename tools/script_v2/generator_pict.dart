@@ -74,6 +74,49 @@ class GeneratorPict {
     return buffer.toString();
   }
 
+  /// Generate invalid-only PICT model (excludes 'valid' from TEXT factors)
+  ///
+  /// Used to produce .invalid.model.txt — every TextField factor will only carry
+  /// the 'invalid' sentinel, so all PICT combinations are guaranteed to contain
+  /// at least one invalid field.  Non-TEXT factors (Dropdown, Switch, Checkbox,
+  /// Radio) keep their full value list so pairwise coverage across options is
+  /// still preserved.
+  String generateInvalidOnlyPictModel(
+    Map<String, List<String>> factors, {
+    String? constraints,
+  }) {
+    final buffer = StringBuffer();
+    for (final entry in factors.entries) {
+      // TextField factor: drop 'valid', keep only 'invalid'
+      final isTextField = entry.value.contains('valid') && entry.value.contains('invalid');
+      if (isTextField) {
+        final invalidValues = entry.value.where((v) => v != 'valid').toList();
+        if (invalidValues.isNotEmpty) {
+          buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, invalidValues)}');
+        }
+      } else {
+        // Non-TEXT factors (Dropdown, Radio, Checkbox, Switch): keep all values
+        buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
+      }
+    }
+
+    // Forward Format B (IF/THEN) constraints to PICT
+    if (constraints != null && constraints.trim().isNotEmpty) {
+      final pictLines = constraints
+          .split('\n')
+          .map((l) => l.trim())
+          .where((l) => l.isNotEmpty && !l.startsWith('#'))
+          .where((l) => l.toUpperCase().contains('IF') && l.toUpperCase().contains('THEN'))
+          .join('\n');
+      if (pictLines.isNotEmpty) {
+        buffer.writeln('');
+        buffer.writeln(pictLines);
+      }
+    }
+
+    return buffer.toString();
+  }
+
   /// Generate valid-only PICT model (excludes 'invalid' from TEXT factors and 'unchecked' from required checkboxes)
   String generateValidOnlyPictModel(
     Map<String, List<String>> factors, {
@@ -345,7 +388,7 @@ class GeneratorPict {
     return null;
   }
 
-  /// Read factor names from .full.model.txt file
+  /// Read factor names from .invalid.model.txt file
   ///
   /// Returns: List of factor names in order they appear in the model
   List<String> readFactorNamesFromModel(String modelFilePath) {
@@ -693,7 +736,7 @@ class GeneratorPict {
     stderr.writeln('[DEBUG] writePictModelFiles - constraints: '
         '${constraints == null ? "NULL" : "present (${constraints.length} chars)"}');
 
-    final modelContent = generatePictModel(factors, constraints: constraints);
+    final modelContent = generateInvalidOnlyPictModel(factors, constraints: constraints);
     final validModelContent = generateValidOnlyPictModel(
       factors,
       requiredCheckboxes: requiredCheckboxes,
@@ -707,7 +750,7 @@ class GeneratorPict {
     }
 
     // Write page-specific model files only (no root-level files)
-    final outPageModel = 'output/model_pairwise/$pageBaseName.full.model.txt';
+    final outPageModel = 'output/model_pairwise/$pageBaseName.invalid.model.txt';
     final outPageValidModel = 'output/model_pairwise/$pageBaseName.valid.model.txt';
     File(outPageModel).writeAsStringSync(modelContent);
     File(outPageValidModel).writeAsStringSync(validModelContent);
@@ -715,7 +758,7 @@ class GeneratorPict {
     // Execute PICT on page-specific models to generate result files
     await _executePictToFile(
       outPageModel,
-      'output/model_pairwise/$pageBaseName.full.result.txt',
+      'output/model_pairwise/$pageBaseName.invalid.result.txt',
     );
     await _executePictToFile(
       outPageValidModel,
@@ -726,7 +769,7 @@ class GeneratorPict {
     // rows that PICT may have silently left in (observed with quoted values).
     if (constraints != null && constraints.trim().isNotEmpty) {
       _filterResultFile(
-        'output/model_pairwise/$pageBaseName.full.result.txt',
+        'output/model_pairwise/$pageBaseName.invalid.result.txt',
         constraints,
       );
       _filterResultFile(

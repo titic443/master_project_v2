@@ -18,8 +18,8 @@
 //
 // Output:
 //   - output/test_data/<page>.testdata.json (test plan สำหรับ generate_test_script.dart)
-//   - output/model_pairwise/<page>.full.model.txt (PICT model file)
-//   - output/model_pairwise/<page>.full.result.txt (PICT combinations result)
+//   - output/model_pairwise/<page>.invalid.model.txt (PICT model file)
+//   - output/model_pairwise/<page>.invalid.result.txt (PICT combinations result)
 //   - output/model_pairwise/<page>.valid.model.txt (PICT model for valid-only)
 //   - output/model_pairwise/<page>.valid.result.txt (PICT valid combinations)
 //
@@ -1051,11 +1051,11 @@ class TestDataGenerator {
 
     // Paths ของ PICT files
     final pageResultPath =
-        'output/model_pairwise/$pageBase.full.result.txt'; // Full pairwise result
+        'output/model_pairwise/$pageBase.invalid.result.txt'; // Full pairwise result
     final pageValidResultPath =
         'output/model_pairwise/$pageBase.valid.result.txt'; // Valid-only result
     final pageModelPath =
-        'output/model_pairwise/$pageBase.full.model.txt'; // PICT model definition
+        'output/model_pairwise/$pageBase.invalid.model.txt'; // PICT model definition
 
     // ตรวจสอบว่า PICT model มีอยู่หรือไม่
     final hasPictModel = File(pageModelPath).existsSync();
@@ -1090,7 +1090,9 @@ class TestDataGenerator {
           for (final entry in modelFactors!.entries) {
             final name = entry.key;
             final values = entry.value;
-            if (values.contains('valid') && values.contains('invalid')) {
+            if (values.contains('invalid') || values.contains('valid')) {
+              // TEXT factor: bucket sentinel values — either full model ('valid','invalid'),
+              // invalid-only model ('invalid'), or valid-only model ('valid')
               factorTypes[name] = 'text';
             } else if (values.contains('checked') &&
                 values.contains('unchecked')) {
@@ -2246,8 +2248,8 @@ class TestDataGenerator {
   ///   [constraints] - PICT constraints string (optional)
   ///
   /// Output files:
-  ///   - output/model_pairwise/<page>.full.model.txt
-  ///   - output/model_pairwise/<page>.full.result.txt
+  ///   - output/model_pairwise/<page>.invalid.model.txt
+  ///   - output/model_pairwise/<page>.invalid.result.txt
   ///   - output/model_pairwise/<page>.valid.model.txt
   ///   - output/model_pairwise/<page>.valid.result.txt
   Future<void> _tryWritePictModelFromManifestForUi(String uiFile,
