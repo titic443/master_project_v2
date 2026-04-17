@@ -286,9 +286,11 @@ The prompt is submitted to \textit{Google Gemini 2.5 Flash}
 
 \subsection{Phase 3 -- Generate Test Data}
 
-Using the datasets, the tool constructs a PICT model file in which each
-non-button widget maps to one \textit{factor} and each distinct value maps
-to one \textit{level}. Three model variants are built independently:
+Using the datasets produced in Phase~2
+(Fig.~\ref{fig:datasets}), the tool constructs a PICT model file in
+which each non-button widget maps to one \textit{factor} and each
+distinct value maps to one \textit{level}. Three model variants are
+built independently:
 \begin{enumerate}
   \item \textbf{Valid/Invalid (VI):} factors contain both valid and invalid
         levels; PICT ensures every valid--invalid pair is covered.
@@ -297,6 +299,18 @@ to one \textit{level}. Three model variants are built independently:
   \item \textbf{Edge:} three manually crafted boundary-value combinations
         (empty input, maximum-length, special characters) are appended.
 \end{enumerate}
+
+% --- FIGURE: datasets.json (Phase 2 output / Phase 3 input) ---
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{figure3.png}
+  \caption{Structure of the \texttt{<page>.datasets.json} file produced
+           in Phase~2, showing per-widget \texttt{valid},
+           \texttt{invalid}, \texttt{invalidRuleMessages},
+           \texttt{atMax}, and \texttt{atMin} values consumed by
+           Phase~3.}
+  \label{fig:datasets}
+\end{figure}
 
 Before invoking PICT, the developer may supply an optional
 \textit{condition file} (\texttt{<page>.constraints.txt}) that encodes
@@ -337,9 +351,10 @@ the pipeline.
 PICT is then invoked as a subprocess once per model file
 (\texttt{<page>.full.model.txt} for VI and
 \texttt{<page>.valid.model.txt} for V). Its tab-delimited
-output---one row per test case---is parsed, and each row is assembled
-into a \textit{case} object together with the widget interaction steps
-and expected assertions. The three result arrays (VI, V, Edge) are then
+output---one row per test case, with one column per factor, as
+illustrated in Fig.~\ref{fig:pict_result}---is parsed, and each row
+is assembled into a \textit{case} object together with the widget
+interaction steps and expected assertions. The three result arrays (VI, V, Edge) are then
 merged into a single \texttt{<page>.test\_data.json} file that contains
 three top-level keys:
 \begin{itemize}
@@ -352,9 +367,10 @@ three top-level keys:
         Phase~2, keyed by widget key (\texttt{byKey}). Phase~4 reads
         this key to resolve concrete values when rendering
         \texttt{enterText} calls.
-  \item \textbf{cases:} the ordered list of test-case objects. Each
-        object carries five fields: \texttt{tc} (a unique identifier
-        such as \texttt{pairwise\_valid\_invalid\_cases\_1}),
+  \item \textbf{cases:} the ordered list of test-case objects; a
+        concrete example is shown in Fig.~\ref{fig:case_example}.
+        Each object carries five fields: \texttt{tc} (a unique
+        identifier such as \texttt{pairwise\_valid\_invalid\_cases\_1}),
         \texttt{kind} (\texttt{success} or \texttt{failed}),
         \texttt{group} (one of \texttt{pairwise\_valid\_invalid\_cases},
         \texttt{pairwise\_valid\_cases}, or \texttt{edge\_cases}),
@@ -374,6 +390,18 @@ Each \texttt{asserts} entry specifies either a \texttt{text}
 string with an \texttt{exists} flag (verifying a visible error message)
 or a \texttt{byKey} widget identifier with an \texttt{exists} flag
 (verifying the presence of a success or failure indicator widget).
+
+% --- FIGURE: PICT pairwise result file (Phase 3) ---
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{figure4.png}
+  \caption{Tab-delimited pairwise combinations emitted by PICT into
+           \texttt{<page>.full.result.txt}. Each column is one
+           \textit{factor} (widget key) and each row is one covered
+           combination of \textit{levels} (valid/invalid sample
+           values or selection labels).}
+  \label{fig:pict_result}
+\end{figure}
 
 Table~\ref{tab:widgets} summarises how each supported widget type is
 mapped to its PICT role and to the corresponding \texttt{WidgetTester}
@@ -549,108 +577,55 @@ of similar complexity, each combining text, dropdown, and toggle
 widgets.
 
 \subsection{Case Study 1: Medical Appointment Application}
-
-The appointment-booking screen exposes nine input widgets. The tool
+The Medical Appointment application comprises an appointment-booking
+screen with nine input widgets and a lighter search screen. The tool
 generated 52 test cases (28~VI, 21~V, 3~Edge) for the booking screen
-and 6 test cases (2~VI, 1~V, 3~Edge) for the lighter search screen.
+and 6 test cases (2~VI, 1~V, 3~Edge) for the search screen.
+Fig.~\ref{fig:case_example} shows one of the generated VI cases as it
+appears inside \texttt{<page>.test\_data.json} before being rendered
+into a \texttt{testWidgets} block in \texttt{<page>\_test.dart}.
 
-\subsubsection{Generated Test Script}
-The tool outputs a \texttt{<page>\_test.dart} file structured into
-three \texttt{group()} blocks:
-\texttt{pairwise\_valid\_invalid\_cases} (VI),
-\texttt{pairwise\_valid\_cases} (V), and \texttt{edge\_cases}.
-Each entry in the \texttt{cases} array becomes one independent
-\texttt{testWidgets} block. Listing~\ref{lst:example} shows an
-abbreviated excerpt of \texttt{pairwise\_valid\_invalid\_cases\_1}:
-two fields receive invalid values---a one-character patient name
-(violates minimum-length rule) and an 11-digit ID card (expects
-13~digits)---while the remaining fields receive valid values;
-the submit button is tapped last and the form-rejection widget is
-asserted.
-
-\begin{lstlisting}[caption={Abbreviated Dart test script ---
-  \texttt{pairwise\_valid\_invalid\_cases\_1}
-  (Medical Appointment booking screen).},
-  label=lst:example, captionpos=b, float=!t]
-testWidgets('pairwise_valid_invalid_cases_1',
-    (tester) async {
-  final w = MaterialApp(
-    home: BlocProvider<ClinicAppointmentCubit>(
-      create: (_) => ClinicAppointmentCubit(),
-      child: const ClinicAppointmentPage()));
-  await tester.pumpWidget(w);
-
-  // INVALID: patient name too short (1 char)
-  await tester.enterText(
-    find.byKey(const Key('appt_01_patient_name_textfield')),
-    'a');
-  await tester.pump();
-
-  // INVALID: ID card only 11 digits (expects 13)
-  await tester.enterText(
-    find.byKey(const Key('appt_02_id_card_textfield')),
-    '12345678901');
-  await tester.pump();
-
-  // VALID: select department via Dropdown
-  await tester.ensureVisible(
-    find.byKey(const Key('appt_04_department_dropdown')));
-  await tester.tap(
-    find.byKey(const Key('appt_04_department_dropdown')));
-  await tester.pumpAndSettle();
-  await tester.tap(find.text('Ophthalmology').last);
-  await tester.pumpAndSettle();
-
-  // Tap submit button (always last)
-  await tester.tap(
-    find.byKey(const Key('appt_10_confirm_button')));
-  await tester.pumpAndSettle();
-});
-\end{lstlisting}
-
-\subsubsection{Test Execution Result}
-Running the generated file with \texttt{flutter test} reports each
-\texttt{testWidgets} block individually; all 52 test cases pass,
-confirming that the script correctly drives the UI through both valid
-and invalid input paths. Within the
-\texttt{pairwise\_valid\_cases} group, one \texttt{testWidgets} block
-is emitted per pairwise combination produced by PICT, covering every
-valid input-value pair at least once.
-
-\subsubsection{Coverage Result}
-Executing the 52 generated test cases against the booking screen
-achieved \textbf{96.0\%} line coverage (166/173 lines); the search
-screen reached \textbf{91.6\%} (141/154 lines). Three characteristics
-of the generated scripts contributed to this result. First, every
-widget interaction uses \texttt{find.byKey}, providing a stable locator
-that tolerates UI refactoring. Second, every non-empty
-\texttt{validatorRule} drives exactly one invalid value plus one valid
-counterpart, ensuring that each validation branch in the Cubit is
-exercised at least once. Third, both VI and V script groups are
-produced in a single invocation, giving teams immediate coverage of
-positive and negative test paths.
+% --- FIGURE: test_data.json case example (Case Study 1) ---
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\columnwidth]{figure5.png}
+  \caption{Example \texttt{pairwise\_valid\_invalid\_cases} entry
+           serialised inside \texttt{<page>.test\_data.json} before
+           it is rendered into a \texttt{testWidgets} block in
+           \texttt{<page>\_test.dart}.}
+  \label{fig:case_example}
+\end{figure}
 
 \subsection{Case Study 2: Job Listing Application}
-The job-posting screen includes multiple widgets with complex mutual
-validation rules between fields (e.g., salary range constraints). The
-tool generated 64 test cases for the posting screen (31~VI, 30~V,
-3~Edge) and 63 test cases for the search screen (30, 30, and 3
-respectively), demonstrating that pairwise coverage adapts naturally
-to screens with higher widget counts.
+The Job Listing application includes a posting screen with complex
+mutual validation rules between fields (e.g., salary-range
+constraints) and a search screen of comparable widget count. The tool
+generated 64 test cases (31~VI, 30~V, 3~Edge) for the posting screen
+and 63 test cases (30~VI, 30~V, 3~Edge) for the search screen,
+demonstrating that pairwise coverage adapts naturally to screens with
+dense cross-field constraints.
 
 \subsection{Case Study 3: Real-Estate Listing Application}
-Both screens of the real-estate application yielded 55 test cases each
-(27~VI, 25~V, 3~Edge), reflecting similar widget complexity across
-the two screens. Line coverage for both screens is reported together
-with the other case studies in Table~\ref{tab:coverage}.
+The Real-Estate Listing application presents two screens of similar
+complexity---posting and search---each combining text, dropdown, and
+toggle widgets. The tool generated 55 test cases (27~VI, 25~V,
+3~Edge) per screen, confirming that the tool produces a stable
+case count for screens with comparable widget inventories.
 
 \subsection{Coverage Results}
 Table~\ref{tab:coverage} summarises the line coverage and test-case
-counts across all six evaluated screens. All six screens achieved line
-coverage above \textbf{91\%}, confirming that the pairwise-generated
-scripts exercise the vast majority of UI code paths despite the
-reduced test-case count. Table~\ref{tab:reduction} details the VI, V,
-and Edge breakdown per screen.
+counts across all six evaluated screens; Table~\ref{tab:reduction}
+details the VI, V, and Edge breakdown per screen. All six screens
+achieved line coverage above \textbf{91\%}, and the highest result
+(\textbf{96.6\%}, Real-Estate posting) was obtained despite a
+reduced test-case count. Three characteristics of the generated
+scripts contributed to this result: (i)~every widget interaction uses
+\texttt{find.byKey}, providing a stable locator that tolerates UI
+refactoring; (ii)~every non-empty \texttt{validatorRule} drives
+exactly one invalid value plus one valid counterpart, ensuring each
+validation branch in the Cubit is exercised at least once;
+(iii)~both VI and V script groups are produced in a single invocation,
+giving teams immediate coverage of positive and negative test paths.
 
 \begin{table}[!t]
   \caption{Test Coverage Summary}
