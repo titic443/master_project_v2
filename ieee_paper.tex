@@ -35,7 +35,7 @@
   keywordstyle=\bfseries,
   morekeywords={await,async,final,const,true,false,
                 testWidgets,MaterialApp,WidgetTester,
-                MultiBlockProvider,Key,void,if}
+                BlocProvider,Key,void,if,new,return,class}
 }
 
 % -----------------------------------------------
@@ -298,19 +298,41 @@ to one \textit{level}. Three model variants are built independently:
         (empty input, maximum-length, special characters) are appended.
 \end{enumerate}
 
-Before invoking PICT, if the developer supplies an optional
-\textit{condition file}, the tool appends its contents directly to
-the PICT model file as a \texttt{[Constraints]} section.
-The condition file is written in PICT constraint syntax
-(\texttt{IF \textlangle param\textrangle = \textlangle value\textrangle\ THEN \textlangle param\textrangle = \textlangle value\textrangle;})
-and is used to encode business-logic rules that reside in the Cubit
-layer and are therefore invisible to static analysis of the front-end
-file alone---for example, restricting the pairwise engine so that only
-one factor carries an invalid value per test case, or expressing
-mutual-exclusion dependencies between fields.
-The tool validates the constraint syntax before appending; a syntax
-error triggers an \textit{``Invalid Constraint Syntax''} message and
-the pipeline halts.
+Before invoking PICT, the developer may supply an optional
+\textit{condition file} (\texttt{<page>.constraints.txt}) that encodes
+business-logic rules which reside in the Cubit layer and are therefore
+invisible to static analysis of the front-end file alone. The tool
+recognises three mutually exclusive grammar forms, each dispatched to a
+different stage of the pipeline:
+\begin{enumerate}
+  \item \textbf{Valid override (\texttt{<key>.valid = <value>}):}
+        pins a specific \textit{valid} input value for a single widget key.
+        On import, the tool overwrites the corresponding entry in
+        \texttt{<page>.datasets.json}, so the pinned value replaces the
+        LLM-generated sample before any PICT invocation takes place.
+  \item \textbf{Invalid override (\texttt{<key>.invalid = <value>}):}
+        pins an \textit{invalid} input value for a widget key using the
+        same overwrite mechanism on \texttt{<page>.datasets.json}. Forms
+        (1) and (2) therefore leave the PICT model untouched; they only
+        change the concrete strings that Phase~4 eventually emits.
+  \item \textbf{Cross-widget relation
+        (\texttt{IF [key\textsubscript{A}] = "v\textsubscript{A}" THEN
+        [key\textsubscript{B}] = "v\textsubscript{B}";}):} expresses a
+        dependency between two widgets, optionally negated with
+        \texttt{<>}. Rules of this form are appended as a
+        \texttt{[Constraints]} section to both
+        \texttt{<page>.full.model.txt} and
+        \texttt{<page>.valid.model.txt}, and PICT is then asked to
+        produce only combinations that satisfy them.
+\end{enumerate}
+This split gives the developer a lightweight way to encode
+fixed-lookup values (forms 1--2) without having to reason about PICT
+syntax, while still exposing the full expressive power of PICT
+constraints (form 3) for mutual-exclusion or implication rules between
+fields. The tool validates the grammar of every line before either
+overwriting the datasets or appending to the model; a syntax error
+triggers an \textit{``Invalid Constraint Syntax''} message and halts
+the pipeline.
 
 PICT is then invoked as a subprocess once per model file
 (\texttt{<page>.full.model.txt} for VI and
@@ -518,8 +540,8 @@ combined with \texttt{lcov} to filter results to UI page files only.
 \subsection{Case Studies Overview}
 The three applications represent increasing levels of form-validation
 complexity. The \textit{Medical Appointment} app contains a booking
-screen with seven input widgets (TextFormField, Dropdown, DatePicker)
-and a lighter search screen. The \textit{Job Listing} app includes a
+screen with nine input widgets (TextFormField, DropdownButtonFormField,
+Radio, Switch) and a lighter search screen. The \textit{Job Listing} app includes a
 posting screen with complex cross-field validation rules
 (e.g., salary range constraints) and a search screen with a higher
 widget count. The \textit{Real-Estate Listing} app presents two screens
@@ -528,9 +550,9 @@ widgets.
 
 \subsection{Case Study 1: Medical Appointment Application}
 
-The appointment-booking screen exposes seven input widgets. The tool
+The appointment-booking screen exposes nine input widgets. The tool
 generated 52 test cases (28~VI, 21~V, 3~Edge) for the booking screen
-and 6 test cases for the lighter search screen.
+and 6 test cases (2~VI, 1~V, 3~Edge) for the lighter search screen.
 
 \subsubsection{Generated Test Script}
 The tool outputs a \texttt{<page>\_test.dart} file structured into
@@ -553,35 +575,35 @@ asserted.
 testWidgets('pairwise_valid_invalid_cases_1',
     (tester) async {
   final w = MaterialApp(
-    home: MultiBlockProvider(
-      providers: providers,
-      child: ClinicAppointmentPage()));
+    home: BlocProvider<ClinicAppointmentCubit>(
+      create: (_) => ClinicAppointmentCubit(),
+      child: const ClinicAppointmentPage()));
   await tester.pumpWidget(w);
 
   // INVALID: patient name too short (1 char)
   await tester.enterText(
-    find.byKey(Key('apt_01_patient_name_textfield')),
+    find.byKey(const Key('appt_01_patient_name_textfield')),
     'a');
   await tester.pump();
 
   // INVALID: ID card only 11 digits (expects 13)
   await tester.enterText(
-    find.byKey(Key('apt_02_id_card_textfield')),
+    find.byKey(const Key('appt_02_id_card_textfield')),
     '12345678901');
   await tester.pump();
 
   // VALID: select department via Dropdown
   await tester.ensureVisible(
-    find.byKey(Key('apt_B1_id_department_dropdown')));
+    find.byKey(const Key('appt_04_department_dropdown')));
   await tester.tap(
-    find.byKey(Key('apt_B1_id_department_dropdown')));
+    find.byKey(const Key('appt_04_department_dropdown')));
   await tester.pumpAndSettle();
-  await tester.tap(find.text('Neuros', last));
+  await tester.tap(find.text('Ophthalmology').last);
   await tester.pumpAndSettle();
 
   // Tap submit button (always last)
   await tester.tap(
-    find.byKey(Key('apt_B9_button')));
+    find.byKey(const Key('appt_10_confirm_button')));
   await tester.pumpAndSettle();
 });
 \end{lstlisting}
@@ -620,12 +642,12 @@ achieved \textbf{96.0\%} line coverage (166/173 lines); the search
 screen reached \textbf{91.6\%} (141/154 lines). Three characteristics
 of the generated scripts contributed to this result. First, every
 widget interaction uses \texttt{find.byKey}, providing a stable locator
-that tolerates UI refactoring. Second, the \texttt{DatePicker}
-interaction is fully automated: the tool injects a mode-switch step
-before entering the date string, eliminating a common source of flaky
-tests. Third, both VI and V script groups are produced in a single
-invocation, giving teams immediate coverage of positive and negative
-test paths.
+that tolerates UI refactoring. Second, every non-empty
+\texttt{validatorRule} drives exactly one invalid value plus one valid
+counterpart, ensuring that each validation branch in the Cubit is
+exercised at least once. Third, both VI and V script groups are
+produced in a single invocation, giving teams immediate coverage of
+positive and negative test paths.
 
 \subsection{Case Study 2: Job Listing Application}
 The job-posting screen includes multiple widgets with complex mutual
