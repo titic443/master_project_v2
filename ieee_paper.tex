@@ -609,32 +609,13 @@ testWidgets('pairwise_valid_invalid_cases_1',
 \end{lstlisting}
 
 \subsubsection{Test Execution Result}
-Fig.~\ref{fig:result_medical} shows the execution log produced by
-\texttt{flutter test}. Each \texttt{testWidgets} block is reported
-individually; all 52 test cases pass, confirming that the script
-correctly drives the UI through both valid and invalid input paths.
-Fig.~\ref{fig:script_output} shows the complete
-\texttt{pairwise\_valid\_cases} output file as rendered by the tool;
-each \texttt{testWidgets} block is ordered by pairwise combination
-index and covers all valid input-value pairs produced by PICT.
-
-% --- FIGURE 3: Medical execution log ---
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure3.png}
-  \caption{Test execution log for the Medical Appointment application
-           (52 test cases, all passing).}
-  \label{fig:result_medical}
-\end{figure}
-
-% --- FIGURE 5: Full valid script output ---
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure5.png}
-  \caption{Generated \texttt{pairwise\_valid\_cases} test script for
-           the Medical Appointment booking screen (tool output file).}
-  \label{fig:script_output}
-\end{figure}
+Running the generated file with \texttt{flutter test} reports each
+\texttt{testWidgets} block individually; all 52 test cases pass,
+confirming that the script correctly drives the UI through both valid
+and invalid input paths. Within the
+\texttt{pairwise\_valid\_cases} group, one \texttt{testWidgets} block
+is emitted per pairwise combination produced by PICT, covering every
+valid input-value pair at least once.
 
 \subsubsection{Coverage Result}
 Executing the 52 generated test cases against the booking screen
@@ -660,17 +641,8 @@ to screens with higher widget counts.
 \subsection{Case Study 3: Real-Estate Listing Application}
 Both screens of the real-estate application yielded 55 test cases each
 (27~VI, 25~V, 3~Edge), reflecting similar widget complexity across
-the two screens. Fig.~\ref{fig:result_realestate} shows the coverage
-report produced after executing the generated scripts.
-
-% --- FIGURE 4: Real-estate coverage ---
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure4.png}
-  \caption{Code-coverage report for the Real-Estate Listing
-           application.}
-  \label{fig:result_realestate}
-\end{figure}
+the two screens. Line coverage for both screens is reported together
+with the other case studies in Table~\ref{tab:coverage}.
 
 \subsection{Coverage Results}
 Table~\ref{tab:coverage} summarises the line coverage and test-case
