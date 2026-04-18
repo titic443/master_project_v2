@@ -43,7 +43,7 @@
 % -----------------------------------------------
 \begin{document}
 
-\title{Generating Test Scripts for Flutter Applications\\
+\title{Generating Test Scripts for Flutter Applications
        Using Pairwise Testing Technique}
 
 \author{
@@ -85,7 +85,7 @@ technique via the PICT tool. The resulting Dart test scripts are ready to
 execute within the Flutter testing framework. The tool was evaluated against
 three real-world mobile applications---a medical appointment system, a job
 listing application, and a real-estate listing application---and achieved
-satisfactory branch and line coverage in all cases, demonstrating the
+above 91\% statement coverage across all evaluated screens, demonstrating the
 practical effectiveness of the proposed approach.
 \end{abstract}
 
@@ -102,7 +102,7 @@ The global software industry continues to grow rapidly, driven by increasing
 demand for mobile applications that are complex, feature-rich, and subject to
 frequent requirement changes. Ensuring software quality through comprehensive
 testing is therefore essential, yet designing test cases manually is
-time-consuming and demands deep expertise from developers \cite{b1}.
+time-consuming and demands deep expertise from developers.
 
 Within the Flutter framework \cite{b1}, developers write integration and
 widget test scripts in Dart to simulate user interactions on the user interface (UI). However,
@@ -126,9 +126,8 @@ This paper addresses these challenges by proposing an automated tool that:
 
 The remainder of this paper is organized as follows. Section~II reviews
 related work. Section~III describes the proposed methodology. Section~IV
-discusses tool design. Section~V presents evaluation results.
-Section~VI illustrates a concrete generated test script, and Section~VII
-concludes the paper.
+discusses tool design. Section~V presents evaluation results, and
+Section~VI concludes the paper.
 
 % ===============================================
 \section{Related Work}
@@ -631,11 +630,11 @@ giving teams immediate coverage of positive and negative test paths.
   \caption{Test Coverage Summary}
   \label{tab:coverage}
   \centering
-  \renewcommand{\arraystretch}{1.15}
+  \renewcommand{\arraystretch}{1.3}
   \begin{tabular}{lcrcc}
     \toprule
     \textbf{Application} & \textbf{Screen} & \textbf{Cases} &
-    \textbf{Lines} & \textbf{Coverage} \\
+    \textbf{Statements} & \textbf{Stmt. Coverage} \\
     \midrule
     \multirow{2}{*}{Medical Appt.}
       & Booking  & 52 & 166/173 & 96.0\% \\
@@ -653,10 +652,10 @@ giving teams immediate coverage of positive and negative test paths.
 \end{table}
 
 \begin{table}[!t]
-  \caption{Pairwise Test-Case Breakdown per Screen}
+  \caption{Pairwise Test-Case Breakdown Per Screen}
   \label{tab:reduction}
   \centering
-  \renewcommand{\arraystretch}{1.15}
+  \renewcommand{\arraystretch}{1.3}
   \begin{tabular}{llccc}
     \toprule
     \textbf{App} & \textbf{Screen} &
