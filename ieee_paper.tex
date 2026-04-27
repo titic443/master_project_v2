@@ -118,8 +118,9 @@ This paper addresses these challenges by proposing an automated tool that:
   \item Parses Flutter front-end (\texttt{.dart}) files to extract widget
         metadata;
   \item Uses a Large Language Model (LLM) (Google Gemini) to synthesize realistic test data;
-  \item Applies the Pairwise testing technique through PICT to minimize the
-        number of test cases while maximising input-combination coverage;
+  \item Applies the Pairwise testing technique through PICT (Pairwise
+        Independent Combinatorial Testing) to minimize the
+        number of test cases while maximizing input-combination coverage;
   \item Outputs executable Dart test scripts ready for the Flutter testing
         framework.
 \end{itemize}
@@ -160,7 +161,7 @@ test-data generation.
 Pairwise (all-pairs) testing \cite{b7} is a black-box test-design technique
 that ensures every pair of input-parameter values is exercised by at least one
 test case, dramatically reducing the combinatorial explosion of full coverage.
-PICT (Pairwise Independent Combinatorial Testing) \cite{b8} is a widely used
+PICT \cite{b8} is a widely used
 open-source tool that accepts a model file describing parameters and their
 levels, and outputs a minimal covering test suite.
 
@@ -186,7 +187,7 @@ The tool statically analyzes every \texttt{.dart} file under the
 carry a \texttt{Key} property are considered, as the key is required to
 locate a widget during test execution via \texttt{find.byKey()}.
 
-At the \textit{screen level}, the tool records BLoC/Cubit metadata required
+At the \textit{screen level}, the tool records Business Logic Component (BLoC)/Cubit metadata required
 to construct the test environment: the page widget class name
 (\texttt{pageClass}), the Cubit class (\texttt{cubitClass}), the associated
 State class (\texttt{stateClass}), and the paths to the Cubit and State
@@ -244,11 +245,11 @@ of five components following the approach of Tuan Pham \cite{b4}:
 \textit{context} (``Test data generator for Flutter form
 validation.''), \textit{target} (instructs the model to act as a QA
 engineer generating data for happy-path and error-path scenarios),
-\textit{objective} (five rules: analyse \texttt{maxLength},
+\textit{objective} (five rules: analyze \texttt{maxLength},
 \texttt{inputFormatters}, and \texttt{validatorRules}; skip
 \texttt{isEmpty}/\texttt{null} rules, which are handled separately by
 edge-case generation in Phase~3; generate one valid/invalid pair per
-non-empty rule; ensure invalid values still conform to
+nonempty rule; ensure invalid values still conform to
 \texttt{inputFormatters} so they remain typeable; and output valid
 JSON), \textit{execution} (step-by-step counting procedure
 accompanied by two few-shot examples that fix the output schema and
@@ -264,7 +265,7 @@ The prompt is submitted to \textit{Google Gemini 2.5 Flash}
   \item \textbf{file:} path to the front-end source file analyzed.
   \item \textbf{datasets $\to$ byKey:} a map from each
         \texttt{TextFormField} widget key to an array of value-pair
-        objects. One pair is produced per non-empty validation rule;
+        objects. One pair is produced per nonempty validation rule;
         each object contains five fields:
         \begin{itemize}
           \item \texttt{valid} --- a value that satisfies every
@@ -287,7 +288,7 @@ The prompt is submitted to \textit{Google Gemini 2.5 Flash}
 
 Using the datasets produced in Phase~2
 (Fig.~\ref{fig:datasets}), the tool constructs a PICT model file in
-which each non-button widget maps to one \textit{factor} and each
+which each nonbutton widget maps to one \textit{factor} and each
 distinct value maps to one \textit{level}. Three model variants are
 built independently:
 \begin{enumerate}
@@ -312,10 +313,10 @@ built independently:
 \end{figure}
 
 Before invoking PICT, the developer may supply an optional
-\textit{condition file} (\texttt{<page>.constraints.txt}) that encodes
+\textit{constraint file} (\texttt{<page>.constraints.txt}) that encodes
 business-logic rules which reside in the Cubit layer and are therefore
 invisible to static analysis of the front-end file alone. The tool
-recognises three mutually exclusive grammar forms, each dispatched to a
+recognizes three mutually exclusive grammar forms, each dispatched to a
 different stage of the pipeline:
 \begin{enumerate}
   \item \textbf{Valid override (\texttt{<key>.valid = <value>}):}
@@ -402,7 +403,7 @@ or a \texttt{byKey} widget identifier with an \texttt{exists} flag
   \label{fig:pict_result}
 \end{figure}
 
-Table~\ref{tab:widgets} summarises how each supported widget type is
+Table~\ref{tab:widgets} summarizes how each supported widget type is
 mapped to its PICT role and to the corresponding \texttt{WidgetTester}
 interaction command used when constructing the \texttt{steps} entries
 above.
@@ -457,7 +458,7 @@ as follows:
         order---\texttt{enterText} resolves its value from the
         \texttt{datasets} key; \texttt{tap} and \texttt{tapText}
         locate widgets by key or label text; \texttt{pump} and
-        \texttt{pumpAndSettle} synchronise the UI between interactions.
+        \texttt{pumpAndSettle} synchronize the UI between interactions.
   \item \textbf{Assert:} each \texttt{asserts} entry is rendered as
         an \texttt{expect()} call. A \texttt{text}-based entry becomes
         \texttt{expect(find.text(`msg'),} \texttt{findsOneWidget)} and
@@ -490,7 +491,7 @@ test-generation workflow:
         validates the constraint syntax before proceeding; a malformed
         file displays an \textit{``Invalid Constraint Syntax''} message.
   \item \textbf{Output directory:} A directory-picker that sets the
-        destination folder for all generated artefacts---
+        destination folder for all generated artifacts---
         \texttt{manifest.json}, \texttt{datasets.json},
         \texttt{test\_data.json}, and \texttt{<page>\_test.dart}.
   \item \textbf{Generate button:} Clicking \textit{Generate} triggers
@@ -511,7 +512,7 @@ The following prerequisites must be in place before using the tool:
 \begin{enumerate}
   \item \textbf{Docker} (v28.0.0 or later): Start the back-end
         container, which hosts a \textbf{FastAPI} (v0.114.1) service
-        exposing REST endpoints for each pipeline phase, with the
+        exposing Representational State Transfer (REST) endpoints for each pipeline phase, with the
         command \texttt{docker run -p 8000:8000 <image>}.
   \item \textbf{PICT}: Install the Microsoft PICT binary and ensure it
         is accessible on the system \texttt{PATH}. The tool invokes
@@ -533,7 +534,7 @@ fixed trigger (\texttt{ElevatedButton}), and one serves as an assertion
 target (\texttt{Text}).
 
 \subsection{PICT Model Construction}
-For a screen with $n$ non-button widgets, the PICT model file contains
+For a screen with $n$ nonbutton widgets, the PICT model file contains
 $n$ parameter lines of the form \texttt{<key>: v1, v2, \ldots, vk},
 where each $v_i$ is a distinct value level. The tool builds three
 separate model files---VI, V, and Edge---and invokes PICT once per
@@ -561,7 +562,7 @@ The tool was evaluated on three real-world Flutter applications: a
 \textit{Real-Estate Listing} app. Two screens per application were
 selected, yielding six screen-level evaluations in total. The test
 environment used Flutter~v3.27.3 running on macOS Sequoia~15.4.1.
-Line coverage was measured using the Flutter \texttt{--coverage} flag
+Statement coverage was measured using the Flutter \texttt{--coverage} flag
 combined with \texttt{lcov} to filter results to UI page files only.
 
 \subsection{Case Studies Overview}
@@ -589,7 +590,7 @@ into a \texttt{testWidgets} block in \texttt{<page>\_test.dart}.
   \centering
   \includegraphics[width=\columnwidth]{figure5.png}
   \caption{Example \texttt{pairwise\_valid\_invalid\_cases} entry
-           serialised inside \texttt{<page>.test\_data.json} before
+           serialized inside \texttt{<page>.test\_data.json} before
            it is rendered into a \texttt{testWidgets} block in
            \texttt{<page>\_test.dart}.}
   \label{fig:case_example}
@@ -612,15 +613,15 @@ toggle widgets. The tool generated 55 test cases (27~VI, 25~V,
 case count for screens with comparable widget inventories.
 
 \subsection{Coverage Results}
-Table~\ref{tab:coverage} summarises the line coverage and test-case
+Table~\ref{tab:coverage} summarizes the statement coverage and test-case
 counts across all six evaluated screens; Table~\ref{tab:reduction}
 details the VI, V, and Edge breakdown per screen. All six screens
-achieved line coverage above \textbf{91\%}, and the highest result
+achieved statement coverage above \textbf{91\%}, and the highest result
 (\textbf{96.6\%}, Real-Estate posting) was obtained despite a
 reduced test-case count. Three characteristics of the generated
 scripts contributed to this result: (i)~every widget interaction uses
 \texttt{find.byKey}, providing a stable locator that tolerates UI
-refactoring; (ii)~every non-empty \texttt{validatorRule} drives
+refactoring; (ii)~every nonempty \texttt{validatorRule} drives
 exactly one invalid value plus one valid counterpart, ensuring each
 validation branch in the Cubit is exercised at least once;
 (iii)~both VI and V script groups are produced in a single invocation,
