@@ -152,8 +152,8 @@ techniques to Flutter's Dart-based widget structure.
 
 \subsection{LLM-Based Data Generation}
 Tuan Pham \cite{b4} demonstrated that structuring LLM prompts with distinct
-components---context, persona, objective, action, format, and
-refinement---significantly improves the quality of generated outputs. This
+components---context, objective, style, target, execution, and
+polish---significantly improves the quality of generated outputs. This
 prompt-engineering strategy is adopted in the present work to drive synthetic
 test-data generation.
 
@@ -241,21 +241,22 @@ excluded because their enumerated levels are resolved directly from
 the \texttt{options} list in Phase~1.
 
 The filtered metadata is assembled into a structured prompt composed
-of five components following the approach of Tuan Pham \cite{b4}:
+of six components following the approach of Tuan Pham \cite{b4}:
 \textit{context} (``Test data generator for Flutter form
-validation.''), \textit{target} (instructs the model to act as a QA
-engineer generating data for happy-path and error-path scenarios),
-\textit{objective} (five rules: analyze \texttt{maxLength},
+validation.''), \textit{objective} (five rules: analyze \texttt{maxLength},
 \texttt{inputFormatters}, and \texttt{validatorRules}; skip
 \texttt{isEmpty}/\texttt{null} rules, which are handled separately by
 edge-case generation in Phase~3; generate one valid/invalid pair per
 nonempty rule; ensure invalid values still conform to
 \texttt{inputFormatters} so they remain typeable; and output valid
-JSON), \textit{execution} (step-by-step counting procedure
-accompanied by two few-shot examples that fix the output schema and
-prevent hallucinated values), and \textit{style} (JSON only, no
-markdown, realistic values, string arrays only). The widget metadata
-extracted in Phase~1 is appended as the input-data payload.
+JSON), \textit{style} (JSON only, no markdown, realistic values, string
+arrays only), \textit{target} (instructs the model to act as a QA
+engineer generating data for happy-path and error-path scenarios),
+\textit{execution} (step-by-step counting procedure accompanied by two
+few-shot examples that fix the output schema and prevent hallucinated
+values), and \textit{polish} (output quality constraints ensuring
+consistent schema adherence and no extraneous fields). The widget
+metadata extracted in Phase~1 is appended as the input-data payload.
 
 The prompt is submitted to \textit{Google Gemini 2.5 Flash}
 \cite{b5} via the Gemini API (HTTP POST). The model returns a
@@ -335,7 +336,7 @@ different stage of the pipeline:
         dependency between two widgets, optionally negated with
         \texttt{<>}. Rules of this form are appended as a
         \texttt{[Constraints]} section to both
-        \texttt{<page>.full.model.txt} and
+        \texttt{<page>.invalid.model.txt} and
         \texttt{<page>.valid.model.txt}, and PICT is then asked to
         produce only combinations that satisfy them.
 \end{enumerate}
@@ -349,7 +350,7 @@ triggers an \textit{``Invalid Constraint Syntax''} message and halts
 the pipeline.
 
 PICT is then invoked as a subprocess once per model file
-(\texttt{<page>.full.model.txt} for VI and
+(\texttt{<page>.invalid.model.txt} for VI and
 \texttt{<page>.valid.model.txt} for V). Its tab-delimited
 output---one row per test case, with one column per factor, as
 illustrated in Fig.~\ref{fig:pict_result}---is parsed, and each row
@@ -396,7 +397,7 @@ or a \texttt{byKey} widget identifier with an \texttt{exists} flag
   \centering
   \includegraphics[width=\columnwidth]{figure4.png}
   \caption{Tab-delimited pairwise combinations emitted by PICT into
-           \texttt{<page>.full.result.txt}. Each column is one
+           \texttt{<page>.invalid.result.txt}. Each column is one
            \textit{factor} (widget key) and each row is one covered
            combination of \textit{levels} (valid/invalid sample
            values or selection labels).}
@@ -520,9 +521,9 @@ The following prerequisites must be in place before using the tool:
   \item \textbf{Gemini API key}: Configure the key as an environment
         variable or enter it in the tool settings panel. The key is
         required for the LLM call in Phase~2.
-  \item \textbf{Desktop application}: Launch the front-end GUI
-        executable. On first run the tool prompts for the back-end
-        service URL (default: \texttt{http://localhost:8000}).
+  \item \textbf{Web browser}: Run \texttt{bash run\_tool.sh} to start
+        the web interface server, then open a browser and navigate to
+        \texttt{http://localhost:8080} to access the tool.
 \end{enumerate}
 
 \subsection{Supported Widgets}
@@ -689,12 +690,17 @@ front-end files and receive ready-to-run Dart test scripts as output.
 Evaluation on three real-world mobile applications confirmed that the tool
 successfully generates executable test scripts with measurable code coverage.
 
-Current limitations include support for a fixed set of seven widgets, a
-single-screen scope per run, and a dependency on the Gemini API for data
-synthesis. Future work will extend widget support, enable multi-screen
-scenario testing, investigate alternative open-source LLMs for offline use,
-and incorporate feedback loops to refine generated test data based on
-execution results.
+Current limitations include support for a fixed set of seven widget types,
+a requirement that every target widget carries a unique \texttt{Key}
+property (widgets without a key are silently skipped), a single-screen
+scope per execution, and cases where expected results may not fully cover
+all validation scenarios. Future work will extend widget support to
+additional types, enable test-script generation from multiple source files
+simultaneously, support more expressive constraint syntax for complex
+cross-field rules, apply the approach to other mobile frameworks such as
+React Native, Xamarin, and SwiftUI, support multiple back-end requests
+within a single test case, and enable multi-screen end-to-end testing with
+navigation linking between pages.
 
 % -----------------------------------------------
 %  References
