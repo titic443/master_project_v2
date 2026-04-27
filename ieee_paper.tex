@@ -125,6 +125,16 @@ This paper addresses these challenges by proposing an automated tool that:
         framework.
 \end{itemize}
 
+This work is guided by two research questions (RQs) addressed in
+Section~V:
+\begin{itemize}
+  \item \textbf{RQ1:} What statement coverage can the automatically
+        generated test scripts achieve on real-world Flutter screens
+        without manual test-case authoring?
+  \item \textbf{RQ2:} How many test cases does the pairwise technique
+        require compared with exhaustive combinatorial testing?
+\end{itemize}
+
 The remainder of this paper is organized as follows. Section~II reviews
 related work. Section~III describes the proposed methodology. Section~IV
 discusses tool design. Section~V presents evaluation results, and
@@ -675,6 +685,54 @@ giving teams immediate coverage of positive and negative test paths.
     \bottomrule
     \multicolumn{5}{l}{\footnotesize VI\,=\,pairwise valid/invalid;\
     V\,=\,pairwise valid; Edge\,=\,edge cases.} \\
+  \end{tabular}
+\end{table}
+
+\subsection{Answers to Research Questions}
+
+\textbf{RQ1 --- Coverage achieved:}
+Table~\ref{tab:coverage} confirms that all six screens exceeded 91\%
+statement coverage without any manual test-case authoring, with a peak
+of 96.6\% for the Real-Estate posting screen. Three factors contribute
+to this result: (i)~\texttt{find.byKey} locators tolerate UI
+refactoring; (ii)~every nonempty \texttt{validatorRule} drives at least
+one invalid--valid pair, ensuring each validation branch is exercised;
+and (iii)~both VI and V groups are produced in a single invocation,
+covering positive and negative paths simultaneously.
+
+\textbf{RQ2 --- Combinatorial reduction:}
+Table~\ref{tab:combinatorial} compares the exhaustive combinatorial
+count against the pairwise VI count for each screen (exhaustive count
+= product of all factor levels, assuming two levels per
+\texttt{TextFormField} in the VI model). The reduction scales with
+parameter count: screens with a single factor show no reduction, while
+screens with 11--12 factors achieve reductions of three orders of
+magnitude (991$\times$ for Job-Listing posting; 3{,}413$\times$ for
+Real-Estate posting), confirming that pairwise is essential for keeping
+test suites manageable as form complexity grows.
+
+\begin{table}[!t]
+  \caption{Pairwise VI Cases vs.\ Exhaustive Combinatorial Count}
+  \label{tab:combinatorial}
+  \centering
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{llrrr}
+    \toprule
+    \textbf{App} & \textbf{Screen} &
+    \textbf{Exhaustive} & \textbf{Pairwise VI} & \textbf{Reduction} \\
+    \midrule
+    \multirow{2}{*}{Medical Appt.}
+      & Booking &  1{,}792 & 28 &     64$\times$ \\
+      & Search  &        2 &  2 &      1$\times$ \\
+    \multirow{2}{*}{Job Listing}
+      & Posting & 30{,}720 & 31 &    991$\times$ \\
+      & Search  &      240 & 30 &      8$\times$ \\
+    \multirow{2}{*}{Real Estate}
+      & Posting & 92{,}160 & 27 & 3{,}413$\times$ \\
+      & Search  &      960 & 27 &     36$\times$ \\
+    \bottomrule
+    \multicolumn{5}{l}{\footnotesize Exhaustive\,=\,product of factor
+      levels (2 per \texttt{TextFormField}).} \\
   \end{tabular}
 \end{table}
 
