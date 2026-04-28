@@ -9,8 +9,8 @@ import 'package:master_project/demos/property_search_page.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('property_search_page.dart flow (integration)', () {
-    group('pairwise_valid_invalid_cases', () {
-      testWidgets('pairwise_valid_invalid_cases_1', (tester) async {
+    group('pairwise_invalid_cases', () {
+      testWidgets('pairwise_invalid_cases_1', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -49,7 +49,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_2', (tester) async {
+      testWidgets('pairwise_invalid_cases_2', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -101,7 +101,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_3', (tester) async {
+      testWidgets('pairwise_invalid_cases_3', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -143,7 +143,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_4', (tester) async {
+      testWidgets('pairwise_invalid_cases_4', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -182,7 +182,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_5', (tester) async {
+      testWidgets('pairwise_invalid_cases_5', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -221,7 +221,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_6', (tester) async {
+      testWidgets('pairwise_invalid_cases_6', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -263,7 +263,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_7', (tester) async {
+      testWidgets('pairwise_invalid_cases_7', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -302,7 +302,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_8', (tester) async {
+      testWidgets('pairwise_invalid_cases_8', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -341,7 +341,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_9', (tester) async {
+      testWidgets('pairwise_invalid_cases_9', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -383,7 +383,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_10', (tester) async {
+      testWidgets('pairwise_invalid_cases_10', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -422,7 +422,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_11', (tester) async {
+      testWidgets('pairwise_invalid_cases_11', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -464,7 +464,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_12', (tester) async {
+      testWidgets('pairwise_invalid_cases_12', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -503,7 +503,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_13', (tester) async {
+      testWidgets('pairwise_invalid_cases_13', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -545,7 +545,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_14', (tester) async {
+      testWidgets('pairwise_invalid_cases_14', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -597,7 +597,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_15', (tester) async {
+      testWidgets('pairwise_invalid_cases_15', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -639,7 +639,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_16', (tester) async {
+      testWidgets('pairwise_invalid_cases_16', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -691,7 +691,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_17', (tester) async {
+      testWidgets('pairwise_invalid_cases_17', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -730,7 +730,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_18', (tester) async {
+      testWidgets('pairwise_invalid_cases_18', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -769,7 +769,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_19', (tester) async {
+      testWidgets('pairwise_invalid_cases_19', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -808,7 +808,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_20', (tester) async {
+      testWidgets('pairwise_invalid_cases_20', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -847,7 +847,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_21', (tester) async {
+      testWidgets('pairwise_invalid_cases_21', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -886,7 +886,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_22', (tester) async {
+      testWidgets('pairwise_invalid_cases_22', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -928,7 +928,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_23', (tester) async {
+      testWidgets('pairwise_invalid_cases_23', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -970,7 +970,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_24', (tester) async {
+      testWidgets('pairwise_invalid_cases_24', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];
@@ -1009,7 +1009,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_25', (tester) async {
+      testWidgets('pairwise_invalid_cases_25', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<PropertySearchCubit>(create: (_)=> PropertySearchCubit()),
         ];

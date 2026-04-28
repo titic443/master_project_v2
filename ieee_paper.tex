@@ -13,9 +13,7 @@
 \usepackage{multirow}
 \usepackage{array}
 \usepackage{url}
-\usepackage{float}
 \usepackage{listings}
-\usepackage{courier}
 
 % -----------------------------------------------
 %  Listing style (Dart / Java-like syntax)
@@ -49,16 +47,16 @@
 \author{
   \IEEEauthorblockN{Titi Changpoo}
   \IEEEauthorblockA{
-    \textit{Department of Computer Engineering}\\
-    \textit{Faculty of Engineering, Chulalongkorn University}\\
+    Department of Computer Engineering\\
+    Faculty of Engineering, Chulalongkorn University\\
     Bangkok, Thailand\\
     titi.changpoo@gmail.com
   }
   \and
   \IEEEauthorblockN{Taratip Suwannasart}
   \IEEEauthorblockA{
-    \textit{Department of Computer Engineering}\\
-    \textit{Faculty of Engineering, Chulalongkorn University}\\
+    Department of Computer Engineering\\
+    Faculty of Engineering, Chulalongkorn University\\
     Bangkok, Thailand\\
     taratip.s@chula.ac.th
   }
@@ -91,7 +89,7 @@ practical effectiveness of the proposed approach.
 
 \begin{IEEEkeywords}
 Flutter, automated test generation, pairwise testing, Dart, large language
-model, mobile application testing, PICT
+model, mobile application testing, PICT.
 \end{IEEEkeywords}
 
 % ===============================================
@@ -104,7 +102,7 @@ frequent requirement changes. Ensuring software quality through comprehensive
 testing is therefore essential, yet designing test cases manually is
 time-consuming and demands deep expertise from developers.
 
-Within the Flutter framework \cite{b1}, developers write integration and
+Within the Flutter framework~\cite{b1}, developers write integration and
 widget test scripts in Dart to simulate user interactions on the user interface (UI). However,
 crafting these scripts requires developers to (1) understand widget structure
 and validation rules in the source code, (2) define appropriate input data
@@ -145,7 +143,7 @@ Section~VI concludes the paper.
 % ===============================================
 
 \subsection{Flutter Testing}
-Flutter \cite{b1} is Google's open-source UI toolkit for building
+Flutter~\cite{b1} is Google's open-source UI toolkit for building
 cross-platform applications from a single Dart codebase. The framework
 provides the \texttt{flutter\_test} library, which exposes a
 \texttt{WidgetTester} application programming interface (API) and a rich set of Finders (\texttt{find.byKey},
@@ -153,25 +151,25 @@ provides the \texttt{flutter\_test} library, which exposes a
 testing.
 
 \subsection{Test-Script Generation from Front-End Files}
-Ekakrachawakitti \cite{b2} proposed a method for generating Robot Framework test
+Ekakrachawakitti~\cite{b2} proposed a method for generating Robot Framework test
 scripts from web front-end files by extracting HTML elements and input
-constraints from a database schema. Srivichayanun \cite{b3} extended this concept
+constraints from a database schema. Srivichayanun~\cite{b3} extended this concept
 by importing XML Schema Definition (XSD) schemas and applying Boundary Value Analysis to produce test
 data for web applications. These works motivate adapting similar extraction
 techniques to Flutter's Dart-based widget structure.
 
 \subsection{LLM-Based Data Generation}
-Tuan Pham \cite{b4} demonstrated that structuring LLM prompts with distinct
+Tuan Pham~\cite{b4} demonstrated that structuring LLM prompts with distinct
 components---context, objective, style, target, execution, and
 polish---significantly improves the quality of generated outputs. This
 prompt-engineering strategy is adopted in the present work to drive synthetic
 test-data generation.
 
 \subsection{Pairwise Testing}
-Pairwise (all-pairs) testing \cite{b7} is a black-box test-design technique
+Pairwise (all-pairs) testing~\cite{b7} is a black-box test-design technique
 that ensures every pair of input-parameter values is exercised by at least one
 test case, dramatically reducing the combinatorial explosion of full coverage.
-PICT \cite{b8} is a widely used
+PICT~\cite{b8} is a widely used
 open-source tool that accepts a model file describing parameters and their
 levels, and outputs a minimal covering test suite.
 
@@ -251,7 +249,7 @@ excluded because their enumerated levels are resolved directly from
 the \texttt{options} list in Phase~1.
 
 The filtered metadata is assembled into a structured prompt composed
-of six components following the approach of Tuan Pham \cite{b4}:
+of six components following the approach of Tuan Pham~\cite{b4}:
 \textit{context} (``Test data generator for Flutter form
 validation.''), \textit{objective} (five rules: analyze \texttt{maxLength},
 \texttt{inputFormatters}, and \texttt{validatorRules}; skip
@@ -303,8 +301,11 @@ which each nonbutton widget maps to one \textit{factor} and each
 distinct value maps to one \textit{level}. Three model variants are
 built independently:
 \begin{enumerate}
-  \item \textbf{Valid/Invalid (VI):} factors contain both valid and invalid
-        levels; PICT ensures every valid--invalid pair is covered.
+  \item \textbf{Valid/Invalid (VI):} \texttt{TextFormField} factors carry
+        only the \texttt{invalid} sentinel level; non-text factors
+        (\texttt{Dropdown}, \texttt{Switch}) enumerate all their option
+        values. Every PICT combination therefore contains at least one
+        invalid text input, producing negative-path test cases.
   \item \textbf{Valid-only (V):} factors contain valid levels only; PICT
         produces positive-path test cases.
   \item \textbf{Edge:} three manually crafted boundary-value combinations
@@ -381,9 +382,9 @@ three top-level keys:
   \item \textbf{cases:} the ordered list of test-case objects; a
         concrete example is shown in Fig.~\ref{fig:case_example}.
         Each object carries five fields: \texttt{tc} (a unique
-        identifier such as \texttt{pairwise\_valid\_invalid\_cases\_1}),
+        identifier such as \texttt{pairwise\_invalid\_cases\_1}),
         \texttt{kind} (\texttt{success} or \texttt{failed}),
-        \texttt{group} (one of \texttt{pairwise\_valid\_invalid\_cases},
+        \texttt{group} (one of \texttt{pairwise\_invalid\_cases},
         \texttt{pairwise\_valid\_cases}, or \texttt{edge\_cases}),
         \texttt{steps}, and \texttt{asserts}.
 \end{itemize}
@@ -453,7 +454,7 @@ reused across all test cases on the same screen.
 
 Test cases are partitioned by their \texttt{group} field into three
 \texttt{group()} blocks in the output file:
-\texttt{pairwise\_valid\_invalid\_cases} (VI cases that verify form
+\texttt{pairwise\_invalid\_cases} (VI cases that verify form
 rejection on invalid input), \texttt{pairwise\_valid\_cases} (V cases
 that verify successful submission on valid input), and
 \texttt{edge\_cases} (boundary-value cases). Each entry in the
@@ -550,9 +551,9 @@ $n$ parameter lines of the form \texttt{<key>: v1, v2, \ldots, vk},
 where each $v_i$ is a distinct value level. The tool builds three
 separate model files---VI, V, and Edge---and invokes PICT once per
 file. Each PICT run returns a minimal covering array; the three arrays
-are concatenated to form the complete test suite for the screen. For a
-\texttt{TextFormField} with five LLM-generated values (three valid, two
-invalid), the corresponding PICT factor has five levels.
+are concatenated to form the complete test suite for the screen. For a \texttt{TextFormField}, the VI model assigns the factor a single
+\texttt{invalid} sentinel level and the V model assigns \texttt{valid};
+each model therefore has exactly one text-field level per factor.
 \texttt{DropdownButtonFormField} and \texttt{Radio} factors enumerate
 all available options extracted from the source code.
 
@@ -600,7 +601,7 @@ into a \texttt{testWidgets} block in \texttt{<page>\_test.dart}.
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figure5.png}
-  \caption{Example \texttt{pairwise\_valid\_invalid\_cases} entry
+  \caption{Example \texttt{pairwise\_invalid\_cases} entry
            serialized inside \texttt{<page>.test\_data.json} before
            it is rendered into a \texttt{testWidgets} block in
            \texttt{<page>\_test.dart}.}
@@ -703,8 +704,8 @@ covering positive and negative paths simultaneously.
 \textbf{RQ2 --- Combinatorial reduction:}
 Table~\ref{tab:combinatorial} compares the exhaustive combinatorial
 count against the pairwise VI count for each screen (exhaustive count
-= product of all factor levels, assuming two levels per
-\texttt{TextFormField} in the VI model). The reduction scales with
+= product of all factor levels, treating each
+\texttt{TextFormField} as having two states: valid and invalid). The reduction scales with
 parameter count: screens with a single factor show no reduction, while
 screens with 11--12 factors achieve reductions of three orders of
 magnitude (991$\times$ for Job-Listing posting; 3{,}413$\times$ for
@@ -732,7 +733,7 @@ test suites manageable as form complexity grows.
       & Search  &      960 & 27 &     36$\times$ \\
     \bottomrule
     \multicolumn{5}{l}{\footnotesize Exhaustive\,=\,product of factor
-      levels (2 per \texttt{TextFormField}).} \\
+      levels (2 states per \texttt{TextFormField}: valid and invalid).} \\
   \end{tabular}
 \end{table}
 

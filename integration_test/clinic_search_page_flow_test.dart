@@ -9,8 +9,8 @@ import 'package:master_project/demos/clinic_search_page.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('clinic_search_page.dart flow (integration)', () {
-    group('pairwise_valid_invalid_cases', () {
-      testWidgets('pairwise_valid_invalid_cases_1', (tester) async {
+    group('pairwise_invalid_cases', () {
+      testWidgets('pairwise_invalid_cases_1', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<ClinicSearchCubit>(create: (_)=> ClinicSearchCubit()),
         ];
@@ -35,7 +35,7 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      testWidgets('pairwise_valid_invalid_cases_2', (tester) async {
+      testWidgets('pairwise_invalid_cases_2', (tester) async {
         final providers = <BlocProvider>[
           BlocProvider<ClinicSearchCubit>(create: (_)=> ClinicSearchCubit()),
         ];

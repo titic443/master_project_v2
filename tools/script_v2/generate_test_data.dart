@@ -1502,7 +1502,7 @@ class TestDataGenerator {
           }
 
           final caseKind = hasInvalidData ? 'failed' : 'success';
-          final id = 'pairwise_valid_invalid_cases_${i + 1}';
+          final id = 'pairwise_invalid_cases_${i + 1}';
           final asserts = <Map<String, dynamic>>[];
 
           if (hasInvalidData) {
@@ -1576,7 +1576,7 @@ class TestDataGenerator {
           cases.add({
             'tc': id,
             'kind': caseKind,
-            'group': 'pairwise_valid_invalid_cases',
+            'group': 'pairwise_invalid_cases',
             'description': _buildDescription(comboStr, caseKind, invalidFields,
                 uncheckedRequiredCheckboxes, asserts),
             'steps': st,
@@ -1586,10 +1586,10 @@ class TestDataGenerator {
 
         // ── Inject all-valid success case ──────────────────────────────────────
         // PICT ไม่สร้าง all-valid combo ใน full model → inject เองให้ครบ
-        // rule: ถ้า group pairwise_valid_invalid_cases ไม่มี kind==success เลย
+        // rule: ถ้า group pairwise_invalid_cases ไม่มี kind==success เลย
         //       และมี expectedSuccessKeys → เพิ่ม 1 case ที่ valid ทุก field
         final alreadyHasSuccess = cases.any((c) =>
-            c['group'] == 'pairwise_valid_invalid_cases' &&
+            c['group'] == 'pairwise_invalid_cases' &&
             c['kind'] == 'success');
 
         if (!alreadyHasSuccess && expectedSuccessKeys.isNotEmpty) {
@@ -1665,9 +1665,9 @@ class TestDataGenerator {
 
           final successAsserts = buildSuccessAsserts();
           cases.add({
-            'tc': 'pairwise_valid_invalid_cases_${combos.length + 1}',
+            'tc': 'pairwise_invalid_cases_${combos.length + 1}',
             'kind': 'success',
-            'group': 'pairwise_valid_invalid_cases',
+            'group': 'pairwise_invalid_cases',
             'description': 'All fields valid — expect success',
             'steps': st,
             'asserts': successAsserts,

@@ -1,19 +1,22 @@
-# การสร้างสคริปต์ทดสอบสำหรับแอปพลิเคชัน Flutter โดยใช้เทคนิคการทดสอบแบบแพร์ไวส์
+# การสร้างสคริปต์ทดสอบสำหรับแอปพลิเคชัน Flutter ด้วยเทคนิคการทดสอบแบบแพร์ไวส์
 
-**Titi Changpoo** — ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย กรุงเทพฯ ประเทศไทย
-**Taratip Suwannasart** — ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย กรุงเทพฯ ประเทศไทย
+**Titi Changpoo**
+ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย กรุงเทพฯ ประเทศไทย
+
+**Taratip Suwannasart**
+ภาควิชาวิศวกรรมคอมพิวเตอร์ คณะวิศวกรรมศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย กรุงเทพฯ ประเทศไทย
 
 ---
 
 ## บทคัดย่อ
 
-ในวงจรชีวิตการพัฒนาซอฟต์แวร์ การทดสอบหน่วย (unit testing) เป็นกระบวนการที่สำคัญสำหรับการระบุและแก้ไขข้อบกพร่อง เพื่อเพิ่มความน่าเชื่อถือของซอฟต์แวร์ก่อนส่งมอบ สิ่งนี้มีความสำคัญอย่างยิ่งในโดเมนของแอปพลิเคชันมือถือที่พัฒนาด้วยเฟรมเวิร์ค Flutter ซึ่งมีการเปลี่ยนแปลงความต้องการบ่อยครั้ง แม้ว่าการทดสอบอัตโนมัติจะช่วยลดเวลาการทดสอบโดยรวม แต่นักพัฒนายังคงต้องมีความรู้เฉพาะทางและทุ่มเทความพยายามเริ่มต้นอย่างมากในการสร้างสคริปต์ทดสอบที่มีประสิทธิภาพด้วยภาษา Dart
+ในวงจรชีวิตการพัฒนาซอฟต์แวร์ การทดสอบวิดเจ็ต (widget testing) เป็นกระบวนการที่สำคัญสำหรับการระบุและแก้ไขข้อบกพร่อง เพื่อเพิ่มความน่าเชื่อถือของซอฟต์แวร์ก่อนส่งมอบ สิ่งนี้มีความสำคัญอย่างยิ่งในโดเมนของแอปพลิเคชันมือถือที่พัฒนาด้วย Flutter framework ซึ่งมีการเปลี่ยนแปลงความต้องการบ่อยครั้ง แม้ว่าการทดสอบอัตโนมัติจะช่วยลดเวลาการทดสอบโดยรวม แต่นักพัฒนายังคงต้องมีความรู้เฉพาะทางและทุ่มเทความพยายามเริ่มต้นอย่างมากในการสร้างสคริปต์ทดสอบที่มีประสิทธิภาพด้วยภาษา Dart
 
-บทความนี้นำเสนอเครื่องมืออัตโนมัติที่ช่วยให้การสร้างสคริปต์ทดสอบ Flutter เป็นเรื่องง่ายขึ้น โดยการนำเข้าไฟล์ซอร์สโค้ดฝั่งหน้าบ้าน (front-end) ดึงข้อมูลเมตาของ widget (keys, เงื่อนไขการตรวจสอบ และประเภทการจัดการอินพุต) และสร้างข้อมูลทดสอบสังเคราะห์ผ่าน Large Language Model (LLM) กรณีทดสอบถูกสร้างอย่างเป็นระบบโดยใช้เทคนิคการทดสอบแบบแพร์ไวส์ผ่านเครื่องมือ PICT สคริปต์ทดสอบ Dart ที่ได้พร้อมสำหรับการรันในเฟรมเวิร์คการทดสอบของ Flutter
+บทความนี้นำเสนอเครื่องมืออัตโนมัติที่ช่วยให้การสร้างสคริปต์ทดสอบ Flutter เป็นเรื่องง่ายขึ้น โดยการนำเข้าไฟล์ซอร์สโค้ดฝั่ง front-end ดึง widget metadata (keys, เงื่อนไขการตรวจสอบ และประเภทการจัดการอินพุต) และสร้างข้อมูลทดสอบสังเคราะห์ผ่าน Large Language Model (LLM) กรณีทดสอบถูกสร้างอย่างเป็นระบบโดยใช้เทคนิคการทดสอบแบบ Pairwise ผ่านเครื่องมือ PICT สคริปต์ทดสอบ Dart ที่ได้พร้อมรันภายใน Flutter testing framework ทันที
 
-เครื่องมือนี้ถูกประเมินกับแอปพลิเคชันมือถือในโลกจริง 3 แอป ได้แก่ ระบบนัดหมายทางการแพทย์ แอปพลิเคชันรายชื่องาน และแอปพลิเคชันรายชื่ออสังหาริมทรัพย์ และได้ผลการครอบคลุม branch และ line ที่น่าพอใจในทุกกรณี ซึ่งแสดงให้เห็นถึงประสิทธิผลเชิงปฏิบัติของแนวทางที่นำเสนอ
+เครื่องมือนี้ถูกประเมินกับแอปพลิเคชันมือถือในโลกจริงสามแอป ได้แก่ ระบบนัดหมายทางการแพทย์ แอปพลิเคชันประกาศหางาน และแอปพลิเคชันประกาศอสังหาริมทรัพย์ และบรรลุ statement coverage สูงกว่า 91% ในทุก screen ที่ประเมิน แสดงให้เห็นถึงประสิทธิผลเชิงปฏิบัติของวิธีการที่นำเสนอ
 
-**คำสำคัญ:** Flutter, การสร้างการทดสอบอัตโนมัติ, การทดสอบแบบแพร์ไวส์, Dart, large language model, การทดสอบแอปพลิเคชันมือถือ, PICT
+**คำสำคัญ:** Flutter, การสร้างการทดสอบอัตโนมัติ, pairwise testing, Dart, large language model, การทดสอบแอปพลิเคชันมือถือ, PICT
 
 ---
 
@@ -21,228 +24,217 @@
 
 อุตสาหกรรมซอฟต์แวร์ทั่วโลกยังคงเติบโตอย่างรวดเร็ว ขับเคลื่อนโดยความต้องการแอปพลิเคชันมือถือที่มีความซับซ้อน มีฟีเจอร์หลากหลาย และต้องรองรับการเปลี่ยนแปลงความต้องการบ่อยครั้ง การรับประกันคุณภาพซอฟต์แวร์ผ่านการทดสอบที่ครอบคลุมจึงเป็นสิ่งจำเป็น แต่การออกแบบกรณีทดสอบด้วยตนเองนั้นใช้เวลามากและต้องการความเชี่ยวชาญเฉพาะทางจากนักพัฒนา
 
-ในเฟรมเวิร์ค Flutter นักพัฒนาเขียนสคริปต์ทดสอบ integration และ widget test ด้วยภาษา Dart เพื่อจำลองการโต้ตอบของผู้ใช้บนส่วนต่อประสานผู้ใช้ (UI) อย่างไรก็ตาม การสร้างสคริปต์เหล่านี้กำหนดให้นักพัฒนาต้อง (1) เข้าใจโครงสร้าง widget และกฎการตรวจสอบในซอร์สโค้ด (2) กำหนดข้อมูลอินพุตที่เหมาะสมซึ่งครอบคลุมเงื่อนไขขอบเขตทั้งที่ถูกต้องและไม่ถูกต้อง และ (3) เรียงลำดับการกระทำการทดสอบอย่างถูกต้อง เครื่องมืออัตโนมัติที่มีอยู่ เช่น Robot Framework และ Playwright ถูกออกแบบมาสำหรับแอปพลิเคชันเว็บและไม่สามารถสร้างสคริปต์ทดสอบเฉพาะของ Flutter ได้โดยตรง
+ภายใน Flutter framework นักพัฒนาเขียน integration และ widget test scripts ด้วยภาษา Dart เพื่อจำลองการโต้ตอบของผู้ใช้บนส่วนต่อประสานผู้ใช้ (UI) อย่างไรก็ตาม การสร้างสคริปต์เหล่านี้กำหนดให้นักพัฒนาต้อง (1) เข้าใจโครงสร้าง widget และกฎการตรวจสอบใน source code (2) กำหนดข้อมูลอินพุตที่เหมาะสมซึ่งครอบคลุมเงื่อนไขขอบเขตทั้งที่ถูกต้องและไม่ถูกต้อง และ (3) เรียงลำดับ test actions อย่างถูกต้อง เครื่องมืออัตโนมัติที่มีอยู่ เช่น Robot Framework และ Playwright ถูกออกแบบมาสำหรับ web applications และไม่สามารถสร้างสคริปต์ทดสอบเฉพาะสำหรับ Flutter ได้โดยตรง
 
 บทความนี้แก้ไขปัญหาเหล่านี้โดยนำเสนอเครื่องมืออัตโนมัติที่:
 
-- **วิเคราะห์** ไฟล์ Flutter front-end (`.dart`) เพื่อดึงข้อมูลเมตาของ widget
+- **วิเคราะห์** ไฟล์ Flutter front-end (`.dart`) เพื่อดึง widget metadata
 - **ใช้** Large Language Model (LLM) (Google Gemini) เพื่อสร้างข้อมูลทดสอบที่สมจริง
-- **ประยุกต์ใช้** เทคนิคการทดสอบแบบแพร์ไวส์ผ่าน PICT เพื่อลดจำนวนกรณีทดสอบในขณะที่เพิ่มการครอบคลุมการรวมกันของอินพุตให้สูงสุด
-- **ส่งออก** สคริปต์ทดสอบ Dart ที่สามารถรันได้พร้อมสำหรับเฟรมเวิร์คการทดสอบของ Flutter
+- **ประยุกต์ใช้** เทคนิคการทดสอบแบบ Pairwise ผ่าน PICT (Pairwise Independent Combinatorial Testing) เพื่อลดจำนวนกรณีทดสอบในขณะที่เพิ่ม input-combination coverage ให้สูงสุด
+- **ส่งออก** Dart test scripts ที่พร้อมรันใน Flutter testing framework
 
-บทความที่เหลือจัดเรียงดังนี้: ส่วนที่ II ทบทวนงานที่เกี่ยวข้อง ส่วนที่ III อธิบายวิธีการที่นำเสนอ ส่วนที่ IV กล่าวถึงการออกแบบเครื่องมือ ส่วนที่ V นำเสนอผลการประเมิน และส่วนที่ VI สรุปบทความ
+งานวิจัยนี้มุ่งตอบคำถามวิจัย (RQs) สองข้อที่จะได้รับคำตอบใน Section V:
+
+- **RQ1:** สคริปต์ทดสอบที่สร้างขึ้นอัตโนมัติสามารถบรรลุ statement coverage เท่าใดบน Flutter screens ในโลกจริงโดยไม่ต้องเขียน test cases ด้วยตนเอง?
+- **RQ2:** เทคนิค pairwise ต้องการ test cases จำนวนเท่าใดเมื่อเทียบกับการทดสอบแบบ exhaustive combinatorial?
+
+ส่วนที่เหลือของบทความนี้จัดดังนี้: Section II ทบทวนงานวิจัยที่เกี่ยวข้อง Section III อธิบาย methodology ที่นำเสนอ Section IV อภิปรายการออกแบบเครื่องมือ Section V นำเสนอผลการประเมิน และ Section VI สรุปบทความ
 
 ---
 
-## II. งานที่เกี่ยวข้อง
+## II. งานวิจัยที่เกี่ยวข้อง
 
-### A. การทดสอบ Flutter
+### A. Flutter Testing
 
-Flutter คือ UI toolkit โอเพนซอร์สของ Google สำหรับการสร้างแอปพลิเคชันข้ามแพลตฟอร์มจาก Dart codebase เดียว เฟรมเวิร์คนี้มีไลบรารี `flutter_test` ที่เปิดเผย API ของ `WidgetTester` และชุด Finders ที่หลากหลาย (`find.byKey`, `find.byType` เป็นต้น) สำหรับการค้นหาและโต้ตอบกับ widget ระหว่างการทดสอบ
+Flutter เป็น UI toolkit แบบ open-source ของ Google สำหรับสร้างแอปพลิเคชัน cross-platform จาก Dart codebase เดียว framework นี้มี library `flutter_test` ซึ่ง expose `WidgetTester` application programming interface (API) และชุด Finders ที่หลากหลาย (`find.byKey`, `find.byType` เป็นต้น) สำหรับการค้นหาและโต้ตอบกับ widgets ระหว่างการทดสอบ
 
 ### B. การสร้างสคริปต์ทดสอบจากไฟล์ Front-End
 
-Ekakrachawakitti เสนอวิธีการสร้างสคริปต์ทดสอบ Robot Framework จากไฟล์ front-end ของเว็บโดยการดึง HTML elements และข้อจำกัดอินพุตจาก database schema Srivichayanun ขยายแนวคิดนี้โดยการนำเข้า XML Schema Definition (XSD) schemas และประยุกต์ใช้ Boundary Value Analysis เพื่อสร้างข้อมูลทดสอบสำหรับแอปพลิเคชันเว็บ งานเหล่านี้กระตุ้นให้มีการปรับใช้เทคนิคการดึงข้อมูลที่คล้ายคลึงกันกับโครงสร้าง widget ที่ใช้ Dart ของ Flutter
+Ekakrachawakitti เสนอวิธีการสร้างสคริปต์ทดสอบสำหรับ Robot Framework จากไฟล์ web front-end โดยดึง HTML elements และ input constraints จาก database schema Srivichayanun ขยายแนวคิดนี้โดยนำเข้า XML Schema Definition (XSD) schemas และประยุกต์ใช้ Boundary Value Analysis เพื่อสร้างข้อมูลทดสอบสำหรับ web applications งานวิจัยเหล่านี้เป็นแรงบันดาลใจในการนำเทคนิคการดึงข้อมูลที่คล้ายกันมาใช้กับโครงสร้าง widget ที่ใช้ Dart ของ Flutter
 
 ### C. การสร้างข้อมูลด้วย LLM
 
-Tuan Pham แสดงให้เห็นว่าการจัดโครงสร้างคำสั่ง (prompt) ของ LLM ด้วยองค์ประกอบที่แตกต่างกัน ได้แก่ context, persona, objective, action, format และ refinement ช่วยเพิ่มคุณภาพของผลลัพธ์ที่สร้างขึ้นอย่างมีนัยสำคัญ กลยุทธ์วิศวกรรม prompt นี้ถูกนำมาใช้ในงานปัจจุบันเพื่อขับเคลื่อนการสร้างข้อมูลทดสอบสังเคราะห์
+Tuan Pham แสดงให้เห็นว่าการจัดโครงสร้าง LLM prompts ด้วย components ที่แตกต่างกัน ได้แก่ **context, objective, style, target, execution และ polish** ช่วยเพิ่มคุณภาพของ output ที่สร้างขึ้นได้อย่างมีนัยสำคัญ กลยุทธ์ prompt engineering นี้ถูกนำมาใช้ในงานปัจจุบันเพื่อขับเคลื่อนการสร้างข้อมูลทดสอบสังเคราะห์
 
-### D. การทดสอบแบบแพร์ไวส์
+### D. Pairwise Testing
 
-การทดสอบแบบแพร์ไวส์ (all-pairs) คือเทคนิคการออกแบบการทดสอบแบบ black-box ที่รับประกันว่าทุกคู่ของค่าพารามิเตอร์อินพุตจะถูกทดสอบโดยอย่างน้อยหนึ่งกรณีทดสอบ ซึ่งช่วยลดการระเบิดแบบ combinatorial ของการครอบคลุมแบบเต็มรูปแบบได้อย่างมาก PICT (Pairwise Independent Combinatorial Testing) คือเครื่องมือโอเพนซอร์สที่ใช้กันอย่างแพร่หลายซึ่งรับไฟล์โมเดลที่อธิบายพารามิเตอร์และระดับ (levels) ของพวกมัน และส่งออกชุดการทดสอบที่ครอบคลุมขั้นต่ำ
+Pairwise (all-pairs) testing เป็นเทคนิคการออกแบบ test แบบ black-box ที่รับประกันว่าทุกคู่ของค่า input-parameter จะถูกทดสอบอย่างน้อยหนึ่ง test case ช่วยลด combinatorial explosion ของ full coverage ได้อย่างมาก PICT เป็นเครื่องมือ open-source ที่ใช้กันอย่างแพร่หลาย ซึ่งรับไฟล์ model ที่อธิบาย parameters และ levels ของ parameters และส่งออก test suite ที่ครอบคลุมและมีขนาดน้อยที่สุด
 
 ---
 
-## III. วิธีการที่นำเสนอ
+## III. Methodology ที่นำเสนอ
 
-เครื่องมือที่นำเสนอทำให้กระบวนการสร้างสคริปต์ทดสอบแบบครบวงจรเป็นอัตโนมัติผ่านสี่ขั้นตอนตามลำดับ ดังแสดงในรูปที่ 1
+เครื่องมือที่นำเสนอทำให้กระบวนการสร้างสคริปต์ทดสอบแบบ end-to-end เป็นอัตโนมัติผ่านสี่ phase ตามลำดับ ดังแสดงในรูปที่ 1
 
-### Phase 1 — ดึงข้อมูล Manifest
+### Phase 1 — ดึง Manifest
 
-เครื่องมือวิเคราะห์แบบ static analysis ทุกไฟล์ `.dart` ภายใต้ไดเรกทอรี `lib/` ของโปรเจกต์ Flutter เป้าหมาย โดยพิจารณาเฉพาะ widget ที่มีคุณสมบัติ `Key` เท่านั้น เนื่องจาก key จำเป็นสำหรับการค้นหา widget ระหว่างการรันทดสอบผ่าน `find.byKey()`
+เครื่องมือวิเคราะห์ทุกไฟล์ `.dart` ภายใต้ directory `lib/` ของ Flutter project เป้าหมายแบบ static analysis โดยพิจารณาเฉพาะ widgets ที่มี property `Key` เท่านั้น เนื่องจาก key จำเป็นสำหรับการค้นหา widget ระหว่างการรันทดสอบผ่าน `find.byKey()`
 
-**ระดับ screen (หน้าจอ):** เครื่องมือบันทึกข้อมูลเมตา BLoC/Cubit ที่จำเป็นสำหรับการสร้างสภาพแวดล้อมการทดสอบ ได้แก่:
-- `pageClass` — ชื่อคลาส widget ของหน้า UI
-- `cubitClass` — คลาส BLoC Cubit สำหรับหน้านั้น
-- `stateClass` — คลาส State ที่เชื่อมโยงกับ Cubit
-- `fileCubit` — เส้นทางไปยังไฟล์ซอร์สของ Cubit
-- `fileState` — เส้นทางไปยังไฟล์ซอร์สของ State
+ในระดับ **screen** เครื่องมือบันทึก Business Logic Component (BLoC)/Cubit metadata ที่จำเป็นสำหรับการสร้าง test environment ได้แก่ ชื่อ widget class ของหน้า (`pageClass`), Cubit class (`cubitClass`), State class ที่เกี่ยวข้อง (`stateClass`), และ paths ไปยัง Cubit และ State source files (`fileCubit`, `fileState`) ข้อมูลเหล่านี้ช่วยให้สคริปต์ทดสอบที่สร้างขึ้นสามารถ import ไฟล์ที่ถูกต้องและสร้าง `BlocProvider` wrapper ได้อัตโนมัติ
 
-ฟิลด์เหล่านี้ทำให้สคริปต์ทดสอบที่สร้างขึ้นสามารถ import ไฟล์ที่ถูกต้องและสร้าง `BlocProvider` wrapper ได้โดยอัตโนมัติ
+ในระดับ **widget** เครื่องมือบันทึก: (i) unique widget key (ii) ชื่อ widget class (iii) รูปแบบตัวอักษรที่อนุญาตจาก `inputFormatters` (iv) ความยาว input สูงสุด (`maxLength`) สำหรับ `TextFormField` widgets และ (v) กฎการตรวจสอบและข้อความ error ที่ parse จาก `validator` callbacks (`validatorRules`)
 
-**ระดับ widget:** เครื่องมือบันทึก: (i) unique widget key, (ii) ชื่อคลาส widget, (iii) จำนวนเต็ม `sequence` ที่เข้ารหัสตำแหน่งบนล่างของ widget ภายในฟอร์ม (ใช้ใน Phase 3 เพื่อเรียงลำดับขั้นตอนการโต้ตอบ WidgetTester), (iv) รูปแบบตัวอักษรหรือความยาวที่อนุญาตจาก `inputFormatters`, (v) กฎการตรวจสอบและข้อความแสดงข้อผิดพลาดที่วิเคราะห์จาก `validator` callbacks (`validatorRules`) และ (vi) รายการตัวเลือกสำหรับ widget `DropdownButtonFormField` และ `Radio`
+metadata ที่ดึงได้จะถูก serialize เป็นไฟล์ `manifest.json` จัดกลุ่มตามชื่อ screen
 
-ข้อมูลเมตาที่ดึงออกมาจะถูก serialize ลงในไฟล์ `manifest.json` จัดกลุ่มตามชื่อ screen ตารางที่ I แสดงรายการฟิลด์ที่บันทึกต่อ screen และต่อ widget
+**ตารางที่ I: Metadata Fields ในไฟล์ Manifest**
 
-**ตารางที่ I: ฟิลด์ข้อมูลเมตาในไฟล์ Manifest**
+| Field | คำอธิบาย | จำเป็น |
+|---|---|---|
+| **ระดับ Screen (source block)** | | |
+| `file` | Path ไปยัง UI page source file | Y |
+| `pageClass` | ชื่อ UI page widget class | Y |
+| `cubitClass` | BLoC Cubit class สำหรับ screen | Y |
+| `stateClass` | State class ที่เกี่ยวข้องกับ Cubit | Y |
+| `fileCubit` | Path ไปยัง Cubit source file | Y |
+| `fileState` | Path ไปยัง State source file | Y |
+| **ระดับ Widget (widgets array)** | | |
+| `key` | Unique Flutter widget key | Y |
+| `widgetType` | ชื่อ widget class | Y |
+| `inputFormatters` | รูปแบบตัวอักษรที่อนุญาตสำหรับ input | N |
+| `maxLength` | ความยาวตัวอักษรสูงสุดสำหรับ `TextFormField` | N |
+| `validatorRules` | เงื่อนไขการตรวจสอบและข้อความ error | N |
 
-| ฟิลด์ | คำอธิบาย |
-|-------|----------|
-| **ระดับ Screen (ข้อมูลเมตา BLoC)** | |
-| `pageClass` | ชื่อคลาส widget ของหน้า UI |
-| `cubitClass` | คลาส BLoC Cubit สำหรับ screen นั้น |
-| `stateClass` | คลาส State ที่เชื่อมโยงกับ Cubit |
-| `fileCubit` | เส้นทางไปยังไฟล์ซอร์สของ Cubit |
-| `fileState` | เส้นทางไปยังไฟล์ซอร์สของ State |
-| **ระดับ Widget** | |
-| `key` | Unique Flutter widget key |
-| `widgetType` | ชื่อคลาส widget |
-| `sequence` | ตำแหน่งบนล่างในฟอร์ม (ใช้สำหรับเรียงลำดับขั้นตอนทดสอบ) |
-| `inputFormatters` | รูปแบบตัวอักษรและขีดจำกัดความยาวที่อนุญาต |
-| `validatorRules` | เงื่อนไขการตรวจสอบและข้อความแสดงข้อผิดพลาด |
-| `options` | ตัวเลือกที่ระบุไว้สำหรับ Radio / Dropdown |
+### Phase 2 — สร้าง Datasets
 
-### Phase 2 — สร้างชุดข้อมูล (Datasets)
+เฉพาะ `TextFormField` widgets เท่านั้นที่ถูกดึงจาก manifest ใน phase นี้ โดย `Dropdown` และ `Radio` widgets ถูกยกเว้น เนื่องจาก enumerated levels ของพวกมันถูก resolve โดยตรงจาก `options` list ใน Phase 1
 
-ในขั้นตอนนี้ เครื่องมือจะคัดเฉพาะ widget ประเภท `TextFormField` ออกจาก manifest เท่านั้น widget ประเภท `Dropdown` และ `Radio` ถูกยกเว้น เนื่องจากค่าที่เป็นไปได้ถูกดึงมาจากรายการ `options` ใน Phase 1 โดยตรง
+metadata ที่กรองแล้วจะถูกประกอบเป็น structured prompt ที่มี **หกองค์ประกอบ** ตามแนวทางของ Tuan Pham:
 
-ข้อมูลเมตาที่กรองแล้วจะถูกประกอบเป็น prompt ที่มีโครงสร้าง 5 องค์ประกอบตามแนวทางของ Tuan Pham:
+- **context (บริบท):** `"Test data generator for Flutter form validation."`
+- **objective (วัตถุประสงค์):** ห้ากฎ ได้แก่ วิเคราะห์ `maxLength`, `inputFormatters` และ `validatorRules`; ข้าม `isEmpty`/`null` rules ซึ่งจัดการแยกด้วย edge-case generation ใน Phase 3; สร้างคู่ valid/invalid หนึ่งคู่ต่อกฎที่ไม่ว่างเปล่า; รับประกันว่าค่า invalid ยังคงสอดคล้องกับ `inputFormatters` เพื่อให้ยังพิมพ์ได้; และส่งออก valid JSON
+- **style (รูปแบบ):** JSON เท่านั้น ไม่มี markdown ค่าสมจริง string arrays เท่านั้น
+- **target (กลุ่มเป้าหมาย):** สั่งให้โมเดลทำหน้าที่เป็น QA engineer ที่สร้างข้อมูลสำหรับ happy-path และ error-path scenarios
+- **execution (การดำเนินการ):** ขั้นตอนการนับแบบ step-by-step พร้อมตัวอย่าง few-shot สองตัวอย่างที่กำหนด output schema และป้องกันค่าที่สร้างผิด
+- **polish (การขัดเกลา):** เงื่อนไขคุณภาพ output ที่รับประกันความสอดคล้องของ schema และไม่มี fields เกิน
 
-- **Context (บริบท):** `"Test data generator for Flutter form validation."`
-- **Target (กลุ่มเป้าหมาย):** สั่งให้โมเดลทำหน้าที่เป็น QA engineer ที่สร้างข้อมูลสำหรับ happy-path และ error-path
-- **Objective (วัตถุประสงค์):** กำหนด 5 กฎ ได้แก่ วิเคราะห์ `maxLength`, `inputFormatters` และ `validatorRules`; ข้ามกฎ `isEmpty`/`null` (จัดการแยกใน Phase 3 ด้วย edge cases); สร้างคู่ valid/invalid หนึ่งคู่ต่อกฎที่ไม่ว่างเปล่า; ค่า invalid ต้องยังผ่าน `inputFormatters` เพื่อให้พิมพ์ได้จริง; และส่งออกเป็น JSON
-- **Execution (การดำเนินการ):** คำแนะนำทีละขั้นตอนพร้อมตัวอย่าง few-shot 2 ตัวอย่าง เพื่อกำหนดรูปแบบผลลัพธ์และป้องกัน hallucination
-- **Style (รูปแบบ):** JSON เท่านั้น ไม่มี markdown, ค่าที่สมจริง, string arrays เท่านั้น
+widget metadata ที่ดึงมาใน Phase 1 จะถูกแนบเป็น input data payload
 
-ข้อมูลเมตาของ widget ที่ดึงมาใน Phase 1 จะถูกแนบเป็น input data payload
+prompt ถูกส่งไปยัง **Google Gemini 2.5 Flash** ผ่าน Gemini API (HTTP POST) โมเดลส่งคืนไฟล์ `<page>.datasets.json` ที่มี top-level fields ดังนี้:
 
-prompt ถูกส่งไปยัง **Google Gemini 2.5 Flash** ผ่าน Gemini API (HTTP POST) โมเดลส่งคืนไฟล์ `<page>.datasets.json` ที่มีฟิลด์ระดับบนสุดดังนี้:
+- **file:** path ไปยัง front-end source file ที่วิเคราะห์
+- **datasets → byKey:** map จาก `TextFormField` widget key แต่ละตัวไปยัง array ของ value-pair objects โดยสร้างหนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า แต่ละ object มีห้า fields:
+  - `valid` — ค่าที่ตรงตามกฎการตรวจสอบทุกข้อและสอดคล้องกับ `inputFormatters`
+  - `invalid` — ค่าที่ละเมิดกฎหนึ่งข้อในขณะที่ยังสอดคล้องกับ `inputFormatters` เพื่อให้ยังพิมพ์ได้
+  - `invalidRuleMessages` — ข้อความ error เฉพาะที่ validator ที่ถูกละเมิดจะแสดง
+  - `atMax` — ค่าขอบเขตที่ความยาวหรือขีดจำกัดสูงสุดที่อนุญาต (ข้อมูล edge case)
+  - `atMin` — ค่าขอบเขตที่ความยาวหรือขีดจำกัดต่ำสุดที่อนุญาต (ข้อมูล edge case)
 
-- **file:** เส้นทางไปยังไฟล์ซอร์ส front-end ที่วิเคราะห์
-- **datasets → byKey:** map จาก widget key ของแต่ละ `TextFormField` ไปยัง array ของ object คู่ค่า สร้างหนึ่งคู่ต่อกฎการตรวจสอบที่ไม่ว่างเปล่า แต่ละ object มีห้าฟิลด์:
-  - `valid` — ค่าที่ผ่านทุก validation rule และตรงตาม `inputFormatters`
-  - `invalid` — ค่าที่ละเมิดกฎเพียงข้อเดียว แต่ยังตรงตาม `inputFormatters` เพื่อให้พิมพ์ได้จริง
-  - `invalidRuleMessages` — ข้อความ error ที่ validator จะแสดงเมื่อพบค่า invalid นั้น
-  - `atMax` — ค่าที่อยู่ที่ขอบเขตสูงสุดที่อนุญาต (edge-case data)
-  - `atMin` — ค่าที่อยู่ที่ขอบเขตต่ำสุดที่อนุญาต (edge-case data)
+### Phase 3 — สร้าง Test Data
 
-### Phase 3 — สร้างข้อมูลทดสอบ
+โดยใช้ datasets ที่สร้างใน Phase 2 เครื่องมือสร้างไฟล์ PICT model โดยแต่ละ non-button widget map ไปยัง **factor** หนึ่งตัว และแต่ละค่าที่แตกต่างกัน map ไปยัง **level** หนึ่งตัว โดยสร้าง model variants สามแบบอย่างอิสระ:
 
-โดยใช้ชุดข้อมูล เครื่องมือสร้างไฟล์โมเดล PICT ซึ่งแต่ละ widget ที่ไม่ใช่ปุ่มจะถูก map ไปยัง factor หนึ่งตัว และแต่ละค่าที่แตกต่างกันจะถูก map ไปยัง level หนึ่งระดับ โมเดล 3 รูปแบบถูกสร้างขึ้นอย่างอิสระ:
+1. **Valid/Invalid (VI):** `TextFormField` factors มีเฉพาะ `invalid` sentinel level เพียง level เดียว; non-text factors (Dropdown, Switch) enumerate ค่า option ทั้งหมด ทุก PICT combination มี invalid text input อย่างน้อยหนึ่งค่า ผลิต negative-path test cases
+2. **Valid-only (V):** factors มีเฉพาะ valid levels; PICT สร้าง positive-path test cases
+3. **Edge:** สาม boundary-value combinations ที่สร้างด้วยตนเอง (empty input, maximum-length, special characters) ถูกเพิ่มต่อท้าย
 
-1. **Valid/Invalid (VI):** factors มีทั้ง valid และ invalid levels; PICT รับประกันว่าทุกคู่ valid-invalid ถูกครอบคลุม
-2. **Valid-only (V):** factors มีเฉพาะ valid levels; PICT สร้างกรณีทดสอบ positive-path
-3. **Edge:** สาม boundary-value combinations ที่สร้างด้วยตนเอง (อินพุตว่าง, ความยาวสูงสุด, อักขระพิเศษ) ถูกเพิ่มเข้ามา
+ก่อนเรียก PICT นักพัฒนาอาจระบุ **constraint file** (`<page>.constraints.txt`) แบบ optional ที่ encode กฎ business-logic ที่อยู่ใน Cubit layer และมองไม่เห็นด้วย static analysis ของไฟล์ front-end เพียงอย่างเดียว เครื่องมือรู้จักสาม grammar forms ที่ mutually exclusive:
 
-ก่อนเรียกใช้ PICT หากนักพัฒนาให้ **condition file** ที่เป็นทางเลือก เครื่องมือจะเพิ่มเนื้อหาของมันโดยตรงลงในไฟล์โมเดล PICT เป็นส่วน `[Constraints]` condition file เขียนด้วย PICT constraint syntax (`IF <param> = <value> THEN <param> = <value>;`) และใช้เพื่อเข้ารหัสกฎ business-logic ที่อยู่ใน Cubit layer และมองไม่เห็นจากการ static analysis ของไฟล์ front-end เพียงอย่างเดียว เช่น การจำกัด pairwise engine ให้ factor เดียวมี invalid value ต่อกรณีทดสอบ หรือการแสดง mutual-exclusion dependencies ระหว่างฟิลด์ เครื่องมือตรวจสอบ constraint syntax ก่อนการเพิ่ม หากเกิดข้อผิดพลาดด้าน syntax จะแสดงข้อความ "Invalid Constraint Syntax" และ pipeline จะหยุดทำงาน
+1. **Valid override (`<key>.valid = <value>`):** กำหนดค่า **valid** เฉพาะสำหรับ widget key หนึ่งตัว เมื่อ import เครื่องมือจะเขียนทับ entry ที่สอดคล้องกันใน `<page>.datasets.json` ก่อนการเรียก PICT ใดๆ
+2. **Invalid override (`<key>.invalid = <value>`):** กำหนดค่า **invalid** สำหรับ widget key โดยใช้กลไกการเขียนทับเดียวกัน forms (1) และ (2) ไม่เปลี่ยน PICT model พวกมันเปลี่ยนเฉพาะ strings จริงที่ Phase 4 ส่งออกในท้ายที่สุด
+3. **Cross-widget relation (`IF [keyA] = "vA" THEN [keyB] = "vB";`):** แสดง dependency ระหว่าง widgets สองตัว โดยอาจนำหน้าด้วยการนิเสธด้วย `<>` กฎในรูปแบบนี้จะถูกเพิ่มเป็น section `[Constraints]` ทั้งใน `<page>.invalid.model.txt` และ `<page>.valid.model.txt`
 
-จากนั้น PICT จะถูกเรียกใช้เป็น subprocess ครั้งละหนึ่งไฟล์โมเดล (`<page>.full.model.txt` สำหรับ VI และ `<page>.valid.model.txt` สำหรับ V) ผลลัพธ์แบบ tab-delimited (หนึ่งแถวต่อกรณีทดสอบ) จะถูก parse และแต่ละแถวจะถูกประกอบเป็น object กรณีทดสอบพร้อมด้วยขั้นตอนการโต้ตอบ widget และการยืนยัน (assertions) ที่คาดหวัง อาร์เรย์ผลลัพธ์ทั้งสาม (VI, V, Edge) จะถูกรวมเป็นไฟล์ `<page>.test_data.json` ที่มีสาม key ระดับบนสุด:
+เครื่องมือตรวจสอบ grammar ของทุกบรรทัดก่อนทั้งการเขียนทับ datasets หรือการเพิ่มใน model หากมี syntax error จะแสดงข้อความ "Invalid Constraint Syntax" และหยุด pipeline
 
-- **source:** ข้อมูลเมตา BLoC ระดับ screen ที่ถ่ายทอดมาจาก Phase 1 (`pageClass`, `cubitClass`, `stateClass`, `fileCubit`, `fileState`) Phase 4 อ่าน key นี้เพื่อส่งออก `import` statements และสร้าง `BlocProvider` wrapper
-- **datasets:** คู่ค่า valid/invalid ที่ผลิตใน Phase 2 เปิดให้เข้าถึงด้วย widget key (`byKey`) Phase 4 อ่าน key นี้เพื่อแปลงค่าจริงเมื่อ render `enterText` calls
-- **cases:** รายการของ object กรณีทดสอบที่เรียงลำดับ แต่ละ object มีห้าฟิลด์: `tc` (identifier ที่ unique เช่น `pairwise_valid_invalid_cases_1`), `kind` (`success` หรือ `failed`), `group` (หนึ่งในสาม: `pairwise_valid_invalid_cases`, `pairwise_valid_cases` หรือ `edge_cases`), `steps` และ `asserts`
+จากนั้น PICT ถูกเรียกเป็น subprocess หนึ่งครั้งต่อไฟล์ model (`<page>.invalid.model.txt` สำหรับ VI และ `<page>.valid.model.txt` สำหรับ V) output แบบ tab-delimited ของ PICT ซึ่งหนึ่ง row ต่อ test case และหนึ่ง column ต่อ factor จะถูก parse และแต่ละ row ถูกประกอบเป็น **case** object พร้อมด้วย widget interaction steps และ expected assertions ทั้งสาม result arrays (VI, V, Edge) จะถูกรวมเป็นไฟล์ `<page>.test_data.json` เดียวที่มีสาม top-level keys:
 
-แต่ละ entry ใน `steps` map ประเภท widget ไปยังคำสั่ง `WidgetTester`: `enterText` (พร้อม `byKey` และ reference ไปยัง dataset) สำหรับ `TextFormField`; `tap` (byKey) แล้ว `tapText` (item label) สำหรับ `DropdownButtonFormField`; `tap` (byKey) สำหรับ `Radio`, `Checkbox` และ `Switch`; และ `pump` หรือ `pumpAndSettle` สำหรับการ refresh UI ขั้นตอน widget จะถูกเรียงลำดับตามค่า `sequence` ที่ดึงมาจากไฟล์ซอร์ส โดย `ElevatedButton` step จะถูกวางเป็นลำดับสุดท้ายเสมอ
+- **source:** BLoC metadata ระดับ screen ที่ propagate จาก Phase 1 (`pageClass`, `cubitClass`, `stateClass`, `fileCubit`, `fileState`) Phase 4 อ่าน key นี้เพื่อส่งออก `import` statements และสร้าง `BlocProvider` wrapper
+- **datasets:** คู่ค่า valid/invalid ที่สร้างใน Phase 2 จัดโดย widget key (`byKey`) Phase 4 อ่าน key นี้เพื่อ resolve ค่าจริงเมื่อ render `enterText` calls
+- **cases:** รายการ test-case objects ตามลำดับ แต่ละ object มีห้า fields: `tc` (identifier เฉพาะเช่น `pairwise_invalid_cases_1`), `kind` (`success` หรือ `failed`), `group` (หนึ่งใน `pairwise_invalid_cases`, `pairwise_valid_cases` หรือ `edge_cases`), `steps` และ `asserts`
 
-แต่ละ entry ใน `asserts` ระบุ string `text` พร้อม flag `exists` (ยืนยันข้อความแสดงข้อผิดพลาดที่มองเห็น) หรือ `byKey` widget identifier พร้อม flag `exists` (ยืนยันการมีอยู่ของ widget ตัวบ่งชี้ความสำเร็จหรือความล้มเหลว)
+แต่ละ `steps` entry map widget type ไปยัง `WidgetTester` command: `enterText` (พร้อม `byKey` และ `dataset` reference) สำหรับ `TextFormField`; `tap` (byKey) แล้ว `tapText` (item label) สำหรับ `DropdownButtonFormField`; `tap` (byKey) สำหรับ `Radio`, `Checkbox` และ `Switch`; และ `pump` หรือ `pumpAndSettle` สำหรับการ refresh UI Widget steps ถูกเรียงลำดับตามค่า `sequence` ที่ดึงจาก source file โดย `ElevatedButton` step จะอยู่ท้ายสุดเสมอ
 
-ตารางที่ II สรุปวิธีที่ประเภท widget แต่ละชนิดถูก map ไปยัง PICT role และคำสั่ง `WidgetTester` ที่สอดคล้องกัน
+แต่ละ `asserts` entry ระบุทั้ง `text` string พร้อม `exists` flag (ตรวจสอบข้อความ error ที่มองเห็น) หรือ `byKey` widget identifier พร้อม `exists` flag (ตรวจสอบการมีอยู่ของ widget ที่แสดงผลสำเร็จหรือล้มเหลว)
 
-**ตารางที่ II: Flutter Widget ที่รองรับและการโต้ตอบทดสอบที่สร้างขึ้น**
+**ตารางที่ II: Flutter Widgets ที่รองรับและ Test Interactions ที่สร้างขึ้น**
 
-| Widget | บทบาทใน PICT | คำสั่งทดสอบ |
-|--------|-------------|------------|
+| Widget | บทบาทใน PICT | Test Command |
+|---|---|---|
 | `TextFormField` | Factor (N levels) | `enterText` |
 | `DropdownButtonFormField` | Factor (enum) | `tap` ×2 |
 | `Radio` | Factor (enum) | `tap` |
 | `Checkbox` | Factor {on, off} | `tap` |
 | `Switch` | Factor {on, off} | `tap` |
-| `ElevatedButton` | Trigger (fixed) | `tap` (ลำดับสุดท้าย) |
+| `ElevatedButton` | Trigger (fixed) | `tap` (last) |
 | `Text` | Assertion target | `find.text` |
 
-### Phase 4 — สร้างสคริปต์ทดสอบ
+### Phase 4 — สร้าง Test Script
 
-ไฟล์ `<page>.test_data.json` ที่ผลิตใน Phase 3 จะถูก render เป็นไฟล์ทดสอบ Dart ที่ valid ด้วย syntax ชื่อ `<page>_test.dart` คลาส `TestScriptGenerator` อ่าน key **source** ก่อนเพื่อส่งออก `import` statements สามรายการ (`fileCubit`, `fileState` และไฟล์ซอร์สของหน้า) และประกาศ `BlocProvider<CubitClass>` wrapper ที่ใช้ซ้ำในทุกกรณีทดสอบบน screen เดียวกัน
+ไฟล์ `<page>.test_data.json` ที่สร้างใน Phase 3 จะถูก render เป็นไฟล์ Dart test ที่ถูกต้องตาม syntax ชื่อ `<page>_test.dart` โดย class `TestScriptGenerator` อ่าน **source** key ก่อนเพื่อส่งออก `import` statements สามรายการ (`fileCubit`, `fileState` และไฟล์ page source) และประกาศ `BlocProvider<CubitClass>` wrapper ที่ใช้ร่วมกันใน test cases ทั้งหมดในหน้าเดียวกัน
 
-กรณีทดสอบถูกแบ่งตามฟิลด์ `group` เป็นสาม `group()` blocks ในไฟล์ output: `pairwise_valid_invalid_cases` (VI cases ที่ยืนยันการปฏิเสธฟอร์มเมื่ออินพุตไม่ถูกต้อง), `pairwise_valid_cases` (V cases ที่ยืนยันการส่งข้อมูลสำเร็จเมื่ออินพุตถูกต้อง) และ `edge_cases` (boundary-value cases) แต่ละ entry ใน array `cases` กลายเป็น `testWidgets` block อิสระหนึ่งบล็อกที่ตั้งชื่อตาม identifier `tc` ของมัน block มีโครงสร้างดังนี้:
+Test cases ถูกแบ่งตาม `group` field ออกเป็นสาม `group()` blocks ในไฟล์ output: `pairwise_invalid_cases`, `pairwise_valid_cases` และ `edge_cases` แต่ละ entry ใน `cases` array กลายเป็น `testWidgets` block อิสระหนึ่งตัวที่ตั้งชื่อตาม `tc` identifier โดย block มีโครงสร้างดังนี้:
 
-1. **Setup:** `tester.pumpWidget()` pump `MaterialApp` พร้อมหน้าที่ wrap อยู่ใน `BlocProvider` ที่ประกาศจากข้อมูลเมตา `source`
-2. **Interact:** แต่ละ entry ใน `steps` จะถูกแปลงเป็น `WidgetTester` call ตามลำดับ — `enterText` แก้ไขค่าจาก key `datasets`; `tap` และ `tapText` ค้นหา widget ด้วย key หรือข้อความ label; `pump` และ `pumpAndSettle` ซิงค์ UI ระหว่างการโต้ตอบ
-3. **Assert:** แต่ละ entry ใน `asserts` จะถูก render เป็น `expect()` call entry แบบ `text` กลายเป็น `expect(find.text('msg'), findsOneWidget)` และ entry แบบ `byKey` กลายเป็น `expect(find.byKey(Key('k')), findsOneWidget)`; matcher สลับระหว่าง `findsOneWidget` และ `findsNothing` ตาม flag `exists`
+1. **Setup:** `tester.pumpWidget()` pump `MaterialApp` พร้อมหน้าที่ wrap ใน `BlocProvider` ที่ประกาศจาก `source` metadata
+2. **Interact:** แต่ละ `steps` entry แปลเป็น `WidgetTester` call ที่สอดคล้องกันตามลำดับ โดย `enterText` resolve ค่าจาก `datasets` key; `tap` และ `tapText` ค้นหา widgets ด้วย key หรือ label text; `pump` และ `pumpAndSettle` synchronize UI ระหว่างการโต้ตอบ
+3. **Assert:** แต่ละ `asserts` entry render เป็น `expect()` call โดย `text`-based entry กลายเป็น `expect(find.text('msg'), findsOneWidget)` และ `byKey`-based entry กลายเป็น `expect(find.byKey(Key('k')), findsOneWidget)` โดย matcher สลับระหว่าง `findsOneWidget` และ `findsNothing` ตาม `exists` flag
 
-ขั้นตอน `ElevatedButton` จะเป็นการโต้ตอบสุดท้ายเสมอ ตามด้วย `pumpAndSettle()` เพื่อให้มั่นใจว่าการอัปเดต UI แบบ asynchronous ทั้งหมดเสร็จสมบูรณ์ก่อนที่การยืนยันจะทำงาน
+`ElevatedButton` step จะเป็น interaction สุดท้ายเสมอ ตามด้วย `pumpAndSettle()` เพื่อรับประกันว่า asynchronous UI updates ทั้งหมดสงบก่อนที่ assertions จะรัน
 
 ---
 
-## IV. การออกแบบและการพัฒนาเครื่องมือ
+## IV. การออกแบบและการ Implement เครื่องมือ
 
-### A. ส่วนต่อประสานผู้ใช้ (User Interface)
+### A. User Interface
 
-รูปที่ 2 แสดงหน้าต่างหลักของเครื่องมือ ส่วนต่อประสานผู้ใช้มีสามช่องอินพุตและหนึ่งการกระทำที่ครอบคลุมขั้นตอนการสร้างการทดสอบทั้งหมด:
+รูปที่ 2 แสดง main window ของเครื่องมือ interface มีสาม inputs และหนึ่ง action ที่ครอบคลุม workflow การสร้าง test ทั้งหมด:
 
-1. **ไฟล์ Flutter front-end:** ช่องเลือกไฟล์ (file-picker) สำหรับไฟล์ `.dart` ของ screen เป้าหมาย เครื่องมือตรวจสอบประเภทไฟล์และยืนยันว่ามี widget ที่รองรับพร้อม key อย่างน้อยหนึ่งตัว หากประเภทไฟล์ไม่รองรับจะแสดงข้อความ "Invalid File Type" และบล็อกการดำเนินการต่อ
-2. **Condition file (ทางเลือก):** ช่องเลือกไฟล์ที่สองสำหรับไฟล์ PICT constraint ที่เป็นทางเลือก เขียนด้วย syntax `IF...THEN...` หากระบุ เครื่องมือตรวจสอบ constraint syntax ก่อนดำเนินการต่อ ไฟล์ที่ผิดรูปแบบจะแสดงข้อความ "Invalid Constraint Syntax"
-3. **ไดเรกทอรีผลลัพธ์:** ช่องเลือกไดเรกทอรีที่กำหนดโฟลเดอร์ปลายทางสำหรับ artefacts ที่สร้างขึ้นทั้งหมด ได้แก่ `manifest.json`, `datasets.json`, `test_data.json` และ `<page>_test.dart`
-4. **ปุ่ม Generate:** การคลิก "Generate" เรียกใช้ pipeline สี่ขั้นตอนทั้งหมด สถานะความคืบหน้าและข้อความแสดงข้อผิดพลาดใดๆ จะแสดงแบบ inline ในหน้าต่างหลัก
+1. **Flutter front-end file:** file-picker สำหรับ target `.dart` screen file เครื่องมือตรวจสอบชนิดไฟล์และยืนยันว่ามี widget ที่รองรับและมี key อย่างน้อยหนึ่งตัว หากชนิดไฟล์ไม่รองรับจะแสดงข้อความ "Invalid File Type" และบล็อกการประมวลผลต่อ
+2. **Condition file (optional):** file-picker ที่สองสำหรับ PICT constraint file แบบ optional ที่เขียนใน syntax `IF...THEN...` หากระบุ เครื่องมือจะตรวจสอบ constraint syntax ก่อนดำเนินการต่อ หากไฟล์ผิดพลาดจะแสดงข้อความ "Invalid Constraint Syntax"
+3. **Output directory:** directory-picker ที่กำหนด destination folder สำหรับ artifacts ที่สร้างทั้งหมด ได้แก่ `manifest.json`, `datasets.json`, `test_data.json` และ `<page>_test.dart`
+4. **Generate button:** การคลิก Generate จะ trigger pipeline สี่ phase เต็มรูปแบบ สถานะความคืบหน้าและข้อความ error จะแสดงแบบ inline ใน main window
 
 ### B. การติดตั้ง
 
-ต้องมีสิ่งที่จำเป็นต่อไปนี้ก่อนใช้เครื่องมือ:
+ต้องมี prerequisites ต่อไปนี้ก่อนใช้เครื่องมือ:
 
-1. **Docker** (v28.0.0 ขึ้นไป): เริ่มต้น back-end container ซึ่งโฮสต์บริการ FastAPI (v0.114.1) ที่เปิดเผย REST endpoints สำหรับแต่ละ pipeline phase ด้วยคำสั่ง `docker run -p 8000:8000 <image>`
-2. **PICT:** ติดตั้ง Microsoft PICT binary และตรวจสอบให้แน่ใจว่าเข้าถึงได้บน system `PATH` เครื่องมือเรียกใช้ PICT เป็น subprocess ระหว่าง Phase 3
-3. **Gemini API key:** กำหนดค่า key เป็น environment variable หรือป้อนในแผงการตั้งค่าของเครื่องมือ key จำเป็นสำหรับการเรียกใช้ LLM ใน Phase 2
-4. **Desktop application:** เปิดใช้งาน GUI executable ของ front-end เมื่อรันครั้งแรก เครื่องมือจะถามหา back-end service URL (ค่าเริ่มต้น: `http://localhost:8000`)
+1. **Docker** (v28.0.0 หรือใหม่กว่า): เริ่ม back-end container ที่ host **FastAPI** (v0.114.1) service ที่เปิดเผย REST endpoints สำหรับแต่ละ pipeline phase ด้วยคำสั่ง `docker run -p 8000:8000 <image>`
+2. **PICT:** ติดตั้ง Microsoft PICT binary และรับประกันว่าเข้าถึงได้จาก system `PATH` เครื่องมือเรียก PICT เป็น subprocess ระหว่าง Phase 3
+3. **Gemini API key:** กำหนด key เป็น environment variable หรือป้อนใน settings panel ของเครื่องมือ key จำเป็นสำหรับการเรียก LLM ใน Phase 2
+4. **Web browser:** รัน `bash run_tool.sh` เพื่อเริ่ม web interface server จากนั้นเปิด browser และไปที่ `http://localhost:8080` เพื่อเข้าใช้งานเครื่องมือ
 
-### C. Widget ที่รองรับ
+### C. Widgets ที่รองรับ
 
-เวอร์ชันปัจจุบันรองรับ widget เจ็ดประเภท ดังรายละเอียดในตารางที่ II (ส่วนที่ III) widget ห้าประเภททำหน้าที่เป็น PICT factors (`TextFormField`, `DropdownButtonFormField`, `Radio`, `Checkbox`, `Switch`) หนึ่งประเภทเป็น fixed trigger (`ElevatedButton`) และหนึ่งประเภทเป็น assertion target (`Text`)
+เวอร์ชันปัจจุบันรองรับ widget types เจ็ดแบบตามที่แสดงในตารางที่ II (Section III) โดยห้า widget types ทำหน้าที่เป็น PICT factors (`TextFormField`, `DropdownButtonFormField`, `Radio`, `Checkbox`, `Switch`) หนึ่งตัวทำหน้าที่เป็น fixed trigger (`ElevatedButton`) และหนึ่งตัวทำหน้าที่เป็น assertion target (`Text`)
 
-### D. การสร้างโมเดล PICT
+### D. การสร้าง PICT Model
 
-สำหรับ screen ที่มี widget ที่ไม่ใช่ปุ่ม n ตัว ไฟล์โมเดล PICT มี n parameter lines ในรูปแบบ `<key>: v1, v2, …, vk` โดยแต่ละ $v_i$ คือระดับค่าที่แตกต่างกัน เครื่องมือสร้างไฟล์โมเดลแยกกันสาม ไฟล์ (VI, V และ Edge) และเรียกใช้ PICT ครั้งละหนึ่งไฟล์ แต่ละการรัน PICT ส่งคืน covering array ขั้นต่ำ อาร์เรย์ทั้งสามจะถูก concatenate เพื่อสร้างชุดการทดสอบที่สมบูรณ์สำหรับ screen สำหรับ `TextFormField` ที่มีค่าที่ LLM สร้างขึ้นห้าค่า (สาม valid, สอง invalid) PICT factor ที่สอดคล้องกันมีห้า levels `DropdownButtonFormField` และ `Radio` factors ระบุตัวเลือกที่มีทั้งหมดที่ดึงมาจากซอร์สโค้ด
+สำหรับ screen ที่มี n non-button widgets ไฟล์ PICT model จะมีบรรทัด parameter n บรรทัดในรูปแบบ `<key>: v1, v2, ..., vk` โดยแต่ละ `vi` คือ distinct value level เครื่องมือสร้างไฟล์ model สามไฟล์แยกกัน (VI, V และ Edge) และเรียก PICT หนึ่งครั้งต่อไฟล์ แต่ละการรัน PICT คืน covering array ที่น้อยที่สุด และทั้งสาม arrays ถูก concatenate เพื่อสร้าง test suite ที่สมบูรณ์สำหรับ screen นั้น
 
-### E. ข้อจำกัดในการพัฒนา
+สำหรับ `TextFormField` VI model กำหนด factor นี้มีเพียง `invalid` sentinel level เดียว; V model กำหนด `valid` level เดียว แต่ละ model จึงมีหนึ่ง text-field level ต่อ factor เสมอ `DropdownButtonFormField` และ `Radio` factors จะ enumerate ทุก options ที่ดึงจาก source code
 
-สคริปต์ที่สร้างขึ้นแต่ละชุดครอบคลุม **หนึ่ง** application screen ต่อการรัน ทุก widget เป้าหมายต้องมีคุณสมบัติ `Key` ที่ unique; widget ที่ไม่มี key จะถูกข้ามโดยไม่แจ้งเตือน การเรียกใช้ LLM ต้องการ Gemini API key ที่ valid ขณะรัน และ PICT ต้องถูกติดตั้งและเข้าถึงได้บน system `PATH`
+### E. ข้อจำกัดในการ Implement
+
+สคริปต์ที่สร้างขึ้นครอบคลุมหน้าแอปพลิเคชัน **หนึ่ง** หน้าต่อการรัน widget เป้าหมายทุกตัวต้องมี property `Key` ที่ไม่ซ้ำกัน widgets ที่ไม่มี key จะถูกข้ามโดยเงียบ การเรียก LLM ต้องการ Gemini API key ที่ valid ในขณะรัน และ PICT ต้องติดตั้งและเข้าถึงได้จาก system `PATH`
 
 ---
 
-## V. การประเมิน
+## V. การประเมินผล
 
-### A. การตั้งค่าการทดลอง
+### A. Experimental Setup
 
-เครื่องมือถูกประเมินกับแอปพลิเคชัน Flutter จากโลกจริงสามแอป ได้แก่ แอป Medical Appointment (นัดหมายทางการแพทย์), แอป Job Listing (รายชื่องาน) และแอป Real-Estate Listing (รายชื่ออสังหาริมทรัพย์) โดยเลือก screen สองหน้าต่อแอปพลิเคชัน ให้การประเมินระดับ screen ทั้งหมดหกครั้ง สภาพแวดล้อมการทดสอบใช้ Flutter v3.27.3 บน macOS Sequoia 15.4.1 วัดการครอบคลุมบรรทัดโดยใช้ flag `--coverage` ของ Flutter รวมกับ `lcov` เพื่อกรองผลลัพธ์เฉพาะไฟล์ UI page
+เครื่องมือถูกประเมินกับ Flutter applications ในโลกจริงสามแอป ได้แก่ แอป **Medical Appointment**, แอป **Job Listing** และแอป **Real-Estate Listing** โดยเลือก screens สองหน้าต่อแอปพลิเคชัน รวมทั้งหมดหกการประเมินระดับ screen สภาพแวดล้อมทดสอบใช้ Flutter v3.27.3 รันบน macOS Sequoia 15.4.1 Statement coverage วัดโดยใช้ Flutter `--coverage` flag ร่วมกับ `lcov` เพื่อกรองผลลัพธ์เฉพาะ UI page files
 
-### B. ภาพรวม Case Studies
+### B. Case Studies Overview
 
-แอปพลิเคชันทั้งสามแสดงถึงระดับความซับซ้อนของการตรวจสอบฟอร์มที่เพิ่มขึ้น แอป Medical Appointment มี booking screen ที่มีอินพุต widget เจ็ดตัว (TextFormField, Dropdown, DatePicker) และ search screen ที่เบากว่า แอป Job Listing มี posting screen ที่มีกฎการตรวจสอบข้ามฟิลด์ที่ซับซ้อน (เช่น ข้อจำกัดช่วงเงินเดือน) และ search screen ที่มีจำนวน widget สูงกว่า แอป Real-Estate Listing มี screen สองหน้าที่มีความซับซ้อนใกล้เคียงกัน โดยแต่ละหน้าผสมผสาน text, dropdown และ toggle widgets
+สามแอปพลิเคชันแสดงระดับความซับซ้อนของ form-validation ที่เพิ่มขึ้น แอป **Medical Appointment** มี booking screen ที่มี input widgets เก้าตัว (TextFormField, DropdownButtonFormField, Radio, Switch) และ search screen ที่เบากว่า แอป **Job Listing** มี posting screen ที่มีกฎ cross-field validation ที่ซับซ้อน (เช่น salary range constraints) และ search screen ที่มี widget count สูงกว่า แอป **Real-Estate Listing** นำเสนอสอง screens ที่มีความซับซ้อนใกล้เคียงกัน โดยแต่ละแบบรวม text, dropdown และ toggle widgets
 
-### C. Case Study 1: แอปพลิเคชันนัดหมายทางการแพทย์
+### C. Case Study 1: แอปพลิเคชัน Medical Appointment
 
-Booking screen มีอินพุต widget เจ็ดตัว เครื่องมือสร้างกรณีทดสอบ 52 กรณี (28 VI, 21 V, 3 Edge) สำหรับ booking screen และ 6 กรณีสำหรับ search screen
+แอปพลิเคชัน Medical Appointment ประกอบด้วย appointment-booking screen ที่มี input widgets เก้าตัวและ search screen ที่เบากว่า เครื่องมือสร้าง 52 test cases (28 VI, 21 V, 3 Edge) สำหรับ booking screen และ 6 test cases (2 VI, 1 V, 3 Edge) สำหรับ search screen
 
-**สคริปต์ทดสอบที่สร้างขึ้น**
+### D. Case Study 2: แอปพลิเคชัน Job Listing
 
-เครื่องมือส่งออกไฟล์ `<page>_test.dart` ที่มีโครงสร้างเป็นสาม `group()` blocks: `pairwise_valid_invalid_cases` (VI), `pairwise_valid_cases` (V) และ `edge_cases` แต่ละ entry ใน array `cases` กลายเป็น `testWidgets` block อิสระหนึ่งบล็อก
+แอปพลิเคชัน Job Listing มี posting screen ที่มีกฎ mutual validation ที่ซับซ้อนระหว่าง fields (เช่น salary-range constraints) และ search screen ที่มี widget count ใกล้เคียงกัน เครื่องมือสร้าง 64 test cases (31 VI, 30 V, 3 Edge) สำหรับ posting screen และ 63 test cases (30 VI, 30 V, 3 Edge) สำหรับ search screen แสดงให้เห็นว่า pairwise coverage ปรับตัวได้อย่างเป็นธรรมชาติกับ screens ที่มี dense cross-field constraints
 
-Listing 1 แสดงตัวอย่างย่อของ `pairwise_valid_invalid_cases_1`: สองฟิลด์ได้รับค่าที่ไม่ถูกต้อง — ชื่อผู้ป่วยหนึ่งตัวอักษร (ละเมิดกฎความยาวขั้นต่ำ) และหมายเลขบัตรประชาชน 11 หลัก (คาดหวัง 13 หลัก) — ในขณะที่ฟิลด์ที่เหลือได้รับค่าที่ถูกต้อง ปุ่ม submit ถูกแตะเป็นลำดับสุดท้ายและยืนยัน widget การปฏิเสธฟอร์ม
+### E. Case Study 3: แอปพลิเคชัน Real-Estate Listing
 
-**ผลการรันทดสอบ**
+แอปพลิเคชัน Real-Estate Listing นำเสนอสอง screens ที่มีความซับซ้อนใกล้เคียงกัน ได้แก่ posting และ search โดยแต่ละแบบรวม text, dropdown และ toggle widgets เครื่องมือสร้าง 55 test cases (27 VI, 25 V, 3 Edge) ต่อ screen ยืนยันว่าเครื่องมือสร้าง case count ที่เสถียรสำหรับ screens ที่มี widget inventories ใกล้เคียงกัน
 
-รูปที่ 3 แสดง execution log ที่ผลิตโดย `flutter test` แต่ละ `testWidgets` block ถูกรายงานแยกกัน กรณีทดสอบทั้ง 52 กรณีผ่าน ยืนยันว่าสคริปต์ขับเคลื่อน UI ผ่านทั้ง valid และ invalid input paths ได้อย่างถูกต้อง รูปที่ 5 แสดงไฟล์ output `pairwise_valid_cases` ที่สมบูรณ์ตามที่เครื่องมือ render ออกมา
+### F. ผลการ Coverage
 
-**ผลการครอบคลุม**
+**ตารางที่ III: สรุป Test Coverage**
 
-การรันกรณีทดสอบ 52 กรณีที่สร้างขึ้นกับ booking screen บรรลุการครอบคลุมบรรทัด **96.0%** (166/173 บรรทัด) และ search screen บรรลุ **91.6%** (141/154 บรรทัด) คุณลักษณะสามประการของสคริปต์ที่สร้างขึ้นมีส่วนทำให้ผลลัพธ์นี้: ประการแรก การโต้ตอบ widget ทุกตัวใช้ `find.byKey` ซึ่งเป็น locator ที่เสถียรที่ทนต่อการ refactor UI ประการที่สอง การโต้ตอบ `DatePicker` เป็นอัตโนมัติเต็มรูปแบบ: เครื่องมือ inject ขั้นตอนสลับโหมดก่อนป้อน date string ขจัดแหล่งทั่วไปของ flaky tests ประการที่สาม ทั้งกลุ่มสคริปต์ VI และ V ถูกสร้างขึ้นในการเรียกใช้เดียว ให้ทีมครอบคลุม positive และ negative test paths ทันที
-
-### D. Case Study 2: แอปพลิเคชันรายชื่องาน
-
-Posting screen มี widget หลายตัวพร้อมกฎการตรวจสอบร่วมกันที่ซับซ้อนระหว่างฟิลด์ (เช่น ข้อจำกัดช่วงเงินเดือน) เครื่องมือสร้างกรณีทดสอบ 64 กรณีสำหรับ posting screen (31 VI, 30 V, 3 Edge) และ 63 กรณีสำหรับ search screen (30, 30 และ 3 ตามลำดับ) แสดงให้เห็นว่าการครอบคลุมแบบแพร์ไวส์ปรับตัวตาม screen ที่มีจำนวน widget สูงกว่าได้อย่างเป็นธรรมชาติ
-
-### E. Case Study 3: แอปพลิเคชันรายชื่ออสังหาริมทรัพย์
-
-ทั้ง screen ของแอปอสังหาริมทรัพย์ให้กรณีทดสอบ 55 กรณีต่อ screen (27 VI, 25 V, 3 Edge) สะท้อนให้เห็นถึงความซับซ้อนของ widget ที่คล้ายคลึงกันในทั้งสอง screen รูปที่ 4 แสดงรายงานการครอบคลุมที่ผลิตหลังจากรันสคริปต์ที่สร้างขึ้น
-
-### F. ผลการครอบคลุม
-
-ตารางที่ III สรุปการครอบคลุมบรรทัดและจำนวนกรณีทดสอบในทั้งหกหน้าจอที่ประเมิน ทุก screen บรรลุการครอบคลุมบรรทัดเกิน **91%** ยืนยันว่าสคริปต์ทดสอบที่สร้างด้วย pairwise ทดสอบส่วนใหญ่ของ UI code paths แม้จะมีจำนวนกรณีทดสอบที่ลดลง ตารางที่ IV รายละเอียดการแบ่ง VI, V และ Edge ต่อ screen
-
-**ตารางที่ III: สรุปการครอบคลุมการทดสอบ**
-
-| แอปพลิเคชัน | Screen | จำนวนกรณี | บรรทัด | การครอบคลุม |
-|------------|--------|-----------|--------|------------|
+| แอปพลิเคชัน | Screen | Cases | Statements | Stmt. Coverage |
+|---|---|---|---|---|
 | Medical Appt. | Booking | 52 | 166/173 | 96.0% |
 | Medical Appt. | Search | 6 | 141/154 | 91.6% |
 | Job Listing | Posting | 64 | 161/172 | 93.6% |
@@ -250,10 +242,10 @@ Posting screen มี widget หลายตัวพร้อมกฎการ
 | Real Estate | Posting | 55 | 169/175 | 96.6% |
 | Real Estate | Search | 55 | 233/250 | 93.2% |
 
-**ตารางที่ IV: การแจกแจงกรณีทดสอบ Pairwise ต่อ Screen**
+**ตารางที่ IV: Pairwise Test-Case Breakdown ต่อ Screen**
 
-| แอป | Screen | VI | V | Edge |
-|-----|--------|----|----|------|
+| App | Screen | VI | V | Edge |
+|---|---|---|---|---|
 | Medical Appt. | Booking | 28 | 21 | 3 |
 | Medical Appt. | Search | 2 | 1 | 3 |
 | Job Listing | Posting | 31 | 30 | 3 |
@@ -261,12 +253,49 @@ Posting screen มี widget หลายตัวพร้อมกฎการ
 | Real Estate | Posting | 27 | 25 | 3 |
 | Real Estate | Search | 27 | 25 | 3 |
 
-*VI = pairwise valid/invalid cases; V = pairwise valid cases; Edge = edge cases*
+*VI = pairwise valid/invalid; V = pairwise valid; Edge = edge cases*
+
+ทุกหก screens บรรลุ statement coverage สูงกว่า **91%** โดยผลสูงสุด (**96.6%**, Real-Estate posting) ได้รับแม้จะมี test-case count ที่ลดลง สามลักษณะของสคริปต์ที่สร้างขึ้นมีส่วนทำให้เกิดผลนี้: (i) ทุก widget interaction ใช้ `find.byKey` ซึ่งให้ locator ที่เสถียรและรองรับการ refactor UI; (ii) ทุก `validatorRule` ที่ไม่ว่างเปล่าขับเคลื่อนค่า invalid หนึ่งค่าบวกกับ valid counterpart หนึ่งค่า รับประกันว่า validation branch แต่ละตัวใน Cubit ถูก exercise อย่างน้อยหนึ่งครั้ง; (iii) ทั้ง VI และ V script groups ถูกสร้างในการเรียกครั้งเดียว ให้ทีม coverage ของ positive และ negative test paths ทันที
+
+### G. คำตอบสำหรับคำถามวิจัย
+
+**RQ1 — Coverage ที่บรรลุ:**
+ตารางที่ III ยืนยันว่าทุกหก screens เกิน 91% statement coverage โดยไม่ต้องเขียน test cases ด้วยตนเอง โดยมี peak 96.6% สำหรับ Real-Estate posting screen สคริปต์ที่สร้างขึ้นอัตโนมัติจึงบรรลุ code-path coverage สูงในรูปแบบ form ที่หลากหลาย
+
+**RQ2 — Combinatorial Reduction:**
+ตารางที่ V เปรียบเทียบ exhaustive combinatorial count กับ pairwise VI count สำหรับแต่ละ screen โดยคำนวณ exhaustive count จาก product ของ factor levels ทั้งหมด (โดยนับแต่ละ `TextFormField` เป็น 2 states: valid และ invalid) การลดขนาดขึ้นอยู่กับจำนวน parameters: screens ที่มี factor เดียวไม่แสดงการลดขนาด ในขณะที่ screens ที่มี 11-12 factors บรรลุการลดขนาดสามอันดับ (991× สำหรับ Job-Listing posting; 3,413× สำหรับ Real-Estate posting) ยืนยันว่า pairwise เป็นสิ่งจำเป็นสำหรับการรักษา test suites ให้จัดการได้เมื่อความซับซ้อนของ form เติบโตขึ้น
+
+**ตารางที่ V: Pairwise VI Cases vs. Exhaustive Combinatorial Count**
+
+| App | Screen | Exhaustive | Pairwise VI | Reduction |
+|---|---|---|---|---|
+| Medical Appt. | Booking | 1,792 | 28 | 64× |
+| Medical Appt. | Search | 2 | 2 | 1× |
+| Job Listing | Posting | 30,720 | 31 | 991× |
+| Job Listing | Search | 240 | 30 | 8× |
+| Real Estate | Posting | 92,160 | 27 | 3,413× |
+| Real Estate | Search | 960 | 27 | 36× |
+
+*Exhaustive = product ของ factor levels (2 states ต่อ `TextFormField`: valid และ invalid)*
 
 ---
 
-## VI. บทสรุป
+## VI. สรุป
 
-บทความนี้นำเสนอเครื่องมืออัตโนมัติสำหรับการสร้างสคริปต์ทดสอบ Flutter widget โดยใช้การรวมกันของการดึงข้อมูลเมตาจากซอร์สโค้ด การสร้างข้อมูลสังเคราะห์ที่ขับเคลื่อนด้วย LLM และเทคนิคการทดสอบแบบแพร์ไวส์ เครื่องมือนี้ไม่ต้องการการสร้างกรณีทดสอบด้วยตนเอง นักพัฒนาเพียงแค่ให้ไฟล์ Flutter front-end และได้รับสคริปต์ทดสอบ Dart ที่พร้อมรันเป็น output การประเมินกับแอปพลิเคชันมือถือในโลกจริงสามแอปยืนยันว่าเครื่องมือสร้างสคริปต์ทดสอบที่รันได้พร้อม code coverage ที่วัดได้
+บทความนี้นำเสนอเครื่องมืออัตโนมัติสำหรับสร้าง Flutter widget test scripts โดยใช้การผสมผสานระหว่าง source-code metadata extraction, LLM-driven synthetic data generation และเทคนิค Pairwise testing เครื่องมือนี้ไม่ต้องการการเขียน test cases ด้วยตนเอง นักพัฒนาเพียงระบุ Flutter front-end files และได้รับ Dart test scripts ที่พร้อมรันเป็น output การประเมินกับ mobile applications ในโลกจริงสามแอปยืนยันว่าเครื่องมือสร้าง executable test scripts ที่มี code coverage ที่วัดได้สำเร็จ
 
-ข้อจำกัดปัจจุบัน ได้แก่ การรองรับ widget เจ็ดประเภทที่กำหนดไว้, ขอบเขตหนึ่ง screen ต่อการรัน และการพึ่งพา Gemini API สำหรับการสร้างข้อมูล งานในอนาคตจะขยายการรองรับ widget เปิดใช้งานการทดสอบ multi-screen scenario ตรวจสอบ open-source LLMs ทางเลือกสำหรับการใช้งานแบบ offline และรวม feedback loops เพื่อปรับปรุงข้อมูลทดสอบที่สร้างขึ้นจากผลการรัน
+**ข้อจำกัดปัจจุบัน** ได้แก่ การรองรับ widget types เจ็ดชนิดที่ตายตัว ข้อกำหนดว่า widget เป้าหมายทุกตัวต้องมี property `Key` ที่ไม่ซ้ำกัน (widgets ที่ไม่มี key จะถูกข้ามโดยเงียบ) ขอบเขตหนึ่ง screen ต่อการรัน และกรณีที่ expected results อาจไม่ครอบคลุมทุก validation scenarios ได้อย่างสมบูรณ์
+
+**งานในอนาคต** จะขยายการรองรับ widget ไปยังชนิดเพิ่มเติม เปิดใช้งานการสร้างสคริปต์ทดสอบจากหลาย source files พร้อมกัน รองรับ constraint syntax ที่มี expressive มากขึ้นสำหรับ complex cross-field rules นำวิธีการนี้ไปใช้กับ mobile frameworks อื่นเช่น React Native, Xamarin และ SwiftUI รองรับ back-end requests หลายครั้งภายใน test case เดียว และเปิดใช้งาน multi-screen end-to-end testing พร้อม navigation linking ระหว่างหน้า
+
+---
+
+## อ้างอิง
+
+- **[b1]** Flutter — Google's open-source UI toolkit for building natively compiled cross-platform applications from a single Dart codebase
+- **[b2]** Ekakrachawakitti — วิธีการสร้างสคริปต์ทดสอบ Robot Framework จากไฟล์ web front-end โดยใช้ HTML elements และ database schema constraints
+- **[b3]** Srivichayanun — การสร้างข้อมูลทดสอบสำหรับ web applications โดยใช้ XSD schemas และ Boundary Value Analysis
+- **[b4]** Tuan Pham — CO-STEP prompt engineering framework สำหรับการปรับปรุงคุณภาพ output ของ LLM (context, objective, style, target, execution, polish)
+- **[b5]** Google Gemini 2.5 Flash — LLM ที่ใช้สำหรับการสร้างข้อมูลทดสอบสังเคราะห์
+- **[b7]** Pairwise (all-pairs) testing — เทคนิคการออกแบบ test แบบ black-box ที่รับประกันว่าทุกคู่ของค่า parameter ถูกทดสอบ
+- **[b8]** PICT (Pairwise Independent Combinatorial Testing) — เครื่องมือ open-source ของ Microsoft สำหรับสร้าง pairwise test suite
