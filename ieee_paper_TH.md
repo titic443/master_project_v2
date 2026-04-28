@@ -96,7 +96,7 @@ metadata ที่ดึงได้จะถูก serialize เป็นไฟ
 
 ### Phase 2 — สร้าง Datasets
 
-เฉพาะ `TextFormField` widgets เท่านั้นที่ถูกดึงจาก manifest ใน phase นี้ โดย `Dropdown` และ `Radio` widgets ถูกยกเว้น เนื่องจาก enumerated levels ของพวกมันถูก resolve โดยตรงจาก `options` list ใน Phase 1
+เฉพาะ `TextFormField` widgets เท่านั้นที่ถูกดึงจาก manifest ใน phase นี้
 
 metadata ที่กรองแล้วจะถูกประกอบเป็น structured prompt ที่มี **หกองค์ประกอบ** ตามแนวทางของ Tuan Pham:
 
