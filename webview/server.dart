@@ -1014,7 +1014,7 @@ class PipelineController {
     final testDataFiles = <String>[];
     if (await testDataDir.exists()) {
       await for (final entity in testDataDir.list()) {
-        if (entity is File && entity.path.endsWith('.testdata.json')) {
+        if (entity is File && entity.path.endsWith('.test_data.json')) {
           testDataFiles.add(entity.path);
         }
       }
@@ -1040,7 +1040,7 @@ class PipelineController {
     final testDir = Directory('test');
     if (await testDir.exists()) {
       await for (final entity in testDir.list()) {
-        if (entity is File && entity.path.endsWith('_flow_test.dart')) {
+        if (entity is File && entity.path.endsWith('_test.dart')) {
           testsGenerated++;
         }
       }

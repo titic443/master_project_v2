@@ -103,7 +103,7 @@ class TestDataGenerator {
       constraints: constraints,
     );
 
-    return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+    return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.test_data.json';
   }
 
   // =========================================================================
@@ -2222,7 +2222,7 @@ class TestDataGenerator {
     };
 
     final outPath =
-        'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+        'output/test_data/${utils.basenameWithoutExtension(uiFile)}.test_data.json';
 
     File(outPath).createSync(recursive: true);
     File(outPath).writeAsStringSync(

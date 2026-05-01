@@ -307,7 +307,7 @@ built independently:
   \item \textbf{Valid-only (V):} factors contain valid levels only; PICT
         produces positive-path test cases.
   \item \textbf{Edge:} three manually crafted boundary-value combinations
-        (empty input, maximum-length, special characters) are appended.
+        (empty input, maximum-length, minimum-length) are appended.
 \end{enumerate}
 
 % --- FIGURE: datasets.json (Phase 2 output / Phase 3 input) ---
@@ -431,7 +431,7 @@ above.
     \texttt{TextFormField}           & Factor (N levels) & \texttt{enterText} \\
     \texttt{DropdownButton}\newline\texttt{FormField} & Factor (enum) & \texttt{tap} $\times$2 \\
     \texttt{Radio}                   & Factor (enum)     & \texttt{tap} \\
-    \texttt{Checkbox}                & Factor \{on,off\} & \texttt{tap} \\
+    \texttt{Checkbox}                & Factor \{checked,unchecked\} & \texttt{tap} \\
     \texttt{Switch}                  & Factor \{on,off\} & \texttt{tap} \\
     \texttt{ElevatedButton}          & Trigger (fixed)   & \texttt{tap} (last) \\
     \texttt{Text}                    & Assertion target  & \texttt{find.text} \\

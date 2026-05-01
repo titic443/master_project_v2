@@ -97,8 +97,8 @@ class TestScriptGenerator {
     } else {
       final base = testDataPath
           .replaceAll('output/test_data/', '')
-          .replaceAll(RegExp(r'\.testdata\.json$'), '');
-      effectivePath = 'integration_test/${base}_flow_test.dart';
+          .replaceAll(RegExp(r'\.test_data\.json$'), '');
+      effectivePath = 'integration_test/${base}_test.dart';
     }
 
     // เรียก function หลักในการประมวลผล
