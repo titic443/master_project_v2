@@ -246,23 +246,16 @@ per screen and per widget.
 Only \texttt{TextFormField} widgets are extracted from the manifest
 for this phase.
 
-The filtered metadata is assembled into a structured prompt composed
-of six components following the approach of Tuan Pham~\cite{b4}:
-\textit{context} (``Test data generator for Flutter form
-validation.''), \textit{objective} (five rules: analyze \texttt{maxLength},
-\texttt{inputFormatters}, and \texttt{validatorRules}; skip
-\texttt{isEmpty}/\texttt{null} rules, which are handled separately by
-edge-case generation in Phase~3; generate one valid/invalid pair per
-nonempty rule; ensure invalid values still conform to
-\texttt{inputFormatters} so they remain typeable; and output valid
-JSON), \textit{style} (JSON only, no markdown, realistic values, string
-arrays only), \textit{target} (instructs the model to act as a QA
-engineer generating data for happy-path and error-path scenarios),
-\textit{execution} (step-by-step counting procedure accompanied by two
-few-shot examples that fix the output schema and prevent hallucinated
-values), and \textit{polish} (output quality constraints ensuring
-consistent schema adherence and no extraneous fields). The widget
-metadata extracted in Phase~1 is appended as the input-data payload.
+The filtered metadata is assembled into a structured prompt following
+the six-component framework of Tuan Pham~\cite{b4} (context, target,
+objective, execution, style, polish). Key objective rules instruct the
+model to analyze \texttt{maxLength}, \texttt{inputFormatters}, and
+\texttt{validatorRules}; skip \texttt{isEmpty}/\texttt{null} checks
+(handled by edge-case generation in Phase~3); generate one valid/invalid
+pair per nonempty rule; ensure invalid values still conform to
+\texttt{inputFormatters}; and return valid JSON. Two few-shot examples
+in the execution component fix the output schema and prevent hallucinated
+values. The widget metadata from Phase~1 is appended as the input payload.
 
 The prompt is submitted to \textit{Google Gemini 2.5 Flash}
 \cite{b5} via the Gemini API (HTTP POST). The model returns a
@@ -324,40 +317,16 @@ built independently:
 \end{figure}
 
 Before invoking PICT, the developer may supply an optional
-\textit{constraint file} (\texttt{<page>.constraints.txt}) that encodes
-business-logic rules which reside in the Cubit layer and are therefore
-invisible to static analysis of the front-end file alone. The tool
-recognizes three mutually exclusive grammar forms, each dispatched to a
-different stage of the pipeline:
-\begin{enumerate}
-  \item \textbf{Valid override (\texttt{<key>.valid = <value>}):}
-        pins a specific \textit{valid} input value for a single widget key.
-        On import, the tool overwrites the corresponding entry in
-        \texttt{<page>.datasets.json}, so the pinned value replaces the
-        LLM-generated sample before any PICT invocation takes place.
-  \item \textbf{Invalid override (\texttt{<key>.invalid = <value>}):}
-        pins an \textit{invalid} input value for a widget key using the
-        same overwrite mechanism on \texttt{<page>.datasets.json}. Forms
-        (1) and (2) therefore leave the PICT model untouched; they only
-        change the concrete strings that Phase~4 eventually emits.
-  \item \textbf{Cross-widget relation
-        (\texttt{IF [key\textsubscript{A}] = "v\textsubscript{A}" THEN
-        [key\textsubscript{B}] = "v\textsubscript{B}";}):} expresses a
-        dependency between two widgets, optionally negated with
-        \texttt{<>}. Rules of this form are appended as a
-        \texttt{[Constraints]} section to both
-        \texttt{<page>.invalid.model.txt} and
-        \texttt{<page>.valid.model.txt}, and PICT is then asked to
-        produce only combinations that satisfy them.
-\end{enumerate}
-This split gives the developer a lightweight way to encode
-fixed-lookup values (forms 1--2) without having to reason about PICT
-syntax, while still exposing the full expressive power of PICT
-constraints (form 3) for mutual-exclusion or implication rules between
-fields. The tool validates the grammar of every line before either
-overwriting the datasets or appending to the model; a syntax error
-triggers an \textit{``Invalid Constraint Syntax''} message and halts
-the pipeline.
+\textit{constraint file} (\texttt{<page>.constraints.txt}) encoding
+business-logic rules invisible to static analysis. Three grammar forms
+are recognized: (1)~\texttt{<key>.valid = <value>} and
+(2)~\texttt{<key>.invalid = <value>} pin concrete strings in
+\texttt{<page>.datasets.json} before PICT runs, leaving the model
+untouched; (3)~\texttt{IF [key\textsubscript{A}] = "v" THEN
+[key\textsubscript{B}] = "v";} appends cross-widget rules to both
+model files so PICT produces only satisfying combinations. A syntax
+error triggers an \textit{``Invalid Constraint Syntax''} message and
+halts the pipeline.
 
 PICT is then invoked as a subprocess once per model file
 (\texttt{<page>.invalid.model.txt} for VI and
@@ -458,29 +427,17 @@ rejection on invalid input), \texttt{pairwise\_valid\_cases} (V cases
 that verify successful submission on valid input), and
 \texttt{edge\_cases} (boundary-value cases). Each entry in the
 \texttt{cases} array becomes one independent \texttt{testWidgets}
-block named after its \texttt{tc} identifier. The block is structured
-as follows:
-\begin{enumerate}
-  \item \textbf{Setup:} \texttt{tester.pumpWidget()} pumps a
-        \texttt{MaterialApp} with the page wrapped in the
-        \texttt{BlocProvider} declared from \texttt{source} metadata.
-  \item \textbf{Interact:} each \texttt{steps} entry is translated
-        to the corresponding \texttt{WidgetTester} call in sequence
-        order---\texttt{enterText} resolves its value from the
-        \texttt{datasets} key; \texttt{tap} and \texttt{tapText}
-        locate widgets by key or label text; \texttt{pump} and
-        \texttt{pumpAndSettle} synchronize the UI between interactions.
-  \item \textbf{Assert:} each \texttt{asserts} entry is rendered as
-        an \texttt{expect()} call. A \texttt{text}-based entry becomes
-        \texttt{expect(find.text(`msg'),} \texttt{findsOneWidget)} and
-        a \texttt{byKey}-based entry becomes
-        \texttt{expect(find.byKey(Key(`k')),} \texttt{findsOneWidget)};
-        the matcher switches between \texttt{findsOneWidget} and
-        \texttt{findsNothing} according to the \texttt{exists} flag.
-\end{enumerate}
-The \texttt{ElevatedButton} step is always the last interaction,
-followed by \texttt{pumpAndSettle()}, ensuring all asynchronous UI
-updates settle before the assertions execute.
+block named after its \texttt{tc} identifier, structured in three
+steps. \textbf{Setup:} \texttt{tester.pumpWidget()} pumps a
+\texttt{MaterialApp} with the page wrapped in the \texttt{BlocProvider}
+from \texttt{source} metadata. \textbf{Interact:} each \texttt{steps}
+entry is translated to the corresponding \texttt{WidgetTester} call in
+sequence order, with \texttt{enterText} resolving values from the
+\texttt{datasets} key and \texttt{pumpAndSettle} synchronizing the UI;
+the \texttt{ElevatedButton} tap is always last. \textbf{Assert:} each
+\texttt{asserts} entry becomes an \texttt{expect()} call using
+\texttt{findsOneWidget} or \texttt{findsNothing} per the \texttt{exists}
+flag.
 
 % ===============================================
 \section{Tool Design and Implementation}
@@ -583,23 +540,19 @@ combined with \texttt{lcov} to filter results to UI page files only.
 The three applications represent increasing levels of form-validation
 complexity. The \textit{Medical Appointment} app contains a booking
 screen with nine input widgets (TextFormField, DropdownButtonFormField,
-Radio, Switch) and a lighter search screen. The \textit{Job Listing} app includes a
-posting screen with complex cross-field validation rules
-(e.g., salary range constraints) and a search screen with a higher
-widget count. The \textit{Real-Estate Listing} app presents two screens
-of similar complexity, each combining text, dropdown, and toggle
-widgets.
+Radio, Switch) and a lighter search screen, yielding 52 test cases
+(28~VI, 21~V, 3~Edge) and 6 test cases (2~VI, 1~V, 3~Edge)
+respectively. The \textit{Job Listing} app includes a posting screen
+with complex cross-field validation rules (e.g., salary-range
+constraints), generating 64 cases (31~VI, 30~V, 3~Edge) for posting
+and 63 cases (30~VI, 30~V, 3~Edge) for search---demonstrating that
+pairwise adapts naturally to dense constraints. The
+\textit{Real-Estate Listing} app presents two screens of similar
+complexity, each producing 55 cases (27~VI, 25~V, 3~Edge), confirming
+a stable case count for comparable widget inventories.
+Fig.~\ref{fig:case_example} shows one generated VI case.
 
-\subsection{Case Study 1: Medical Appointment Application}
-The Medical Appointment application comprises an appointment-booking
-screen with nine input widgets and a lighter search screen. The tool
-generated 52 test cases (28~VI, 21~V, 3~Edge) for the booking screen
-and 6 test cases (2~VI, 1~V, 3~Edge) for the search screen.
-Fig.~\ref{fig:case_example} shows one of the generated VI cases as it
-appears inside \texttt{<page>.test\_data.json} before being rendered
-into a \texttt{testWidgets} block in \texttt{<page>\_test.dart}.
-
-% --- FIGURE: test_data.json case example (Case Study 1) ---
+% --- FIGURE: test_data.json case example ---
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figure5.png}
@@ -609,22 +562,6 @@ into a \texttt{testWidgets} block in \texttt{<page>\_test.dart}.
            \texttt{<page>\_test.dart}.}
   \label{fig:case_example}
 \end{figure}
-
-\subsection{Case Study 2: Job Listing Application}
-The Job Listing application includes a posting screen with complex
-mutual validation rules between fields (e.g., salary-range
-constraints) and a search screen of comparable widget count. The tool
-generated 64 test cases (31~VI, 30~V, 3~Edge) for the posting screen
-and 63 test cases (30~VI, 30~V, 3~Edge) for the search screen,
-demonstrating that pairwise coverage adapts naturally to screens with
-dense cross-field constraints.
-
-\subsection{Case Study 3: Real-Estate Listing Application}
-The Real-Estate Listing application presents two screens of similar
-complexity---posting and search---each combining text, dropdown, and
-toggle widgets. The tool generated 55 test cases (27~VI, 25~V,
-3~Edge) per screen, confirming that the tool produces a stable
-case count for screens with comparable widget inventories.
 
 \subsection{Coverage Results}
 Table~\ref{tab:coverage} summarizes the statement coverage and test-case
@@ -719,6 +656,7 @@ test suites manageable as form complexity grows.
   \label{tab:combinatorial}
   \centering
   \renewcommand{\arraystretch}{1.3}
+  \resizebox{\columnwidth}{!}{%
   \begin{tabular}{llrrr}
     \toprule
     \textbf{App} & \textbf{Screen} &
@@ -736,7 +674,7 @@ test suites manageable as form complexity grows.
     \bottomrule
     \multicolumn{5}{l}{\footnotesize Exhaustive\,=\,product of factor
       levels (2 states per \texttt{TextFormField}: valid and invalid).} \\
-  \end{tabular}
+  \end{tabular}}
 \end{table}
 
 % ===============================================
@@ -751,17 +689,11 @@ front-end files and receive ready-to-run Dart test scripts as output.
 Evaluation on three real-world mobile applications confirmed that the tool
 successfully generates executable test scripts with measurable code coverage.
 
-Current limitations include support for a fixed set of seven widget types,
-a requirement that every target widget carries a unique \texttt{Key}
-property (widgets without a key are silently skipped), a single-screen
-scope per execution, and cases where expected results may not fully cover
-all validation scenarios. Future work will extend widget support to
-additional types, enable test-script generation from multiple source files
-simultaneously, support more expressive constraint syntax for complex
-cross-field rules, apply the approach to other mobile frameworks such as
-React Native, Xamarin, and SwiftUI, support multiple back-end requests
-within a single test case, and enable multi-screen end-to-end testing with
-navigation linking between pages.
+Current limitations include a fixed set of supported widget types, a
+single-screen scope per execution, and a requirement that every target
+widget carry a unique \texttt{Key}. Future work will extend widget
+support, enable multi-screen end-to-end testing, and apply the approach
+to other mobile frameworks such as React Native and SwiftUI.
 
 % -----------------------------------------------
 %  References
