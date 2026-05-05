@@ -74,7 +74,9 @@ Pairwise (all-pairs) testing เป็นเทคนิคการออกแ
 
 ในระดับ **screen** เครื่องมือบันทึก Business Logic Component (BLoC)/Cubit metadata ที่จำเป็นสำหรับการสร้าง test environment ได้แก่ ชื่อ class ของ page widget (`pageClass`), Cubit class (`cubitClass`), State class ที่เกี่ยวข้อง (`stateClass`) และ path ไปยัง Cubit และ State source file (`fileCubit`, `fileState`) field เหล่านี้ช่วยให้ test script ที่สร้างขึ้นสามารถ import ไฟล์ที่ถูกต้องและสร้าง `BlocProvider` wrapper ได้อัตโนมัติ
 
-ในระดับ **widget** เครื่องมือบันทึก: (i) widget key ที่ไม่ซ้ำกัน, (ii) ชื่อ class ของ widget, (iii) รูปแบบอักขระที่อนุญาตจาก `inputFormatters`, (iv) ความยาว input สูงสุด (`maxLength`) สำหรับ `TextFormField` widget, และ (v) กฎการตรวจสอบและข้อความแสดงข้อผิดพลาดที่แยกวิเคราะห์จาก `validator` callback (`validatorRules`)
+ในระดับ **widget** เครื่องมือบันทึก: (i) widget key ที่ไม่ซ้ำกัน, (ii) ชื่อ class ของ widget, และ type-specific metadata ภายใน `meta` block สำหรับ `TextFormField` บล็อก `meta` บรรจุรูปแบบอักขระที่อนุญาต (`inputFormatters`), ความยาว input สูงสุด (`maxLength`) และกฎการตรวจสอบพร้อมข้อความแสดงข้อผิดพลาด (`validatorRules`) สำหรับ `DropdownButtonFormField` บรรจุรายการ option ที่เลือกได้ (`options`) สำหรับ `Radio` บรรจุค่า enum ที่ปุ่มนี้แทน (`valueExpr`) และ shared state binding ของกลุ่ม radio (`groupValueBinding`) สำหรับ `Switch` และ `Checkbox` บรรจุ state binding ปัจจุบัน (`valueBinding`)
+
+Widget key ปฏิบัติตามรูปแบบการตั้งชื่อ `<prefix>_<seq>_<desc>_<type>` (เช่น `appt_01_patient_name_textfield`) โดย `seq` เป็น integer แบบ zero-padded ที่ Phase 3 ใช้จัดลำดับขั้นตอนการโต้ตอบกับ widget Widget ที่มี key ซึ่งลงท้ายด้วย `_expected_success`, `_dialog_success`, `_expected_fail` หรือ `_dialog_fail` ถูกกำหนดให้เป็น outcome-assertion target โดย Phase 3 จะส่ง assertion แบบ `byKey` สำหรับ widget เหล่านี้แทนที่จะรวมเข้าไปใน PICT factor
 
 metadata ที่ดึงมาจะถูก serialize เป็นไฟล์ `manifest.json` จัดกลุ่มตามชื่อ screen ตาราง I แสดง field ที่บันทึกต่อ screen และต่อ widget
 
@@ -94,7 +96,11 @@ metadata ที่ดึงมาจะถูก serialize เป็นไฟล
 | `widgetType` | ชื่อ class ของ widget | Y |
 | `inputFormatters` | รูปแบบอักขระที่อนุญาตสำหรับ input | N |
 | `maxLength` | ความยาวอักขระสูงสุดสำหรับ `TextFormField` | N |
-| `validatorRules` | เงื่อนไขการตรวจสอบและข้อความแสดงข้อผิดพลาด | N |
+| `validatorRules` | เงื่อนไขการตรวจสอบและข้อความแสดงข้อผิดพลาด (`TextFormField`) | N |
+| `options` | รายการ option ที่เลือกได้ (`DropdownButtonFormField`) | N |
+| `groupValueBinding` | Shared state binding สำหรับกลุ่ม `Radio` | N |
+| `valueExpr` | ค่า enum ที่ปุ่ม `Radio` นี้แทน | N |
+| `valueBinding` | State binding สำหรับ `Switch` หรือ `Checkbox` | N |
 
 ### Phase 2 — สร้าง Datasets
 
@@ -116,15 +122,15 @@ prompt ถูกส่งไปยัง **Google Gemini 2.5 Flash** ผ่า�
 
 โดยใช้ dataset ที่สร้างใน Phase 2 เครื่องมือสร้างไฟล์ PICT model ซึ่ง widget ที่ไม่ใช่ button แต่ละตัวแมปกับ **factor** หนึ่งตัว และค่าที่แตกต่างกันแต่ละค่าแมปกับ **level** หนึ่งระดับ สร้าง model variant สามแบบอย่างอิสระ:
 
-1. **Valid/Invalid (VI):** `TextFormField` factors มีเฉพาะ `invalid` sentinel level; non-text factors (`Dropdown`, `Radio`, `Checkbox`, `Switch`) ระบุค่า option ทั้งหมด ทุก PICT combination จึงมี text input ที่ invalid อย่างน้อยหนึ่งตัว สร้าง negative-path test case
-2. **Valid-only (V):** factors มีเฉพาะ valid level; PICT สร้าง positive-path test case
+1. **Invalid (IV):** `TextFormField` factors มีเฉพาะ `invalid` sentinel level; non-text factors (`Dropdown`, `Radio`, `Checkbox`, `Switch`) ระบุค่า option ทั้งหมด ทุก PICT combination จึงมี text input ที่ invalid อย่างน้อยหนึ่งตัว สร้าง negative-path test case
+2. **Valid (V):** factors มีเฉพาะ valid level; PICT สร้าง positive-path test case
 3. **Edge:** boundary-value combination สามชุดที่สร้างด้วยมือ (empty input, ความยาวสูงสุด, ความยาวต่ำสุด) ถูกเพิ่มเข้ามา
 
 ก่อนเรียก PICT นักพัฒนาอาจจัดหา **constraint file** เสริม (`<page>.constraints.txt`) ที่เข้ารหัสกฎ business-logic ที่มองไม่เห็นจาก static analysis รูปแบบ grammar สามแบบถูกรับรู้: (1) `<key>.valid = <value>` และ (2) `<key>.invalid = <value>` ปักหมุด string ที่เป็นรูปธรรมใน `<page>.datasets.json` ก่อน PICT รัน โดยไม่แตะ model; (3) `IF [key_A] = "v" THEN [key_B] = "v";` เพิ่มกฎ cross-widget ลงในไฟล์ model ทั้งสองเพื่อให้ PICT สร้างเฉพาะ combination ที่เป็นไปตามเงื่อนไข ข้อผิดพลาดทาง syntax จะแสดงข้อความ "Invalid Constraint Syntax" และหยุด pipeline
 
-จากนั้น PICT ถูกเรียกเป็น subprocess หนึ่งครั้งต่อไฟล์ model (`<page>.invalid.model.txt` สำหรับ VI และ `<page>.valid.model.txt` สำหรับ V) output ที่คั่นด้วย tab ของมัน ซึ่งแต่ละแถวเป็น test case หนึ่งแถว และแต่ละคอลัมน์เป็น factor หนึ่งตัว ถูก parse และแต่ละแถวถูกประกอบเป็น case object พร้อมกับ widget interaction step และ expected assertion ที่คาดหวัง
+จากนั้น PICT ถูกเรียกเป็น subprocess หนึ่งครั้งต่อไฟล์ model (`<page>.invalid.model.txt` สำหรับ IV และ `<page>.valid.model.txt` สำหรับ V) output ที่คั่นด้วย tab ของมัน ซึ่งแต่ละแถวเป็น test case หนึ่งแถว และแต่ละคอลัมน์เป็น factor หนึ่งตัว ถูก parse และแต่ละแถวถูกประกอบเป็น case object พร้อมกับ widget interaction step และ expected assertion ที่คาดหวัง
 
-array ผลลัพธ์สามชุด (VI, V, Edge) จะถูกรวมเป็นไฟล์ `<page>.test_data.json` ไฟล์เดียวที่มี top-level key สามตัว:
+array ผลลัพธ์สามชุด (IV, V, Edge) จะถูกรวมเป็นไฟล์ `<page>.test_data.json` ไฟล์เดียวที่มี top-level key สามตัว:
 
 - **source:** BLoC metadata ระดับ screen ที่ส่งต่อมาจาก Phase 1 (`pageClass`, `cubitClass`, `stateClass`, `fileCubit`, `fileState`) Phase 4 อ่าน key นี้เพื่อส่ง `import` statement และสร้าง `BlocProvider` wrapper
 - **datasets:** valid/invalid value pair ที่สร้างใน Phase 2 โดย key ของ widget (`byKey`) Phase 4 อ่าน key นี้เพื่อ resolve ค่าที่เป็นรูปธรรมเมื่อ render `enterText` call
@@ -136,19 +142,18 @@ array ผลลัพธ์สามชุด (VI, V, Edge) จะถูกร�
 
 | Widget | บทบาทใน PICT | Test Command |
 |---|---|---|
-| `TextFormField` | Factor (N levels) | `enterText` |
+| `TextFormField` | Factor {valid, invalid} | `enterText` |
 | `DropdownButtonFormField` | Factor (enum) | `tap` ×2 |
 | `Radio` | Factor (enum) | `tap` |
 | `Checkbox` | Factor {checked, unchecked} | `tap` |
 | `Switch` | Factor {on, off} | `tap` |
 | `ElevatedButton` | Trigger (fixed) | `tap` (last) |
-| `Text` | Assertion target | `find.text` |
 
 ### Phase 4 — สร้าง Test Script
 
 ไฟล์ `<page>.test_data.json` ที่สร้างใน Phase 3 ถูก render เป็นไฟล์ Dart test ที่ถูกต้องทาง syntax ชื่อ `<page>_test.dart` class `TestScriptGenerator` อ่าน key **source** ก่อนเพื่อส่ง `import` statement สาม statement (`fileCubit`, `fileState` และ page source file) และประกาศ `BlocProvider<CubitClass>` wrapper ที่ใช้ซ้ำใน test case ทั้งหมดบน screen เดียวกัน
 
-Test case ถูกแบ่งตาม field `group` เป็น `group()` block สามบล็อกในไฟล์ output: `pairwise_invalid_cases` (VI cases ที่ตรวจสอบการปฏิเสธ form บน invalid input), `pairwise_valid_cases` (V cases ที่ตรวจสอบการ submit สำเร็จบน valid input) และ `edge_cases` (boundary-value cases)
+Test case ถูกแบ่งตาม field `group` เป็น `group()` block สามบล็อกในไฟล์ output: `pairwise_invalid_cases` (IV cases ที่ตรวจสอบการปฏิเสธ form บน invalid input), `pairwise_valid_cases` (V cases ที่ตรวจสอบการ submit สำเร็จบน valid input) และ `edge_cases` (boundary-value cases)
 
 แต่ละ entry ใน `cases` array กลายเป็น `testWidgets` block อิสระหนึ่งบล็อก ชื่อตาม `tc` identifier ของมัน มีโครงสร้างสามขั้นตอน:
 - **Setup:** `tester.pumpWidget()` pump `MaterialApp` ที่มี page ห่อด้วย `BlocProvider` จาก source metadata
@@ -179,13 +184,13 @@ Fig. 4 แสดง main window ของเครื่องมือ interfac
 
 ### C. Widget ที่รองรับ
 
-version ปัจจุบันรองรับ widget เจ็ดประเภท ดังรายละเอียดใน Table II (Section III) Widget ห้าประเภททำหน้าที่เป็น PICT factor (`TextFormField`, `DropdownButtonFormField`, `Radio`, `Checkbox`, `Switch`) หนึ่งประเภทเป็น fixed trigger (`ElevatedButton`) และหนึ่งประเภทเป็น assertion target (`Text`)
+version ปัจจุบันรองรับ widget หกประเภท ดังรายละเอียดใน Table II (Section III) Widget ห้าประเภททำหน้าที่เป็น PICT factor (`TextFormField`, `DropdownButtonFormField`, `Radio`, `Checkbox`, `Switch`) และหนึ่งประเภทเป็น fixed trigger (`ElevatedButton`) Outcome assertion ไม่ผูกกับ widget type เฉพาะ แต่ widget ใดก็ตามที่มี key ลงท้ายด้วย `_expected_success`, `_dialog_success`, `_expected_fail` หรือ `_dialog_fail` จะถูกกำหนดเป็น assertion target ที่ตรวจสอบผ่าน `find.byKey`
 
 ### D. การสร้าง PICT Model
 
-สำหรับ screen ที่มี widget ที่ไม่ใช่ button n ตัว ไฟล์ PICT model มี parameter line n บรรทัดในรูปแบบ `<key>: v1, v2, ..., vk` โดยแต่ละ `vi` เป็น value level ที่แตกต่างกัน เครื่องมือสร้างไฟล์ PICT model สองไฟล์ ได้แก่ VI และ V และเรียก PICT หนึ่งครั้งต่อไฟล์ แต่ละ PICT run ส่งคืน minimal covering array; สอง array ถูก concatenate กับ three hardcoded edge case เพื่อสร้าง test suite ที่สมบูรณ์สำหรับ screen
+สำหรับ screen ที่มี widget ที่ไม่ใช่ button n ตัว ไฟล์ PICT model มี parameter line n บรรทัดในรูปแบบ `<key>: v1, v2, ..., vk` โดยแต่ละ `vi` เป็น value level ที่แตกต่างกัน เครื่องมือสร้างไฟล์ PICT model สองไฟล์ ได้แก่ IV และ V และเรียก PICT หนึ่งครั้งต่อไฟล์ แต่ละ PICT run ส่งคืน minimal covering array; สอง array ถูก concatenate กับ three hardcoded edge case เพื่อสร้าง test suite ที่สมบูรณ์สำหรับ screen
 
-สำหรับ `TextFormField` VI model กำหนด factor เป็น `invalid` sentinel level เดียว และ V model กำหนด `valid`; แต่ละ model จึงมี text-field level เพียงหนึ่งระดับต่อ factor `DropdownButtonFormField` และ `Radio` factor ระบุ option ทั้งหมดที่ดึงมาจาก source code; `Checkbox` factor ใช้ fixed level {checked, unchecked} และ `Switch` factor ใช้ fixed level {on, off}
+สำหรับ `TextFormField` IV model กำหนด factor เป็น `invalid` sentinel level เดียว และ V model กำหนด `valid`; แต่ละ model จึงมี text-field level เพียงหนึ่งระดับต่อ factor `DropdownButtonFormField` และ `Radio` factor ระบุ option ทั้งหมดที่ดึงมาจาก source code; `Checkbox` factor ใช้ fixed level {checked, unchecked} และ `Switch` factor ใช้ fixed level {on, off}
 
 ### E. ข้อจำกัดในการ Implement
 
@@ -203,15 +208,15 @@ version ปัจจุบันรองรับ widget เจ็ดประ�
 
 แอปพลิเคชันสามตัวแสดงถึงระดับความซับซ้อนของ form-validation ที่เพิ่มขึ้น:
 
-- **Medical Appointment app** มี booking screen ที่มี input widget เก้าตัว (TextFormField, DropdownButtonFormField, Radio, Switch) และ search screen ที่เบากว่า ให้ 52 test case (28 VI, 21 V, 3 Edge) และ 6 test case (2 VI, 1 V, 3 Edge) ตามลำดับ
-- **Job Listing app** มี posting screen ที่มีกฎ cross-field validation ที่ซับซ้อน (เช่น salary-range constraint) สร้าง 64 case (31 VI, 30 V, 3 Edge) สำหรับการโพสต์ และ 63 case (30 VI, 30 V, 3 Edge) สำหรับการค้นหา ซึ่งแสดงให้เห็นว่า pairwise ปรับตัวได้ตามธรรมชาติกับ constraint ที่หนาแน่น
-- **Real-Estate Listing app** มีสอง screen ที่มีความซับซ้อนใกล้เคียงกัน แต่ละตัวสร้าง 55 case (27 VI, 25 V, 3 Edge) ยืนยันจำนวน case ที่เสถียรสำหรับ widget inventory ที่เทียบเคียงกัน
+- **Medical Appointment app** มี booking screen ที่มี input widget เก้าตัว (TextFormField, DropdownButtonFormField, Radio, Switch) และ search screen ที่เบากว่า ให้ 52 test case (28 IV, 21 V, 3 Edge) และ 6 test case (2 IV, 1 V, 3 Edge) ตามลำดับ
+- **Job Listing app** มี posting screen ที่มีกฎ cross-field validation ที่ซับซ้อน (เช่น salary-range constraint) สร้าง 64 case (31 IV, 30 V, 3 Edge) สำหรับการโพสต์ และ 63 case (30 IV, 30 V, 3 Edge) สำหรับการค้นหา ซึ่งแสดงให้เห็นว่า pairwise ปรับตัวได้ตามธรรมชาติกับ constraint ที่หนาแน่น
+- **Real-Estate Listing app** มีสอง screen ที่มีความซับซ้อนใกล้เคียงกัน แต่ละตัวสร้าง 55 case (27 IV, 25 V, 3 Edge) ยืนยันจำนวน case ที่เสถียรสำหรับ widget inventory ที่เทียบเคียงกัน
 
 ### C. ผลการทดสอบ Coverage
 
-ตาราง III สรุป statement coverage และจำนวน test case ในทุก screen ที่ประเมินหกหน้า; ตาราง IV แสดงรายละเอียด VI, V และ Edge breakdown ต่อ screen screen ทั้งหกบรรลุ statement coverage สูงกว่า **91%** และผลสูงสุด (**96.6%**, Real-Estate posting) ได้รับแม้จะมีจำนวน test case ที่ลดลง
+ตาราง III สรุป statement coverage และจำนวน test case ในทุก screen ที่ประเมินหกหน้า; ตาราง IV แสดงรายละเอียด IV, V และ Edge breakdown ต่อ screen screen ทั้งหกบรรลุ statement coverage สูงกว่า **91%** และผลสูงสุด (**96.6%**, Real-Estate posting) ได้รับแม้จะมีจำนวน test case ที่ลดลง
 
-สาม property ของ script ที่สร้างขึ้นมีส่วนทำให้เกิดผลลัพธ์นี้: (i) widget interaction ทุกตัวใช้ `find.byKey` ให้ locator ที่เสถียรซึ่งทนต่อการ refactor UI; (ii) ทุก `validatorRule` ที่ไม่ว่างขับเคลื่อน invalid value หนึ่งค่าบวก valid counterpart หนึ่งค่า รับประกันว่าแต่ละ validation branch ใน Cubit ถูกทดสอบอย่างน้อยหนึ่งครั้ง; (iii) ทั้ง VI และ V script group ถูกสร้างในการรันครั้งเดียว ให้ทีมงานได้ coverage ของ positive และ negative test path ทันที
+สาม property ของ script ที่สร้างขึ้นมีส่วนทำให้เกิดผลลัพธ์นี้: (i) widget interaction ทุกตัวใช้ `find.byKey` ให้ locator ที่เสถียรซึ่งทนต่อการ refactor UI; (ii) ทุก `validatorRule` ที่ไม่ว่างขับเคลื่อน invalid value หนึ่งค่าบวก valid counterpart หนึ่งค่า รับประกันว่าแต่ละ validation branch ใน Cubit ถูกทดสอบอย่างน้อยหนึ่งครั้ง; (iii) ทั้ง IV และ V script group ถูกสร้างในการรันครั้งเดียว ให้ทีมงานได้ coverage ของ positive และ negative test path ทันที
 
 **ตาราง III: สรุป Test Coverage**
 
@@ -226,7 +231,7 @@ version ปัจจุบันรองรับ widget เจ็ดประ�
 
 **ตาราง IV: Pairwise Test-Case Breakdown ต่อ Screen**
 
-| App | Screen | VI | V | Edge |
+| App | Screen | IV | V | Edge |
 |---|---|---|---|---|
 | Medical Appt. | Booking | 28 | 21 | 3 |
 | Medical Appt. | Search | 2 | 1 | 3 |
@@ -235,19 +240,19 @@ version ปัจจุบันรองรับ widget เจ็ดประ�
 | Real Estate | Posting | 27 | 25 | 3 |
 | Real Estate | Search | 27 | 25 | 3 |
 
-_VI = pairwise valid/invalid; V = pairwise valid; Edge = edge cases_
+_IV = pairwise invalid; V = pairwise valid; Edge = edge cases_
 
 ### D. คำตอบต่อคำถามวิจัย
 
 **RQ1 — Coverage ที่ทำได้:**  
-ตาราง III ยืนยันว่า screen ทั้งหกเกิน 91% statement coverage โดยไม่ต้องเขียน test case ด้วยมือ โดยมีจุดสูงสุดที่ 96.6% สำหรับ Real-Estate posting screen ปัจจัยสามประการมีส่วนทำให้เกิดผลลัพธ์นี้: (i) `find.byKey` locator ทนต่อการ refactor UI; (ii) ทุก `validatorRule` ที่ไม่ว่างขับเคลื่อน invalid–valid pair อย่างน้อยหนึ่งคู่ รับประกันว่าแต่ละ validation branch ถูกทดสอบ; และ (iii) ทั้ง VI และ V group ถูกสร้างในการรันครั้งเดียว ครอบคลุม positive และ negative path พร้อมกัน
+ตาราง III ยืนยันว่า screen ทั้งหกเกิน 91% statement coverage โดยไม่ต้องเขียน test case ด้วยมือ โดยมีจุดสูงสุดที่ 96.6% สำหรับ Real-Estate posting screen ปัจจัยสามประการมีส่วนทำให้เกิดผลลัพธ์นี้: (i) `find.byKey` locator ทนต่อการ refactor UI; (ii) ทุก `validatorRule` ที่ไม่ว่างขับเคลื่อน invalid–valid pair อย่างน้อยหนึ่งคู่ รับประกันว่าแต่ละ validation branch ถูกทดสอบ; และ (iii) ทั้ง IV และ V group ถูกสร้างในการรันครั้งเดียว ครอบคลุม positive และ negative path พร้อมกัน
 
 **RQ2 — Combinatorial reduction:**  
-ตาราง V เปรียบเทียบจำนวน exhaustive combinatorial กับจำนวน pairwise VI สำหรับแต่ละ screen (exhaustive count = ผลคูณของ factor level ทั้งหมด โดยถือว่าแต่ละ `TextFormField` มีสองสถานะ: valid และ invalid) การลดขนาดขยายตาม parameter count: screen ที่มี factor เดียวไม่แสดงการลดขนาด ขณะที่ screen ที่มี 11–12 factor บรรลุการลดขนาดสามลำดับความสำคัญ (991× สำหรับ Job-Listing posting; 3,413× สำหรับ Real-Estate posting) ยืนยันว่า pairwise เป็นสิ่งจำเป็นในการรักษา test suite ให้จัดการได้เมื่อความซับซ้อนของ form เติบโตขึ้น
+ตาราง V เปรียบเทียบจำนวน exhaustive combinatorial กับจำนวน pairwise IV สำหรับแต่ละ screen (exhaustive count = ผลคูณของ factor level ทั้งหมด โดยถือว่าแต่ละ `TextFormField` มีสองสถานะ: valid และ invalid) การลดขนาดขยายตาม parameter count: screen ที่มี factor เดียวไม่แสดงการลดขนาด ขณะที่ screen ที่มี 11–12 factor บรรลุการลดขนาดสามลำดับความสำคัญ (991× สำหรับ Job-Listing posting; 3,413× สำหรับ Real-Estate posting) ยืนยันว่า pairwise เป็นสิ่งจำเป็นในการรักษา test suite ให้จัดการได้เมื่อความซับซ้อนของ form เติบโตขึ้น
 
-**ตาราง V: Pairwise VI Cases vs. Exhaustive Combinatorial Count**
+**ตาราง V: Pairwise IV Cases vs. Exhaustive Combinatorial Count**
 
-| App | Screen | Exhaustive | Pairwise VI | Reduction |
+| App | Screen | Exhaustive | Pairwise IV | Reduction |
 |---|---|---|---|---|
 | Medical Appt. | Booking | 1,792 | 28 | 64× |
 | Medical Appt. | Search | 2 | 2 | 1× |
