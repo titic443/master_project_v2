@@ -27,14 +27,14 @@ class GeneratorPict {
   // PICT Model Generation
   // ==========================================================================
 
-  /// Generate PICT model from factors map with optional constraints
+  /// Generate a PICT model from a factors map with optional constraints.
   ///
   /// Example input:
   /// ```dart
   /// {
   ///   'TEXT': ['valid', 'invalid'],
   ///   'Radio1': ['yes', 'no'],
-  ///   'Dropdown': ['option1', 'option2', 'option3']
+  ///   'Dropdown': ['option1', 'option2', 'option3'],
   /// }
   /// ```
   ///
@@ -46,108 +46,124 @@ class GeneratorPict {
   ///
   /// IF [Type] = "RAID-5" THEN [Compression] = "Off";
   /// ```
-  String generatePictModel(Map<String, List<String>> factors, {String? constraints}) {
-    // DEBUG: Check constraints parameter (uncomment for debugging)
-    // stderr.writeln('[DEBUG] generatePictModel - constraints: ${constraints == null ? "NULL" : "\"${constraints.trim()}\""}');
-
-    final buffer = StringBuffer();
-    for (final entry in factors.entries) {
-      buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
-    }
-
-    // Add constraints if provided — only pass Format B (IF/THEN) lines to PICT.
-    // Format A lines (key = value  or  key.slot = value) are dataset overrides
-    // consumed by generate_test_data.dart and must NOT be forwarded to PICT.
-    if (constraints != null && constraints.trim().isNotEmpty) {
-      final pictLines = constraints
-          .split('\n')
-          .map((l) => l.trim())
-          .where((l) => l.isNotEmpty && !l.startsWith('#'))
-          .where((l) => l.toUpperCase().contains('IF') && l.toUpperCase().contains('THEN'))
-          .join('\n');
-      if (pictLines.isNotEmpty) {
-        buffer.writeln('');
-        buffer.writeln(pictLines);
-      }
-    }
-
-    return buffer.toString();
+  ///
+  /// All three model variants (`full`, `invalid-only`, `valid-only`) share the
+  /// same emission code path — see [_buildPictModel] for the deduplicated
+  /// implementation. The public methods only differ in their per-factor value
+  /// filtering policy.
+  String generatePictModel(
+    Map<String, List<String>> factors, {
+    String? constraints,
+  }) {
+    return _buildPictModel(
+      factors,
+      constraints: constraints,
+      filter: _PictModelFilter.full,
+    );
   }
 
-  /// Generate invalid-only PICT model (excludes 'valid' from TEXT factors)
-  ///
-  /// Used to produce .invalid.model.txt — every TextField factor will only carry
-  /// the 'invalid' sentinel, so all PICT combinations are guaranteed to contain
-  /// at least one invalid field.  Non-TEXT factors (Dropdown, Switch, Checkbox,
-  /// Radio) keep their full value list so pairwise coverage across options is
-  /// still preserved.
+  /// Invalid-only model — every TextField factor carries only the `invalid`
+  /// sentinel, so all PICT combinations are guaranteed to contain at least
+  /// one invalid field. Non-text factors (Dropdown, Switch, Checkbox, Radio)
+  /// keep their full value list so pairwise coverage across options is still
+  /// preserved.
   String generateInvalidOnlyPictModel(
     Map<String, List<String>> factors, {
     String? constraints,
   }) {
-    final buffer = StringBuffer();
-    for (final entry in factors.entries) {
-      // TextField factor: drop 'valid', keep only 'invalid'
-      final isTextField = entry.value.contains('valid') && entry.value.contains('invalid');
-      if (isTextField) {
-        final invalidValues = entry.value.where((v) => v != 'valid').toList();
-        if (invalidValues.isNotEmpty) {
-          buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, invalidValues)}');
-        }
-      } else {
-        // Non-TEXT factors (Dropdown, Radio, Checkbox, Switch): keep all values
-        buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, entry.value)}');
-      }
-    }
-
-    // Forward Format B (IF/THEN) constraints to PICT
-    if (constraints != null && constraints.trim().isNotEmpty) {
-      final pictLines = constraints
-          .split('\n')
-          .map((l) => l.trim())
-          .where((l) => l.isNotEmpty && !l.startsWith('#'))
-          .where((l) => l.toUpperCase().contains('IF') && l.toUpperCase().contains('THEN'))
-          .join('\n');
-      if (pictLines.isNotEmpty) {
-        buffer.writeln('');
-        buffer.writeln(pictLines);
-      }
-    }
-
-    return buffer.toString();
+    return _buildPictModel(
+      factors,
+      constraints: constraints,
+      filter: _PictModelFilter.invalidOnly,
+    );
   }
 
-  /// Generate valid-only PICT model (excludes 'invalid' from TEXT factors and 'unchecked' from required checkboxes)
+  /// Valid-only model — TextFields keep only `valid`, required checkboxes keep
+  /// only `checked`, and non-text factors drop the `null` sentinel and past
+  /// dates so the resulting combinations represent real success-path inputs.
   String generateValidOnlyPictModel(
     Map<String, List<String>> factors, {
     Set<String> requiredCheckboxes = const {},
     String? constraints,
   }) {
-    final buffer = StringBuffer();
-    for (final entry in factors.entries) {
-      // Check if this is a text field factor (contains 'valid' and 'invalid')
-      final isTextField = entry.value.contains('valid') && entry.value.contains('invalid');
+    return _buildPictModel(
+      factors,
+      constraints: constraints,
+      filter: _PictModelFilter.validOnly,
+      requiredCheckboxes: requiredCheckboxes,
+    );
+  }
 
-      if (isTextField) {
-        // For TEXT factors, only use 'valid' values
-        final validValues = entry.value.where((v) => v != 'invalid').toList();
-        if (validValues.isNotEmpty) {
-          buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
+  /// Shared model emitter used by [generatePictModel],
+  /// [generateInvalidOnlyPictModel], and [generateValidOnlyPictModel].
+  String _buildPictModel(
+    Map<String, List<String>> factors, {
+    required _PictModelFilter filter,
+    Set<String> requiredCheckboxes = const {},
+    String? constraints,
+  }) {
+    final buffer = StringBuffer();
+    final today = DateTime.now();
+    final todayOnly = DateTime(today.year, today.month, today.day);
+
+    for (final entry in factors.entries) {
+      final values = _filterFactorValues(
+        factorName: entry.key,
+        values: entry.value,
+        filter: filter,
+        requiredCheckboxes: requiredCheckboxes,
+        todayOnly: todayOnly,
+      );
+      if (values.isEmpty) continue;
+      buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, values)}');
+    }
+
+    // Forward Format B (IF/THEN) constraints to PICT. Format A lines
+    // (`key = value` / `key.slot = value`) are dataset overrides consumed by
+    // generate_test_data.dart and MUST NOT reach PICT.
+    final pictLines = _extractPictConstraintLines(constraints);
+    if (pictLines.isNotEmpty) {
+      buffer.writeln('');
+      buffer.writeln(pictLines);
+    }
+    return buffer.toString();
+  }
+
+  /// Per-factor value filter mirroring the legacy three-method behavior.
+  List<String> _filterFactorValues({
+    required String factorName,
+    required List<String> values,
+    required _PictModelFilter filter,
+    required Set<String> requiredCheckboxes,
+    required DateTime todayOnly,
+  }) {
+    // A "TextField factor" is one whose value list contains both 'valid' and
+    // 'invalid' sentinels. We use this content-based detection rather than
+    // factor-name suffixes to stay in sync with how factors are emitted.
+    final isTextField = values.contains('valid') && values.contains('invalid');
+
+    switch (filter) {
+      case _PictModelFilter.full:
+        return List.of(values);
+
+      case _PictModelFilter.invalidOnly:
+        if (isTextField) {
+          return values.where((v) => v != 'valid').toList();
         }
-      } else if (requiredCheckboxes.contains(entry.key)) {
-        // For required checkboxes, only use 'checked' value
-        final validValues = entry.value.where((v) => v != 'unchecked').toList();
-        if (validValues.isNotEmpty) {
-          buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
+        return List.of(values);
+
+      case _PictModelFilter.validOnly:
+        if (isTextField) {
+          return values.where((v) => v != 'invalid').toList();
         }
-      } else {
-        // For non-TEXT factors (Radio, Dropdown, DatePicker, TimePicker, optional Checkbox)
-        // Exclude 'null' (cancel/skip) and past dates — valid model needs only real valid values
-        final today = DateTime.now();
-        final todayOnly = DateTime(today.year, today.month, today.day);
-        final validValues = entry.value.where((v) {
+        if (requiredCheckboxes.contains(factorName)) {
+          return values.where((v) => v != 'unchecked').toList();
+        }
+        // Non-text factors (Radio, Dropdown, DatePicker, TimePicker, optional
+        // Checkbox): exclude the 'null' sentinel (cancel/skip) and any past
+        // dates — the valid model needs only real success-path values.
+        return values.where((v) {
           if (v == 'null') return false;
-          // Parse dd/mm/yyyy — exclude past dates
           final parts = v.split('/');
           if (parts.length == 3) {
             final d = int.tryParse(parts[0]);
@@ -159,27 +175,23 @@ class GeneratorPict {
           }
           return true;
         }).toList();
-        if (validValues.isNotEmpty) {
-          buffer.writeln('${entry.key}: ${_formatValuesForModel(entry.key, validValues)}');
-        }
-      }
     }
+  }
 
-    // Add constraints if provided — only pass Format B (IF/THEN) lines to PICT.
-    if (constraints != null && constraints.trim().isNotEmpty) {
-      final pictLines = constraints
-          .split('\n')
-          .map((l) => l.trim())
-          .where((l) => l.isNotEmpty && !l.startsWith('#'))
-          .where((l) => l.toUpperCase().contains('IF') && l.toUpperCase().contains('THEN'))
-          .join('\n');
-      if (pictLines.isNotEmpty) {
-        buffer.writeln('');
-        buffer.writeln(pictLines);
-      }
-    }
-
-    return buffer.toString();
+  /// Extract Format B (IF/THEN) lines from a constraint string — Format A
+  /// lines (dataset overrides) are filtered out. Returns the joined lines or
+  /// an empty string if no PICT constraints were found.
+  String _extractPictConstraintLines(String? constraints) {
+    if (constraints == null || constraints.trim().isEmpty) return '';
+    return constraints
+        .split('\n')
+        .map((l) => l.trim())
+        .where((l) => l.isNotEmpty && !l.startsWith('#'))
+        .where((l) {
+          final up = l.toUpperCase();
+          return up.contains('IF') && up.contains('THEN');
+        })
+        .join('\n');
   }
 
   /// Format values for PICT model syntax.
@@ -576,12 +588,6 @@ class GeneratorPict {
     return 'radio_group'; // fallback
   }
 
-  String _factorNameForRadioGroupKey(String key) {
-    final match = RegExp(r'_radio(\d+)_group').firstMatch(key);
-    if (match != null) return 'Radio${match.group(1)}';
-    return 'Radio1'; // fallback
-  }
-
   /// Extract Radio key suffix by removing prefix pattern
   /// Example: customer_05_age_10_20_radio -> age_10_20_radio
   String _extractRadioKeySuffix(String radioKey) {
@@ -593,13 +599,6 @@ class GeneratorPict {
       return parts.skip(2).join('_');
     }
     return radioKey; // fallback to full key if pattern doesn't match
-  }
-
-  String _extractRadioOptionLabel(String radioKey) {
-    // e.g., buttons_approve_radio -> approve
-    final match = RegExp(r'^[^_]+_(.+?)_radio$').firstMatch(radioKey);
-    if (match != null) return match.group(1)!.toLowerCase();
-    return radioKey.toLowerCase();
   }
 
   /// Generate date values based on DatePicker metadata constraints
@@ -723,8 +722,8 @@ class GeneratorPict {
   /// Write PICT model files and execute PICT to generate result files
   ///
   /// Generates:
-  /// - model_pairwise/<page>.model.txt / <page>.valid.model.txt (input models)
-  /// - model_pairwise/<page>.result.txt / <page>.valid.result.txt (PICT results)
+  /// - `model_pairwise/<page>.model.txt` / `<page>.valid.model.txt` (input models)
+  /// - `model_pairwise/<page>.result.txt` / `<page>.valid.result.txt` (PICT results)
   Future<void> writePictModelFiles({
     required Map<String, List<String>> factors,
     required String pageBaseName,
@@ -996,56 +995,120 @@ class GeneratorPict {
   ) {
     if (combos.isEmpty || constraints.trim().isEmpty) return combos;
 
-    // Parse Format B (IF/THEN) rules only
+    // Parse Format B (IF/THEN) rules only.
     final rules = <_ConstraintRule>[];
+    int skippedComplex = 0;
+    int skippedUnparsed = 0;
+
     for (final rawLine in constraints.split('\n')) {
       final line = rawLine.trim();
       if (line.isEmpty || line.startsWith('#')) continue;
+
       final up = line.toUpperCase();
       if (!up.contains('IF') || !up.contains('THEN')) continue;
 
+      // Multi-clause constraints (AND/OR, multiple THENs) are NOT supported by
+      // this Dart-side filter. We deliberately surface them so the user
+      // doesn't think a complex constraint is being enforced silently — PICT
+      // itself may still apply them when it doesn't have the macOS bug.
+      final thenCount = 'THEN'.allMatches(up).length;
+      if (thenCount > 1 ||
+          up.contains(' AND ') ||
+          up.contains(' OR ') ||
+          up.contains('&&') ||
+          up.contains('||')) {
+        skippedComplex++;
+        stderr.writeln('[WARN] filterCombosAgainstConstraints: '
+            'skipping complex constraint (multi-clause not supported by '
+            'post-processing filter): $line');
+        continue;
+      }
+
       final thenIdx = up.indexOf('THEN');
-      final ifPart   = line.substring(0, thenIdx).trim();
+      final ifPart = line.substring(0, thenIdx).trim();
       final thenPart = line.substring(thenIdx + 4).trim();
 
       // Match: [factorName] (=|<>) "value"
       final re = RegExp(r'\[(.+?)\]\s*(<>|=)\s*"(.+?)"', caseSensitive: false);
-      final ifM   = re.firstMatch(ifPart);
+      final ifM = re.firstMatch(ifPart);
       final thenM = re.firstMatch(thenPart);
-      if (ifM == null || thenM == null) continue;
+      if (ifM == null || thenM == null) {
+        skippedUnparsed++;
+        stderr.writeln('[WARN] filterCombosAgainstConstraints: '
+            'could not parse constraint (expected `IF [k] (=|<>) "v" THEN '
+            '[k] (=|<>) "v";`): $line');
+        continue;
+      }
 
       rules.add(_ConstraintRule(
-        ifFactor:   ifM.group(1)!,
-        ifOp:       ifM.group(2)!,
-        ifValue:    ifM.group(3)!,
+        ifFactor: ifM.group(1)!,
+        ifOp: ifM.group(2)!,
+        ifValue: ifM.group(3)!,
         thenFactor: thenM.group(1)!,
-        thenOp:     thenM.group(2)!,
-        thenValue:  thenM.group(3)!,
+        thenOp: thenM.group(2)!,
+        thenValue: thenM.group(3)!,
       ));
     }
 
-    if (rules.isEmpty) return combos;
-
-    // Strip surrounding double-quotes from a combo cell value
-    String unquote(String v) =>
-        (v.startsWith('"') && v.endsWith('"')) ? v.substring(1, v.length - 1) : v;
-
-    bool satisfies(Map<String, String> combo, _ConstraintRule r) {
-      // Evaluate IF condition
-      final ifVal = unquote(combo[r.ifFactor] ?? '');
-      final ifMet = r.ifOp == '=' ? ifVal == r.ifValue : ifVal != r.ifValue;
-      if (!ifMet) return true; // constraint does not apply
-
-      // Evaluate THEN condition
-      final thenVal = unquote(combo[r.thenFactor] ?? '');
-      return r.thenOp == '=' ? thenVal == r.thenValue : thenVal != r.thenValue;
+    if (rules.isEmpty) {
+      if (skippedComplex + skippedUnparsed > 0) {
+        stderr.writeln('[INFO] filterCombosAgainstConstraints: no rules '
+            'enforceable (complex=$skippedComplex, unparsed=$skippedUnparsed)');
+      }
+      return combos;
     }
 
-    final filtered = combos.where((c) => rules.every((r) => satisfies(c, r))).toList();
+    /// Strip surrounding quotes from a combo cell.
+    String unquote(String v) {
+      if (v.length >= 2 &&
+          ((v.startsWith('"') && v.endsWith('"')) ||
+              (v.startsWith("'") && v.endsWith("'")))) {
+        return v.substring(1, v.length - 1);
+      }
+      return v;
+    }
+
+    /// Normalize a value for comparison: lowercase + collapse the
+    /// underscore↔space substitution that PICT model emission performs on
+    /// dropdown options (see _formatValuesForModel) so that a constraint
+    /// written as "IT & Tech" matches a PICT cell "IT_&_Tech".
+    String norm(String v) =>
+        unquote(v).toLowerCase().replaceAll('_', ' ').trim();
+
+    bool satisfies(Map<String, String> combo, _ConstraintRule r) {
+      // Compare factor keys case-insensitively (PICT preserves whatever case
+      // we wrote in the model; we control both sides but be defensive).
+      String? cellFor(String factor) {
+        if (combo.containsKey(factor)) return combo[factor];
+        for (final entry in combo.entries) {
+          if (entry.key.toLowerCase() == factor.toLowerCase()) {
+            return entry.value;
+          }
+        }
+        return null;
+      }
+
+      // Evaluate IF condition.
+      final ifVal = norm(cellFor(r.ifFactor) ?? '');
+      final ifTarget = norm(r.ifValue);
+      final ifMet = r.ifOp == '=' ? ifVal == ifTarget : ifVal != ifTarget;
+      if (!ifMet) return true; // antecedent false → constraint vacuously holds
+
+      // Evaluate THEN condition.
+      final thenVal = norm(cellFor(r.thenFactor) ?? '');
+      final thenTarget = norm(r.thenValue);
+      return r.thenOp == '='
+          ? thenVal == thenTarget
+          : thenVal != thenTarget;
+    }
+
+    final filtered =
+        combos.where((c) => rules.every((r) => satisfies(c, r))).toList();
 
     if (filtered.length < combos.length) {
       stderr.writeln('[INFO] filterCombosAgainstConstraints: removed '
-          '${combos.length - filtered.length} constraint-violating row(s)');
+          '${combos.length - filtered.length} constraint-violating row(s) '
+          '(applied ${rules.length} rule(s))');
     }
 
     return filtered;
@@ -1072,7 +1135,9 @@ class GeneratorPict {
       final cols = lines[i].split('\t');
       if (cols.length != headers.length) continue;
       final m = <String, String>{};
-      for (int c = 0; c < headers.length; c++) m[headers[c]] = cols[c].trim();
+      for (int c = 0; c < headers.length; c++) {
+        m[headers[c]] = cols[c].trim();
+      }
       combos.add(m);
     }
 
@@ -1084,11 +1149,17 @@ class GeneratorPict {
       header,
       ...filtered.map((row) => headers.map((h) => row[h] ?? '').join('\t')),
     ];
-    file.writeAsStringSync(outLines.join('\n') + '\n');
+    file.writeAsStringSync('${outLines.join('\n')}\n');
     stderr.writeln('[INFO] _filterResultFile: rewrote $resultPath '
         '(${combos.length} → ${filtered.length} rows)');
   }
 }
+
+// ==========================================================================
+// Internal enums / helpers
+// ==========================================================================
+
+enum _PictModelFilter { full, invalidOnly, validOnly }
 
 // ==========================================================================
 // Internal helper — constraint rule parsed from Format B text
