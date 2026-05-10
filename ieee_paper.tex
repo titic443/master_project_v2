@@ -13,6 +13,8 @@
 \usepackage{array}
 \usepackage{url}
 \usepackage{listings}
+\usepackage{microtype}
+\setlength{\emergencystretch}{3em}
 
 % -----------------------------------------------
 %  Listing style (Dart / Java-like syntax)
@@ -207,7 +209,7 @@ At the \textit{widget level}, the tool records: (i)~the unique widget key,
 block. For \texttt{TextFormField}, the \texttt{meta} block carries allowed
 character patterns (\texttt{inputFormatters}), maximum input length
 (\texttt{maxLength}), and validation rules with error messages
-(\texttt{validatorRules}). For \texttt{DropdownButtonFormField}, it carries
+(\texttt{validatorRules}). For \texttt{Dropdown\allowbreak{}Button\allowbreak{}FormField}, it carries
 the selectable option list (\texttt{options}). For \texttt{Radio}, it carries
 the enum value the button represents (\texttt{valueExpr}) and the shared
 state binding for the radio group (\texttt{groupValueBinding}). For
@@ -215,8 +217,8 @@ state binding for the radio group (\texttt{groupValueBinding}). For
 (\texttt{valueBinding}).
 
 Widget keys follow the naming convention
-\texttt{<prefix>\_<seq>\_<desc>\_<type>} (e.g.,
-\texttt{appt\_01\_patient\_name\_textfield}), where \texttt{seq} is a
+\texttt{<prefix>\_<seq>\_\allowbreak{}<desc>\_<type>} (e.g.,
+\texttt{appt\_01\_patient\_\allowbreak{}name\_textfield}), where \texttt{seq} is a
 zero-padded integer that Phase~3 uses to order widget interaction steps.
 Widgets whose keys carry the suffixes \texttt{\_expected\_success},
 \texttt{\_dialog\_success}, \texttt{\_expected\_fail}, or
@@ -251,7 +253,7 @@ per screen and per widget.
     \texttt{inputFormatters}& Allowed character patterns for input & N \\
     \texttt{maxLength}      & Maximum character length for \texttt{TextFormField} & N \\
     \texttt{validatorRules} & Validation conditions and error messages (\texttt{TextFormField}) & N \\
-    \texttt{options}        & Selectable choices (\texttt{DropdownButtonFormField}) & N \\
+    \texttt{options}        & Selectable choices (\texttt{Dropdown\allowbreak{}Button\allowbreak{}FormField}) & N \\
     \texttt{groupValueBinding} & Shared state binding for a \texttt{Radio} group & N \\
     \texttt{valueExpr}      & Enum value this \texttt{Radio} button represents & N \\
     \texttt{valueBinding}   & State binding for \texttt{Switch} or \texttt{Checkbox} & N \\
@@ -335,7 +337,7 @@ built independently:
 \end{figure}
 
 Before invoking PICT, the developer may supply an optional
-\textit{constraint file} (\texttt{<page>.constraints.txt}) encoding
+\textit{constraint file} (\texttt{<page>.\allowbreak{}constraints.txt}) encoding
 business-logic rules invisible to static analysis. Three grammar forms
 are recognized: (1)~\texttt{<key>.valid = <value>} and
 (2)~\texttt{<key>.invalid = <value>} pin concrete strings in
@@ -347,13 +349,13 @@ error triggers an \textit{``Invalid Constraint Syntax''} message and
 halts the pipeline.
 
 PICT is then invoked as a subprocess once per model file
-(\texttt{<page>.invalid.model.txt} for IV and
-\texttt{<page>.valid.model.txt} for V). Its tab-delimited
+(\texttt{<page>.invalid.\allowbreak{}model.txt} for IV and
+\texttt{<page>.valid.\allowbreak{}model.txt} for V). Its tab-delimited
 output---one row per test case, with one column per factor, as
 illustrated in Fig.~\ref{fig:pict_result}---is parsed, and each row
 is assembled into a \textit{case} object together with the widget
 interaction steps and expected assertions. The three result arrays (IV, V, Edge) are then
-merged into a single \texttt{<page>.test\_data.json} file that contains
+merged into a single \texttt{<page>.test\_\allowbreak{}data.json} file that contains
 three top-level keys:
 \begin{itemize}
   \item \textbf{source:} the screen-level BLoC metadata propagated from
@@ -368,10 +370,10 @@ three top-level keys:
   \item \textbf{cases:} the ordered list of test-case objects; a
         concrete example is shown in Fig.~\ref{fig:case_example}.
         Each object carries five fields: \texttt{tc} (a unique
-        identifier such as \texttt{pairwise\_invalid\_cases\_1}),
+        identifier such as \texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases\_1}),
         \texttt{kind} (\texttt{success} or \texttt{failed}),
-        \texttt{group} (one of \texttt{pairwise\_invalid\_cases},
-        \texttt{pairwise\_valid\_cases}, or \texttt{edge\_cases}),
+        \texttt{group} (one of \texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases},
+        \texttt{pairwise\_\allowbreak{}valid\_\allowbreak{}cases}, or \texttt{edge\_cases}),
         \texttt{steps}, and \texttt{asserts}.
 \end{itemize}
 
@@ -379,7 +381,7 @@ Each \texttt{steps} entry maps widget type to a
 \texttt{WidgetTester} command: \texttt{enterText} (with
 \texttt{byKey} and a \texttt{dataset} reference) for
 \texttt{TextFormField}; \texttt{tap} (byKey) then \texttt{tapText}
-(item label) for \texttt{DropdownButtonFormField}; \texttt{tap}
+(item label) for \texttt{Dropdown\allowbreak{}Button\allowbreak{}FormField}; \texttt{tap}
 (byKey) for \texttt{Radio}, \texttt{Checkbox}, and \texttt{Switch};
 and \texttt{pump} or \texttt{pumpAndSettle} for UI refresh. Widget
 steps are ordered by a \texttt{sequence} value extracted from the
@@ -394,7 +396,7 @@ or a \texttt{byKey} widget identifier with an \texttt{exists} flag
   \centering
   \includegraphics[width=\columnwidth]{figure2.png}
   \caption{Tab-delimited pairwise combinations emitted by PICT into
-           \texttt{<page>.invalid.result.txt}. Each column is one
+           \texttt{<page>.invalid.\allowbreak{}result.txt}. Each column is one
            \textit{factor} (widget key) and each row is one covered
            combination of \textit{levels} (valid/invalid sample
            values or selection labels).}
@@ -428,19 +430,19 @@ above.
 
 \subsection{Phase 4 -- Generate Test Script}
 
-The \texttt{<page>.test\_data.json} produced in Phase~3 is rendered
+The \texttt{<page>.test\_\allowbreak{}data.json} produced in Phase~3 is rendered
 into a syntactically valid Dart test file named
 \texttt{<page>\_test.dart}. The \texttt{TestScriptGenerator} class
 first reads the \textbf{source} key to emit three \texttt{import}
 statements (\texttt{fileCubit}, \texttt{fileState}, and the page
 source file) and to declare a
-\texttt{BlocProvider\textless CubitClass\textgreater} wrapper that is
+\texttt{BlocProvider\allowbreak{}\textless CubitClass\textgreater} wrapper that is
 reused across all test cases on the same screen.
 
 Test cases are partitioned by their \texttt{group} field into three
 \texttt{group()} blocks in the output file:
-\texttt{pairwise\_invalid\_cases} (IV cases that verify form
-rejection on invalid input), \texttt{pairwise\_valid\_cases} (V cases
+\texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} (IV cases that verify form
+rejection on invalid input), \texttt{pairwise\_\allowbreak{}valid\_\allowbreak{}cases} (V cases
 that verify successful submission on valid input), and
 \texttt{edge\_cases} (boundary-value cases). Each entry in the
 \texttt{cases} array becomes one independent \texttt{testWidgets}
@@ -513,7 +515,7 @@ The following prerequisites must be in place before using the tool:
 \subsection{Supported Widgets}
 The current version supports six widget types, as detailed in
 Table~\ref{tab:widgets} (Section~III). Five widget types act as PICT
-factors (\texttt{TextFormField}, \texttt{DropdownButtonFormField},
+factors (\texttt{TextFormField}, \texttt{Dropdown\allowbreak{}Button\allowbreak{}FormField},
 \texttt{Radio}, \texttt{Checkbox}, \texttt{Switch}), and one acts as a
 fixed trigger (\texttt{ElevatedButton}). Outcome assertions are not tied
 to a specific widget type; instead, any widget whose key carries the
@@ -531,7 +533,7 @@ concatenated with three hardcoded edge cases to form the complete test
 suite for the screen. For a \texttt{TextFormField}, the IV model assigns
 the factor a single \texttt{invalid} sentinel level and the V model
 assigns \texttt{valid}; each model therefore has exactly one text-field
-level per factor. \texttt{DropdownButtonFormField} and \texttt{Radio}
+level per factor. \texttt{Dropdown\allowbreak{}Button\allowbreak{}FormField} and \texttt{Radio}
 factors enumerate all available options extracted from the source code;
 \texttt{Checkbox} factors use fixed levels \{checked, unchecked\} and
 \texttt{Switch} factors use fixed levels \{on, off\}.
@@ -576,8 +578,8 @@ Fig.~\ref{fig:case_example} shows one generated IV case.
 \begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figure5.png}
-  \caption{Example \texttt{pairwise\_invalid\_cases} entry
-           serialized inside \texttt{<page>.test\_data.json} before
+  \caption{Example \texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} entry
+           serialized inside \texttt{<page>.test\_\allowbreak{}data.json} before
            it is rendered into a \texttt{testWidgets} block in
            \texttt{<page>\_test.dart}.}
   \label{fig:case_example}
