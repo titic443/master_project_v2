@@ -3,6 +3,8 @@
 % -----------------------------------------------
 %  Packages
 % -----------------------------------------------
+\usepackage[T1]{fontenc}
+\renewcommand{\texttt}[1]{\textnormal{#1}}
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
@@ -51,7 +53,7 @@
     Department of Computer Engineering\\
     Faculty of Engineering, Chulalongkorn University\\
     Bangkok, Thailand\\
-    titi.changpoo@gmail.com
+    6770231021@student.chula.ac.th
   }
   \and
   \IEEEauthorblockN{Taratip Suwannasart}
@@ -129,7 +131,7 @@ Section~V:
 \begin{itemize}
   \item \textbf{RQ1:} What statement coverage can the automatically
         generated test scripts achieve on real-world Flutter screens
-        without manual test-case authoring?
+        without manual test-case generating?
   \item \textbf{RQ2:} How many test cases does the pairwise technique
         require compared with exhaustive combinatorial testing?
 \end{itemize}
@@ -217,11 +219,12 @@ state binding for the radio group (\texttt{groupValueBinding}). For
 (\texttt{valueBinding}).
 
 Widget keys follow the naming convention
-\texttt{<prefix>\_<seq>\_\allowbreak{}<desc>\_<type>} (e.g.,
-\texttt{appt\_01\_patient\_\allowbreak{}name\_textfield}), where \texttt{seq} is a
-zero-padded integer that Phase~3 uses to order widget interaction steps.
-Widgets whose keys carry the suffixes \texttt{\_expected\_success}, or
-\texttt{\_expected\_fail} are designated as outcome-assertion targets;
+\texttt{<prefix>\_\allowbreak{}<seq>\_\allowbreak{}<desc>\_\allowbreak{}<type>} (e.g.,
+\texttt{appt\_\allowbreak{}01\_\allowbreak{}patient\_\allowbreak{}name\_\allowbreak{}textfield}),
+where \texttt{seq} is a zero-padded integer that Phase~3 uses to order
+widget interaction steps.
+Widgets whose keys carry the suffixes \texttt{\_expected\_\allowbreak{}success}, or
+\texttt{\_expected\_\allowbreak{}fail} are designated as outcome-assertion targets;
 Phase~3 emits a \texttt{byKey} assertion for them rather than including
 them as PICT factors.
 
@@ -397,7 +400,7 @@ three top-level keys:
   \caption{Example \texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} entry
            serialized inside \texttt{<page>.test\_\allowbreak{}data.json} before
            it is rendered into a \texttt{testWidgets} block in
-           \texttt{<page>\_test.dart}.}
+           \texttt{<page>\_\allowbreak{}test.dart}.}
   \label{fig:case_example}
 \end{figure}
 
@@ -444,7 +447,7 @@ above.
 
 The \texttt{<page>.test\_\allowbreak{}data.json} produced in Phase~3 is rendered
 into a syntactically valid Dart test file named
-\texttt{<page>\_test.dart}. The \texttt{TestScriptGenerator} class
+\texttt{<page>\_\allowbreak{}test.dart}. The \texttt{TestScriptGenerator} class
 first reads the \textbf{source} key to emit three \texttt{import}
 statements (\texttt{fileCubit}, \texttt{fileState}, and the page
 source file) and to declare a
@@ -492,7 +495,7 @@ test-generation workflow:
   \item \textbf{Output directory:} A directory-picker that sets the
         destination folder for all generated artifacts---
         \texttt{manifest.json}, \texttt{datasets.json},
-        \texttt{test\_data.json}, and \texttt{<page>\_test.dart}.
+        \texttt{test\_\allowbreak{}data.json}, and \texttt{<page>\_\allowbreak{}test.dart}.
   \item \textbf{Generate button:} Clicking \textit{Generate} triggers
         the full four-phase pipeline. Progress status and any error
         messages are displayed inline in the main window.
@@ -531,8 +534,8 @@ factors (\texttt{TextFormField}, \texttt{Dropdown\allowbreak{}Button\allowbreak{
 \texttt{Radio}, \texttt{Checkbox}, \texttt{Switch}), and one acts as a
 fixed trigger (\texttt{ElevatedButton}). Outcome assertions are not tied
 to a specific widget type; instead, any widget whose key carries the
-suffix \texttt{\_expected\_success},
-or \texttt{\_expected\_fail} is designated as
+suffix \texttt{\_expected\_\allowbreak{}success},
+or \texttt{\_expected\_\allowbreak{}fail} is designated as
 an assertion target checked via \texttt{find.byKey}.
 
 \subsection{PICT Model Construction}
