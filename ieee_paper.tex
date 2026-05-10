@@ -220,9 +220,8 @@ Widget keys follow the naming convention
 \texttt{<prefix>\_<seq>\_\allowbreak{}<desc>\_<type>} (e.g.,
 \texttt{appt\_01\_patient\_\allowbreak{}name\_textfield}), where \texttt{seq} is a
 zero-padded integer that Phase~3 uses to order widget interaction steps.
-Widgets whose keys carry the suffixes \texttt{\_expected\_success},
-\texttt{\_dialog\_success}, \texttt{\_expected\_fail}, or
-\texttt{\_dialog\_fail} are designated as outcome-assertion targets;
+Widgets whose keys carry the suffixes \texttt{\_expected\_success}, or
+\texttt{\_expected\_fail} are designated as outcome-assertion targets;
 Phase~3 emits a \texttt{byKey} assertion for them rather than including
 them as PICT factors.
 
@@ -532,8 +531,8 @@ factors (\texttt{TextFormField}, \texttt{Dropdown\allowbreak{}Button\allowbreak{
 \texttt{Radio}, \texttt{Checkbox}, \texttt{Switch}), and one acts as a
 fixed trigger (\texttt{ElevatedButton}). Outcome assertions are not tied
 to a specific widget type; instead, any widget whose key carries the
-suffix \texttt{\_expected\_success}, \texttt{\_dialog\_success},
-\texttt{\_expected\_fail}, or \texttt{\_dialog\_fail} is designated as
+suffix \texttt{\_expected\_success},
+or \texttt{\_expected\_fail} is designated as
 an assertion target checked via \texttt{find.byKey}.
 
 \subsection{PICT Model Construction}
@@ -657,12 +656,13 @@ giving teams immediate coverage of positive and negative test paths.
 \textbf{RQ1 --- Coverage achieved:}
 Table~\ref{tab:coverage} confirms that all six screens exceeded 91\%
 statement coverage without any manual test-case authoring, with a peak
-of 96.6\% for the Real-Estate posting screen. Three factors contribute
-to this result: (i)~\texttt{find.byKey} locators tolerate UI
-refactoring; (ii)~every nonempty \texttt{validatorRule} drives at least
-one invalid--valid pair, ensuring each validation branch is exercised;
-and (iii)~both IV and V groups are produced in a single invocation,
-covering positive and negative paths simultaneously.
+of 96.6\% for the Real-Estate posting screen. Three reasons explain
+this result: (i)~\texttt{find.byKey} locators remain stable even when
+the UI layout changes; (ii)~every non-empty \texttt{validatorRule}
+generates both a valid and an invalid input, so every error-checking
+branch in the Cubit is tested; and (iii)~the tool generates both IV
+and V test groups in one run, covering failure and success scenarios
+at the same time.
 
 \textbf{RQ2 --- Combinatorial reduction:}
 Table~\ref{tab:combinatorial} compares the exhaustive combinatorial

@@ -3,23 +3,23 @@ version: '3.8'
 services:
   mongodb:
     image: mongo:7
-    container_name: linkedin_mongodb
+    container_name: master_project_mongodb
     restart: unless-stopped
     ports:
       - '27017:27017'
     environment:
-      MONGO_INITDB_DATABASE: linkedin_profiles
+      MONGO_INITDB_DATABASE: master_project_demo
     volumes:
       - mongo_data:/data/db
 
   backend:
     build: ./backend/functions
-    container_name: linkedin_backend
+    container_name: master_project_backend
     restart: unless-stopped
     ports:
       - '8000:8000'
     environment:
-      MONGO_URI: mongodb://mongodb:27017/linkedin_profiles
+      MONGO_URI: mongodb://mongodb:27017/master_project_demo
       PORT: 8000
     depends_on:
       - mongodb

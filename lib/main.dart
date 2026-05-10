@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/clinic_appointment_cubit.dart';
 import 'cubit/clinic_search_cubit.dart';
+import 'cubit/course_enrollment_cubit.dart';
 import 'cubit/job_post_cubit.dart';
 import 'cubit/job_search_cubit.dart';
 import 'cubit/property_post_cubit.dart';
 import 'cubit/property_search_cubit.dart';
 import 'demos/clinic_appointment_page.dart';
 import 'demos/clinic_search_page.dart';
+import 'demos/course_enrollment_page.dart';
 import 'demos/job_post_page.dart';
 import 'demos/job_search_page.dart';
 import 'demos/property_post_page.dart';
@@ -168,6 +170,31 @@ class HomePage extends StatelessWidget {
                   BlocProvider(
                     create: (_) => PropertySearchCubit(),
                     child: const PropertySearchPage(),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
+
+              // ── Education ───────────────────────────────────────────────
+              _AppGroupHeader(
+                title: 'Education',
+                icon: Icons.school_outlined,
+                color: Colors.indigo,
+              ),
+              const SizedBox(height: 12),
+              _buildCard(
+                context,
+                title: 'ลงทะเบียนเรียน',
+                description:
+                    'Enroll in a course — pick category, level, payment & options',
+                icon: Icons.app_registration_outlined,
+                color: Colors.indigo,
+                onTap: () => _go(
+                  context,
+                  BlocProvider(
+                    create: (_) => CourseEnrollmentCubit(),
+                    child: const CourseEnrollmentPage(),
                   ),
                 ),
               ),
