@@ -221,12 +221,11 @@ state binding for the radio group (\texttt{groupValueBinding}). For
 Widget keys follow the naming convention
 \texttt{<prefix>\_\allowbreak{}<seq>\_\allowbreak{}<desc>\_\allowbreak{}<type>} (e.g.,
 \texttt{appt\_\allowbreak{}01\_\allowbreak{}patient\_\allowbreak{}name\_\allowbreak{}textfield}),
-where \texttt{seq} is a zero-padded integer that Phase~3 uses to order
+where \texttt{seq} is a zero-padded integer used to order
 widget interaction steps.
 Widgets whose keys carry the suffixes \texttt{\_expected\_\allowbreak{}success}, or
-\texttt{\_expected\_\allowbreak{}fail} are designated as outcome-assertion targets;
-Phase~3 emits a \texttt{byKey} assertion for them rather than including
-them as PICT factors.
+\texttt{\_expected\_\allowbreak{}fail} are designated as outcome-assertion targets
+and are excluded from PICT factor enumeration.
 
 The extracted metadata is serialized into a \texttt{manifest.json} file
 grouped by screen name. Table~\ref{tab:manifest} lists the fields recorded
