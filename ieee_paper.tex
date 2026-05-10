@@ -314,13 +314,13 @@ which each nonbutton widget maps to one \textit{factor} and each
 distinct value maps to one \textit{level}. Three model variants are
 built independently:
 \begin{enumerate}
-  \item \textbf{Invalid (IV):} \texttt{TextFormField} factors carry
+  \item \textbf{Invalid:} \texttt{TextFormField} factors carry
         only the \texttt{invalid} sentinel level; non-text factors
         (\texttt{Dropdown}, \texttt{Radio}, \texttt{Checkbox}, \texttt{Switch})
         enumerate all their option values. Every PICT combination therefore
         contains at least one invalid text input, producing negative-path
         test cases.
-  \item \textbf{Valid (V):} factors contain valid levels only; PICT
+  \item \textbf{Valid:} factors contain valid levels only; PICT
         produces positive-path test cases.
   \item \textbf{Edge:} three manually crafted boundary-value combinations
         (empty input, maximum-length, minimum-length) are appended.
@@ -351,8 +351,8 @@ error triggers an \textit{``Invalid Constraint Syntax''} message and
 halts the pipeline.
 
 PICT is then invoked as a subprocess once per model file
-(\texttt{<page>.invalid.\allowbreak{}model.txt} for IV and
-\texttt{<page>.valid.\allowbreak{}model.txt} for V). Its tab-delimited
+(\texttt{<page>.invalid.\allowbreak{}model.txt} for Invalid and
+\texttt{<page>.valid.\allowbreak{}model.txt} for Valid). Its tab-delimited
 output---one row per test case, with one column per factor, as
 illustrated in Fig.~\ref{fig:pict_result}---is parsed, and each row
 is assembled into a \textit{case} object together with the widget
@@ -370,7 +370,7 @@ interaction steps and expected assertions.
   \label{fig:pict_result}
 \end{figure}
 
-The three result arrays (IV, V, Edge) are then
+The three result arrays (Invalid, Valid, Edge) are then
 merged into a single \texttt{<page>.test\_\allowbreak{}data.json} file that contains
 three top-level keys:
 \begin{itemize}
@@ -456,8 +456,8 @@ reused across all test cases on the same screen.
 
 Test cases are partitioned by their \texttt{group} field into three
 \texttt{group()} blocks in the output file:
-\texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} (IV cases that verify form
-rejection on invalid input), \texttt{pairwise\_\allowbreak{}valid\_\allowbreak{}cases} (V cases
+\texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} (Invalid cases that verify form
+rejection on invalid input), \texttt{pairwise\_\allowbreak{}valid\_\allowbreak{}cases} (Valid cases
 that verify successful submission on valid input), and
 \texttt{edge\_cases} (boundary-value cases). Each entry in the
 \texttt{cases} array becomes one independent \texttt{testWidgets}
@@ -542,11 +542,11 @@ an assertion target checked via \texttt{find.byKey}.
 For a screen with $n$ nonbutton widgets, the PICT model file contains
 $n$ parameter lines of the form \texttt{<key>: v1, v2, \ldots, vk},
 where each $v_i$ is a distinct value level. The tool builds two
-PICT model files---IV and V---and invokes PICT once per file. Each
+PICT model files---Invalid and Valid---and invokes PICT once per file. Each
 PICT run returns a minimal covering array; the two arrays are
 concatenated with three hardcoded edge cases to form the complete test
-suite for the screen. For a \texttt{TextFormField}, the IV model assigns
-the factor a single \texttt{invalid} sentinel level and the V model
+suite for the screen. For a \texttt{TextFormField}, the Invalid model assigns
+the factor a single \texttt{invalid} sentinel level and the Valid model
 assigns \texttt{valid}; each model therefore has exactly one text-field
 level per factor. \texttt{Dropdown\allowbreak{}Button\allowbreak{}FormField} and \texttt{Radio}
 factors enumerate all available options extracted from the source code;
@@ -578,21 +578,21 @@ The three applications represent increasing levels of form-validation
 complexity. The \textit{Medical Appointment} app contains a booking
 screen with nine input widgets (TextFormField, DropdownButtonFormField,
 Radio, Switch) and a lighter search screen, yielding 55 test cases
-(31~IV, 21~V, 3~Edge) and 5 test cases (1~IV, 1~V, 3~Edge)
+(31~Invalid, 21~Valid, 3~Edge) and 5 test cases (1~Invalid, 1~Valid, 3~Edge)
 respectively. The \textit{Job Listing} app includes a posting screen
 with complex cross-field validation rules (e.g., salary-range
-constraints), generating 63 cases (30~IV, 30~V, 3~Edge) for posting
-and 75 cases (42~IV, 30~V, 3~Edge) for search---demonstrating that
+constraints), generating 63 cases (30~Invalid, 30~Valid, 3~Edge) for posting
+and 75 cases (42~Invalid, 30~Valid, 3~Edge) for search---demonstrating that
 pairwise adapts naturally to dense constraints. The
 \textit{Real-Estate Listing} app presents two screens of similar
-complexity, each producing 53 cases (25~IV, 25~V, 3~Edge), confirming
+complexity, each producing 53 cases (25~Invalid, 25~Valid, 3~Edge), confirming
 a stable case count for comparable widget inventories.
-Fig.~\ref{fig:case_example} shows one generated IV case.
+Fig.~\ref{fig:case_example} shows one generated Invalid case.
 
 \subsection{Coverage Results}
 Table~\ref{tab:coverage} summarizes the statement coverage and test-case
 counts across all six evaluated screens; Table~\ref{tab:reduction}
-details the IV, V, and Edge breakdown per screen. All six screens
+details the Invalid, Valid, and Edge breakdown per screen. All six screens
 achieved statement coverage above \textbf{91\%}, and the highest result
 (\textbf{96.6\%}, Real-Estate posting) was obtained despite a
 reduced test-case count. Three characteristics of the generated
@@ -601,7 +601,7 @@ scripts contributed to this result: (i)~every widget interaction uses
 refactoring; (ii)~every nonempty \texttt{validatorRule} drives
 exactly one invalid value plus one valid counterpart, ensuring each
 validation branch in the Cubit is exercised at least once;
-(iii)~both IV and V script groups are produced in a single invocation,
+(iii)~both Invalid and Valid script groups are produced in a single invocation,
 giving teams immediate coverage of positive and negative test paths.
 
 \begin{table}[!t]
@@ -637,7 +637,7 @@ giving teams immediate coverage of positive and negative test paths.
   \begin{tabular}{llccc}
     \toprule
     \textbf{App} & \textbf{Screen} &
-    \textbf{IV} & \textbf{V} & \textbf{Edge} \\
+    \textbf{Invalid} & \textbf{Valid} & \textbf{Edge} \\
     \midrule
     \multirow{2}{*}{Medical Appt.}
       & Booking & 31 & 21 & 3 \\
@@ -649,8 +649,7 @@ giving teams immediate coverage of positive and negative test paths.
       & Posting & 25 & 25 & 3 \\
       & Search  & 25 & 25 & 3 \\
     \bottomrule
-    \multicolumn{5}{l}{\footnotesize IV\,=\,pairwise invalid;\
-    V\,=\,pairwise valid; Edge\,=\,edge cases.} \\
+    \multicolumn{5}{l}{\footnotesize Edge\,=\,edge cases.} \\
   \end{tabular}
 \end{table}
 
@@ -663,13 +662,13 @@ of 96.6\% for the Real-Estate posting screen. Three reasons explain
 this result: (i)~\texttt{find.byKey} locators remain stable even when
 the UI layout changes; (ii)~every non-empty \texttt{validatorRule}
 generates both a valid and an invalid input, so every error-checking
-branch in the Cubit is tested; and (iii)~the tool generates both IV
-and V test groups in one run, covering failure and success scenarios
+branch in the Cubit is tested; and (iii)~the tool generates both Invalid
+and Valid test groups in one run, covering failure and success scenarios
 at the same time.
 
 \textbf{RQ2 --- Combinatorial reduction:}
 Table~\ref{tab:combinatorial} compares the exhaustive combinatorial
-count against the pairwise IV count for each screen (exhaustive count
+count against the pairwise Invalid count for each screen (exhaustive count
 = product of all factor levels, treating each
 \texttt{TextFormField} as having two states: valid and invalid). The reduction scales with
 parameter count: screens with a single factor show minimal reduction
@@ -680,7 +679,7 @@ confirming that pairwise is essential for keeping test suites
 manageable as form complexity grows.
 
 \begin{table}[!t]
-  \caption{Pairwise IV Cases vs.\ Exhaustive Combinatorial Count}
+  \caption{Pairwise Invalid Cases vs.\ Exhaustive Combinatorial Count}
   \label{tab:combinatorial}
   \centering
   \renewcommand{\arraystretch}{1.3}
@@ -688,7 +687,7 @@ manageable as form complexity grows.
   \begin{tabular}{llrrr}
     \toprule
     \textbf{App} & \textbf{Screen} &
-    \textbf{Exhaustive} & \textbf{Pairwise IV} & \textbf{Reduction} \\
+    \textbf{Exhaustive} & \textbf{Pairwise Invalid} & \textbf{Reduction} \\
     \midrule
     \multirow{2}{*}{Medical Appt.}
       & Booking &  1{,}792 & 31 &     58$\times$ \\
