@@ -71,16 +71,15 @@
 \begin{abstract}
 % -----------------------------------------------
 In the software development lifecycle, widget testing is a critical process
-for identifying and resolving defects, thereby enhancing software
-reliability prior to delivery. This is particularly crucial in the rapidly
+for identifying and resolving defects, thereby improving software
+reliability before deployment. This is particularly crucial in the rapidly
 evolving domain of mobile applications developed with the Flutter framework,
-where requirements change frequently. Although automated testing reduces
-overall testing time, developers still require specialized knowledge and
-significant initial effort to create effective test scripts in the Dart
-language. This paper presents an automated tool that streamlines the
+where requirements change frequently. Although automated testing reduces testing effort, developers still require
+specialized knowledge and substantial initial effort to create effective
+Dart test scripts. This paper presents an automated tool that streamlines the
 generation of Flutter test scripts by importing front-end source files,
 extracting widget metadata (keys, validation conditions, and input-handling
-types), and producing synthetic test data through a Large Language Model
+types), and generating synthetic test data using a Large Language Model
 (LLM). Test cases are systematically generated using the Pairwise testing
 technique via the PICT tool. The resulting Dart test scripts are ready to
 execute within the Flutter testing framework. The tool was evaluated against
@@ -106,11 +105,10 @@ testing is therefore essential, yet designing test cases manually is
 time-consuming and demands deep expertise from developers.
 
 Within the Flutter framework~\cite{b1}, developers write integration and
-widget test scripts in Dart to simulate user interactions on the user interface (UI). However,
+widget test scripts in Dart to simulate user interactions with the user interface (UI). However,
 crafting these scripts requires developers to (1) understand widget structure
 and validation rules in the source code, (2) define appropriate input data
-covering valid and invalid boundary conditions, and (3) sequence test actions
-correctly. Existing automation tools such as Robot Framework and Playwright
+covering valid and invalid boundary conditions, and (3) correctly sequence test actions. Existing automation tools such as Robot Framework and Playwright
 are tailored for web applications and cannot directly generate Flutter-specific
 test scripts.
 
@@ -158,8 +156,8 @@ Ekakrachawakitti~\cite{b2} proposed a method for generating Robot Framework test
 scripts from web front-end files by extracting HTML elements and input
 constraints from a database schema. Srivichayanun~\cite{b3} extended this concept
 by importing XML Schema Definition (XSD) schemas and applying Boundary Value Analysis to produce test
-data for web applications. These works motivate adapting similar extraction
-techniques to Flutter's Dart-based widget structure.
+data for web applications. These studies motivate the adaptation of similar extraction
+techniques to Flutter's Dart-based widget architecture.
 
 \subsection{LLM-Based Data Generation}
 Tuan Pham~\cite{b4} demonstrated that structuring LLM prompts with distinct
@@ -202,8 +200,7 @@ Phase~4 covers Step~8 (Convert JSON Files to Dart Test Script Files).
 \subsection{Phase 1 -- Extracting Manifest}
 
 The tool statically analyzes every \texttt{.dart} file under the
-\texttt{lib/} directory of the target Flutter project. Only widgets that
-carry a \texttt{Key} property are considered, as the key is required to
+\texttt{lib/} directory of the target Flutter project. Only widgets containing a \texttt{Key} property are considered, as the key is required to
 locate a widget during test execution via \texttt{find.byKey()}.
 
 At the \textit{screen level}, the tool records Business Logic Component (BLoC)/Cubit metadata required
@@ -231,7 +228,7 @@ Widget keys follow the naming convention
 \texttt{appt\_\allowbreak{}01\_\allowbreak{}patient\_\allowbreak{}name\_\allowbreak{}textfield}),
 where \texttt{seq} is a zero-padded integer used to order
 widget interaction steps.
-Widgets whose keys carry the suffixes \texttt{\_expected\_\allowbreak{}success}, or
+Widgets whose keys carry the suffixes \texttt{\_expected\_\allowbreak{}success} or
 \texttt{\_expected\_\allowbreak{}fail} are designated as outcome-assertion targets
 and are excluded from PICT factor enumeration.
 
@@ -246,7 +243,7 @@ per screen and per widget.
   \renewcommand{\arraystretch}{1.3}
   \begin{tabular}{lp{3.8cm}c}
     \toprule
-    \textbf{Field} & \textbf{Description} & \textbf{Req.} \\
+    \textbf{Field} & \textbf{Description} & \textbf{Required} \\
     \midrule
     \multicolumn{3}{l}{\textit{Screen-level (source block)}} \\
     \texttt{file}           & Path to the UI page source file & Y \\
@@ -279,12 +276,11 @@ The filtered metadata is assembled into a structured prompt following
 the six-component framework of Tuan Pham~\cite{b4} (context, target,
 objective, execution, style, polish). Key objective rules instruct the
 model to analyze \texttt{maxLength}, \texttt{inputFormatters}, and
-\texttt{validatorRules}; skip \texttt{isEmpty}/\texttt{null} checks
+\texttt{validatorRules}; skip empty or null validation checks
 (handled by edge-case generation in Phase~3); generate one valid/invalid
 pair per nonempty rule; ensure invalid values still conform to
 \texttt{inputFormatters}; and return valid JSON. Two few-shot examples
-in the execution component fix the output schema and prevent hallucinated
-values. The widget metadata from Phase~1 is appended as the input payload.
+in the execution component fix the output schema and prevent the generation of inconsistent values. The widget metadata from Phase~1 is appended as the input payload.
 
 The prompt is submitted to \textit{Google Gemini 2.5 Flash}
 \cite{b5} via the Gemini API (HTTP POST). The model returns a
@@ -325,7 +321,7 @@ built independently:
         \texttt{invalid} sentinel level to \texttt{TextFormField} factors,
         while non-text factors (\texttt{Dropdown}, \texttt{Radio},
         \texttt{Checkbox}, \texttt{Switch}) enumerate all option values;
-        every PICT combination therefore contains at least one invalid text
+        every PICT combination, therefore, contains at least one invalid text
         input, producing negative-path test cases.
   \item \textbf{Valid:} the Valid model assigns only valid levels to each
         factor; PICT then produces positive-path test cases.
@@ -338,7 +334,7 @@ built independently:
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=\columnwidth]{figure3.png}
-  \caption{Per-Widget Valid/Invalid Dataset Values In The Generated datasets.json File.}
+  \caption{Per-Widget Dataset Values In datasets.json.}
   \label{fig:datasets}
 \end{figure}
 
@@ -349,8 +345,8 @@ are recognized: (1)~\texttt{<key>.valid = <value>} and
 (2)~\texttt{<key>.invalid = <value>} pin concrete strings in
 \texttt{<page>.datasets.json} before PICT runs, leaving the model
 untouched; (3)~\texttt{IF [key\textsubscript{A}] = "v" THEN
-[key\textsubscript{B}] = "v";} appends cross-widget rules to both
-model files so PICT produces only satisfying combinations. A syntax
+[key\textsubscript{B}] = "v";} directs the tool to append cross-widget
+rules to both model files so that PICT produces only satisfying combinations. A syntax
 error triggers an \textit{``Invalid Constraint Syntax''} message and
 halts the pipeline.
 
@@ -665,7 +661,7 @@ Table~\ref{tab:combinatorial} compares the exhaustive combinatorial
 count against the pairwise Invalid count for each screen (exhaustive count
 = product of all factor levels, treating each
 \texttt{TextFormField} as having two states: valid and invalid). The reduction scales with
-parameter count: screens with a single factor show minimal reduction
+the number of parameters: screens with a single factor show minimal reduction
 (2$\times$ for Medical Search), while screens with 11--12 factors
 achieve reductions of three orders of magnitude (1{,}024$\times$ for
 Job-Listing posting; 2{,}048$\times$ for Real-Estate posting),
@@ -705,7 +701,7 @@ manageable as form complexity grows.
 This paper presented an automated tool for generating Flutter widget test
 scripts using a combination of source-code metadata extraction, LLM-driven
 synthetic data generation, and the Pairwise testing technique. The tool
-requires no manual test-case authoring: developers supply only Flutter
+eliminates the need for manual test-case authoring: developers supply only Flutter
 front-end files and receive ready-to-run Dart test scripts as output.
 Evaluation on three real-world mobile applications confirmed that the tool
 successfully generates executable test scripts with measurable code coverage.
