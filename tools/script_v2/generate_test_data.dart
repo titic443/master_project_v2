@@ -1501,75 +1501,70 @@ class TestDataGenerator {
             st.add({'pump': true});
           }
 
-          final caseKind = hasInvalidData ? 'failed' : 'success';
+          // Skip combos where no field is actually invalid — they don't belong
+          // in pairwise_invalid_cases. The inject-all-valid block below handles
+          // the single success case separately.
+          if (!hasInvalidData) continue;
+
+          final caseKind = 'failed';
           final id = 'pairwise_invalid_cases_${i + 1}';
           final asserts = <Map<String, dynamic>>[];
 
-          if (hasInvalidData) {
-            final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
-                const {};
-            for (final fieldKey in invalidFields) {
-              final dataArray = ds[fieldKey];
+          final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
+              const {};
+          for (final fieldKey in invalidFields) {
+            final dataArray = ds[fieldKey];
 
-              // 1. ดึง invalidRuleMessages จาก datasets (ไม่กรอง กรุณา/required)
-              String msg = '';
-              if (dataArray is List && dataArray.isNotEmpty) {
-                final firstPair = dataArray[0];
-                if (firstPair is Map) {
-                  msg = firstPair['invalidRuleMessages']?.toString() ?? '';
-                }
+            String msg = '';
+            if (dataArray is List && dataArray.isNotEmpty) {
+              final firstPair = dataArray[0];
+              if (firstPair is Map) {
+                msg = firstPair['invalidRuleMessages']?.toString() ?? '';
               }
+            }
 
-              // 2. ถ้าไม่มี message จาก datasets → fallback หา isEmpty/null rule
-              //    จาก manifest เพื่อครอบคลุมทุก field type (ไม่เฉพาะ number)
-              if (msg.isEmpty || msg.toLowerCase() == 'general') {
-                final widget = widgets.firstWhere(
-                  (w) => (w['key'] ?? '').toString() == fieldKey,
-                  orElse: () => <String, dynamic>{},
-                );
-                if (widget.isNotEmpty) {
-                  final meta =
-                      (widget['meta'] as Map?)?.cast<String, dynamic>() ??
-                          const {};
-                  final rules =
-                      (meta['validatorRules'] as List?) ?? const [];
-                  for (final rule in rules) {
-                    if (rule is Map) {
-                      final condition =
-                          (rule['condition']?.toString() ?? '')
-                              .toLowerCase()
-                              .replaceAll(' ', '');
-                      if (condition.contains('null') ||
-                          condition.contains('isempty')) {
-                        final fallback = rule['message']?.toString() ?? '';
-                        if (fallback.isNotEmpty) msg = fallback;
-                        break;
-                      }
+            if (msg.isEmpty || msg.toLowerCase() == 'general') {
+              final widget = widgets.firstWhere(
+                (w) => (w['key'] ?? '').toString() == fieldKey,
+                orElse: () => <String, dynamic>{},
+              );
+              if (widget.isNotEmpty) {
+                final meta =
+                    (widget['meta'] as Map?)?.cast<String, dynamic>() ??
+                        const {};
+                final rules =
+                    (meta['validatorRules'] as List?) ?? const [];
+                for (final rule in rules) {
+                  if (rule is Map) {
+                    final condition =
+                        (rule['condition']?.toString() ?? '')
+                            .toLowerCase()
+                            .replaceAll(' ', '');
+                    if (condition.contains('null') ||
+                        condition.contains('isempty')) {
+                      final fallback = rule['message']?.toString() ?? '';
+                      if (fallback.isNotEmpty) msg = fallback;
+                      break;
                     }
                   }
                 }
               }
+            }
 
-              if (msg.isNotEmpty && msg.toLowerCase() != 'general') {
-                asserts.add({'text': msg, 'exists': true});
-              }
+            if (msg.isNotEmpty && msg.toLowerCase() != 'general') {
+              asserts.add({'text': msg, 'exists': true});
             }
-            for (final ck in uncheckedRequiredCheckboxes) {
-              final msg = requiredCheckboxValidation[ck];
-              if (msg != null && msg.isNotEmpty) {
-                asserts.add({'text': msg, 'exists': true});
-              }
+          }
+          for (final ck in uncheckedRequiredCheckboxes) {
+            final msg = requiredCheckboxValidation[ck];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg, 'exists': true});
             }
-            // Fallback: ถ้าไม่มี validation message เลย (field ไม่มี validatorRules)
-            // ให้ fallback ใช้ expectedFailKeys เช่น search_01_expected_fail
-            // เพราะ submit invalid data จะ trigger fail dialog แทน
-            if (asserts.isEmpty) {
-              for (final fk in expectedFailKeys) {
-                asserts.add(buildAssert(fk));
-              }
+          }
+          if (asserts.isEmpty) {
+            for (final fk in expectedFailKeys) {
+              asserts.add(buildAssert(fk));
             }
-          } else {
-            asserts.addAll(buildSuccessAsserts());
           }
 
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
@@ -1585,14 +1580,9 @@ class TestDataGenerator {
         }
 
         // ── Inject all-valid success case ──────────────────────────────────────
-        // PICT ไม่สร้าง all-valid combo ใน full model → inject เองให้ครบ
-        // rule: ถ้า group pairwise_invalid_cases ไม่มี kind==success เลย
-        //       และมี expectedSuccessKeys → เพิ่ม 1 case ที่ valid ทุก field
-        final alreadyHasSuccess = cases.any((c) =>
-            c['group'] == 'pairwise_invalid_cases' &&
-            c['kind'] == 'success');
-
-        if (!alreadyHasSuccess && expectedSuccessKeys.isNotEmpty) {
+        // Fallback เฉพาะเมื่อไม่มี extValidCombos เลย (valid model ไม่ถูกสร้าง)
+        // ถ้ามี extValidCombos → pairwise_valid_cases จะ handle success เอง
+        if (extValidCombos == null || extValidCombos!.isEmpty) {
           final st = <Map<String, dynamic>>[];
           final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
