@@ -574,15 +574,15 @@ combined with \texttt{lcov} to filter results to UI page files only.
 The three applications represent increasing levels of form-validation
 complexity. The \textit{Medical Appointment} app contains a booking
 screen with nine input widgets (TextFormField, DropdownButtonFormField,
-Radio, Switch) and a lighter search screen, yielding 52 test cases
-(28~IV, 21~V, 3~Edge) and 6 test cases (2~IV, 1~V, 3~Edge)
+Radio, Switch) and a lighter search screen, yielding 55 test cases
+(31~IV, 21~V, 3~Edge) and 5 test cases (1~IV, 1~V, 3~Edge)
 respectively. The \textit{Job Listing} app includes a posting screen
 with complex cross-field validation rules (e.g., salary-range
-constraints), generating 64 cases (31~IV, 30~V, 3~Edge) for posting
-and 63 cases (30~IV, 30~V, 3~Edge) for search---demonstrating that
+constraints), generating 63 cases (30~IV, 30~V, 3~Edge) for posting
+and 75 cases (42~IV, 30~V, 3~Edge) for search---demonstrating that
 pairwise adapts naturally to dense constraints. The
 \textit{Real-Estate Listing} app presents two screens of similar
-complexity, each producing 55 cases (27~IV, 25~V, 3~Edge), confirming
+complexity, each producing 53 cases (25~IV, 25~V, 3~Edge), confirming
 a stable case count for comparable widget inventories.
 Fig.~\ref{fig:case_example} shows one generated IV case.
 
@@ -612,16 +612,16 @@ giving teams immediate coverage of positive and negative test paths.
     \textbf{Statements} & \textbf{Stmt. Coverage} \\
     \midrule
     \multirow{2}{*}{Medical Appt.}
-      & Booking  & 52 & 166/173 & 96.0\% \\
-      & Search   &  6 & 141/154 & 91.6\% \\
+      & Booking  & 55 & 166/173 & 96.0\% \\
+      & Search   &  5 & 141/154 & 91.6\% \\
     \midrule
     \multirow{2}{*}{Job Listing}
-      & Posting  & 64 & 161/172 & 93.6\% \\
-      & Search   & 63 & 223/239 & 93.3\% \\
+      & Posting  & 63 & 161/172 & 93.6\% \\
+      & Search   & 75 & 223/239 & 93.3\% \\
     \midrule
     \multirow{2}{*}{Real Estate}
-      & Posting  & 55 & 169/175 & 96.6\% \\
-      & Search   & 55 & 233/250 & 93.2\% \\
+      & Posting  & 53 & 169/175 & 96.6\% \\
+      & Search   & 53 & 233/250 & 93.2\% \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -637,14 +637,14 @@ giving teams immediate coverage of positive and negative test paths.
     \textbf{IV} & \textbf{V} & \textbf{Edge} \\
     \midrule
     \multirow{2}{*}{Medical Appt.}
-      & Booking & 28 & 21 & 3 \\
-      & Search  &  2 &  1 & 3 \\
+      & Booking & 31 & 21 & 3 \\
+      & Search  &  1 &  1 & 3 \\
     \multirow{2}{*}{Job Listing}
-      & Posting & 31 & 30 & 3 \\
-      & Search  & 30 & 30 & 3 \\
+      & Posting & 30 & 30 & 3 \\
+      & Search  & 42 & 30 & 3 \\
     \multirow{2}{*}{Real Estate}
-      & Posting & 27 & 25 & 3 \\
-      & Search  & 27 & 25 & 3 \\
+      & Posting & 25 & 25 & 3 \\
+      & Search  & 25 & 25 & 3 \\
     \bottomrule
     \multicolumn{5}{l}{\footnotesize IV\,=\,pairwise invalid;\
     V\,=\,pairwise valid; Edge\,=\,edge cases.} \\
@@ -669,11 +669,12 @@ Table~\ref{tab:combinatorial} compares the exhaustive combinatorial
 count against the pairwise IV count for each screen (exhaustive count
 = product of all factor levels, treating each
 \texttt{TextFormField} as having two states: valid and invalid). The reduction scales with
-parameter count: screens with a single factor show no reduction, while
-screens with 11--12 factors achieve reductions of three orders of
-magnitude (991$\times$ for Job-Listing posting; 3{,}413$\times$ for
-Real-Estate posting), confirming that pairwise is essential for keeping
-test suites manageable as form complexity grows.
+parameter count: screens with a single factor show minimal reduction
+(2$\times$ for Medical Search), while screens with 11--12 factors
+achieve reductions of three orders of magnitude (1{,}024$\times$ for
+Job-Listing posting; 2{,}048$\times$ for Real-Estate posting),
+confirming that pairwise is essential for keeping test suites
+manageable as form complexity grows.
 
 \begin{table}[!t]
   \caption{Pairwise IV Cases vs.\ Exhaustive Combinatorial Count}
@@ -687,14 +688,14 @@ test suites manageable as form complexity grows.
     \textbf{Exhaustive} & \textbf{Pairwise IV} & \textbf{Reduction} \\
     \midrule
     \multirow{2}{*}{Medical Appt.}
-      & Booking &  1{,}792 & 28 &     64$\times$ \\
-      & Search  &        2 &  2 &      1$\times$ \\
+      & Booking &  1{,}792 & 31 &     58$\times$ \\
+      & Search  &        2 &  1 &      2$\times$ \\
     \multirow{2}{*}{Job Listing}
-      & Posting & 30{,}720 & 31 &    991$\times$ \\
-      & Search  &      240 & 30 &      8$\times$ \\
+      & Posting & 30{,}720 & 30 & 1{,}024$\times$ \\
+      & Search  &      336 & 42 &      8$\times$ \\
     \multirow{2}{*}{Real Estate}
-      & Posting & 92{,}160 & 27 & 3{,}413$\times$ \\
-      & Search  &      960 & 27 &     36$\times$ \\
+      & Posting & 51{,}200 & 25 & 2{,}048$\times$ \\
+      & Search  &      800 & 25 &     32$\times$ \\
     \bottomrule
     \multicolumn{5}{l}{\footnotesize Exhaustive\,=\,product of factor
       levels (2 states per \texttt{TextFormField}: valid and invalid).} \\
