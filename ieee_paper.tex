@@ -182,7 +182,7 @@ The proposed tool automates the end-to-end test-script generation process
 through four sequential phases, as illustrated in Fig.~\ref{fig:overview}.
 
 % --- FIGURE 1: Overview ---
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\columnwidth]{figure1.png}
   \caption{Overview of the automated test-script generation pipeline.}
@@ -325,7 +325,7 @@ built independently:
 \end{enumerate}
 
 % --- FIGURE: datasets.json (Phase 2 output / Phase 3 input) ---
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\columnwidth]{figure3.png}
   \caption{Structure of the \texttt{<page>.datasets.json} file produced
@@ -354,7 +354,21 @@ PICT is then invoked as a subprocess once per model file
 output---one row per test case, with one column per factor, as
 illustrated in Fig.~\ref{fig:pict_result}---is parsed, and each row
 is assembled into a \textit{case} object together with the widget
-interaction steps and expected assertions. The three result arrays (IV, V, Edge) are then
+interaction steps and expected assertions.
+
+% --- FIGURE: PICT pairwise result file (Phase 3) ---
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figure2.png}
+  \caption{Tab-delimited pairwise combinations emitted by PICT into
+           \texttt{<page>.invalid.\allowbreak{}result.txt}. Each column is one
+           \textit{factor} (widget key) and each row is one covered
+           combination of \textit{levels} (valid/invalid sample
+           values or selection labels).}
+  \label{fig:pict_result}
+\end{figure}
+
+The three result arrays (IV, V, Edge) are then
 merged into a single \texttt{<page>.test\_\allowbreak{}data.json} file that contains
 three top-level keys:
 \begin{itemize}
@@ -377,6 +391,17 @@ three top-level keys:
         \texttt{steps}, and \texttt{asserts}.
 \end{itemize}
 
+% --- FIGURE: test_data.json case example ---
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figure5.png}
+  \caption{Example \texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} entry
+           serialized inside \texttt{<page>.test\_\allowbreak{}data.json} before
+           it is rendered into a \texttt{testWidgets} block in
+           \texttt{<page>\_test.dart}.}
+  \label{fig:case_example}
+\end{figure}
+
 Each \texttt{steps} entry maps widget type to a
 \texttt{WidgetTester} command: \texttt{enterText} (with
 \texttt{byKey} and a \texttt{dataset} reference) for
@@ -390,18 +415,6 @@ Each \texttt{asserts} entry specifies either a \texttt{text}
 string with an \texttt{exists} flag (verifying a visible error message)
 or a \texttt{byKey} widget identifier with an \texttt{exists} flag
 (verifying the presence of a success or failure indicator widget).
-
-% --- FIGURE: PICT pairwise result file (Phase 3) ---
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure2.png}
-  \caption{Tab-delimited pairwise combinations emitted by PICT into
-           \texttt{<page>.invalid.\allowbreak{}result.txt}. Each column is one
-           \textit{factor} (widget key) and each row is one covered
-           combination of \textit{levels} (valid/invalid sample
-           values or selection labels).}
-  \label{fig:pict_result}
-\end{figure}
 
 Table~\ref{tab:widgets} summarizes how each supported widget type is
 mapped to its PICT role and to the corresponding \texttt{WidgetTester}
@@ -487,7 +500,7 @@ test-generation workflow:
 \end{enumerate}
 
 % --- FIGURE 2: Main UI ---
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\columnwidth]{figure4.png}
   \caption{Main window of the automated test-script generation tool.}
@@ -573,17 +586,6 @@ pairwise adapts naturally to dense constraints. The
 complexity, each producing 55 cases (27~IV, 25~V, 3~Edge), confirming
 a stable case count for comparable widget inventories.
 Fig.~\ref{fig:case_example} shows one generated IV case.
-
-% --- FIGURE: test_data.json case example ---
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=\columnwidth]{figure5.png}
-  \caption{Example \texttt{pairwise\_\allowbreak{}invalid\_\allowbreak{}cases} entry
-           serialized inside \texttt{<page>.test\_\allowbreak{}data.json} before
-           it is rendered into a \texttt{testWidgets} block in
-           \texttt{<page>\_test.dart}.}
-  \label{fig:case_example}
-\end{figure}
 
 \subsection{Coverage Results}
 Table~\ref{tab:coverage} summarizes the statement coverage and test-case
