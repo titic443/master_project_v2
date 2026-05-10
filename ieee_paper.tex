@@ -182,6 +182,12 @@ levels, and outputs a minimal covering test suite.
 
 The proposed tool automates the end-to-end test-script generation process
 through four sequential phases, as illustrated in Fig.~\ref{fig:overview}.
+Each phase comprises a sequence of steps depicted in the figure:
+Phase~1 covers static scanning and manifest serialization;
+Phase~2 covers prompt construction and LLM invocation;
+Phase~3 covers PICT model building, constraint application, subprocess
+invocation, and test-case assembly; and
+Phase~4 covers test-data reading, Dart source rendering, and test-file output.
 
 % --- FIGURE 1: Overview ---
 \begin{figure}[!ht]
