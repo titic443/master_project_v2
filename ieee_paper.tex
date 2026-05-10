@@ -376,7 +376,7 @@ three top-level keys:
   \item \textbf{source:} the screen-level BLoC metadata propagated from
         Phase~1 (\texttt{pageClass}, \texttt{cubitClass},
         \texttt{stateClass}, \texttt{fileCubit}, \texttt{fileState}).
-        Phase~4 reads this key to emit \texttt{import} statements and
+        Phase~4 reads this key to generate \texttt{import} statements and
         instantiate the \texttt{BlocProvider} wrapper.
   \item \textbf{datasets:} the valid/invalid value pairs produced in
         Phase~2, keyed by widget key (\texttt{byKey}). Phase~4 reads
@@ -447,7 +447,7 @@ above.
 The \texttt{<page>.test\_\allowbreak{}data.json} produced in Phase~3 is rendered
 into a syntactically valid Dart test file named
 \texttt{<page>\_\allowbreak{}test.dart}. The \texttt{TestScriptGenerator} class
-first reads the \textbf{source} key to emit three \texttt{import}
+first reads the \textbf{source} key to generate three \texttt{import}
 statements (\texttt{fileCubit}, \texttt{fileState}, and the page
 source file) and to declare a
 \texttt{BlocProvider\allowbreak{}\textless CubitClass\textgreater} wrapper that is
