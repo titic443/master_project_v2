@@ -47,12 +47,26 @@ String pkgImport(String package, String libPath) {
   return 'package:$package/$p';
 }
 
-/// Read package name from pubspec.yaml
+/// Read package name from pubspec.yaml.
+///
+/// Handles quoted values:
+///   `name: my_app`        → `my_app`
+///   `name: "my-app"`      → `my-app`
+///   `name: 'master_project'` → `master_project`
 String? readPackageName() {
   try {
     final y = File('pubspec.yaml').readAsStringSync();
-    final m = RegExp(r'^name:\s*(.+)\s*$', multiLine: true).firstMatch(y);
-    return m?.group(1)?.trim();
+    final m = RegExp(r'^name:\s*(.+?)\s*$', multiLine: true).firstMatch(y);
+    var raw = m?.group(1)?.trim();
+    if (raw == null || raw.isEmpty) return null;
+
+    // Strip optional surrounding quotes (YAML allows both kinds).
+    if (raw.length >= 2 &&
+        ((raw.startsWith('"') && raw.endsWith('"')) ||
+            (raw.startsWith("'") && raw.endsWith("'")))) {
+      raw = raw.substring(1, raw.length - 1);
+    }
+    return raw.isEmpty ? null : raw;
   } catch (_) {
     return null;
   }

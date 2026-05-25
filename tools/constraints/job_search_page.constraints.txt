@@ -1,28 +1,26 @@
 # PICT Constraints for Job Search Page
-# ======================================
+# =====================================
 # อ้างอิงข้อมูลจริงใน DB:
-#   title: "Software Engineer"  category: "Engineering"  employmentType: "Freelance"
-#   location: "Bangkok, Thailand"  salaryMin: 30000  salaryMax: 70000  isRemote: true
+#   title: "Software Engineer"   category: "Engineering"
+#   employmentType: "Freelance"  location: "Bangkok, Thailand"
+#   salaryMin: 30000  salaryMax: 70000  isRemote: true
+#
+# โครงสร้างไฟล์:
+#   - Format A (Dataset Override) : `key.valid = ...` / `key.invalid = ...`
+#     ระบบ Dart จะ override ค่าใน datasets.json ก่อนส่งไป PICT
+#   - Format B (PICT IF/THEN)     : `IF [k] = "v" THEN [k2] = "v2";`
+#     ส่งเข้า PICT ตรง ๆ + Dart-side post-filter (กัน macOS PICT bug)
 
-# ─── Dataset Constraints (Format A: key = value) ──────────────────────────────
-# ค่าตายตัวที่ตรงกับข้อมูลจริงใน DB สำหรับ text fields
-
-search_01_keyword_textfield.valid = วิศวกรซอฟต์แวร์
-search_01_keyword_textfield.invalid = Software Engineer
+# ─── Format A: Dataset Constraints ───────────────────────────────────────────
+search_01_keyword_textfield.valid   = Software Engineer
+search_01_keyword_textfield.invalid = xxxxx
 search_04_salary_min_textfield.valid = 30000
-# search_05_salary_min_textfield = 30000
 
-# # ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────
-# # ทุก constraint ต้องอยู่บรรทัดเดียว และลงท้ายด้วย ;
-
-# # ถ้า keyword invalid → ต้องมี filter อื่นมาช่วย (location ต้อง valid)
-# IF [search_01_keyword_textfield] = "invalid" THEN [search_02_location_textfield] = "valid";
-
-# # ถ้า remote switch เปิด → keyword ไม่จำเป็นต้อง valid ก็ได้
-# IF [search_06_remote_switch] = "on" THEN [search_01_keyword_textfield] <> "invalid";
-
-# # ถ้า salary_min invalid → keyword ต้อง valid เพื่อไม่ให้ทุก filter ว่างพร้อมกัน
-# IF [search_05_salary_min_textfield] = "invalid" THEN [search_01_keyword_textfield] = "valid";
-
-# # ถ้า category เลือก Engineering → employment type ควรเป็น Freelance (ตรงกับ DB)
+# ─── Format B: PICT IF/THEN Constraints ──────────────────────────────────────
+# ถ้า category = Engineering → employment type ต้อง = Freelance (ตรงกับ DB)
 IF [search_02_category_dropdown] = "Engineering" THEN [search_03_type_dropdown] = "Freelance";
+
+# NOTE: เคยมี constraint สำหรับ search_02_location_textfield และ
+# search_05_salary_min_textfield (ดู git history) — ถูกตัดออกหลังจาก
+# location field ถูก comment ใน UI และ key ของ salary ถูก renumber เป็น
+# search_04_salary_min_textfield ใน job_search_page.dart

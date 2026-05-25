@@ -16,37 +16,23 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
         await tester.pumpWidget(w);
-        // dataset: byKey.search_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมชาย ใจดี');
+        // dataset: byKey.search_01_patient_name_textfield[0].invalid
+        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'ก');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_05_end_button')));
         await tester.tap(find.byKey(const Key('search_05_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.byKey(const Key('search_01_expected_success')),
+          find.byKey(const Key('search_01_expected_fail')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
         // Dismiss AlertDialog
         final _dialogBtn = find.descendant(of: find.byType(AlertDialog), matching: find.byType(TextButton));
         if (_dialogBtn.evaluate().isNotEmpty) await tester.tap(_dialogBtn.last);
-        await tester.pumpAndSettle();
-      });
-
-      testWidgets('pairwise_invalid_cases_2', (tester) async {
-        final providers = <BlocProvider>[
-          BlocProvider<ClinicSearchCubit>(create: (_)=> ClinicSearchCubit()),
-        ];
-        final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
-        await tester.pumpWidget(w);
-        // dataset: byKey.search_01_patient_name_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สxddasd');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('search_05_end_button')));
-        await tester.tap(find.byKey(const Key('search_05_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
       });
 
@@ -61,9 +47,10 @@ void main() {
         // dataset: byKey.search_01_patient_name_textfield[0].valid
         await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_05_end_button')));
         await tester.tap(find.byKey(const Key('search_05_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -85,9 +72,10 @@ void main() {
         ];
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
         await tester.pumpWidget(w);
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_05_end_button')));
         await tester.tap(find.byKey(const Key('search_05_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -110,9 +98,10 @@ void main() {
         // dataset: byKey.search_01_patient_name_textfield[0].atMax
         await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_05_end_button')));
         await tester.tap(find.byKey(const Key('search_05_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
@@ -135,9 +124,10 @@ void main() {
         // dataset: byKey.search_01_patient_name_textfield[0].atMin
         await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), '');
         await tester.pump();
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_05_end_button')));
         await tester.tap(find.byKey(const Key('search_05_end_button')));
-        await tester.pump();
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [

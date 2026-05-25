@@ -21,9 +21,40 @@
       "Bash(python3:*)",
       "Bash(git checkout:*)",
       "Bash(git stash:*)",
-      "Bash(git -C /Users/70009215/Desktop/101/master_project_v2 log --oneline -5)"
+      "Bash(git -C /Users/70009215/Desktop/101/master_project_v2 log --oneline -5)",
+      "mcp__drawio__open_drawio_xml",
+      "Bash(pdftotext \"/Users/titichangpoo/Desktop/MASTER_FINAL/ส่งอาจารย์/v4/6770231021_final.pdf\" -)",
+      "Bash(pip3 install *)",
+      "Bash(awk -F: '{print $1}')",
+      "Bash(sed -i '' 's/pairwise\\\\\\\\_valid\\\\\\\\_invalid\\\\\\\\_cases/pairwise\\\\\\\\_invalid\\\\\\\\_cases/g' /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/ieee_paper.tex)",
+      "Bash(sed -i '' s/pairwise_valid_invalid_cases/pairwise_invalid_cases/g /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/ieee_paper_TH.md)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 status)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 diff)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 log --oneline -5)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 add ieee_paper.tex tools/script_v2/generate_test_data.dart tools/script_v2/generate_test_script.dart webview/server.dart)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 commit -m ' *)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 diff ieee_paper.tex)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 add ieee_paper.tex)",
+      "Bash(awk 'NF' /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/ieee_paper.tex)",
+      "Bash(awk '/\\\\\\\\section|\\\\\\\\subsection/{print NR\": \"$0}' /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/ieee_paper.tex)",
+      "Bash(git -C /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 diff --stat ieee_paper.tex)",
+      "Bash(awk '{$1=$1; print length\\($2\\) \" \" $0}')",
+      "Bash(sort -rn -k1,1)",
+      "Bash(awk '{print $2, $3, \"\\(\" $1 \" chars, \" $4 \" occurrences\\)\"}')",
+      "Bash(awk '{ *)",
+      "Bash(awk -F'|' '$1+0 > 20')",
+      "Bash(rm -f *)",
+      "Bash(awk 'length\\($0\\) > 60')",
+      "Bash(git rm *)"
     ],
     "deny": [],
-    "ask": []
-  }
+    "ask": [],
+    "additionalDirectories": [
+      "/Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/.git"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "drawio"
+  ]
 }

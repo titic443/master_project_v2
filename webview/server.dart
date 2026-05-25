@@ -435,7 +435,12 @@ class PipelineController {
           final content = jsonDecode(await manifestFile.readAsString());
           widgetCount = (content['widgets'] as List?)?.length ?? 0;
         } catch (e) {
-          // Ignore parse errors
+          // Don't fail the whole scan over a malformed manifest, but make
+          // the failure visible — silent fall-through used to mask real
+          // pipeline corruption (manifest written but unparseable).
+          stderr.writeln(
+              '[WARN] handleScan: failed to parse manifest at '
+              '$manifestPath ($e). Reporting widgetCount=0.');
         }
       }
 
@@ -562,7 +567,13 @@ class PipelineController {
                 correctDatasetsPath = 'output/test_data/$base.datasets.json';
               }
             }
-          } catch (_) {}
+          } catch (e) {
+            // Manifest unreadable / malformed — fall back to the request's
+            // datasetsPath instead of silently picking a wrong file.
+            stderr.writeln(
+                '[WARN] generate-datasets: could not derive datasets path '
+                'from manifest ($e); using request value $datasetsPath.');
+          }
 
           await _applyDatasetOverrides(correctDatasetsPath, datasetOverrides);
           print(
@@ -789,8 +800,12 @@ class PipelineController {
             'cases': caseDetails,
           };
         }
-      } catch (_) {
-        // ถ้า parse ไม่ได้ ก็ไม่ส่ง summary
+      } catch (e) {
+        // Summary is best-effort — don't fail the response, but make the
+        // failure visible so a corrupted testdata.json gets noticed.
+        stderr.writeln(
+            '[WARN] generate-test-script: skipped summary, '
+            'could not parse testdata.json ($e).');
       }
 
       request.response.write(jsonEncode({
@@ -1122,13 +1137,28 @@ class PipelineController {
   ///
   /// Maps /coverage/* to coverage/html/*
   /// เช่น /coverage/index.html -> coverage/html/index.html
+  ///
+  /// Security: requests are constrained to the coverage/html/ directory.
+  /// Any '..' segments or absolute components are rejected to prevent path
+  /// traversal (เช่น /coverage/../../etc/passwd).
   Future<void> serveCoverageFile(HttpRequest request) async {
-    var path = request.uri.path;
+    final path = request.uri.path;
 
-    // แปลง URL path เป็น file path
-    // /coverage/index.html -> coverage/html/index.html
-    final filePath = path.replaceFirst('/coverage/', 'coverage/html/');
+    // คำนวณ path สัมพัทธ์ที่ user ขอ (ส่วนที่อยู่หลัง /coverage/)
+    const prefix = '/coverage/';
+    final relRequested =
+        path.startsWith(prefix) ? path.substring(prefix.length) : '';
 
+    // resolved path ที่ปลอดภัย (กัน path traversal ด้วย Uri normalization)
+    final safeRel = _safeJoinUnderRoot('coverage/html', relRequested);
+    if (safeRel == null) {
+      request.response.statusCode = 403;
+      request.response.write('Forbidden: invalid coverage path');
+      await request.response.close();
+      return;
+    }
+
+    final filePath = safeRel;
     final file = File(filePath);
     if (await file.exists()) {
       // ---------------------------------------------------------------------------
@@ -1164,14 +1194,25 @@ class PipelineController {
   ///
   /// Files ถูก serve จาก webview/ directory
   /// เช่น /index.html -> webview/index.html
+  ///
+  /// Security: ทุก request ถูก resolve ให้อยู่ภายใต้ webview/ เท่านั้น;
+  /// '..' หรือ absolute path จะถูกปฏิเสธ
   Future<void> serveStaticFile(HttpRequest request) async {
     var path = request.uri.path;
 
     // Default path '/' ไปยัง '/index.html'
     if (path == '/') path = '/index.html';
 
-    // สร้าง file path (webview/ prefix)
-    final file = File('webview$path');
+    final relRequested = path.startsWith('/') ? path.substring(1) : path;
+    final safeRel = _safeJoinUnderRoot('webview', relRequested);
+    if (safeRel == null) {
+      request.response.statusCode = 403;
+      request.response.write('Forbidden: invalid path');
+      await request.response.close();
+      return;
+    }
+
+    final file = File(safeRel);
 
     if (await file.exists()) {
       // ---------------------------------------------------------------------------
@@ -1202,6 +1243,33 @@ class PipelineController {
 // =============================================================================
 // UTILITY FUNCTIONS
 // =============================================================================
+
+  /// Resolve a user-supplied relative path safely under [root].
+  ///
+  /// Returns the joined path (e.g. `coverage/html/index.html`) only if the
+  /// resulting absolute path stays within [root]. Returns `null` for any
+  /// attempt to escape the root via `..`, absolute paths, or backslashes.
+  ///
+  /// This is the single guard used by [serveCoverageFile] / [serveStaticFile]
+  /// to prevent path-traversal attacks (e.g. `/coverage/../../etc/passwd`).
+  String? _safeJoinUnderRoot(String root, String userRelative) {
+    if (userRelative.isEmpty) return root;
+
+    // Decode any %xx sequences first (so %2e%2e becomes ..).
+    final decoded = Uri.decodeComponent(userRelative);
+
+    // Reject obvious escape vectors before normalization.
+    if (decoded.contains('\\') || decoded.startsWith('/')) return null;
+
+    // Collapse `.` and `..` segments via Uri normalization.
+    final candidate = Uri.parse('$root/$decoded').normalizePath().path;
+    final rootBase = root.endsWith('/') ? root : '$root/';
+
+    // After normalization the candidate must still live under the root
+    // directory; otherwise `..` segments escaped.
+    if (!candidate.startsWith(rootBase)) return null;
+    return candidate;
+  }
 
   /// อ่าน JSON body จาก POST request
   ///

@@ -90,16 +90,20 @@ POST /api/demo/buttons
 ```
 
 **Request Body:**
-```json
-{
-  "username": "john123",
-  "password": "pass123",
-  "email": "john@example.com",
-  "option": "approve",
-  "radio3": "manu",
-  "platform": "android",
-  "dropdown": "Apple",
-  "forceCode": null
+```txt
+"datasets": {
+  "defaults": {},
+  "byKey": {
+    "customer_02_firstname_textfield": [
+      {
+        "valid": "Alice",
+        "invalid": "J",
+        "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)",
+        "atMax": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "atMin": "Ab"
+      }
+    ]
+  }
 }
 ```
 

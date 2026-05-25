@@ -4,65 +4,65 @@
     "byKey": {
       "job_01_title_textfield": [
         {
-          "valid": "วิศวกรซอฟต์แวร์อาวุโส",
-          "invalid": "QA",
+          "valid": "ผู้จัดการฝ่ายขาย",
+          "invalid": "พน",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 3 ตัวอักษร",
-          "atMin": "พส",
-          "atMax": "วิศวกรซอฟต์แวร์อาวุโส"
+          "atMin": "พน",
+          "atMax": "ผู้จัดการฝ่ายขาย"
         }
       ],
       "job_02_company_textfield": [
         {
-          "valid": "บริษัท นวัตกรรม จำกัด",
+          "valid": "บริษัท แฮปปี้ โค้ด จำกัด",
           "invalid": "บ",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "อ",
-          "atMax": "บริษัท นวัตกรรม จำกัด"
+          "atMin": "บ",
+          "atMax": "บริษัท แฮปปี้ โค้ด จำกัด"
         }
       ],
       "job_03_location_textfield": [
         {
           "valid": "กรุงเทพมหานคร",
-          "invalid": "ธ",
+          "invalid": "ก",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "ช",
+          "atMin": "ก",
           "atMax": "กรุงเทพมหานคร"
         }
       ],
       "job_07_salary_min_textfield": [
         {
-          "valid": "35000",
+          "valid": "30000",
           "invalid": "",
-          "invalidRuleMessages": "",
+          "invalidRuleMessages": "กรุณากรอกเงินเดือนขั้นต่ำ",
           "atMin": "",
-          "atMax": "35000"
+          "atMax": "30000"
         }
       ],
       "job_08_salary_max_textfield": [
         {
-          "valid": "50000",
-          "invalid": "30000",
+          "valid": "35000",
+          "invalid": "29999",
           "invalidRuleMessages": "ต้องมากกว่าหรือเท่ากับเงินเดือนขั้นต่ำ",
-          "atMin": "",
-          "atMax": "50000"
+          "atMin": "29999",
+          "atMax": "35000"
         }
       ],
       "job_09_desc_textfield": [
         {
-          "valid": "รับผิดชอบในการพัฒนาและบำรุงรักษาซอฟต์แวร์ตามที่ได้",
-          "invalid": "รายละเอียดงานสั้นไป",
+          "valid": "เป็นงานที่ท้าทายมาก ต้องการคนที่มีความกระตือรือร้น",
+          "invalid": "งานดี รายละเอียดน้อย",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "atMin": "รายละเอียดงานไม่ถึง 20",
-          "atMax": "รับผิดชอบในการพัฒนาและบำรุงรักษาซอฟต์แวร์ตามที่ได้"
+          "atMin": "งานดี รายละเอียดน้อย",
+          "atMax": "เป็นงานที่ท้าทายมาก ต้องการคนที่มีความกระตือรือร้น"
         }
       ],
       "job_10_skills_textfield": [
         {
-          "valid": "Python, SQL, AWS, Docker",
-          "invalid": "C",
+          "valid": "ภาษา Python, SQL",
+          "invalid": "ไ",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "J",
-          "atMax": "Python, SQL, AWS, Docker"
+          "atMin": "ไ",
+          "atMax": "ภาษา Python, SQL"
         }
       ]
     }

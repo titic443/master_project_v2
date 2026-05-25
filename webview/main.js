@@ -809,11 +809,23 @@ class WebUI {
   }
 
   #updateSummaryFromCoverage(testCases) {
+    // Match on exact name or on a `:` / whitespace-bounded suffix to avoid
+    // ambiguous endsWith() collisions. Flutter test prints names like
+    // "<group>: <case_name>" — we strip the group prefix before comparing.
+    const normalize = name => {
+      const idx = name.indexOf(': ');
+      return idx >= 0 ? name.substring(idx + 2).trim() : name.trim();
+    };
+
     this.#el.summaryTableBody.querySelectorAll('.result-cell').forEach(cell => {
       const tcName = cell.dataset.tc;
       if (!tcName) return;
 
-      const matched = testCases.find(tc => tc.name === tcName || tc.name.endsWith(tcName));
+      const matched = testCases.find(tc => {
+        if (tc.name === tcName) return true;
+        const tail = normalize(tc.name);
+        return tail === tcName;
+      });
       if (!matched) return;
 
       const statusEl = cell.querySelector('.result-status');

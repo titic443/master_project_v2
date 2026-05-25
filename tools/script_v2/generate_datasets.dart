@@ -49,17 +49,27 @@ import 'utils.dart' as utils;
 // =============================================================================
 // API KEY CONFIGURATION
 // =============================================================================
-// คำเตือนด้านความปลอดภัย: ไม่ควร hardcode API key ใน source code
-// วิธีที่แนะนำ:
-//   1. สร้างไฟล์ .env และใส่: GEMINI_API_KEY=your_key
-//   2. Export environment variable: export GEMINI_API_KEY=your_key
-//   3. ใช้ flag: --api-key=your_key
-// รับ API key ได้จาก: https://aistudio.google.com/app/apikey
+// !!! SECURITY WARNING !!!
+// ค่าด้านล่างคือ Gemini API key ที่ hardcode ไว้สำหรับ demo / thesis defense
+// เท่านั้น เพราะ git history มี key รั่วอยู่หลายตัวอยู่แล้ว
+//
+// ก่อน publish หรือ open-source codebase นี้:
+//   1. ไปที่ Google Cloud Console → Credentials → ลบ key ทุกตัวที่อยู่ใน git log
+//   2. สร้าง key ใหม่และเก็บใน .env เท่านั้น (อย่า commit)
+//   3. ลบบรรทัด `const String hardcodedApiKey = ...` ด้านล่าง
+//
+// Priority chain ของการอ่าน key (สูง → ต่ำ):
+//   1. CLI flag --api-key=<key>
+//   2. .env file (key: GEMINI_API_KEY)
+//   3. Environment variable GEMINI_API_KEY
+//   4. ค่า hardcoded ด้านล่าง (DEMO ONLY — REMOVE BEFORE PUBLISHING)
+//
+// สมัคร key ได้ที่: https://aistudio.google.com/app/apikey
 // =============================================================================
 
-// ค่าคงที่สำหรับเก็บ API key แบบ hardcode (ใช้เป็น fallback)
-// SECURITY WARNING: ไม่ควรใช้ในโปรดักชัน ควรใช้ environment variable แทน
-const String hardcodedApiKey = 'AIzaSyDkUkEVQPV2oDTNY4mean6eOAajr8tNyhI';
+// DEMO-ONLY hardcoded fallback. REMOVE before publishing.
+// (ค่านี้รั่วใน git history แล้ว — rotate key หลัง defense ก่อน publish ทุกที่)
+const String hardcodedApiKey = 'AIzaSyAOGaQUWF4X9utNYleQw6XbvPCRLGfQJSU';
 
 // =============================================================================
 // MAIN FUNCTION - Entry Point
