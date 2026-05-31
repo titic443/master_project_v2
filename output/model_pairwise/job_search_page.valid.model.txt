@@ -1,0 +1,5 @@
+search_01_keyword_textfield: valid
+search_02_category_dropdown: "IT_&_Tech", "Finance", "Marketing", "Engineering", "Healthcare", "Education"
+search_03_type_dropdown: "Full-time", "Part-time", "Contract", "Freelance", "Internship"
+search_04_salary_min_textfield: valid
+search_05_remote_switch: on, off

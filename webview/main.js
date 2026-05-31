@@ -313,42 +313,40 @@ class WebUI {
         useDevice: true
       });
 
+      // Log overall result
       if (testResult.success) {
         this.#log(`Tests: ${testResult.passed} passed, ${testResult.failed} failed`, 'success');
-
-        if (testResult.testCases && testResult.testCases.length > 0) {
-          this.#log(`\n--- Test Cases (${testResult.totalTests} cases) ---`, 'info');
-          testResult.testCases.forEach((tc, index) => {
-            const statusIcon = tc.status === 'passed' ? '\u2713' : '\u2717';
-            const statusClass = tc.status === 'passed' ? 'success' : 'error';
-            this.#log(`  ${statusIcon} ${index + 1}. ${tc.name}`, statusClass);
-          });
-        }
-
-        if (testResult.coverageHtmlPath) {
-          this.#log('\nStep 2: Generated HTML coverage report', 'success');
-          this.#log(`Coverage HTML: ${testResult.coverageHtmlPath}`, 'success');
-          this.#log('\n=== Coverage test completed! ===', 'success');
-
-          this.#showCoverageSection(testResult.passed, testResult.failed, testResult.coverageHtmlPath, testResult.testCases);
-        } else {
-          this.#log('\nWarning: Could not generate HTML coverage report', 'error');
-          this.#log('Make sure genhtml (lcov) is installed: brew install lcov', 'info');
-        }
       } else {
-        this.#log(`Tests failed: ${testResult.error}`, 'error');
-
-        if (testResult.testCases && testResult.testCases.length > 0) {
-          this.#log(`\n--- Test Cases (${testResult.totalTests} cases) ---`, 'info');
-          testResult.testCases.forEach((tc, index) => {
-            const statusIcon = tc.status === 'passed' ? '\u2713' : '\u2717';
-            const statusClass = tc.status === 'passed' ? 'success' : 'error';
-            this.#log(`  ${statusIcon} ${index + 1}. ${tc.name}`, statusClass);
-          });
-        }
+        const p = testResult.passed, f = testResult.failed;
+        this.#log(
+          `Tests completed: ${p} passed, ${f} failed`,
+          f > 0 ? 'error' : 'info'
+        );
+        if (testResult.error) this.#log(`Error: ${testResult.error}`, 'error');
       }
 
-      // Update summary table with coverage results
+      // Log individual test cases
+      if (testResult.testCases && testResult.testCases.length > 0) {
+        this.#log(`\n--- Test Cases (${testResult.totalTests} cases) ---`, 'info');
+        testResult.testCases.forEach((tc, index) => {
+          const statusIcon = tc.status === 'passed' ? '\u2713' : '\u2717';
+          const statusClass = tc.status === 'passed' ? 'success' : 'error';
+          this.#log(`  ${statusIcon} ${index + 1}. ${tc.name}`, statusClass);
+        });
+      }
+
+      // Show coverage section if report was generated (even when some tests fail)
+      if (testResult.coverageHtmlPath) {
+        this.#log('\nStep 2: Generated HTML coverage report', 'success');
+        this.#log(`Coverage HTML: ${testResult.coverageHtmlPath}`, 'success');
+        this.#log('\n=== Coverage test completed! ===', 'success');
+        this.#showCoverageSection(testResult.passed, testResult.failed, testResult.coverageHtmlPath, testResult.testCases);
+      } else if (!testResult.success) {
+        this.#log('\nWarning: Could not generate HTML coverage report', 'error');
+        this.#log('Make sure genhtml (lcov) is installed: brew install lcov', 'info');
+      }
+
+      // Update summary table with pass/fail status per test case
       if (testResult.testCases && testResult.testCases.length > 0) {
         this.#updateSummaryFromCoverage(testResult.testCases);
       }
@@ -809,9 +807,8 @@ class WebUI {
   }
 
   #updateSummaryFromCoverage(testCases) {
-    // Match on exact name or on a `:` / whitespace-bounded suffix to avoid
-    // ambiguous endsWith() collisions. Flutter test prints names like
-    // "<group>: <case_name>" — we strip the group prefix before comparing.
+    // Match on exact name, ": "-prefixed group (widget tests), or
+    // space-separated suffix (integration tests: "group group tcName").
     const normalize = name => {
       const idx = name.indexOf(': ');
       return idx >= 0 ? name.substring(idx + 2).trim() : name.trim();
@@ -824,7 +821,9 @@ class WebUI {
       const matched = testCases.find(tc => {
         if (tc.name === tcName) return true;
         const tail = normalize(tc.name);
-        return tail === tcName;
+        if (tail === tcName) return true;
+        // Integration test names: "...group tcName" (space-separated)
+        return tc.name.endsWith(' ' + tcName);
       });
       if (!matched) return;
 

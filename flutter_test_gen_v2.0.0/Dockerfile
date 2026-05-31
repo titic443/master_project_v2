@@ -39,7 +39,7 @@ FROM dart:stable
 
 # Minimal system packages (no Flutter build deps)
 RUN apt-get update && apt-get install -y \
-    git curl \
+    git curl lcov \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy PICT binary from build stage

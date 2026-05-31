@@ -262,6 +262,8 @@ class CoverageGenerator {
   /// Parameter:
   ///   [url] - URL ของ coverage report เช่น 'http://localhost:8080/coverage/index.html'
   Future<void> openCoverageReport(String url) async {
+    if (_isInDocker()) return; // browser อยู่บน host — ไม่ต้องเปิดใน container
+
     print('  > open $url');
 
     if (Platform.isMacOS) {

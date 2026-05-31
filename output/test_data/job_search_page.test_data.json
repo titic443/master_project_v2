@@ -1,0 +1,717 @@
+{
+  "source": {
+    "file": "lib/demos/job_search_page.dart",
+    "pageClass": "JobSearchPage",
+    "cubitClass": "JobSearchCubit",
+    "stateClass": "JobSearchState",
+    "fileCubit": "lib/cubit/job_search_cubit.dart",
+    "fileState": "lib/cubit/job_search_state.dart"
+  },
+  "datasets": {
+    "defaults": {},
+    "byKey": {
+      "search_01_keyword_textfield": [
+        {
+          "valid": "Software Engineer",
+          "invalid": "a",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "Software Engineer"
+        }
+      ],
+      "search_04_salary_min_textfield": [
+        {
+          "valid": "50000",
+          "invalid": "",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "50000"
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "tc": "pairwise_invalid_cases_2",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: valid§\"\", TEXT2: invalid§\"\", Dropdown: Tech",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "IT_&_Tech"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_3",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: valid§\"\", Dropdown: Tech",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "IT_&_Tech"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: invalid§\"\", Dropdown: null",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "null"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_10",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: invalid§\"\", Dropdown: Finance",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Finance"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_11",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: invalid§\"\", Dropdown: Marketing",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Marketing"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_12",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: invalid§\"\", Dropdown: Engineering",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Engineering"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_13",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: invalid§\"\", Dropdown: Healthcare",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Healthcare"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_14",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "TEXT1: invalid§\"\", TEXT2: invalid§\"\", Dropdown: Education",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tapText": "Education"
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_15",
+      "kind": "success",
+      "group": "pairwise_invalid_cases",
+      "description": "All fields valid — expect success",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "IT & Tech"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "Full-time"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_empty_all_fields",
+      "kind": "failed",
+      "group": "edge_cases",
+      "description": "keyword: empty§\"\", salary_min: empty§\"\", category: empty§\"\", type: empty§\"\", remote_switch: off",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_boundary_at_max_length",
+      "kind": "success",
+      "group": "edge_cases",
+      "description": "category: ทั้งหมด, type: ทั้งหมด, remote_switch: off, keyword: atMax§Software Engineer, salary_min: atMax§50000",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทั้งหมด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทั้งหมด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_boundary_at_min_length",
+      "kind": "success",
+      "group": "edge_cases",
+      "description": "category: ทั้งหมด, type: ทั้งหมด, remote_switch: off, keyword: atMin§\"\", salary_min: atMin§\"\"",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_keyword_textfield",
+            "dataset": "byKey.search_01_keyword_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_category_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทั้งหมด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทั้งหมด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_salary_min_textfield",
+            "dataset": "byKey.search_04_salary_min_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    }
+  ]
+}

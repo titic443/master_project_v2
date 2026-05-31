@@ -122,13 +122,29 @@ Future<void> _handleRunTests(HttpRequest request, String projectDir) async {
   final errOutput = result.stderr.toString();
   final testCases = _parseTestCases(output);
 
-  final passedMatch = RegExp(r'(\d+) tests? passed').firstMatch(output);
-  final failedMatch = RegExp(r'(\d+) tests? failed').firstMatch(output);
-  final passed = passedMatch != null ? int.parse(passedMatch.group(1)!) : 0;
-  final failed = failedMatch != null ? int.parse(failedMatch.group(1)!) : 0;
+  // Integration test format: "00:30 +5 -8: Some tests failed." / "00:30 +5: All tests passed!"
+  // Widget test format: "5 tests passed" / "3 tests failed"
+  final summaryMatches = RegExp(
+    r'^\d{2}:\d{2}\s+\+(\d+)(?:\s+-(\d+))?:\s+(?:All tests passed|Some tests failed)',
+    multiLine: true,
+  ).allMatches(output).toList();
+  int passed, failed;
+  if (summaryMatches.isNotEmpty) {
+    final last = summaryMatches.last;
+    passed = int.parse(last.group(1)!);
+    failed = int.tryParse(last.group(2) ?? '') ?? 0;
+  } else {
+    final pm = RegExp(r'(\d+) tests? passed').firstMatch(output);
+    final fm = RegExp(r'(\d+) tests? failed').firstMatch(output);
+    passed = pm != null ? int.parse(pm.group(1)!) : 0;
+    failed = fm != null ? int.parse(fm.group(1)!) : 0;
+  }
 
   print('[host_runner] done: exitCode=${result.exitCode} '
       'passed=$passed failed=$failed testCases=${testCases.length}');
+  for (final tc in testCases.take(3)) {
+    print('[host_runner]   sample: name="${tc['name']}" status=${tc['status']}');
+  }
 
   request.response.write(jsonEncode({
     'exitCode': result.exitCode,

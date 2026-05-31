@@ -69,7 +69,8 @@ import 'utils.dart' as utils;
 
 // DEMO-ONLY hardcoded fallback. REMOVE before publishing.
 // (ค่านี้รั่วใน git history แล้ว — rotate key หลัง defense ก่อน publish ทุกที่)
-const String hardcodedApiKey = 'AIzaSyAOGaQUWF4X9utNYleQw6XbvPCRLGfQJSU';
+const String hardcodedApiKey =
+    'YOUR_GEMINI_API_KEY_HERE';
 
 // =============================================================================
 // MAIN FUNCTION - Entry Point
