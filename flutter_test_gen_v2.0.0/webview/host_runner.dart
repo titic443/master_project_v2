@@ -8,9 +8,10 @@
 //   dart run webview/host_runner.dart /path/to/flutter_project
 //
 // Endpoints:
-//   GET  /health     → { "status": "ok" }
-//   POST /run-tests  → รัน flutter test, คืน {exitCode, stdout, stderr,
-//                       testCases, passed, failed}
+//   GET  /health          → { "status": "ok" }
+//   GET  /open-browser    → เปิด URL ใน browser (query param: url)
+//   POST /run-tests       → รัน flutter test, คืน {exitCode, stdout, stderr,
+//                           testCases, passed, failed}
 // =============================================================================
 
 import 'dart:convert';
@@ -54,6 +55,8 @@ void main(List<String> args) async {
         case '/health':
           request.response.write(jsonEncode({'status': 'ok'}));
           await request.response.close();
+        case '/open-browser':
+          await _handleOpenBrowser(request);
         case '/run-tests':
           if (request.method == 'POST') {
             await _handleRunTests(request, projectDir);
@@ -76,6 +79,26 @@ void main(List<String> args) async {
       } catch (_) {}
     }
   }
+}
+
+Future<void> _handleOpenBrowser(HttpRequest request) async {
+  final url = request.uri.queryParameters['url'] ?? 'http://localhost:8080';
+  print('[host_runner] open-browser: $url');
+
+  try {
+    if (Platform.isMacOS) {
+      await Process.run('open', [url]);
+    } else if (Platform.isLinux) {
+      await Process.run('xdg-open', [url]);
+    } else if (Platform.isWindows) {
+      await Process.run('start', [url], runInShell: true);
+    }
+    request.response.write(jsonEncode({'opened': true, 'url': url}));
+  } catch (e) {
+    request.response.statusCode = 500;
+    request.response.write(jsonEncode({'opened': false, 'error': e.toString()}));
+  }
+  await request.response.close();
 }
 
 Future<void> _handleRunTests(HttpRequest request, String projectDir) async {

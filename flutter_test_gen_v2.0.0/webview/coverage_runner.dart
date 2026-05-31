@@ -262,7 +262,10 @@ class CoverageGenerator {
   /// Parameter:
   ///   [url] - URL ของ coverage report เช่น 'http://localhost:8080/coverage/index.html'
   Future<void> openCoverageReport(String url) async {
-    if (_isInDocker()) return; // browser อยู่บน host — ไม่ต้องเปิดใน container
+    if (_isInDocker()) {
+      await _openBrowserViaHostAgent(url);
+      return;
+    }
 
     print('  > open $url');
 
@@ -286,6 +289,32 @@ class CoverageGenerator {
   // ---------------------------------------------------------------------------
 
   bool _isInDocker() => File('/.dockerenv').existsSync();
+
+  // ---------------------------------------------------------------------------
+  // _openBrowserViaHostAgent: เปิด browser บน host machine ผ่าน host agent
+  // ---------------------------------------------------------------------------
+
+  /// เรียกใช้เมื่อ _isInDocker() == true
+  ///
+  /// GET http://host.docker.internal:8089/open-browser?url=`<url>`
+  /// Host agent จะเรียก open/xdg-open เปิด browser บน host
+  Future<void> _openBrowserViaHostAgent(String url) async {
+    final uri = Uri.parse('http://host.docker.internal:8089/open-browser')
+        .replace(queryParameters: {'url': url});
+    print('  > Opening browser via host agent: $url');
+
+    final client = HttpClient()
+      ..connectionTimeout = const Duration(seconds: 5);
+    try {
+      final req = await client.getUrl(uri);
+      await (await req.close()).drain<void>();
+      print('  ✓ Browser opened on host');
+    } catch (e) {
+      print('  ✗ Could not open browser via host agent: $e');
+    } finally {
+      client.close();
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // _runTestsViaHostAgent: proxy test execution ไปยัง host agent (port 8089)
