@@ -4,29 +4,29 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมชาย สุขสบาย",
+          "valid": "สมชาย ใจดี",
           "invalid": "ส",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "ส",
-          "atMax": "สมชาย สุขสบาย"
+          "atMin": "ก",
+          "atMax": "กมลชนก สมศรีสกุล สุขสันต์เจริญรัตนาวดี"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1102500012345",
-          "invalid": "110250001234",
+          "valid": "1234567890123",
+          "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
-          "atMax": "1102500012345"
+          "atMin": "000000000000",
+          "atMax": "1234567890123"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "08123456",
+          "invalid": "081234567",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "12345678",
-          "atMax": "0998877665"
+          "atMin": "01234567",
+          "atMax": "0987654321"
         }
       ],
       "appt_06_date_textfield": [
@@ -49,11 +49,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการไอและเจ็บคอเล็กน้อย",
-          "invalid": "!",
+          "valid": "คนไข้มีอาการปวดหัวเรื้อรัง",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "คนไข้มีอาการไอและเจ็บคอเล็กน้อย"
+          "atMax": "คนไข้มีอาการปวดหัวเรื้อรัง"
         }
       ]
     }

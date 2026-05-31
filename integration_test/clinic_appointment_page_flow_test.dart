@@ -20,10 +20,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -69,7 +69,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -96,10 +96,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -137,7 +137,7 @@ void main() {
         // Skip tap for 'appt_07_time_textfield' (next action is null/cancel)
         // Skip time selection (null/cancel)
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -164,10 +164,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -231,7 +231,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -258,10 +258,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -302,7 +302,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -329,10 +329,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -399,7 +399,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -426,10 +426,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -496,7 +496,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -523,10 +523,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -543,7 +543,7 @@ void main() {
         // Skip tap for 'appt_07_time_textfield' (next action is null/cancel)
         // Skip time selection (null/cancel)
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -570,10 +570,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -616,7 +616,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -643,10 +643,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -710,7 +710,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -737,10 +737,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -783,7 +783,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -810,10 +810,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -851,7 +851,7 @@ void main() {
         // Skip tap for 'appt_07_time_textfield' (next action is null/cancel)
         // Skip time selection (null/cancel)
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -878,10 +878,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -948,7 +948,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -975,10 +975,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1045,7 +1045,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1072,10 +1072,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1142,7 +1142,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1169,10 +1169,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1236,7 +1236,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1263,10 +1263,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1304,7 +1304,7 @@ void main() {
         // Skip tap for 'appt_07_time_textfield' (next action is null/cancel)
         // Skip time selection (null/cancel)
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1331,10 +1331,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1398,7 +1398,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1425,10 +1425,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1492,7 +1492,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1519,10 +1519,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1568,7 +1568,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1595,10 +1595,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1641,7 +1641,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1668,10 +1668,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1691,7 +1691,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1718,10 +1718,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1785,7 +1785,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1812,10 +1812,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1879,7 +1879,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -1906,10 +1906,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1973,7 +1973,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2000,10 +2000,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2067,7 +2067,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2094,10 +2094,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2161,7 +2161,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2188,10 +2188,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2229,7 +2229,7 @@ void main() {
         // Skip tap for 'appt_07_time_textfield' (next action is null/cancel)
         // Skip time selection (null/cancel)
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2256,10 +2256,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2323,7 +2323,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2350,10 +2350,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2420,7 +2420,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2447,10 +2447,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2491,7 +2491,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2518,10 +2518,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '110250001234');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '081234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2585,7 +2585,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), '!');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'X');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2611,10 +2611,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2684,7 +2684,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2710,10 +2710,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2780,7 +2780,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2806,10 +2806,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2876,7 +2876,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2902,10 +2902,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2975,7 +2975,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3001,10 +3001,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3071,7 +3071,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3097,10 +3097,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3170,7 +3170,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3196,10 +3196,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3269,7 +3269,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3295,10 +3295,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3365,7 +3365,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3391,10 +3391,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3461,7 +3461,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3487,10 +3487,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3557,7 +3557,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3583,10 +3583,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3653,7 +3653,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3679,10 +3679,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3752,7 +3752,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3778,10 +3778,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3851,7 +3851,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3877,10 +3877,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3947,7 +3947,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3973,10 +3973,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4046,7 +4046,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4072,10 +4072,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4145,7 +4145,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4171,10 +4171,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4244,7 +4244,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4270,10 +4270,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4343,7 +4343,7 @@ void main() {
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4369,10 +4369,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4439,7 +4439,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4465,10 +4465,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4535,7 +4535,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4561,10 +4561,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -4631,7 +4631,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4683,13 +4683,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย สุขสบาย');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'กมลชนก สมศรีสกุล สุขสันต์เจริญรัตนาวดี');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102500012345');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0998877665');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0987654321');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -4753,7 +4753,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอและเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดหัวเรื้อรัง');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -4779,13 +4779,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ก');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '000000000000');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '01234567');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -4858,7 +4858,7 @@ void main() {
         await tester.pumpAndSettle();
         // Check if any expected element exists (OR logic)
         final expected = [
-          find.byKey(const Key('appt_10_expected_fail')),
+          find.byKey(const Key('appt_10_expected_success')),
         ];
         expect(expected.any((f) => f.evaluate().isNotEmpty), isTrue,
             reason: 'Expected at least one of the elements to exist');
