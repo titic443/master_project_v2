@@ -70,7 +70,7 @@ import 'utils.dart' as utils;
 /// Backward-compatible wrapper — delegates to [TestDataGenerator].
 Future<String> generateTestDataFromManifest(
   String manifestPath, {
-  String pictBin = './pict',
+  String? pictBin,
   String? constraints,
 }) =>
     TestDataGenerator(pictBin: pictBin)
@@ -82,7 +82,10 @@ Future<String> generateTestDataFromManifest(
 
 class TestDataGenerator {
   final String pictBin;
-  const TestDataGenerator({this.pictBin = './pict'});
+
+  TestDataGenerator({String? pictBin})
+      : pictBin = pictBin ??
+            (File('/.dockerenv').existsSync() ? '/usr/local/bin/pict' : './pict');
 
   /// สร้าง test data (test plan) จาก manifest file โดยใช้ pairwise testing
   ///

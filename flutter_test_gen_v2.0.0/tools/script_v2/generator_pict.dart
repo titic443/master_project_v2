@@ -21,7 +21,13 @@ import 'utils.dart' as utils;
 
 class GeneratorPict {
   final String pictBin;
-  const GeneratorPict({this.pictBin = './pict'});
+
+  GeneratorPict({String? pictBin}) : pictBin = pictBin ?? _defaultBin();
+
+  // Use Linux pict from image when running inside Docker container,
+  // macOS project-root binary otherwise.
+  static String _defaultBin() =>
+      File('/.dockerenv').existsSync() ? '/usr/local/bin/pict' : './pict';
 
   // ==========================================================================
   // PICT Model Generation

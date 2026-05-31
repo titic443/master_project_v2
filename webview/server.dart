@@ -125,7 +125,7 @@ class PipelineController {
     CoverageGenerator? coverageRunner,
   })  : _extractor = extractor ?? const UiManifestExtractor(),
         _datasetGenerator = datasetGenerator ?? const DatasetGenerator(),
-        _testDataGenerator = testDataGenerator ?? const TestDataGenerator(),
+        _testDataGenerator = testDataGenerator ?? TestDataGenerator(),
         _testScriptGenerator = testScriptGenerator ?? TestScriptGenerator(),
         _coverageRunner = coverageRunner ?? const CoverageGenerator();
 
@@ -384,7 +384,7 @@ class PipelineController {
       return;
     }
 
-    final error = const GeneratorPict().validateConstraintsSyntax(constraints);
+    final error = GeneratorPict().validateConstraintsSyntax(constraints);
 
     if (error != null) {
       request.response.write(jsonEncode({'valid': false, 'error': error}));
