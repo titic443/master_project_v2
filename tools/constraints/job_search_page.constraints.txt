@@ -13,12 +13,12 @@
 
 # ─── Format A: Dataset Constraints ───────────────────────────────────────────
 search_01_keyword_textfield.valid   = Software Engineer
-search_01_keyword_textfield.invalid = xxxxx
+search_01_keyword_textfield.invalid = วิศวกรซอฟต์แวร์อาวุโส
 search_04_salary_min_textfield.valid = 30000
 
 # ─── Format B: PICT IF/THEN Constraints ──────────────────────────────────────
 # ถ้า category = Engineering → employment type ต้อง = Freelance (ตรงกับ DB)
-IF [search_02_category_dropdown] = "Engineering" THEN [search_03_type_dropdown] = "Freelance";
+# IF [search_02_category_dropdown] = "Engineering" THEN [search_03_type_dropdown] = "Freelance";
 
 # NOTE: เคยมี constraint สำหรับ search_02_location_textfield และ
 # search_05_salary_min_textfield (ดู git history) — ถูกตัดออกหลังจาก

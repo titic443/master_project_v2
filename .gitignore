@@ -63,7 +63,7 @@ xx/
 coverage/
 
 # Generated integration tests (auto-generated, do not commit)
-integration_test/
+# integration_test/
 
 # Microsoft Office temp/lock files
 ~$*
