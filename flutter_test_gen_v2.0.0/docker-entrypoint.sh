@@ -58,7 +58,15 @@ echo "📦 Running dart pub get..."
 cd "$WORKSPACE"
 dart pub get --no-example 2>&1 | tail -3
 
-# ── 6. Start server ──────────────────────────────────────────────────────────
+# ── 6. Connect ADB to host emulator (via host.docker.internal) ───────────────
+# ADB server บน host ต้อง listen 0.0.0.0 (ดูคำสั่งใน INSTALL.md)
+export ANDROID_ADB_SERVER_HOST=host.docker.internal
+export ANDROID_ADB_SERVER_PORT=5037
+
+echo "🔌 Checking host ADB devices..."
+adb devices 2>/dev/null || echo "   ⚠ ADB: no devices found (emulator not running or host ADB not listening on 0.0.0.0)"
+
+# ── 7. Start server ──────────────────────────────────────────────────────────
 echo ""
 echo "🚀 Starting Flutter Test Generator..."
 echo "   Open http://localhost:8080 in your browser"

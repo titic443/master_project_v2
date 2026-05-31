@@ -33,11 +33,12 @@ RUN git clone https://github.com/microsoft/pict.git /pict --depth 1 \
 # -----------------------------------------------------------------------------
 FROM dart:stable
 
-# Install system dependencies for Flutter
+# Install system dependencies for Flutter + ADB client (to reach host emulator)
 RUN apt-get update && apt-get install -y \
     git curl unzip xz-utils zip \
     libglu1-mesa clang cmake ninja-build pkg-config \
     libgtk-3-dev liblzma-dev libstdc++-12-dev \
+    android-tools-adb \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Flutter SDK

@@ -78,6 +78,15 @@ fi
 docker stop $CONTAINER_NAME 2>/dev/null || true
 docker rm   $CONTAINER_NAME 2>/dev/null || true
 
+# ── Restart ADB server to listen on 0.0.0.0 (so container can reach emulator) ─
+if command -v adb &>/dev/null; then
+  echo "🔌 Restarting ADB server (listen on 0.0.0.0 for container access)..."
+  adb kill-server 2>/dev/null || true
+  adb -a nodaemon server &>/dev/null &
+  sleep 1
+  echo "   ADB devices: $(adb devices 2>/dev/null | grep -c 'emulator' || echo 0) emulator(s) found"
+fi
+
 # ── Run container ──────────────────────────────────────────────────────────────
 echo "🚀 Starting Flutter Test Generator..."
 echo "   Project : $PROJECT_DIR"
@@ -88,6 +97,7 @@ docker run --rm \
   --name $CONTAINER_NAME \
   -p $PORT:$PORT \
   -v "$PROJECT_DIR:/workspace" \
+  --add-host=host.docker.internal:host-gateway \
   $IMAGE_NAME &
 
 # รอให้ server พร้อม

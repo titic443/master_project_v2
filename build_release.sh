@@ -21,7 +21,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PACKAGE_NAME="flutter_test_gen_v${VERSION}"
 OUT_DIR="$SCRIPT_DIR/$PACKAGE_NAME"
 ZIP_FILE="$SCRIPT_DIR/${PACKAGE_NAME}.zip"
-TOOL_BASE="$SCRIPT_DIR/flutter_test_gen_v1.0.0"   # source of Dockerfile / entrypoint
+TOOL_BASE="$SCRIPT_DIR/flutter_test_gen_v2.0.0"   # source of Dockerfile / entrypoint
 
 # ── Check source files exist ──────────────────────────────────────────────────
 for f in \
