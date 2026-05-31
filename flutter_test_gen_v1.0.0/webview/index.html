@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Test Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Flutter Test Generator</h1>
+            <p class="subtitle">Generate widget tests using pairwise combinatorial testing</p>
+        </header>
+
+        <main>
+            <!-- Step 1: Input File Selection -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">1</span>
+                    <h2>Select Input File</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="inputFile" placeholder="Select a Dart UI file" readonly>
+                    <button type="button" id="browseInputBtn" class="btn-secondary">Browse...</button>
+                </div>
+                <div id="widgetInfo" class="info-box hidden">
+                    <span class="icon">&#10003;</span>
+                    <span id="widgetCount"></span>
+                </div>
+            </section>
+
+            <!-- Step 2: PICT Constraints (Optional) -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">2</span>
+                    <h2>PICT Constraints
+                        <span class="tooltip-wrap tooltip-inline">
+                            <span class="tooltip-trigger">&#9432;</span>
+                            <span class="tooltip-content">Example PICT Constraints:
+
+IF [submitButton] = "enabled" THEN [username] &lt;&gt; "empty";
+IF [dropdown] = "option1" THEN [checkbox] = "checked";
+IF [textField] = "empty" THEN [submitButton] = "disabled";</span>
+                        </span>
+                    </h2>
+                    <span class="optional-badge">Optional</span>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="useConstraints">
+                    <label for="useConstraints">Use custom constraints</label>
+                </div>
+                <input type="hidden" id="constraintsText" value="">
+                <div id="constraintsPanel" class="input-group hidden">
+                    <input type="text" id="constraintsFile" placeholder="Select a constraints file (.txt)" readonly>
+                    <button type="button" id="loadConstraintsBtn" class="btn-secondary">Browse...</button>
+                </div>
+            </section>
+
+            <!-- Step 3: Output Directory Selection -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">3</span>
+                    <h2>Select Output Directory</h2>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="outputDir" placeholder="e.g. integration_test/" value="integration_test/">
+                    <button type="button" id="browseOutputBtn" class="btn-secondary">Browse...</button>
+                </div>
+                <p id="outputFileHint" class="input-hint">Output file: <strong id="outputFileName">-</strong></p>
+            </section>
+
+            <!-- Step 4: Generate Test Script -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">4</span>
+                    <h2>Generate Test Script</h2>
+                </div>
+                <div class="action-buttons">
+                    <button type="button" id="generateBtn" class="btn-primary btn-action" disabled>
+                        <span class="btn-icon">&#9881;</span>
+                        <span class="btn-text">Generate Test Script</span>
+                    </button>
+                </div>
+                <div id="progressSection" class="progress-panel hidden">
+                    <div class="progress-list">
+                        <div class="progress-item" data-step="1">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Extract UI manifest</span>
+                            <span class="progress-status"></span>
+                        </div>
+                        <div class="progress-item" data-step="2">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Generate datasets (AI)</span>
+                            <span class="progress-status"></span>
+                        </div>
+                        <div class="progress-item" data-step="3">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Generate test plan (PICT)</span>
+                            <span class="progress-status"></span>
+                        </div>
+                        <div class="progress-item" data-step="4">
+                            <span class="progress-icon">&#9675;</span>
+                            <span class="progress-label">Generate test script</span>
+                            <span class="progress-status"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 5: Run Coverage Test -->
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-badge">5</span>
+                    <h2>Run Coverage Test</h2>
+                </div>
+                <label class="coverage-label">Test Script: <strong id="testScriptFile">-</strong></label>
+                <div class="action-buttons" style="margin-top: 8px;">
+                    <button type="button" id="runCoverageBtn" class="btn-secondary btn-action" disabled>
+                        <span class="btn-icon">&#9733;</span>
+                        <span class="btn-text">Run Coverage Test</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Output Log -->
+            <section id="outputSection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Output</h2>
+                    <button type="button" id="clearLogBtn" class="btn-link">Clear</button>
+                </div>
+                <div id="outputLog" class="output-box"></div>
+            </section>
+
+            <!-- Test Case Summary -->
+            <section id="testSummarySection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Test Case Summary</h2>
+                </div>
+                <div id="summaryOverview" class="summary-overview"></div>
+                <div class="summary-table-wrap">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Test Case</th>
+                                <th>Description</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <!-- <section id="resultsSection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Results</h2>
+                </div>
+                <div class="results-grid">
+                    <div class="result-card" id="manifestResult">
+                        <h3>Manifest</h3>
+                        <p class="result-path"></p>
+                    </div>
+                    <div class="result-card" id="datasetsResult">
+                        <h3>Datasets</h3>
+                        <p class="result-path"></p>
+                    </div>
+                    <div class="result-card" id="testDataResult">
+                        <h3>Test Plan</h3>
+                        <p class="result-path"></p>
+                    </div>
+                    <div class="result-card" id="testScriptResult">
+                        <h3>Test Script</h3>
+                        <p class="result-path"></p>
+                    </div>
+                </div>
+            </section> -->
+
+            <!-- Coverage Report -->
+            <section id="coverageSection" class="form-section hidden">
+                <div class="section-header">
+                    <h2>Coverage Report</h2>
+                </div>
+                <div class="coverage-content">
+                    <div class="coverage-summary">
+                        <span class="coverage-icon">&#9733;</span>
+                        <span id="coverageSummary">Coverage report generated successfully!</span>
+                    </div>
+                    <div class="coverage-actions">
+                        <button type="button" id="viewCoverageBtn" class="btn-primary">
+                            <span class="btn-icon">&#128196;</span>
+                            <span class="btn-text">View Coverage Report</span>
+                        </button>
+                        <button type="button" id="openCoverageFolderBtn" class="btn-secondary">
+                            <span class="btn-icon">&#128193;</span>
+                            <span class="btn-text">Open Coverage Folder</span>
+                        </button>
+                    </div>
+                    <p class="coverage-path">coverage/html/index.html</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Powered by PICT (Pairwise Independent Combinatorial Testing)</p>
+            <p class="version">v1.0.0</p>
+        </footer>
+    </div>
+
+    <!-- Dialog Overlay -->
+    <div id="dialogOverlay" class="dialog-overlay hidden">
+        <div class="dialog-box">
+            <div class="dialog-icon-wrap">
+                <span id="dialogIcon" class="dialog-icon"></span>
+            </div>
+            <h3 id="dialogTitle" class="dialog-title"></h3>
+            <p id="dialogMessage" class="dialog-message"></p>
+            <button type="button" id="dialogCloseBtn" class="btn-primary dialog-close-btn">OK</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
