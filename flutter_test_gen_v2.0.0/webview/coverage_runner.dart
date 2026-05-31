@@ -21,6 +21,7 @@
 //   - open / start / xdg-open  (Step 5: เปิด browser ตาม platform)
 // =============================================================================
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -112,7 +113,10 @@ class CoverageGenerator {
   /// ข้าม web และ desktop devices (focus เฉพาะ android/ios)
   ///
   /// Returns: device ID ที่พบ หรือ null ถ้าไม่มี mobile device
+  /// เมื่ออยู่ใน Docker จะคืน null ทันที — host agent จัดการ device selection เอง
   Future<String?> findMobileDevice() async {
+    if (_isInDocker()) return null;
+
     final devicesResult =
         await Process.run(flutterBin, ['devices', '--machine']);
 
@@ -169,12 +173,18 @@ class CoverageGenerator {
   ///   [timeoutSeconds] - timeout (default: 300s widget test, 600s integration test)
   ///
   /// Returns: [TestRunResult] พร้อม exit code, stdout, stderr, parsed test cases
+  ///
+  /// เมื่ออยู่ใน Docker จะ proxy request ไปที่ host agent (port 8089) แทน
   Future<TestRunResult> runFlutterTest(
     String testScript,
     bool withCoverage, {
     String? deviceId,
     int? timeoutSeconds,
   }) async {
+    if (_isInDocker()) {
+      return _runTestsViaHostAgent(testScript, withCoverage);
+    }
+
     // สร้าง arguments สำหรับ flutter test command
     final args = ['test', testScript];
     if (withCoverage) args.add('--coverage');
@@ -268,6 +278,102 @@ class CoverageGenerator {
   // ===========================================================================
   // PRIVATE HELPERS
   // ===========================================================================
+
+  // ---------------------------------------------------------------------------
+  // _isInDocker: ตรวจว่ากำลังรันอยู่ใน Docker container หรือไม่
+  // ---------------------------------------------------------------------------
+
+  bool _isInDocker() => File('/.dockerenv').existsSync();
+
+  // ---------------------------------------------------------------------------
+  // _runTestsViaHostAgent: proxy test execution ไปยัง host agent (port 8089)
+  // ---------------------------------------------------------------------------
+
+  /// เรียกใช้เมื่อ _isInDocker() == true
+  ///
+  /// POST http://host.docker.internal:8089/run-tests พร้อม {testScript, withCoverage}
+  /// Host agent จะหา device เอง รัน flutter test แล้วคืนผล
+  ///
+  /// ถ้าเชื่อม host ไม่ได้ คืน exitCode=-1 พร้อม error message ที่ชัดเจน
+  Future<TestRunResult> _runTestsViaHostAgent(
+    String testScript,
+    bool withCoverage,
+  ) async {
+    const url = 'http://host.docker.internal:8089/run-tests';
+    print('  > Proxying to host agent: $url');
+
+    final client = HttpClient()
+      ..connectionTimeout = const Duration(seconds: 30);
+
+    try {
+      final req = await client.postUrl(Uri.parse(url));
+      req.headers.contentType = ContentType.json;
+      final bodyBytes = utf8.encode(
+        jsonEncode({'testScript': testScript, 'withCoverage': withCoverage}),
+      );
+      req.contentLength = bodyBytes.length;
+      req.add(bodyBytes);
+
+      final response = await req.close();
+      final responseBody = await utf8.decoder
+          .bind(response)
+          .join()
+          .timeout(const Duration(seconds: 1860));
+
+      final data = jsonDecode(responseBody) as Map<String, dynamic>;
+
+      final rawCases = data['testCases'] as List? ?? [];
+      final testCases = rawCases
+          .whereType<Map>()
+          .map((e) => e.cast<String, dynamic>())
+          .toList();
+
+      return TestRunResult(
+        exitCode: (data['exitCode'] as num?)?.toInt() ?? -1,
+        stdout: data['stdout'] as String? ?? '',
+        stderr: data['stderr'] as String? ?? '',
+        testCases: testCases,
+        passed: (data['passed'] as num?)?.toInt() ?? 0,
+        failed: (data['failed'] as num?)?.toInt() ?? 0,
+      );
+    } on SocketException catch (e) {
+      const msg = 'Cannot reach host agent at $url. '
+          'Make sure you started with ./run_tool.sh';
+      print('  ✗ $msg ($e)');
+      return TestRunResult(
+        exitCode: -1,
+        stdout: '',
+        stderr: msg,
+        testCases: [],
+        passed: 0,
+        failed: 0,
+      );
+    } on TimeoutException catch (e) {
+      final msg = 'Host agent timed out: $e';
+      print('  ✗ $msg');
+      return TestRunResult(
+        exitCode: -1,
+        stdout: '',
+        stderr: msg,
+        testCases: [],
+        passed: 0,
+        failed: 0,
+      );
+    } catch (e) {
+      final msg = 'Host agent error: $e';
+      print('  ✗ $msg');
+      return TestRunResult(
+        exitCode: -1,
+        stdout: '',
+        stderr: msg,
+        testCases: [],
+        passed: 0,
+        failed: 0,
+      );
+    } finally {
+      client.close();
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // _parseTestCases: parse test output → List of {name, status}

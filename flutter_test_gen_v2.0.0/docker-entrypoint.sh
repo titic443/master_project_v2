@@ -53,21 +53,7 @@ if [ ! -f "$WORKSPACE/pict" ]; then
   echo "🔗 PICT binary linked"
 fi
 
-# ── 5. dart pub get ใน workspace ─────────────────────────────────────────────
-echo "📦 Running dart pub get..."
-cd "$WORKSPACE"
-dart pub get --no-example 2>&1 | tail -3
-
-# ── 6. Connect ADB directly to host emulator via socat proxy ─────────────────
-# host runs: socat TCP-LISTEN:5560,bind=0.0.0.0 → 127.0.0.1:5555 (emulator TCP ADB)
-echo "🔌 Connecting ADB to host emulator (host.docker.internal:5560)..."
-adb start-server 2>/dev/null
-adb connect host.docker.internal:5560 2>/dev/null \
-  && echo "   ✓ ADB connected" \
-  || echo "   ⚠ ADB: could not connect — emulator may not be running"
-adb devices 2>/dev/null
-
-# ── 7. Start server ──────────────────────────────────────────────────────────
+# ── 5. Start server ──────────────────────────────────────────────────────────
 echo ""
 echo "🚀 Starting Flutter Test Generator..."
 echo "   Open http://localhost:8080 in your browser"

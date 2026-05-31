@@ -62,7 +62,7 @@ for dart_file in "$SCRIPT_DIR/tools/script_v2/"*.dart; do
 done
 
 # ── Copy LATEST webview files (exclude README.md, *.ini) ─────────────────────
-for f in index.html main.js styles.css server.dart coverage_runner.dart; do
+for f in index.html main.js styles.css server.dart coverage_runner.dart host_runner.dart; do
   if [ -f "$SCRIPT_DIR/webview/$f" ]; then
     cp "$SCRIPT_DIR/webview/$f" "$OUT_DIR/webview/"
   fi
