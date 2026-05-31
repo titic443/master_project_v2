@@ -91,20 +91,13 @@ POST /api/demo/buttons
 
 **Request Body:**
 ```txt
-"datasets": {
-  "defaults": {},
-  "byKey": {
-    "customer_02_firstname_textfield": [
-      {
-        "valid": "Alice",
-        "invalid": "J",
-        "invalidRuleMessages": "First name must contain only letters (minimum 2 characters)",
-        "atMax": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
-        "atMin": "Ab"
-      }
-    ]
-  }
-}
+customer_01_title_dropdown: "Mr.", "Mrs.", "Ms", "Dr"
+customer_02_firstname_textfield: invalid
+customer_03_phone_textfield: invalid
+customer_04_agree_terms_checkbox: checked, unchecked
+
+IF [customer_04_agree_terms_checkbox] = "checked" THEN customer_02_firstname_textfield = "invalid"
+
 ```
 
 **Validation Rules:**

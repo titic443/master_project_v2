@@ -1,0 +1,61 @@
+{
+  "file": "lib/demos/clinic_appointment_page.dart",
+  "datasets": {
+    "byKey": {
+      "appt_01_patient_name_textfield": [
+        {
+          "valid": "สมชาย สุขสบาย",
+          "invalid": "ส",
+          "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
+          "atMin": "ส",
+          "atMax": "สมชาย สุขสบาย"
+        }
+      ],
+      "appt_02_id_card_textfield": [
+        {
+          "valid": "1102500012345",
+          "invalid": "110250001234",
+          "invalidRuleMessages": "ต้องมี 13 หลัก",
+          "atMin": "",
+          "atMax": "1102500012345"
+        }
+      ],
+      "appt_03_phone_textfield": [
+        {
+          "valid": "0812345678",
+          "invalid": "08123456",
+          "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
+          "atMin": "12345678",
+          "atMax": "0998877665"
+        }
+      ],
+      "appt_06_date_textfield": [
+        {
+          "valid": "31/05/2026",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
+          "atMin": "01/01/2000",
+          "atMax": "01/01/2031"
+        }
+      ],
+      "appt_07_time_textfield": [
+        {
+          "valid": "09:00",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
+          "atMin": "00:00",
+          "atMax": "23:59"
+        }
+      ],
+      "appt_09_note_textfield": [
+        {
+          "valid": "คนไข้มีอาการไอและเจ็บคอเล็กน้อย",
+          "invalid": "!",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "คนไข้มีอาการไอและเจ็บคอเล็กน้อย"
+        }
+      ]
+    }
+  }
+}
