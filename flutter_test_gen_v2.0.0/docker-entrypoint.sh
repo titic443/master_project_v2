@@ -58,13 +58,14 @@ echo "📦 Running dart pub get..."
 cd "$WORKSPACE"
 dart pub get --no-example 2>&1 | tail -3
 
-# ── 6. Connect ADB to host emulator (via host.docker.internal) ───────────────
-# ADB server บน host ต้อง listen 0.0.0.0 (ดูคำสั่งใน INSTALL.md)
-export ANDROID_ADB_SERVER_HOST=host.docker.internal
-export ANDROID_ADB_SERVER_PORT=5037
-
-echo "🔌 Checking host ADB devices..."
-adb devices 2>/dev/null || echo "   ⚠ ADB: no devices found (emulator not running or host ADB not listening on 0.0.0.0)"
+# ── 6. Connect ADB directly to host emulator via socat proxy ─────────────────
+# host runs: socat TCP-LISTEN:5560,bind=0.0.0.0 → 127.0.0.1:5555 (emulator TCP ADB)
+echo "🔌 Connecting ADB to host emulator (host.docker.internal:5560)..."
+adb start-server 2>/dev/null
+adb connect host.docker.internal:5560 2>/dev/null \
+  && echo "   ✓ ADB connected" \
+  || echo "   ⚠ ADB: could not connect — emulator may not be running"
+adb devices 2>/dev/null
 
 # ── 7. Start server ──────────────────────────────────────────────────────────
 echo ""

@@ -78,13 +78,35 @@ fi
 docker stop $CONTAINER_NAME 2>/dev/null || true
 docker rm   $CONTAINER_NAME 2>/dev/null || true
 
-# ── Restart ADB server to listen on 0.0.0.0 (so container can reach emulator) ─
-if command -v adb &>/dev/null; then
-  echo "🔌 Restarting ADB server (listen on 0.0.0.0 for container access)..."
-  adb kill-server 2>/dev/null || true
-  adb -a nodaemon server &>/dev/null &
+# ── Setup emulator ADB TCP proxy (socat: 0.0.0.0:5560 → 127.0.0.1:5555) ──────
+# Find adb binary (not always in PATH on macOS)
+ADB_BIN=""
+for candidate in \
+    "$(command -v adb 2>/dev/null)" \
+    "$HOME/Library/Android/sdk/platform-tools/adb" \
+    "/usr/local/bin/adb"; do
+  if [ -x "$candidate" ]; then
+    ADB_BIN="$candidate"
+    break
+  fi
+done
+
+if [ -n "$ADB_BIN" ] && command -v socat &>/dev/null; then
+  echo "🔌 Setting up emulator ADB TCP proxy..."
+  # Switch emulator to TCP ADB mode (port 5555 on emulator)
+  "$ADB_BIN" tcpip 5555 2>/dev/null || true
   sleep 1
-  echo "   ADB devices: $(adb devices 2>/dev/null | grep -c 'emulator' || echo 0) emulator(s) found"
+  # Reconnect on host via TCP so socat has something to forward to
+  "$ADB_BIN" connect 127.0.0.1:5555 2>/dev/null || true
+  # Kill any existing socat proxy on port 5560
+  pkill -f "socat.*5560" 2>/dev/null || true
+  sleep 0.5
+  # Proxy: all-interfaces:5560 → localhost:5555
+  socat TCP-LISTEN:5560,bind=0.0.0.0,reuseaddr,fork TCP:127.0.0.1:5555 &
+  sleep 1
+  echo "   ✓ ADB proxy ready: host.docker.internal:5560 → emulator:5555"
+else
+  echo "   ⚠ adb or socat not found — install socat with: brew install socat"
 fi
 
 # ── Run container ──────────────────────────────────────────────────────────────
@@ -97,7 +119,6 @@ docker run --rm \
   --name $CONTAINER_NAME \
   -p $PORT:$PORT \
   -v "$PROJECT_DIR:/workspace" \
-  --add-host=host.docker.internal:host-gateway \
   $IMAGE_NAME &
 
 # รอให้ server พร้อม

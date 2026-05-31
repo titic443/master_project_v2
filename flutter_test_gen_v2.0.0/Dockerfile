@@ -33,20 +33,37 @@ RUN git clone https://github.com/microsoft/pict.git /pict --depth 1 \
 # -----------------------------------------------------------------------------
 FROM dart:stable
 
-# Install system dependencies for Flutter + ADB client (to reach host emulator)
+# Install system dependencies for Flutter + Java (required for Android SDK)
 RUN apt-get update && apt-get install -y \
     git curl unzip xz-utils zip \
     libglu1-mesa clang cmake ninja-build pkg-config \
     libgtk-3-dev liblzma-dev libstdc++-12-dev \
-    android-tools-adb \
+    openjdk-17-jdk-headless \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Flutter SDK
+# Install Android SDK command-line tools
+ENV ANDROID_SDK_ROOT=/android-sdk
+RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools \
+    && curl -fsSL \
+        "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip" \
+        -o /tmp/cmdtools.zip \
+    && unzip -q /tmp/cmdtools.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools \
+    && mv ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools \
+           ${ANDROID_SDK_ROOT}/cmdline-tools/latest \
+    && rm /tmp/cmdtools.zip
+
+ENV PATH="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_SDK_ROOT}/build-tools/34.0.0:${PATH}"
+
+RUN yes | sdkmanager --licenses > /dev/null 2>&1 \
+    && sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-34"
+
+# Install Flutter SDK (with Android support)
 ENV FLUTTER_HOME=/flutter
 RUN git clone https://github.com/flutter/flutter.git $FLUTTER_HOME \
     --branch stable --depth 1 \
-    && $FLUTTER_HOME/bin/flutter precache \
-        --no-ios --no-android --no-fuchsia \
+    && $FLUTTER_HOME/bin/flutter config --android-sdk ${ANDROID_SDK_ROOT} \
+    && $FLUTTER_HOME/bin/flutter precache --no-ios --no-fuchsia \
+    && yes | $FLUTTER_HOME/bin/flutter doctor --android-licenses > /dev/null 2>&1 || true \
     && $FLUTTER_HOME/bin/flutter --version
 
 ENV PATH="$FLUTTER_HOME/bin:${PATH}"
