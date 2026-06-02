@@ -351,6 +351,7 @@ class TestDataGenerator {
     final radioKeys = <String>[]; // Radio button keys
     final checkboxKeys = <String>[]; // Checkbox keys
     final switchKeys = <String>[]; // Switch, SwitchListTile keys
+    final sliderKeys = <String>[]; // Slider keys
     final primaryButtons = <String>[]; // ปุ่มอื่นๆ ที่ไม่ใช่ end button
     final datePickerKeys = <String>[]; // DatePicker keys
     final timePickerKeys = <String>[]; // TimePicker keys
@@ -439,6 +440,12 @@ class TestDataGenerator {
       // ---------------------------------------------------------------------
       else if ((t == 'Switch' || t == 'SwitchListTile') && k.isNotEmpty) {
         switchKeys.add(k);
+      }
+      // ---------------------------------------------------------------------
+      // Slider
+      // ---------------------------------------------------------------------
+      else if (t == 'Slider' && k.isNotEmpty) {
+        sliderKeys.add(k);
       }
       // ---------------------------------------------------------------------
       // Buttons - ปุ่มต่างๆ (ยกเว้น end button)
@@ -869,6 +876,55 @@ class TestDataGenerator {
       }
     }
 
+    // Map: switch key -> validation message for required Switch/SwitchListTile
+    final requiredSwitchValidation = <String, String>{};
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      if (t != 'Switch' && t != 'SwitchListTile') continue;
+      final k = (w['key'] ?? '').toString();
+      if (k.isEmpty) continue;
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules = (meta['validatorRules'] as List?) ?? const [];
+      for (final rule in rules) {
+        if (rule is Map) {
+          final msg = rule['message']?.toString() ?? '';
+          final condition = rule['condition']?.toString() ?? '';
+          final norm = condition.toLowerCase().replaceAll(' ', '');
+          if (msg.isNotEmpty &&
+              (norm.contains('!value') ||
+               norm.contains('value==false') ||
+               norm.contains('value==null') ||
+               norm.contains('value!=true'))) {
+            requiredSwitchValidation[k] = msg;
+            break;
+          }
+        }
+      }
+    }
+
+    // Map: slider key -> {message, minValue} for Slider with validatorRules
+    // "invalid" case = slider at minimum value (typical required-value pattern)
+    final requiredSliderValidation = <String, Map<String, dynamic>>{};
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      if (t != 'Slider') continue;
+      final k = (w['key'] ?? '').toString();
+      if (k.isEmpty) continue;
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules = (meta['validatorRules'] as List?) ?? const [];
+      if (rules.isEmpty) continue;
+      final firstRule = rules.first;
+      final msg =
+          firstRule is Map ? (firstRule['message']?.toString() ?? '') : '';
+      if (msg.isNotEmpty) {
+        final minVal = (meta['min'] as num?)?.toDouble() ?? 0.0;
+        requiredSliderValidation[k] = {
+          'message': msg,
+          'minValue': minVal.round().toString(),
+        };
+      }
+    }
+
     // ---------------------------------------------------------------------------
     // STEP 8: ตรวจจับ Dropdowns และ options
     // ---------------------------------------------------------------------------
@@ -1129,6 +1185,8 @@ class TestDataGenerator {
               factorTypes[name] = 'datepicker';
             } else if (timePickerKeys.contains(name)) {
               factorTypes[name] = 'timepicker';
+            } else if (sliderKeys.contains(name)) {
+              factorTypes[name] = 'slider';
             } else {
               factorTypes[name] = 'dropdown';
             }
@@ -1297,6 +1355,8 @@ class TestDataGenerator {
           final invalidFields = <String>[];
           final uncheckedRequiredCheckboxes = <String>[];
           final unselectedRadioGroups = <String>[];
+          final offRequiredSwitches = <String>[];
+          final invalidSliders = <String>[];
 
           if (usingExternalCombos) {
             final stepsByKey = <String, List<Map<String, dynamic>>>{};
@@ -1378,7 +1438,23 @@ class TestDataGenerator {
                     },
                     {'pump': true}
                   ];
+                } else if (pick == 'off' &&
+                    requiredSwitchValidation.containsKey(factorName)) {
+                  hasInvalidData = true;
+                  offRequiredSwitches.add(factorName);
                 }
+              } else if (factorType == 'slider') {
+                final sliderData = requiredSliderValidation[factorName];
+                if (sliderData != null && pick == sliderData['minValue']) {
+                  hasInvalidData = true;
+                  invalidSliders.add(factorName);
+                }
+                stepsByKey[factorName] = [
+                  {
+                    'setSliderValue': {'byKey': factorName, 'value': pick}
+                  },
+                  {'pump': true}
+                ];
               } else if (datePickerKeys.contains(factorName)) {
                 stepsByKey[factorName] = [
                   {
@@ -1601,6 +1677,18 @@ class TestDataGenerator {
             final msg = radioGroupValidation[groupKey];
             if (msg != null && msg.isNotEmpty) {
               asserts.add({'text': msg, 'exists': true});
+            }
+          }
+          for (final sk in offRequiredSwitches) {
+            final msg = requiredSwitchValidation[sk];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg, 'exists': true});
+            }
+          }
+          for (final slk in invalidSliders) {
+            final msg = requiredSliderValidation[slk]?['message'];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg as String, 'exists': true});
             }
           }
           if (asserts.isEmpty) {
