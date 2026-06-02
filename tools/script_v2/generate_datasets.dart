@@ -306,10 +306,23 @@ class DatasetGenerator {
         final meta =
             (w['meta'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
 
-        // เตรียมข้อมูล field สำหรับส่งไป AI
+        // คำนวณ effectiveMaxLength เพื่อบอก AI ว่า boundary จริงคือเท่าไร
+        // Priority: inputFormatters.lengthLimit > maxLength > default 50
+        int? effectiveMax = meta['maxLength'] as int?;
+        final fmts =
+            (meta['inputFormatters'] as List? ?? const []).cast<Map>();
+        for (final fmt in fmts) {
+          if ((fmt['type'] ?? '') == 'lengthLimit' && fmt['max'] is int) {
+            effectiveMax = fmt['max'] as int;
+            break;
+          }
+        }
+        effectiveMax ??= 50;
+
+        // เตรียมข้อมูล field สำหรับส่งไป AI พร้อม effectiveMaxLength
         allTextFields.add({
           'key': key,
-          'meta': meta,
+          'meta': {...meta, 'effectiveMaxLength': effectiveMax},
         });
       }
     }
@@ -365,19 +378,8 @@ class DatasetGenerator {
 
       // AI return array of pairs: [{valid, invalid, invalidRuleMessages}, ...]
       if (aiEntry is List) {
-        // ดึง maxLength constraint จาก 2 sources:
-        //   1. inputFormatters.lengthLimit (มี priority สูงกว่า)
-        //   2. maxLength property โดยตรง
-        //   3. default = 50
-        int? maxLen = meta['maxLength'] as int?;
-        final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
-        for (final fmt in fmts) {
-          if ((fmt['type'] ?? '') == 'lengthLimit' && fmt['max'] is int) {
-            maxLen = fmt['max'] as int;
-            break;
-          }
-        }
-        maxLen ??= 50;
+        // ใช้ effectiveMaxLength ที่ inject ไปตอนส่ง field แล้ว
+        final maxLen = meta['effectiveMaxLength'] as int? ?? 50;
 
         // สร้าง list เก็บ pairs ที่ processed แล้ว
         final pairs = <Map<String, dynamic>>[];
@@ -583,12 +585,13 @@ class DatasetGenerator {
       '    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")',
       '    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")',
       '  atMax: value at the maximum length boundary',
-      '    - If field has maxLength (from inputFormatters.lengthLimit or maxLength property):',
-      '        generate a realistic value whose length == maxLength',
-      '    - If field has no maxLength: use same as valid value',
+      '    - ALWAYS use meta.effectiveMaxLength as the max — it is already computed (explicit or default 50)',
+      '    - Generate a realistic value whose character length == effectiveMaxLength exactly',
       '    - MUST respect inputFormatters and be a realistic value (not just repeated chars)',
-      '    - For email fields at max length: pad local-part with chars to reach maxLength',
-      '    - For digit-only fields: use digits that reach maxLength',
+      '    - For Thai name fields: use a realistic long Thai full name padded to reach the length',
+      '    - For free-text note fields: use a realistic sentence padded to reach the length',
+      '    - For email fields: pad local-part with chars to reach effectiveMaxLength',
+      '    - For digit-only fields: use digits that reach effectiveMaxLength',
       '',
       'Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}',
       'Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}',
