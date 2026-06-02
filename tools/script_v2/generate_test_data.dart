@@ -2443,6 +2443,7 @@ class TestDataGenerator {
       factors: factors,
       pageBaseName: base,
       requiredCheckboxes: requiredCheckboxes,
+      invalidOnlyValues: extractionResult.invalidOnlyValues,
       constraints: constraints,
     );
   }

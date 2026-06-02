@@ -90,6 +90,7 @@ class GeneratorPict {
   String generateValidOnlyPictModel(
     Map<String, List<String>> factors, {
     Set<String> requiredCheckboxes = const {},
+    Map<String, Set<String>> invalidOnlyValues = const {},
     String? constraints,
   }) {
     return _buildPictModel(
@@ -97,6 +98,7 @@ class GeneratorPict {
       constraints: constraints,
       filter: _PictModelFilter.validOnly,
       requiredCheckboxes: requiredCheckboxes,
+      invalidOnlyValues: invalidOnlyValues,
     );
   }
 
@@ -106,6 +108,7 @@ class GeneratorPict {
     Map<String, List<String>> factors, {
     required _PictModelFilter filter,
     Set<String> requiredCheckboxes = const {},
+    Map<String, Set<String>> invalidOnlyValues = const {},
     String? constraints,
   }) {
     final buffer = StringBuffer();
@@ -118,6 +121,7 @@ class GeneratorPict {
         values: entry.value,
         filter: filter,
         requiredCheckboxes: requiredCheckboxes,
+        invalidOnlyValues: invalidOnlyValues,
         todayOnly: todayOnly,
       );
       if (values.isEmpty) continue;
@@ -141,6 +145,7 @@ class GeneratorPict {
     required List<String> values,
     required _PictModelFilter filter,
     required Set<String> requiredCheckboxes,
+    Map<String, Set<String>> invalidOnlyValues = const {},
     required DateTime todayOnly,
   }) {
     // A "TextField factor" is one whose value list contains both 'valid' and
@@ -159,17 +164,20 @@ class GeneratorPict {
         return List.of(values);
 
       case _PictModelFilter.validOnly:
+        final invalidOnly = invalidOnlyValues[factorName] ?? const <String>{};
         if (isTextField) {
-          return values.where((v) => v != 'invalid').toList();
+          return values.where((v) => v != 'invalid' && !invalidOnly.contains(v)).toList();
         }
         if (requiredCheckboxes.contains(factorName)) {
-          return values.where((v) => v != 'unchecked').toList();
+          return values.where((v) => v != 'unchecked' && !invalidOnly.contains(v)).toList();
         }
         // Non-text factors (Radio, Dropdown, DatePicker, TimePicker, optional
-        // Checkbox): exclude the 'null' sentinel (cancel/skip) and any past
-        // dates — the valid model needs only real success-path values.
+        // Checkbox, Switch, Slider): exclude 'null', past dates, and any
+        // factor-specific invalid-only values (e.g. 'unselected', 'off' for
+        // required switch, min value for required slider).
         return values.where((v) {
           if (v == 'null') return false;
+          if (invalidOnly.contains(v)) return false;
           final parts = v.split('/');
           if (parts.length == 3) {
             final d = int.tryParse(parts[0]);
@@ -434,6 +442,7 @@ class GeneratorPict {
   FactorExtractionResult extractFactorsFromManifest(List<Map<String, dynamic>> widgets) {
     final factors = <String, List<String>>{};
     final requiredCheckboxes = <String>{}; // Track which checkboxes are required
+    final invalidOnlyValues = <String, Set<String>>{}; // factorName -> invalid-only values
 
     // Track radio groups by groupValueBinding
     final radioGroups = <String, String>{}; // groupValueBinding -> factorName
@@ -506,6 +515,22 @@ class GeneratorPict {
       // Switch/SwitchListTile - same as Checkbox
       if ((widgetType == 'Switch' || widgetType == 'SwitchListTile') && key.isNotEmpty) {
         factors[key] = ['on', 'off'];
+        final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+        final rules = (meta['validatorRules'] as List?) ?? const [];
+        for (final rule in rules) {
+          if (rule is Map) {
+            final norm = (rule['condition']?.toString() ?? '')
+                .toLowerCase()
+                .replaceAll(' ', '');
+            if (norm.contains('!value') ||
+                norm.contains('value==false') ||
+                norm.contains('value==null') ||
+                norm.contains('value!=true')) {
+              invalidOnlyValues.putIfAbsent(key, () => {}).add('off');
+              break;
+            }
+          }
+        }
       }
 
       // Slider - extract min/mid/max values
@@ -514,12 +539,18 @@ class GeneratorPict {
         final min = (meta['min'] as num?)?.toDouble() ?? 0.0;
         final max = (meta['max'] as num?)?.toDouble() ?? 100.0;
         final mid = (min + max) / 2;
+        final minStr = min.round().toString();
 
         factors[key] = [
-          min.round().toString(),
+          minStr,
           mid.round().toString(),
           max.round().toString(),
         ];
+
+        final rules = (meta['validatorRules'] as List?) ?? const [];
+        if (rules.isNotEmpty) {
+          invalidOnlyValues.putIfAbsent(key, () => {}).add(minStr);
+        }
       }
 
       // DatePicker/TimePicker detection (check for pickerMetadata)
@@ -572,6 +603,7 @@ class GeneratorPict {
         final list = factors[entry.key];
         if (list != null && !list.contains('unselected')) {
           list.insert(0, 'unselected');
+          invalidOnlyValues.putIfAbsent(entry.key, () => {}).add('unselected');
         }
       }
     }
@@ -579,6 +611,7 @@ class GeneratorPict {
     return FactorExtractionResult(
       factors: factors,
       requiredCheckboxes: requiredCheckboxes,
+      invalidOnlyValues: invalidOnlyValues,
     );
   }
 
@@ -751,6 +784,7 @@ class GeneratorPict {
     required Map<String, List<String>> factors,
     required String pageBaseName,
     Set<String> requiredCheckboxes = const {},
+    Map<String, Set<String>> invalidOnlyValues = const {},
     String? constraints,
   }) async {
     if (factors.isEmpty) return;
@@ -762,6 +796,7 @@ class GeneratorPict {
     final validModelContent = generateValidOnlyPictModel(
       factors,
       requiredCheckboxes: requiredCheckboxes,
+      invalidOnlyValues: invalidOnlyValues,
       constraints: constraints,
     );
 
@@ -1205,10 +1240,13 @@ class _ConstraintRule {
 class FactorExtractionResult {
   final Map<String, List<String>> factors;
   final Set<String> requiredCheckboxes;
+  // factorName → values that are invalid-only (must be excluded from valid model)
+  final Map<String, Set<String>> invalidOnlyValues;
 
   FactorExtractionResult({
     required this.factors,
     required this.requiredCheckboxes,
+    this.invalidOnlyValues = const {},
   });
 }
 
