@@ -849,6 +849,26 @@ class TestDataGenerator {
       }
     }
 
+    // Map: groupValueBinding -> validation message for required Radio groups
+    final radioGroupValidation = <String, String>{};
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      if (!t.startsWith('Radio<')) continue;
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final groupBinding = meta['groupValueBinding']?.toString() ?? '';
+      if (groupBinding.isEmpty || radioGroupValidation.containsKey(groupBinding)) continue;
+      final rules = (meta['validatorRules'] as List?) ?? const [];
+      for (final rule in rules) {
+        if (rule is Map) {
+          final msg = rule['message']?.toString() ?? '';
+          if (msg.isNotEmpty) {
+            radioGroupValidation[groupBinding] = msg;
+            break;
+          }
+        }
+      }
+    }
+
     // ---------------------------------------------------------------------------
     // STEP 8: ตรวจจับ Dropdowns และ options
     // ---------------------------------------------------------------------------
@@ -1161,6 +1181,7 @@ class TestDataGenerator {
         // Resolve combos
         List<Map<String, String>> combos;
         bool usingExternalCombos = false;
+        final radioGroupBindings = <String, String>{}; // 'Radio{n}' -> groupValueBinding
 
         if (extCombos != null && extCombos!.isNotEmpty) {
           combos = extCombos!;
@@ -1232,6 +1253,7 @@ class TestDataGenerator {
           for (final entry in radioGroups.entries) {
             if (entry.value.length > 1) {
               factors['Radio$radioIndex'] = entry.value;
+              radioGroupBindings['Radio$radioIndex'] = entry.key;
               radioIndex++;
             }
           }
@@ -1274,6 +1296,7 @@ class TestDataGenerator {
           bool hasInvalidData = false;
           final invalidFields = <String>[];
           final uncheckedRequiredCheckboxes = <String>[];
+          final unselectedRadioGroups = <String>[];
 
           if (usingExternalCombos) {
             final stepsByKey = <String, List<Map<String, dynamic>>>{};
@@ -1302,14 +1325,19 @@ class TestDataGenerator {
                   {'pump': true}
                 ];
               } else if (factorType == 'radio') {
-                final mk = radioKeyForSuffix(radioKeys, pick);
-                if (mk != null) {
-                  stepsByKey[mk] = [
-                    {
-                      'tap': {'byKey': mk}
-                    },
-                    {'pump': true}
-                  ];
+                if (pick == 'unselected') {
+                  hasInvalidData = true;
+                  unselectedRadioGroups.add(factorName);
+                } else {
+                  final mk = radioKeyForSuffix(radioKeys, pick);
+                  if (mk != null) {
+                    stepsByKey[mk] = [
+                      {
+                        'tap': {'byKey': mk}
+                      },
+                      {'pump': true}
+                    ];
+                  }
                 }
               } else if (factorType == 'dropdown') {
                 String textToTap = pick;
@@ -1428,7 +1456,11 @@ class TestDataGenerator {
                 final pick = rawPick.startsWith('"') && rawPick.endsWith('"')
                     ? rawPick.substring(1, rawPick.length - 1)
                     : rawPick;
-                if (pick.isNotEmpty) {
+                if (pick == 'unselected') {
+                  hasInvalidData = true;
+                  final groupBinding = radioGroupBindings[factorName] ?? factorName;
+                  unselectedRadioGroups.add(groupBinding);
+                } else if (pick.isNotEmpty) {
                   final mk = radioKeyForSuffix(radioKeys, pick);
                   if (mk != null) {
                     stepsByKey[mk] = [
@@ -1560,6 +1592,13 @@ class TestDataGenerator {
           }
           for (final ck in uncheckedRequiredCheckboxes) {
             final msg = requiredCheckboxValidation[ck];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg, 'exists': true});
+            }
+          }
+          for (final groupKey in unselectedRadioGroups) {
+            // groupKey is groupValueBinding for both external and internal combos
+            final msg = radioGroupValidation[groupKey];
             if (msg != null && msg.isNotEmpty) {
               asserts.add({'text': msg, 'exists': true});
             }

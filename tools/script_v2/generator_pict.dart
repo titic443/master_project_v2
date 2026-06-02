@@ -437,6 +437,7 @@ class GeneratorPict {
 
     // Track radio groups by groupValueBinding
     final radioGroups = <String, String>{}; // groupValueBinding -> factorName
+    final radioGroupHasValidator = <String, bool>{}; // factorName -> hasValidator
 
     for (final w in widgets) {
       final widgetType = (w['widgetType'] ?? '').toString();
@@ -464,6 +465,12 @@ class GeneratorPict {
           factorName = groupValue.isNotEmpty ? groupValue : _extractRadioGroupName(key);
           radioGroups[groupValue] = factorName;
           factors[factorName] = <String>[];
+        }
+
+        // Track if any Radio in this group has validatorRules
+        final rules = (meta['validatorRules'] as List?) ?? const [];
+        if (rules.isNotEmpty) {
+          radioGroupHasValidator[factorName] = true;
         }
 
         // Extract suffix by removing prefix pattern: {page}_{sequence}_
@@ -556,6 +563,16 @@ class GeneratorPict {
           }
         }
         continue; // Skip adding FormField<bool> as a factor
+      }
+    }
+
+    // Add 'unselected' sentinel to Radio groups that have validatorRules
+    for (final entry in radioGroupHasValidator.entries) {
+      if (entry.value) {
+        final list = factors[entry.key];
+        if (list != null && !list.contains('unselected')) {
+          list.insert(0, 'unselected');
+        }
       }
     }
 

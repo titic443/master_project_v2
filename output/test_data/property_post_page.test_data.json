@@ -12,11 +12,11 @@
     "byKey": {
       "prop_01_title_textfield": [
         {
-          "valid": "คอนโดให้เช่า สุขุมวิท ใกล้ BTS ทองหล่อ",
+          "valid": "คอนโดหรู ใจกลางเมือง สุขุมวิท 24 พร้อมเฟอร์นิเจอร์",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกหัวข้อประกาศ",
           "atMin": "",
-          "atMax": "คอนโดให้เช่า สุขุมวิท ใกล้ BTS ทองหล่อ"
+          "atMax": "คอนโดหรู ใจกลางเมือง สุขุมวิท 24 พร้อมเฟอร์นิเจอร์"
         }
       ],
       "prop_03_location_textfield": [
@@ -30,11 +30,11 @@
       ],
       "prop_04_district_textfield": [
         {
-          "valid": "เขตวัฒนา",
+          "valid": "วัฒนา",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกเขต / ย่าน",
           "atMin": "",
-          "atMax": "เขตวัฒนา"
+          "atMax": "วัฒนา"
         }
       ],
       "prop_05_price_textfield": [
@@ -43,16 +43,16 @@
           "invalid": "99999",
           "invalidRuleMessages": "ราคาขั้นต่ำ 100,000 บาท",
           "atMin": "",
-          "atMax": "150000"
+          "atMax": "9999999999"
         }
       ],
       "prop_08_area_textfield": [
         {
-          "valid": "120.50",
+          "valid": "55.75",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกพื้นที่ใช้สอย",
           "atMin": "",
-          "atMax": "120.50"
+          "atMax": "99999.99"
         }
       ],
       "prop_09_floor_textfield": [
@@ -66,20 +66,20 @@
       ],
       "prop_11_desc_textfield": [
         {
-          "valid": "คอนโดมิเนียมหรูใจกลางเมือง เดินทางสะดวกสบาย ใกล้สถ",
-          "invalid": "ดีมาก",
+          "valid": "คอนโดมีเนียมใจกลางเมืองสุขุมวิท 24 ตกแต่งครบพร้อมเ",
+          "invalid": "รายละเอียดสั้นๆ",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "atMin": "คอนโดหรูทำเลดีสุดๆ",
-          "atMax": "คอนโดมิเนียมหรูใจกลางเมือง เดินทางสะดวกสบาย ใกล้สถ"
+          "atMin": "รายละเอียดสั้นๆแค่สิบเก้าคำ",
+          "atMax": "คอนโดมีเนียมใจกลางเมืองสุขุมวิท 24 ตกแต่งครบพร้อมเ"
         }
       ],
       "prop_12_contact_textfield": [
         {
           "valid": "สมชาย",
-          "invalid": "อ",
+          "invalid": "ก",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "อ",
-          "atMax": "สมชาย"
+          "atMin": "ก",
+          "atMax": "สมชาย ใจดี"
         }
       ]
     }
@@ -89,7 +89,7 @@
       "tc": "pairwise_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -254,7 +254,7 @@
       "tc": "pairwise_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -427,7 +427,7 @@
       "tc": "pairwise_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -592,7 +592,7 @@
       "tc": "pairwise_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -765,7 +765,7 @@
       "tc": "pairwise_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -930,7 +930,7 @@
       "tc": "pairwise_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1103,7 +1103,7 @@
       "tc": "pairwise_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1268,7 +1268,7 @@
       "tc": "pairwise_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1441,7 +1441,7 @@
       "tc": "pairwise_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1606,7 +1606,7 @@
       "tc": "pairwise_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1779,7 +1779,7 @@
       "tc": "pairwise_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1952,7 +1952,7 @@
       "tc": "pairwise_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2125,7 +2125,7 @@
       "tc": "pairwise_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2290,7 +2290,7 @@
       "tc": "pairwise_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2463,7 +2463,7 @@
       "tc": "pairwise_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2636,7 +2636,7 @@
       "tc": "pairwise_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2809,7 +2809,7 @@
       "tc": "pairwise_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2982,7 +2982,7 @@
       "tc": "pairwise_invalid_cases_18",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3147,7 +3147,7 @@
       "tc": "pairwise_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3320,7 +3320,7 @@
       "tc": "pairwise_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3493,7 +3493,7 @@
       "tc": "pairwise_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3658,7 +3658,7 @@
       "tc": "pairwise_invalid_cases_22",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3823,7 +3823,7 @@
       "tc": "pairwise_invalid_cases_23",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3996,7 +3996,7 @@
       "tc": "pairwise_invalid_cases_24",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -4161,7 +4161,7 @@
       "tc": "pairwise_invalid_cases_25",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§ดีมาก, contact: invalid§อ",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -4326,7 +4326,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"3\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -4464,7 +4464,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"4+\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -4610,7 +4610,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -4748,7 +4748,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -4894,7 +4894,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5032,7 +5032,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"3\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5178,7 +5178,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5316,7 +5316,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"2\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5462,7 +5462,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"3\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5600,7 +5600,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5746,7 +5746,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"3\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -5892,7 +5892,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6038,7 +6038,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"2\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6176,7 +6176,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6322,7 +6322,7 @@
       "tc": "pairwise_valid_cases_15",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"4+\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6468,7 +6468,7 @@
       "tc": "pairwise_valid_cases_16",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6614,7 +6614,7 @@
       "tc": "pairwise_valid_cases_17",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6760,7 +6760,7 @@
       "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"4+\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -6898,7 +6898,7 @@
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7044,7 +7044,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"4+\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7190,7 +7190,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"2\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7328,7 +7328,7 @@
       "tc": "pairwise_valid_cases_22",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"2\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7466,7 +7466,7 @@
       "tc": "pairwise_valid_cases_23",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§120.50, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7612,7 +7612,7 @@
       "tc": "pairwise_valid_cases_24",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7750,7 +7750,7 @@
       "tc": "pairwise_valid_cases_25",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดให้เช่า สุขุมวิท ใกล้ B…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"1\", area: valid§120.50, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: valid§สมชาย",
+      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
       "steps": [
         {
           "enterText": {
@@ -7962,7 +7962,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMax§คอนโดให้เช่า สุขุมวิท ใกล้ B…, location: atMax§กรุงเทพมหานคร, district: atMax§เขตวัฒนา, price: atMax§150000, area: atMax§120.50, floor: atMax§25, desc: atMax§คอนโดมิเนียมหรูใจกลางเมือง เ…, contact: atMax§สมชาย",
+      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMax§คอนโดหรู ใจกลางเมือง สุขุมวิ…, location: atMax§กรุงเทพมหานคร, district: atMax§วัฒนา, price: atMax§9999999999, area: atMax§99999.99, floor: atMax§25, desc: atMax§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: atMax§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -8100,7 +8100,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMin§\"\", location: atMin§\"\", district: atMin§\"\", price: atMin§\"\", area: atMin§\"\", floor: atMin§\"\", desc: atMin§คอนโดหรูทำเลดีสุดๆ, contact: atMin§อ",
+      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMin§\"\", location: atMin§\"\", district: atMin§\"\", price: atMin§\"\", area: atMin§\"\", floor: atMin§\"\", desc: atMin§รายละเอียดสั้นๆแค่สิบเก้าคำ, contact: atMin§ก",
       "steps": [
         {
           "enterText": {

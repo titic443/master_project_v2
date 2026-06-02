@@ -9,7 +9,7 @@ class ClinicAppointmentState extends Equatable {
   final String idCard;
   final String phone;
   final String? department;
-  final String appointmentType; // 'OPD' | 'Telemedicine'
+  final String? appointmentType; // 'OPD' | 'Telemedicine' | null = ยังไม่ได้เลือก
   final DateTime? appointmentDate;
   final TimeOfDay? appointmentTime;
   final bool hasInsurance;
@@ -22,7 +22,7 @@ class ClinicAppointmentState extends Equatable {
     this.idCard = '',
     this.phone = '',
     this.department,
-    this.appointmentType = 'OPD',
+    this.appointmentType,
     this.appointmentDate,
     this.appointmentTime,
     this.hasInsurance = false,

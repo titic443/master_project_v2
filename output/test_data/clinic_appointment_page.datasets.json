@@ -5,19 +5,19 @@
       "appt_01_patient_name_textfield": [
         {
           "valid": "สมศักดิ์ ชัยชนะ",
-          "invalid": "จ",
+          "invalid": "ส",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "จอ",
-          "atMax": "กุลธิดา กิตติพงษ์พัฒนากุล"
+          "atMin": "ส",
+          "atMax": "สมศักดิ์ ชัยชนะ"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1234567890123",
-          "invalid": "123456789012",
+          "valid": "1102030405067",
+          "invalid": "110203040506",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
-          "atMax": "1234567890123"
+          "atMin": "000000000000",
+          "atMax": "1102030405067"
         }
       ],
       "appt_03_phone_textfield": [
@@ -25,13 +25,13 @@
           "valid": "0812345678",
           "invalid": "08123456",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "081234567",
-          "atMax": "0987654321"
+          "atMin": "00000000",
+          "atMax": "0812345678"
         }
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "31/05/2026",
+          "valid": "02/06/2026",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
           "atMin": "01/01/2000",
@@ -49,11 +49,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีประวัติแพ้ยาเพนิซิลลิน",
-          "invalid": "X",
+          "valid": "คนไข้มีอาการไอและเจ็บคอเล็กน้อยและมีไข้ต่ำๆ",
+          "invalid": "อ",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยมีประวัติแพ้ยาเพนิซิลลิน"
+          "atMax": "คนไข้มีอาการไอและเจ็บคอเล็กน้อยและมีไข้ต่ำๆ"
         }
       ]
     }

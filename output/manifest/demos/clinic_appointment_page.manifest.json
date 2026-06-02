@@ -13,8 +13,36 @@
       "key": "appt_10_expected_fail"
     },
     {
+      "widgetType": "Radio<String>",
+      "key": "appt_05_type_radio_opd",
+      "meta": {
+        "valueExpr": "'OPD'",
+        "groupValueBinding": "state.appointmentType",
+        "validatorRules": [
+          {
+            "condition": "state.appointmentType == null",
+            "message": "กรุณาเลือกประเภทการนัด"
+          }
+        ]
+      }
+    },
+    {
       "widgetType": "AlertDialog",
       "key": "appt_10_expected_success"
+    },
+    {
+      "widgetType": "Radio<String>",
+      "key": "appt_05_type_radio_tele",
+      "meta": {
+        "valueExpr": "'Telemedicine'",
+        "groupValueBinding": "state.appointmentType",
+        "validatorRules": [
+          {
+            "condition": "state.appointmentType == null",
+            "message": "กรุณาเลือกประเภทการนัด"
+          }
+        ]
+      }
     },
     {
       "widgetType": "TextFormField",
@@ -124,22 +152,6 @@
             "text": "กระดูกและข้อ"
           }
         ]
-      }
-    },
-    {
-      "widgetType": "Radio<String>",
-      "key": "appt_05_type_radio_opd",
-      "meta": {
-        "valueExpr": "'OPD'",
-        "groupValueBinding": "state.appointmentType"
-      }
-    },
-    {
-      "widgetType": "Radio<String>",
-      "key": "appt_05_type_radio_tele",
-      "meta": {
-        "valueExpr": "'Telemedicine'",
-        "groupValueBinding": "state.appointmentType"
       }
     },
     {
