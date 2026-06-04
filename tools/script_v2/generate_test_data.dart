@@ -1926,21 +1926,41 @@ class TestDataGenerator {
                 ];
               }
             } else if (datePickerKeys.contains(factorName)) {
+              String resolvedDate = pick;
+              if (pick == 'valid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[factorName];
+                resolvedDate = (entry is List && entry.isNotEmpty)
+                    ? (entry[0]['valid']?.toString() ?? 'null')
+                    : 'null';
+              } else if (pick == 'invalid') {
+                resolvedDate = 'null';
+              }
               stepsByKey[factorName] = [
                 {
                   'tap': {'byKey': factorName}
                 },
                 {'pumpAndSettle': true},
-                {'selectDate': pick},
+                {'selectDate': resolvedDate},
                 {'pumpAndSettle': true}
               ];
             } else if (timePickerKeys.contains(factorName)) {
+              String resolvedTime = pick;
+              if (pick == 'valid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[factorName];
+                resolvedTime = (entry is List && entry.isNotEmpty)
+                    ? (entry[0]['valid']?.toString() ?? 'null')
+                    : 'null';
+              } else if (pick == 'invalid') {
+                resolvedTime = 'null';
+              }
               stepsByKey[factorName] = [
                 {
                   'tap': {'byKey': factorName}
                 },
                 {'pumpAndSettle': true},
-                {'selectTime': pick},
+                {'selectTime': resolvedTime},
                 {'pumpAndSettle': true}
               ];
             }

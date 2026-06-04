@@ -8,25 +8,25 @@
           "invalid": "อ",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
           "atMin": "อ",
-          "atMax": "สมชาย ใจดี รุ่งเรืองกิจไพศาล พัฒนาการดีเด่นยิ่งใหญ"
+          "atMax": "นพวรรณ พรหมจรรย์ ปานประเสริฐสุข โชติอนันต์ วงศ์สุว"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1234567890123",
+          "valid": "1102000123456",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
+          "atMin": "000000000000",
           "atMax": "1234567890123"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "01234567",
+          "invalid": "08123456",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "01234567",
-          "atMax": "0987654321"
+          "atMin": "08123456",
+          "atMax": "0891234567"
         }
       ],
       "appt_06_date_textfield": [
@@ -40,20 +40,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "10:30 น.",
+          "valid": "14:30",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
           "atMin": "",
-          "atMax": "10:30 AM - Please arrive 15 minutes early for regi"
+          "atMax": "14:30 น. ของวันพุธที่ 25 ธันวาคม 2567 นี้เองนะจ๊ะ."
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีอาการไข้สูง ปวดหัว และไอแห้ง",
-          "invalid": "X",
+          "valid": "คนไข้มีอาการปวดหัวเล็กน้อย",
+          "invalid": "A",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยมีอาการไข้สูง ปวดหัว ไอแห้ง และเจ็บคอมาก มี"
+          "atMax": "คนไข้มีอาการปวดหัวและเวียนศีรษะเล็กน้อยมาก"
         }
       ]
     }
