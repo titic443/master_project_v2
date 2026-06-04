@@ -1724,10 +1724,8 @@ class TestDataGenerator {
               asserts.add({'text': msg as String, 'exists': true});
             }
           }
-          if (asserts.isEmpty) {
-            for (final fk in expectedFailKeys) {
-              asserts.add(buildAssert(fk));
-            }
+          for (final fk in expectedFailKeys) {
+            asserts.add(buildAssert(fk));
           }
 
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
