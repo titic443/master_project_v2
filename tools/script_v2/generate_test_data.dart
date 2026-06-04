@@ -1169,7 +1169,13 @@ class TestDataGenerator {
           for (final entry in modelFactors!.entries) {
             final name = entry.key;
             final values = entry.value;
-            if (values.contains('invalid') || values.contains('valid')) {
+            // datepicker/timepicker must be checked before text because
+            // they now use ['valid','invalid'] tokens like TextFields
+            if (datePickerKeys.contains(name)) {
+              factorTypes[name] = 'datepicker';
+            } else if (timePickerKeys.contains(name)) {
+              factorTypes[name] = 'timepicker';
+            } else if (values.contains('invalid') || values.contains('valid')) {
               // TEXT factor: bucket sentinel values — either full model ('valid','invalid'),
               // invalid-only model ('invalid'), or valid-only model ('valid')
               factorTypes[name] = 'text';
@@ -1181,10 +1187,6 @@ class TestDataGenerator {
             } else if (values.any((v) => v.endsWith('_radio')) ||
                 radioKeys.any((rk) => values.any((v) => rk.endsWith('_$v') || rk == v))) {
               factorTypes[name] = 'radio';
-            } else if (datePickerKeys.contains(name)) {
-              factorTypes[name] = 'datepicker';
-            } else if (timePickerKeys.contains(name)) {
-              factorTypes[name] = 'timepicker';
             } else if (sliderKeys.contains(name)) {
               factorTypes[name] = 'slider';
             } else {
@@ -1324,15 +1326,10 @@ class TestDataGenerator {
                 : 'Checkbox${i + 1}'] = ['checked', 'unchecked'];
           }
           for (final key in datePickerKeys) {
-            final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
-                orElse: () => <String, dynamic>{});
-            final pickerMeta =
-                (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ??
-                    {};
-            factors[key] = _generateDateValues(pickerMeta);
+            factors[key] = ['valid', 'invalid'];
           }
           for (final key in timePickerKeys) {
-            factors[key] = ['09:00', '14:30', '18:00', 'null'];
+            factors[key] = ['valid', 'invalid'];
           }
           if (pairwiseUsePict) {
             try {
@@ -1456,21 +1453,47 @@ class TestDataGenerator {
                   {'pump': true}
                 ];
               } else if (datePickerKeys.contains(factorName)) {
+                // Resolve 'valid'/'invalid' tokens from datasets
+                String resolvedDate = pick;
+                if (pick == 'valid') {
+                  final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final entry = ds[factorName];
+                  resolvedDate = (entry is List && entry.isNotEmpty)
+                      ? (entry[0]['valid']?.toString() ?? 'null')
+                      : 'null';
+                } else if (pick == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(factorName);
+                  resolvedDate = 'null';
+                }
                 stepsByKey[factorName] = [
                   {
                     'tap': {'byKey': factorName}
                   },
                   {'pumpAndSettle': true},
-                  {'selectDate': pick},
+                  {'selectDate': resolvedDate},
                   {'pumpAndSettle': true}
                 ];
               } else if (timePickerKeys.contains(factorName)) {
+                // Resolve 'valid'/'invalid' tokens from datasets
+                String resolvedTime = pick;
+                if (pick == 'valid') {
+                  final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final entry = ds[factorName];
+                  resolvedTime = (entry is List && entry.isNotEmpty)
+                      ? (entry[0]['valid']?.toString() ?? 'null')
+                      : 'null';
+                } else if (pick == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(factorName);
+                  resolvedTime = 'null';
+                }
                 stepsByKey[factorName] = [
                   {
                     'tap': {'byKey': factorName}
                   },
                   {'pumpAndSettle': true},
-                  {'selectTime': pick},
+                  {'selectTime': resolvedTime},
                   {'pumpAndSettle': true}
                 ];
               }

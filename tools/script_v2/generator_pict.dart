@@ -559,12 +559,9 @@ class GeneratorPict {
         final pickerType = (pickerMeta['type'] ?? '').toString();
 
         if (pickerType == 'DatePicker') {
-          // Generate real dates based on constraints
-          final dateValues = _generateDateValues(pickerMeta);
-          factors[key] = dateValues;
+          factors[key] = ['valid', 'invalid'];
         } else if (pickerType == 'TimePicker') {
-          // Generate real times
-          factors[key] = ['09:00', '14:30', '18:00', 'null'];
+          factors[key] = ['valid', 'invalid'];
         }
       }
 
@@ -655,91 +652,6 @@ class GeneratorPict {
       return parts.skip(2).join('_');
     }
     return radioKey; // fallback to full key if pattern doesn't match
-  }
-
-  /// Generate date values based on DatePicker metadata constraints
-  List<String> _generateDateValues(Map<String, dynamic> pickerMeta) {
-    final values = <String>[];
-
-    // Parse firstDate and lastDate from metadata
-    final firstDateStr = (pickerMeta['firstDate'] ?? '').toString();
-    final lastDateStr = (pickerMeta['lastDate'] ?? '').toString();
-
-    DateTime? firstDate;
-    DateTime? lastDate;
-    final now = DateTime.now();
-
-    // Parse firstDate
-    if (firstDateStr.contains('DateTime(1900)')) {
-      firstDate = DateTime(1900);
-    } else if (firstDateStr.contains('DateTime.now()')) {
-      firstDate = now;
-    } else {
-      // Try to extract year from DateTime(year)
-      final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(firstDateStr);
-      if (yearMatch != null) {
-        firstDate = DateTime(int.parse(yearMatch.group(1)!));
-      }
-    }
-
-    // Parse lastDate
-    if (lastDateStr.contains('DateTime.now()')) {
-      if (lastDateStr.contains('add') && lastDateStr.contains('365')) {
-        lastDate = now.add(const Duration(days: 365));
-      } else {
-        lastDate = now;
-      }
-    } else {
-      final yearMatch = RegExp(r'DateTime\((\d{4})\)').firstMatch(lastDateStr);
-      if (yearMatch != null) {
-        lastDate = DateTime(int.parse(yearMatch.group(1)!));
-      }
-    }
-
-    // Generate test dates within constraints
-    firstDate ??= DateTime(2000);
-    lastDate ??= DateTime(2030);
-
-    // null (cancel) - always include
-    values.add('null');
-
-    // past_date - close to firstDate
-    final pastDate = DateTime(
-      firstDate.year + 1,
-      firstDate.month,
-      15.clamp(1, 28),
-    );
-    if (pastDate.isAfter(firstDate) && pastDate.isBefore(lastDate)) {
-      values.add('${pastDate.day.toString().padLeft(2, '0')}/${pastDate.month.toString().padLeft(2, '0')}/${pastDate.year}');
-    }
-
-    // today - if within range
-    if (now.isAfter(firstDate) && now.isBefore(lastDate)) {
-      values.add('${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year}');
-    }
-
-    // future_date - close to lastDate
-    final futureDate = DateTime(
-      lastDate.year - 1,
-      lastDate.month,
-      15.clamp(1, 28),
-    );
-    if (futureDate.isAfter(firstDate) && futureDate.isBefore(lastDate) && futureDate.isAfter(now)) {
-      values.add('${futureDate.day.toString().padLeft(2, '0')}/${futureDate.month.toString().padLeft(2, '0')}/${futureDate.year}');
-    }
-
-    // Ensure we have at least 2 non-null values
-    if (values.length < 3) {
-      // Add a middle date
-      final middleDate = DateTime(
-        (firstDate.year + lastDate.year) ~/ 2,
-        6,
-        15,
-      );
-      values.add('${middleDate.day.toString().padLeft(2, '0')}/${middleDate.month.toString().padLeft(2, '0')}/${middleDate.year}');
-    }
-
-    return values;
   }
 
   List<String> _extractOptionsFromMeta(dynamic raw) {

@@ -79,7 +79,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
   Future<void> _selectTime(BuildContext context) async {
     final picked = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 9, minute: 0),
+      initialTime: const TimeOfDay(hour: 13, minute: 0),
       initialEntryMode: TimePickerEntryMode.input,
       // Force 24-hour format so hours 13-23 are valid in input mode
       builder: (context, child) => MediaQuery(
@@ -273,8 +273,9 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
 
                 // ── ประเภทการนัด (Radio) ─────────────────────────────────
                 FormField<String>(
-                  validator: (_) =>
-                      state.appointmentType == null ? 'กรุณาเลือกประเภทการนัด' : null,
+                  validator: (_) => state.appointmentType == null
+                      ? 'กรุณาเลือกประเภทการนัด'
+                      : null,
                   builder: (field) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

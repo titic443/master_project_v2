@@ -4,34 +4,34 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมศักดิ์ ชัยชนะ",
-          "invalid": "ส",
+          "valid": "สมชาย ใจดี",
+          "invalid": "A",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "ส",
-          "atMax": "สมศักดิ์ ชัยชนะ"
+          "atMin": "A",
+          "atMax": "บุญส่ง พัฒนากุลพูนทรัพย์ บุญมีชัยวัฒนาศักดิ์ศรีมงค"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1102030405067",
-          "invalid": "110203040506",
+          "valid": "1234567890123",
+          "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "000000000000",
-          "atMax": "1102030405067"
+          "atMin": "0",
+          "atMax": "1111111111111"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "08123456",
+          "invalid": "01234567",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "00000000",
-          "atMax": "0812345678"
+          "atMin": "0",
+          "atMax": "0998887777"
         }
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "02/06/2026",
+          "valid": "04/06/2026",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
           "atMin": "01/01/2000",
@@ -49,11 +49,11 @@
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการไอและเจ็บคอเล็กน้อยและมีไข้ต่ำๆ",
-          "invalid": "อ",
+          "valid": "คนไข้มีอาการปวดหัวเรื้อรัง",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "คนไข้มีอาการไอและเจ็บคอเล็กน้อยและมีไข้ต่ำๆ"
+          "atMax": "คนไข้มีอาการปวดหัวเรื้อรังและมีไข้มา 2-3 วันแล้วกร"
         }
       ]
     }
