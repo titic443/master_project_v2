@@ -12,20 +12,20 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมชาย ใจดี",
-          "invalid": "อ",
+          "valid": "ฐิติ ช่างภู่",
+          "invalid": "รชนิศ มงคลศิวะ",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
           "atMin": "อ",
-          "atMax": "นพวรรณ พรหมจรรย์ ปานประเสริฐสุข โชติอนันต์ วงศ์สุว"
+          "atMax": "สมชาย ใจดีเจริญสุข รุ่งเรืองพัฒนา บูรณศักดิ์ วงศ์ส"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1102000123456",
-          "invalid": "123456789012",
+          "valid": "1234567890123",
+          "invalid": "1234567890",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "000000000000",
-          "atMax": "1234567890123"
+          "atMin": "",
+          "atMax": "1111111111111"
         }
       ],
       "appt_03_phone_textfield": [
@@ -33,14 +33,14 @@
           "valid": "0812345678",
           "invalid": "08123456",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "08123456",
-          "atMax": "0891234567"
+          "atMin": "01234567",
+          "atMax": "0987654321"
         }
       ],
       "appt_06_date_textfield": [
         {
           "valid": "04/06/2026",
-          "invalid": "",
+          "invalid": "04/06/2026",
           "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
           "atMin": "01/01/2000",
           "atMax": "01/01/2031"
@@ -48,20 +48,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "14:30",
-          "invalid": "",
+          "valid": "10:00 - 11:00",
+          "invalid": "16:59",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
           "atMin": "",
-          "atMax": "14:30 น. ของวันพุธที่ 25 ธันวาคม 2567 นี้เองนะจ๊ะ."
+          "atMax": "10:00 - 11:00 (นัดหมายแพทย์ผู้เชี่ยวชาญพิเศษ)"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการปวดหัวเล็กน้อย",
-          "invalid": "A",
+          "valid": "คนไข้มีไข้สูง และเจ็บคอเล็กน้อย",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "คนไข้มีอาการปวดหัวและเวียนศีรษะเล็กน้อยมาก"
+          "atMax": "คนไข้มีอาการไอ เจ็บคอ มีน้ำมูก และปวดหัวเล็กน้อย"
         }
       ]
     }
@@ -71,7 +71,7 @@
       "tc": "pairwise_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: medicine\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -123,7 +123,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -137,7 +137,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -193,6 +193,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -200,7 +205,7 @@
       "tc": "pairwise_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"ent\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -260,7 +265,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -274,7 +279,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -318,6 +323,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -325,7 +335,7 @@
       "tc": "pairwise_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: medicine\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -385,7 +395,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -399,7 +409,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -443,6 +453,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -450,7 +465,7 @@
       "tc": "pairwise_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"obstetrics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -502,7 +517,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -516,7 +531,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -564,6 +579,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -571,7 +591,7 @@
       "tc": "pairwise_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"ophthalmology\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -631,7 +651,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -645,7 +665,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -697,6 +717,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -704,7 +729,7 @@
       "tc": "pairwise_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"ophthalmology\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -764,7 +789,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -778,7 +803,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -822,6 +847,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -829,7 +859,7 @@
       "tc": "pairwise_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: medicine\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -889,7 +919,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -903,7 +933,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -955,6 +985,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -962,7 +997,7 @@
       "tc": "pairwise_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"ophthalmology\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1014,7 +1049,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1028,7 +1063,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1076,6 +1111,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1083,7 +1123,7 @@
       "tc": "pairwise_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"orthopedics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1143,7 +1183,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1157,7 +1197,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1209,6 +1249,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1216,7 +1261,7 @@
       "tc": "pairwise_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"orthopedics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1268,7 +1313,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1282,7 +1327,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1330,6 +1375,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1337,7 +1387,7 @@
       "tc": "pairwise_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"surgery\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1389,7 +1439,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1403,7 +1453,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1459,6 +1509,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1466,7 +1521,7 @@
       "tc": "pairwise_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"ent\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1518,7 +1573,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1532,7 +1587,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1588,6 +1643,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1595,7 +1655,7 @@
       "tc": "pairwise_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"obstetrics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1655,7 +1715,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1669,7 +1729,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1721,6 +1781,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1728,7 +1793,7 @@
       "tc": "pairwise_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"obstetrics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1788,7 +1853,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1802,7 +1867,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1846,6 +1911,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1853,7 +1923,7 @@
       "tc": "pairwise_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"surgery\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1913,7 +1983,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -1927,7 +1997,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -1971,6 +2041,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1978,7 +2053,7 @@
       "tc": "pairwise_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"pediatrics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2038,7 +2113,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2052,7 +2127,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -2104,6 +2179,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2111,7 +2191,7 @@
       "tc": "pairwise_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"pediatrics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2171,7 +2251,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2185,7 +2265,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -2229,6 +2309,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2236,7 +2321,7 @@
       "tc": "pairwise_invalid_cases_18",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"orthopedics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2296,7 +2381,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2310,7 +2395,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -2362,6 +2447,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2369,7 +2459,7 @@
       "tc": "pairwise_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: tele\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"ent\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2429,7 +2519,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2443,7 +2533,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -2487,6 +2577,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2494,7 +2589,7 @@
       "tc": "pairwise_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"pediatrics\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2546,7 +2641,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2560,7 +2655,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -2608,6 +2703,11 @@
         {
           "text": "กรุณาเลือกประเภทการนัด",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2615,7 +2715,7 @@
       "tc": "pairwise_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§อ, id_card: invalid§123456789012, phone: invalid§08123456, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§A",
+      "description": "appointmentType: opd\", patient_name: invalid§รชนิศ มงคลศิวะ, id_card: invalid§1234567890, phone: invalid§08123456, department: \"surgery\", date: invalid§04/06/2026, time: invalid§16:59, insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2675,7 +2775,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "null"
+          "selectDate": "04/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2689,7 +2789,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "null"
+          "selectTime": "16:59"
         },
         {
           "pumpAndSettle": true
@@ -2733,6 +2833,11 @@
         {
           "text": "กรุณาเลือกช่วงเวลา",
           "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2740,7 +2845,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"ent\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -2814,7 +2919,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -2858,7 +2963,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"ent\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -2932,7 +3037,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -2968,7 +3073,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"ophthalmology\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3042,7 +3147,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3078,7 +3183,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"surgery\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3152,7 +3257,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3188,7 +3293,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: medicine\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3262,7 +3367,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3306,7 +3411,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: medicine\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3380,7 +3485,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3416,7 +3521,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"ophthalmology\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3490,7 +3595,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3534,7 +3639,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"obstetrics\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3608,7 +3713,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3652,7 +3757,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"orthopedics\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3726,7 +3831,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3762,7 +3867,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"pediatrics\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: opd\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3836,7 +3941,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3872,7 +3977,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"obstetrics\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: off, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: off, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -3946,7 +4051,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -3982,7 +4087,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"pediatrics\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -4056,7 +4161,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -4100,7 +4205,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"orthopedics\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -4174,7 +4279,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -4218,7 +4323,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมชาย ใจดี, id_card: valid§1102000123456, phone: valid§0812345678, department: \"surgery\", date: valid§04/06/2026, time: valid§14:30, insurance_switch: on, note: valid§คนไข้มีอาการปวดหัวเล็กน้อย",
+      "description": "appointmentType: tele\", patient_name: valid§ฐิติ ช่างภู่, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§04/06/2026, time: valid§10:00 - 11:00, insurance_switch: on, note: valid§คนไข้มีไข้สูง และเจ็บคอเล็กน…",
       "steps": [
         {
           "enterText": {
@@ -4292,7 +4397,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:30"
+          "selectTime": "10:00 - 11:00"
         },
         {
           "pumpAndSettle": true
@@ -4385,7 +4490,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMax§นพวรรณ พรหมจรรย์ ปานประเสริฐ…, id_card: atMax§1234567890123, phone: atMax§0891234567, note: atMax§คนไข้มีอาการปวดหัวและเวียนศี…",
+      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMax§สมชาย ใจดีเจริญสุข รุ่งเรือง…, id_card: atMax§1111111111111, phone: atMax§0987654321, note: atMax§คนไข้มีอาการไอ เจ็บคอ มีน้ำม…",
       "steps": [
         {
           "enterText": {
@@ -4495,7 +4600,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMin§อ, id_card: atMin§000000000000, phone: atMin§08123456, note: atMin§\"\"",
+      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMin§อ, id_card: atMin§\"\", phone: atMin§01234567, note: atMin§\"\"",
       "steps": [
         {
           "enterText": {
