@@ -1464,17 +1464,18 @@ class TestDataGenerator {
                 ];
               } else if (datePickerKeys.contains(factorName)) {
                 // Resolve 'valid'/'invalid' tokens from datasets
+                // Format A override (e.g. key.invalid = 04/06/2026) is respected here
                 String resolvedDate = pick;
-                if (pick == 'valid') {
+                if (pick == 'valid' || pick == 'invalid') {
                   final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                   final entry = ds[factorName];
-                  resolvedDate = (entry is List && entry.isNotEmpty)
-                      ? (entry[0]['valid']?.toString() ?? 'null')
-                      : 'null';
-                } else if (pick == 'invalid') {
-                  hasInvalidData = true;
-                  invalidFields.add(factorName);
-                  resolvedDate = 'null';
+                  if (pick == 'invalid') {
+                    hasInvalidData = true;
+                    invalidFields.add(factorName);
+                  }
+                  final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                  final val = map0?[pick]?.toString() ?? '';
+                  resolvedDate = val.isNotEmpty ? val : 'null';
                 }
                 stepsByKey[factorName] = [
                   {
@@ -1486,17 +1487,18 @@ class TestDataGenerator {
                 ];
               } else if (timePickerKeys.contains(factorName)) {
                 // Resolve 'valid'/'invalid' tokens from datasets
+                // Format A override (e.g. key.invalid = 16:59) is respected here
                 String resolvedTime = pick;
-                if (pick == 'valid') {
+                if (pick == 'valid' || pick == 'invalid') {
                   final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                   final entry = ds[factorName];
-                  resolvedTime = (entry is List && entry.isNotEmpty)
-                      ? (entry[0]['valid']?.toString() ?? 'null')
-                      : 'null';
-                } else if (pick == 'invalid') {
-                  hasInvalidData = true;
-                  invalidFields.add(factorName);
-                  resolvedTime = 'null';
+                  if (pick == 'invalid') {
+                    hasInvalidData = true;
+                    invalidFields.add(factorName);
+                  }
+                  final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                  final val = map0?[pick]?.toString() ?? '';
+                  resolvedTime = val.isNotEmpty ? val : 'null';
                 }
                 stepsByKey[factorName] = [
                   {
@@ -1600,31 +1602,53 @@ class TestDataGenerator {
             }
             for (int idx = 0; idx < datePickerKeys.length; idx++) {
               final key = datePickerKeys[idx];
-              final pick = (c[key] ?? '').toString();
-              if (pick.isNotEmpty) {
-                stepsByKey[key] = [
-                  {
-                    'tap': {'byKey': key}
-                  },
-                  {'pumpAndSettle': true},
-                  {'selectDate': pick},
-                  {'pumpAndSettle': true}
-                ];
+              final raw = (c[key] ?? '').toString();
+              if (raw.isEmpty) continue;
+              String dateVal = raw;
+              if (raw == 'valid' || raw == 'invalid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[key];
+                if (raw == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(key);
+                }
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final v = map0?[raw]?.toString() ?? '';
+                dateVal = v.isNotEmpty ? v : 'null';
               }
+              stepsByKey[key] = [
+                {
+                  'tap': {'byKey': key}
+                },
+                {'pumpAndSettle': true},
+                {'selectDate': dateVal},
+                {'pumpAndSettle': true}
+              ];
             }
             for (int idx = 0; idx < timePickerKeys.length; idx++) {
               final key = timePickerKeys[idx];
-              final pick = (c[key] ?? '').toString();
-              if (pick.isNotEmpty) {
-                stepsByKey[key] = [
-                  {
-                    'tap': {'byKey': key}
-                  },
-                  {'pumpAndSettle': true},
-                  {'selectTime': pick},
-                  {'pumpAndSettle': true}
-                ];
+              final raw = (c[key] ?? '').toString();
+              if (raw.isEmpty) continue;
+              String timeVal = raw;
+              if (raw == 'valid' || raw == 'invalid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[key];
+                if (raw == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(key);
+                }
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final v = map0?[raw]?.toString() ?? '';
+                timeVal = v.isNotEmpty ? v : 'null';
               }
+              stepsByKey[key] = [
+                {
+                  'tap': {'byKey': key}
+                },
+                {'pumpAndSettle': true},
+                {'selectTime': timeVal},
+                {'pumpAndSettle': true}
+              ];
             }
             final sorted = List<Map<String, dynamic>>.from(widgets)
               ..sort((a, b) => (a['key'] ?? '')
@@ -1925,14 +1949,12 @@ class TestDataGenerator {
               }
             } else if (datePickerKeys.contains(factorName)) {
               String resolvedDate = pick;
-              if (pick == 'valid') {
+              if (pick == 'valid' || pick == 'invalid') {
                 final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                 final entry = ds[factorName];
-                resolvedDate = (entry is List && entry.isNotEmpty)
-                    ? (entry[0]['valid']?.toString() ?? 'null')
-                    : 'null';
-              } else if (pick == 'invalid') {
-                resolvedDate = 'null';
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final val = map0?[pick]?.toString() ?? '';
+                resolvedDate = val.isNotEmpty ? val : 'null';
               }
               stepsByKey[factorName] = [
                 {
@@ -1944,14 +1966,12 @@ class TestDataGenerator {
               ];
             } else if (timePickerKeys.contains(factorName)) {
               String resolvedTime = pick;
-              if (pick == 'valid') {
+              if (pick == 'valid' || pick == 'invalid') {
                 final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                 final entry = ds[factorName];
-                resolvedTime = (entry is List && entry.isNotEmpty)
-                    ? (entry[0]['valid']?.toString() ?? 'null')
-                    : 'null';
-              } else if (pick == 'invalid') {
-                resolvedTime = 'null';
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final val = map0?[pick]?.toString() ?? '';
+                resolvedTime = val.isNotEmpty ? val : 'null';
               }
               stepsByKey[factorName] = [
                 {
