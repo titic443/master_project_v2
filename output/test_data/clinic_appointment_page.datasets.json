@@ -5,10 +5,10 @@
       "appt_01_patient_name_textfield": [
         {
           "valid": "สมชาย ใจดี",
-          "invalid": "A",
+          "invalid": "อ",
           "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
-          "atMin": "A",
-          "atMax": "บุญส่ง พัฒนากุลพูนทรัพย์ บุญมีชัยวัฒนาศักดิ์ศรีมงค"
+          "atMin": "อ",
+          "atMax": "สมชาย ใจดี รุ่งเรืองกิจไพศาล พัฒนาการดีเด่นยิ่งใหญ"
         }
       ],
       "appt_02_id_card_textfield": [
@@ -16,8 +16,8 @@
           "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "0",
-          "atMax": "1111111111111"
+          "atMin": "",
+          "atMax": "1234567890123"
         }
       ],
       "appt_03_phone_textfield": [
@@ -25,8 +25,8 @@
           "valid": "0812345678",
           "invalid": "01234567",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง",
-          "atMin": "0",
-          "atMax": "0998887777"
+          "atMin": "01234567",
+          "atMax": "0987654321"
         }
       ],
       "appt_06_date_textfield": [
@@ -40,20 +40,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "09:00",
+          "valid": "10:30 น.",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
-          "atMin": "00:00",
-          "atMax": "23:59"
+          "atMin": "",
+          "atMax": "10:30 AM - Please arrive 15 minutes early for regi"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการปวดหัวเรื้อรัง",
+          "valid": "ผู้ป่วยมีอาการไข้สูง ปวดหัว และไอแห้ง",
           "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "คนไข้มีอาการปวดหัวเรื้อรังและมีไข้มา 2-3 วันแล้วกร"
+          "atMax": "ผู้ป่วยมีอาการไข้สูง ปวดหัว ไอแห้ง และเจ็บคอมาก มี"
         }
       ]
     }

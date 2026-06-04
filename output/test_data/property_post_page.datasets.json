@@ -1,0 +1,79 @@
+{
+  "file": "lib/demos/property_post_page.dart",
+  "datasets": {
+    "byKey": {
+      "prop_01_title_textfield": [
+        {
+          "valid": "คอนโดหรู ใจกลางเมือง สุขุมวิท 24 พร้อมเฟอร์นิเจอร์",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกหัวข้อประกาศ",
+          "atMin": "",
+          "atMax": "คอนโดหรู ใจกลางเมือง สุขุมวิท 24 พร้อมเฟอร์นิเจอร์"
+        }
+      ],
+      "prop_03_location_textfield": [
+        {
+          "valid": "กรุงเทพมหานคร",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกจังหวัด / เมือง",
+          "atMin": "",
+          "atMax": "กรุงเทพมหานคร"
+        }
+      ],
+      "prop_04_district_textfield": [
+        {
+          "valid": "วัฒนา",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกเขต / ย่าน",
+          "atMin": "",
+          "atMax": "วัฒนา"
+        }
+      ],
+      "prop_05_price_textfield": [
+        {
+          "valid": "150000",
+          "invalid": "99999",
+          "invalidRuleMessages": "ราคาขั้นต่ำ 100,000 บาท",
+          "atMin": "",
+          "atMax": "9999999999"
+        }
+      ],
+      "prop_08_area_textfield": [
+        {
+          "valid": "55.75",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกพื้นที่ใช้สอย",
+          "atMin": "",
+          "atMax": "99999.99"
+        }
+      ],
+      "prop_09_floor_textfield": [
+        {
+          "valid": "25",
+          "invalid": "",
+          "invalidRuleMessages": "กรุณากรอกชั้น",
+          "atMin": "",
+          "atMax": "25"
+        }
+      ],
+      "prop_11_desc_textfield": [
+        {
+          "valid": "คอนโดมีเนียมใจกลางเมืองสุขุมวิท 24 ตกแต่งครบพร้อมเ",
+          "invalid": "รายละเอียดสั้นๆ",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "atMin": "รายละเอียดสั้นๆแค่สิบเก้าคำ",
+          "atMax": "คอนโดมีเนียมใจกลางเมืองสุขุมวิท 24 ตกแต่งครบพร้อมเ"
+        }
+      ],
+      "prop_12_contact_textfield": [
+        {
+          "valid": "สมชาย",
+          "invalid": "ก",
+          "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "atMin": "ก",
+          "atMax": "สมชาย ใจดี"
+        }
+      ]
+    }
+  }
+}

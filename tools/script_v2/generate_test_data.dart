@@ -703,13 +703,23 @@ class TestDataGenerator {
         }
       }
 
+      // Preserve valid/atMin/atMax from AI-generated datasets if present;
+      // only override invalidRuleMessages (derived from widget rules).
+      final existingTime =
+          (datasets['byKey'] as Map<String, dynamic>)[key];
+      final existingTimeEntry =
+          (existingTime is List && existingTime.isNotEmpty)
+              ? (existingTime[0] as Map?)
+              : null;
+      final aiValidTime =
+          existingTimeEntry?['valid']?.toString() ?? '';
       (datasets['byKey'] as Map<String, dynamic>)[key] = [
         {
-          'valid': '09:00',
+          'valid': aiValidTime.isNotEmpty ? aiValidTime : '09:00',
           'invalid': '',
           'invalidRuleMessages': requiredMsg,
-          'atMin': '00:00',
-          'atMax': '23:59',
+          'atMin': existingTimeEntry?['atMin']?.toString() ?? '00:00',
+          'atMax': existingTimeEntry?['atMax']?.toString() ?? '23:59',
         }
       ];
     }
