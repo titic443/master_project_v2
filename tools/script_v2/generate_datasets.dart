@@ -558,45 +558,44 @@ class DatasetGenerator {
       '',
 
       // === EXECUTION: ขั้นตอนการทำงาน ===
-      '=== (EXECUTION) ===',
-      'For fields WITH validatorRules:',
-      '  1. List all rules. SKIP rules whose condition contains "isEmpty" or "== null" (those are Required checks).',
-      '  2. For each remaining rule, generate exactly 1 pair:',
-      '     - Read the rule\'s "condition" carefully (e.g., "v.trim().length < 5", "n == null || n < 100000")',
-      '     - invalid: a value that makes that condition evaluate to TRUE → validator returns the error message',
-      '     - valid:   a value that makes that condition evaluate to FALSE → validator returns null (passes)',
-      '     - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase',
-      '  3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)',
-      '',
-      'For fields with ONLY isEmpty/null rules (all non-empty rules are absent):',
-      '  1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule',
-      '  2. invalidRuleMessages = EXACT message from that isEmpty/null rule',
-      '  3. Generate 1 realistic valid value',
-      '',
-      'For fields WITHOUT validatorRules at all:',
-      '  1. Infer field type from key name (firstname→name, phone→phone number, email→email)',
-      '  2. Generate 1 pair with realistic valid value',
-      '  3. Generate common invalid value (e.g., too short, wrong format) that respects inputFormatters',
-      '  4. Set invalidRuleMessages to "" (empty string) — no UI-visible error message for this field',
-      '',
-      'For boundary values (add to FIRST pair only):',
-      '  atMin: value at the minimum boundary',
-      '    - Default: "" (empty string)',
-      '    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")',
-      '    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")',
-      '  atMax: value at the maximum length boundary',
-      '    - ALWAYS use meta.effectiveMaxLength as the max — it is already computed (explicit or default 50)',
-      '    - Generate a realistic value whose character length == effectiveMaxLength exactly',
-      '    - MUST respect inputFormatters and be a realistic value (not just repeated chars)',
-      '    - For Thai name fields: use a realistic long Thai full name padded to reach the length',
-      '    - For free-text note fields: use a realistic sentence padded to reach the length',
-      '    - For email fields: pad local-part with chars to reach effectiveMaxLength',
-      '    - For digit-only fields: use digits that reach effectiveMaxLength',
-      '',
-      'Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}',
-      'Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}',
-      '(atMin and atMax are ONLY in the FIRST pair of each field)',
-      '',
+      '''=== (EXECUTION) ===
+For fields WITH validatorRules:
+  1. List all rules. SKIP rules whose condition contains "isEmpty" or "== null" (those are Required checks).
+  2. For each remaining rule, generate exactly 1 pair:
+     - Read the rule's "condition" carefully (e.g., "v.trim().length < 5", "n == null || n < 100000")
+     - invalid: a value that makes that condition evaluate to TRUE → validator returns the error message
+     - valid:   a value that makes that condition evaluate to FALSE → validator returns null (passes)
+     - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase
+  3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)
+
+For fields with ONLY isEmpty/null rules (all non-empty rules are absent):
+  1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule
+  2. invalidRuleMessages = EXACT message from that isEmpty/null rule
+  3. Generate 1 realistic valid value
+
+For fields WITHOUT validatorRules at all:
+  1. Infer field type from key name (firstname→name, phone→phone number, email→email)
+  2. Generate 1 pair with realistic valid value
+  3. Generate common invalid value (e.g., too short, wrong format) that respects inputFormatters
+  4. Set invalidRuleMessages to "" (empty string) — no UI-visible error message for this field
+
+For boundary values (add to FIRST pair only):
+  atMin: value at the minimum boundary
+    - Default: "" (empty string)
+    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")
+    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")
+  atMax: value at the maximum length boundary
+    - ALWAYS use meta.effectiveMaxLength as the max — it is already computed (explicit or default 50)
+    - Generate a realistic value whose character length == effectiveMaxLength exactly
+    - MUST respect inputFormatters and be a realistic value (not just repeated chars)
+    - For Thai name fields: use a realistic long Thai full name padded to reach the length
+    - For free-text note fields: use a realistic sentence padded to reach the length
+    - For email fields: pad local-part with chars to reach effectiveMaxLength
+    - For digit-only fields: use digits that reach effectiveMaxLength
+
+Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}
+Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}
+(atMin and atMax are ONLY in the FIRST pair of each field)''',
 
       // === EXAMPLE: ตัวอย่าง ===
       'Example 1 (field with 2 rules, maxLength=100):',

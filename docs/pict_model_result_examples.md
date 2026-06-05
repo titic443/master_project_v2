@@ -84,7 +84,7 @@ invalid                      "Healthcare"                 "Freelance"           
 
 ---
 
-## ตัวอย่างที่ 2 — Clinic Appointment Page (9 factors, มี Radio + Constraint)
+## ตัวอย่างที่ 2 — Clinic Appointment Page (9 factors, มี Radio + FormField Validator)
 
 ### 2A. `.model.txt` เปรียบเทียบ
 
@@ -96,9 +96,9 @@ appt_01_patient_name_textfield:    valid
 appt_02_id_card_textfield:         valid
 appt_03_phone_textfield:           valid
 appt_04_department_dropdown:       "internal_medicine", "surgery", "pediatrics",
-                                   "obstetrics", "ophthalmology", "ent", "orthopedics"
-appt_06_date_textfield:            "02/06/2026", "15/01/2030"
-appt_07_time_textfield:            "09:00", "14:30", "18:00"
+                                   "obstetrics", "ophthalmology", "ent", "orthopedics"****
+appt_06_date_textfield:            valid
+appt_07_time_textfield:            valid
 appt_08_insurance_switch:          on, off
 appt_09_note_textfield:            valid
 ```
@@ -106,14 +106,14 @@ appt_09_note_textfield:            valid
 ```
 clinic_appointment_page.invalid.model.txt
 ─────────────────────────────────────────────────────────────────────────────────────────────────
-state.appointmentType:             "unselected", "type_radio_opd", "type_radio_tele"   ← +1 ค่า (ไม่เลือก)
+state.appointmentType:             "unselected", "type_radio_opd", "type_radio_tele"
 appt_01_patient_name_textfield:    invalid
 appt_02_id_card_textfield:         invalid
 appt_03_phone_textfield:           invalid
 appt_04_department_dropdown:       "internal_medicine", "surgery", "pediatrics",
                                    "obstetrics", "ophthalmology", "ent", "orthopedics"
-appt_06_date_textfield:            "null", "15/01/2001", "02/06/2026", "15/01/2030"    ← +2 ค่า (empty, past date)
-appt_07_time_textfield:            "09:00", "14:30", "18:00", "null"                   ← +1 ค่า (empty)
+appt_06_date_textfield:            invalid
+appt_07_time_textfield:            invalid
 appt_08_insurance_switch:          on, off
 appt_09_note_textfield:            invalid
 ```
@@ -122,10 +122,15 @@ appt_09_note_textfield:            invalid
 
 | Factor | valid | invalid | เหตุผล |
 |---|---|---|---|
-| Radio (`state.appointmentType`) | 2 ค่า (opd, tele) | 3 ค่า (+ `"unselected"`) | invalid ต้องครอบคลุมกรณีไม่เลือก |
-| Date TextField | 2 ค่า valid dates | 4 ค่า (+ `"null"`, past date) | ทดสอบ empty + date range validation |
-| Time TextField | 3 ค่า valid times | 4 ค่า (+ `"null"`) | ทดสอบ empty time |
-| Department Dropdown | options เดิม | options เดิม (ไม่มี `"null"`) | department required แต่มี default |
+| Radio (`state.appointmentType`) | 2 ค่า (opd, tele) | 3 ค่า (+ `"unselected"`) | Radio ครอบด้วย FormField → ต้องทดสอบกรณีไม่เลือก |
+| TextField ทั้งหมด | `valid` (1 ค่า) | `invalid` (1 ค่า) | ค่าจริงมาจาก datasets.json ผ่าน Format A override |
+| DatePicker / TimePicker | `valid` (1 ค่า) | `invalid` (1 ค่า) | ใช้ bucket เหมือน TextField — ค่าจริง override ได้ผ่าน constraints |
+| Department Dropdown | 7 options เดิม | 7 options เดิม (ไม่มี `"null"`) | department required แต่มี default — ไม่ทดสอบ empty |
+| Switch | `on, off` | `on, off` | switch ไม่มี FormField validator — ทั้งสองค่าถือว่า valid |
+
+> **หมายเหตุ:** DatePicker/TimePicker ใช้ `valid`/`invalid` bucket เพื่อให้ Format A constraint override ทำงานได้
+> เช่น `appt_06_date_textfield.invalid = 04/06/2026` ใน `.constraints.txt`
+> ค่าจริงจะถูก resolve จาก `datasets.json` ตอนสร้าง test steps
 
 ---
 
@@ -135,46 +140,53 @@ appt_09_note_textfield:            invalid
 clinic_appointment_page.valid.result.txt
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 state.appointmentType  appt_01_patient_name  appt_02_id_card  appt_03_phone  appt_04_department    appt_06_date  appt_07_time  appt_08_insurance  appt_09_note
-"type_radio_tele"      valid                 valid            valid          "internal_medicine"   "02/06/2026"  "09:00"       on                 valid
-"type_radio_opd"       valid                 valid            valid          "pediatrics"          "15/01/2030"  "09:00"       off                valid
-"type_radio_opd"       valid                 valid            valid          "orthopedics"         "02/06/2026"  "09:00"       off                valid
-"type_radio_tele"      valid                 valid            valid          "pediatrics"          "15/01/2030"  "18:00"       on                 valid
-"type_radio_tele"      valid                 valid            valid          "orthopedics"         "15/01/2030"  "18:00"       off                valid
-... (21 rows รวม)
+"type_radio_tele"      valid                 valid            valid          "ent"                 valid         valid         on                 valid
+"type_radio_opd"       valid                 valid            valid          "ent"                 valid         valid         off                valid
+"type_radio_tele"      valid                 valid            valid          "ophthalmology"       valid         valid         off                valid
+"type_radio_opd"       valid                 valid            valid          "surgery"             valid         valid         off                valid
+"type_radio_opd"       valid                 valid            valid          "internal_medicine"   valid         valid         on                 valid
+... (14 rows รวม)
 ```
 
 ```
 clinic_appointment_page.invalid.result.txt
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-state.appointmentType  appt_01_patient_name  appt_02_id_card  appt_03_phone  appt_04_department  appt_06_date  appt_07_time  appt_08_insurance  appt_09_note
-"type_radio_opd"       invalid               invalid          invalid        "surgery"           "null"        "14:30"       on                 invalid
-"unselected"           invalid               invalid          invalid        "internal_medicine" "null"        "18:00"       off                invalid
-"type_radio_tele"      invalid               invalid          invalid        "surgery"           "15/01/2001"  "null"        off                invalid
-"type_radio_tele"      invalid               invalid          invalid        "ophthalmology"     "15/01/2030"  "18:00"       on                 invalid
-"unselected"           invalid               invalid          invalid        "ent"               "02/06/2026"  "null"        on                 invalid
-... (30 rows รวม)
+state.appointmentType  appt_01_patient_name  appt_02_id_card  appt_03_phone  appt_04_department    appt_06_date  appt_07_time  appt_08_insurance  appt_09_note
+"unselected"           invalid               invalid          invalid        "internal_medicine"   invalid       invalid       on                 invalid
+"type_radio_opd"       invalid               invalid          invalid        "ent"                 invalid       invalid       off                invalid
+"type_radio_tele"      invalid               invalid          invalid        "internal_medicine"   invalid       invalid       off                invalid
+"unselected"           invalid               invalid          invalid        "obstetrics"          invalid       invalid       off                invalid
+"type_radio_opd"       invalid               invalid          invalid        "ophthalmology"       invalid       invalid       on                 invalid
+... (21 rows รวม)
 ```
 
 **สังเกต:**
-- valid: ทุก row มีแต่ valid dates และ radio ที่ถูกเลือกเสมอ
-- invalid: มีทั้ง `"unselected"` radio, `"null"` date, past date (`"15/01/2001"`)
-- invalid แต่ละ row จะมี **อย่างน้อย 1 factor ที่ invalid** — ระบบ guarantee ว่า test case จะ fail validation
+- valid: ทุก column ของ TextField/DatePicker/TimePicker แสดง `valid` — PICT ไม่ expand เพราะมีแค่ 1 ค่า, ค่าจริงมาจาก datasets ตอนสร้าง steps
+- valid: Department dropdown ถูก pairwise กับ Radio (opd/tele) และ Switch (on/off) → 14 combinations ครอบ 7 × 2 = 14
+- invalid: `"unselected"` ปรากฏในหลาย row เพราะ PICT ต้องครอบทุก value ของ Radio
+- invalid: แต่ละ row มี **อย่างน้อย 1 factor ที่ invalid** — ระบบ guarantee ว่า test case จะ fail validation
+- invalid มี rows มากกว่า (21 vs 14) เพราะ Radio มี 3 ค่า (vs 2 ค่าใน valid)
 
 ---
 
 ## สรุปกฎการสร้าง Model
 
 ```
-┌─────────────────┬──────────────────────────────┬────────────────────────────────────┐
-│ Widget Type     │ valid.model.txt               │ invalid.model.txt                  │
-├─────────────────┼──────────────────────────────┼────────────────────────────────────┤
-│ TextField       │ valid                         │ invalid                            │
-│ Dropdown        │ option1, option2, ...         │ "null", option1, option2, ...      │
-│ Switch          │ on, off                       │ on, off                            │
-│ Checkbox        │ checked, unchecked            │ checked, unchecked                 │
-│ Radio (required)│ key_a, key_b                  │ "unselected", key_a, key_b         │
-│ Date TextField  │ valid_date1, valid_date2      │ "null", past_date, valid_date1,... │
-└─────────────────┴──────────────────────────────┴────────────────────────────────────┘
+┌──────────────────────┬──────────────────────────────┬────────────────────────────────────┐
+│ Widget Type          │ valid.model.txt               │ invalid.model.txt                  │
+├──────────────────────┼──────────────────────────────┼────────────────────────────────────┤
+│ TextField            │ valid                         │ invalid                            │
+│ Dropdown             │ option1, option2, ...         │ "null", option1, option2, ...      │
+│ Switch               │ on, off                       │ on, off                            │
+│ Checkbox             │ checked, unchecked            │ checked, unchecked                 │
+│ Radio (required)     │ key_a, key_b                  │ "unselected", key_a, key_b         │
+│ DatePicker/TimePicker│ valid                         │ invalid                            │
+└──────────────────────┴──────────────────────────────┴────────────────────────────────────┘
 ```
 
-> **หมายเหตุ:** ค่า `"null"` ใน invalid model หมายถึง field นั้นถูกทิ้งว่างหรือไม่ถูก interact
+> **DatePicker/TimePicker ใช้ bucket (`valid`/`invalid`) เหมือน TextField**
+> เพื่อให้ Format A constraint override ทำงานได้
+> เช่น `appt_06_date_textfield.invalid = 04/06/2026` → inject ค่าจริงตอนสร้าง `selectDate` step
+>
+> **`"null"` ใน Dropdown invalid model** หมายถึงไม่เลือก option ใดเลย
+> **`"unselected"` ใน Radio invalid model** หมายถึงไม่กดปุ่ม Radio ใดเลย — trigger FormField validator

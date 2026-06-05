@@ -9,7 +9,9 @@
 
 appt_01_patient_name_textfield.valid = ฐิติ ช่างภู่
 appt_01_patient_name_textfield.invalid = รชนิศ มงคลศิวะ
+appt_06_date_textfield.valid = 06/06/2026
 appt_06_date_textfield.invalid = 04/06/2026
+appt_07_time_textfield.valid = 12:00
 appt_07_time_textfield.invalid = 16:59
 
 # ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────

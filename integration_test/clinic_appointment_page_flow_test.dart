@@ -20,10 +20,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -122,10 +122,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -223,10 +223,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -324,10 +324,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -423,10 +423,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -527,10 +527,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -628,10 +628,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -732,10 +732,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -831,10 +831,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -935,10 +935,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1034,10 +1034,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1136,10 +1136,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1238,10 +1238,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1342,10 +1342,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1443,10 +1443,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1544,10 +1544,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1648,10 +1648,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1749,10 +1749,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1853,10 +1853,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -1954,10 +1954,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2053,10 +2053,10 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'รชนิศ มงคลศิวะ');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '123456789012');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].invalid
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '08123456');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -2156,7 +2156,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2174,7 +2174,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2188,7 +2188,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2197,13 +2197,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2232,7 +2255,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2250,7 +2273,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2264,7 +2287,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2273,10 +2296,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2305,7 +2351,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2323,7 +2369,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2337,7 +2383,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2346,10 +2392,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2378,7 +2447,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2396,7 +2465,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2410,7 +2479,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2419,10 +2488,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2451,7 +2543,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2469,7 +2561,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2483,7 +2575,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2492,13 +2584,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2527,7 +2642,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2545,7 +2660,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2559,7 +2674,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2568,10 +2683,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2600,7 +2738,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2618,7 +2756,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2632,7 +2770,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2641,13 +2779,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2676,7 +2837,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2694,7 +2855,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2708,7 +2869,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2717,13 +2878,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2752,7 +2936,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2770,7 +2954,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2784,7 +2968,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2793,10 +2977,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2825,7 +3032,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2843,7 +3050,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2857,7 +3064,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2866,10 +3073,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2898,7 +3128,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2916,7 +3146,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -2930,7 +3160,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -2939,10 +3169,33 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -2971,7 +3224,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -2989,7 +3242,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -3003,7 +3256,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -3012,13 +3265,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3047,7 +3323,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3065,7 +3341,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -3079,7 +3355,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -3088,13 +3364,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3123,7 +3422,7 @@ void main() {
         await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ฐิติ ช่างภู่');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1102000123456');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].valid
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0812345678');
@@ -3141,7 +3440,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 06/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -3155,7 +3454,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/06/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -3164,13 +3463,36 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_07_time_textfield')));
         await tester.tap(find.byKey(const Key('appt_07_time_textfield')));
         await tester.pumpAndSettle();
+        // Select time: 12:00
+        {
+          final keyboardBtn = find.byIcon(Icons.keyboard);
+          if (tester.any(keyboardBtn)) {
+            await tester.tap(keyboardBtn.first);
+            await tester.pumpAndSettle();
+          }
+        }
+        {
+          final dialogTF = find.descendant(of: find.byType(Dialog), matching: find.byType(TextField));
+          if (dialogTF.evaluate().length >= 1) {
+            await tester.tap(dialogTF.first);
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.first, '12');
+            await tester.pumpAndSettle();
+          }
+          if (dialogTF.evaluate().length >= 2) {
+            await tester.tap(dialogTF.at(1));
+            await tester.pumpAndSettle();
+            await tester.enterText(dialogTF.at(1), '00');
+            await tester.pumpAndSettle();
+          }
+        }
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.tap(find.byKey(const Key('appt_08_insurance_switch')));
         await tester.pump();
         // dataset: byKey.appt_09_note_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีไข้สูง และเจ็บคอเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อย');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3222,10 +3544,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'สมชาย ใจดีเจริญสุข รุ่งเรืองพัฒนา บูรณศักดิ์ วงศ์ส');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'กมลวรรณ บุญมีศรีสุขเจริญยิ่งใหญ่ไพศาลอุดมสมบูรณ์พู');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1111111111111');
+        await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '1234567890123');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMax
         await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '0987654321');
@@ -3243,7 +3565,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 05/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -3257,7 +3579,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/05/2026');
             await tester.pumpAndSettle();
           }
         }
@@ -3292,7 +3614,7 @@ void main() {
         await tester.tap(find.text('OK'));
         await tester.pumpAndSettle();
         // dataset: byKey.appt_09_note_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการไอ เจ็บคอ มีน้ำมูก และปวดหัวเล็กน้อย');
+        await tester.enterText(find.byKey(const Key('appt_09_note_textfield')), 'คนไข้มีอาการปวดศีรษะเล็กน้อยและมีไข้สูงตลอดทั้งวัน');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -3318,13 +3640,13 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicAppointmentPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.appt_01_patient_name_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'อ');
+        await tester.enterText(find.byKey(const Key('appt_01_patient_name_textfield')), 'ส');
         await tester.pump();
         // dataset: byKey.appt_02_id_card_textfield[0].atMin
         await tester.enterText(find.byKey(const Key('appt_02_id_card_textfield')), '');
         await tester.pump();
         // dataset: byKey.appt_03_phone_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '01234567');
+        await tester.enterText(find.byKey(const Key('appt_03_phone_textfield')), '12345678');
         await tester.pump();
         await tester.ensureVisible(find.byKey(const Key('appt_04_department_dropdown')));
         await tester.tap(find.byKey(const Key('appt_04_department_dropdown')));
@@ -3339,7 +3661,7 @@ void main() {
         await tester.ensureVisible(find.byKey(const Key('appt_06_date_textfield')));
         await tester.tap(find.byKey(const Key('appt_06_date_textfield')));
         await tester.pumpAndSettle();
-        // Select date: 04/06/2026 (text input mode)
+        // Select date: 05/06/2026 (text input mode)
         {
           await tester.pumpAndSettle(const Duration(milliseconds: 500));
           // Switch DatePicker to text-input mode via edit icon
@@ -3353,7 +3675,7 @@ void main() {
           if (tester.any(dateTF)) {
             await tester.tap(dateTF.first);
             await tester.pumpAndSettle();
-            await tester.enterText(dateTF.first, '06/04/2026');
+            await tester.enterText(dateTF.first, '06/05/2026');
             await tester.pumpAndSettle();
           }
         }
