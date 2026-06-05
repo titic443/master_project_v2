@@ -18,8 +18,8 @@
 //
 // Output:
 //   - output/test_data/<page>.testdata.json (test plan สำหรับ generate_test_script.dart)
-//   - output/model_pairwise/<page>.full.model.txt (PICT model file)
-//   - output/model_pairwise/<page>.full.result.txt (PICT combinations result)
+//   - output/model_pairwise/<page>.invalid.model.txt (PICT model file)
+//   - output/model_pairwise/<page>.invalid.result.txt (PICT combinations result)
 //   - output/model_pairwise/<page>.valid.model.txt (PICT model for valid-only)
 //   - output/model_pairwise/<page>.valid.result.txt (PICT valid combinations)
 //
@@ -70,7 +70,7 @@ import 'utils.dart' as utils;
 /// Backward-compatible wrapper — delegates to [TestDataGenerator].
 Future<String> generateTestDataFromManifest(
   String manifestPath, {
-  String pictBin = './pict',
+  String? pictBin,
   String? constraints,
 }) =>
     TestDataGenerator(pictBin: pictBin)
@@ -82,7 +82,10 @@ Future<String> generateTestDataFromManifest(
 
 class TestDataGenerator {
   final String pictBin;
-  const TestDataGenerator({this.pictBin = './pict'});
+
+  TestDataGenerator({String? pictBin})
+      : pictBin = pictBin ??
+            (File('/.dockerenv').existsSync() ? '/usr/local/bin/pict' : './pict');
 
   /// สร้าง test data (test plan) จาก manifest file โดยใช้ pairwise testing
   ///
@@ -103,7 +106,7 @@ class TestDataGenerator {
       constraints: constraints,
     );
 
-    return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+    return 'output/test_data/${utils.basenameWithoutExtension(uiFile)}.test_data.json';
   }
 
   // =========================================================================
@@ -216,47 +219,6 @@ class TestDataGenerator {
     }
 
     // ---------------------------------------------------------------------------
-    // STEP 3b: Apply Format A dataset overrides from constraints file
-    // ---------------------------------------------------------------------------
-    // Format A lines: key = value         → override 'valid' slot
-    //                 key.slot = value    → override specific slot (valid/invalid/atMin/atMax)
-    // These lines are filtered OUT of the PICT model — they only affect datasets here.
-    if (constraints != null && constraints.trim().isNotEmpty) {
-      final byKey = datasets['byKey'] as Map<String, dynamic>;
-
-      for (final rawLine in constraints.split('\n')) {
-        final line = rawLine.trim();
-        if (line.isEmpty || line.startsWith('#')) continue;
-        // Skip Format B lines (passed to PICT separately)
-        if (line.toUpperCase().contains('IF') && line.toUpperCase().contains('THEN')) continue;
-
-        // Parse: key[.slot] = value
-        final eqIdx = line.indexOf('=');
-        if (eqIdx <= 0) continue;
-
-        final lhs = line.substring(0, eqIdx).trim();   // e.g. "key.invalid"
-        final rhs = line.substring(eqIdx + 1).trim();  // e.g. "ส"
-
-        final dotIdx = lhs.indexOf('.');
-        final key  = dotIdx > 0 ? lhs.substring(0, dotIdx) : lhs;
-        final slot = dotIdx > 0 ? lhs.substring(dotIdx + 1) : 'valid';
-
-        // Ensure entry exists as List<Map>
-        if (!byKey.containsKey(key)) {
-          byKey[key] = [<String, dynamic>{}];
-        }
-        final entry = byKey[key] as List;
-        if (entry.isEmpty) entry.add(<String, dynamic>{});
-        final map = Map<String, dynamic>.from(entry[0] as Map? ?? {});
-        map[slot] = rhs;
-        entry[0] = map;
-        byKey[key] = entry;
-
-        stderr.writeln('[DEBUG] Format A override: $key.$slot = "$rhs"');
-      }
-    }
-
-    // ---------------------------------------------------------------------------
     // STEP 4: Helper Functions สำหรับวิเคราะห์ widget keys
     // ---------------------------------------------------------------------------
 
@@ -348,6 +310,7 @@ class TestDataGenerator {
     final radioKeys = <String>[]; // Radio button keys
     final checkboxKeys = <String>[]; // Checkbox keys
     final switchKeys = <String>[]; // Switch, SwitchListTile keys
+    final sliderKeys = <String>[]; // Slider keys
     final primaryButtons = <String>[]; // ปุ่มอื่นๆ ที่ไม่ใช่ end button
     final datePickerKeys = <String>[]; // DatePicker keys
     final timePickerKeys = <String>[]; // TimePicker keys
@@ -436,6 +399,12 @@ class TestDataGenerator {
       // ---------------------------------------------------------------------
       else if ((t == 'Switch' || t == 'SwitchListTile') && k.isNotEmpty) {
         switchKeys.add(k);
+      }
+      // ---------------------------------------------------------------------
+      // Slider
+      // ---------------------------------------------------------------------
+      else if (t == 'Slider' && k.isNotEmpty) {
+        sliderKeys.add(k);
       }
       // ---------------------------------------------------------------------
       // Buttons - ปุ่มต่างๆ (ยกเว้น end button)
@@ -664,8 +633,8 @@ class TestDataGenerator {
         }
       }
 
-      (datasets['byKey'] as Map<String, dynamic>)[key] = [
-        {
+      (datasets['byKey'] as Map<String, dynamic>)[key] = <dynamic>[
+        <String, dynamic>{
           'valid': validDate,
           'invalid': '',
           'invalidRuleMessages': requiredMsg,
@@ -693,15 +662,69 @@ class TestDataGenerator {
         }
       }
 
-      (datasets['byKey'] as Map<String, dynamic>)[key] = [
-        {
-          'valid': '09:00',
+      // Preserve valid/atMin/atMax from AI-generated datasets if present;
+      // only override invalidRuleMessages (derived from widget rules).
+      final existingTime =
+          (datasets['byKey'] as Map<String, dynamic>)[key];
+      final existingTimeEntry =
+          (existingTime is List && existingTime.isNotEmpty)
+              ? (existingTime[0] as Map?)
+              : null;
+      final aiValidTime =
+          existingTimeEntry?['valid']?.toString() ?? '';
+      (datasets['byKey'] as Map<String, dynamic>)[key] = <dynamic>[
+        <String, dynamic>{
+          'valid': aiValidTime.isNotEmpty ? aiValidTime : '09:00',
           'invalid': '',
           'invalidRuleMessages': requiredMsg,
-          'atMin': '00:00',
-          'atMax': '23:59',
+          'atMin': existingTimeEntry?['atMin']?.toString() ?? '00:00',
+          'atMax': existingTimeEntry?['atMax']?.toString() ?? '23:59',
         }
       ];
+    }
+
+    // ---------------------------------------------------------------------------
+    // STEP 3b: Apply Format A dataset overrides from constraints file
+    // ---------------------------------------------------------------------------
+    // *** ต้องรันหลัง STEP 6b *** เพราะ STEP 6b เขียนทับ picker datasets ด้วย
+    // invalid = '' — Format A override ต้องมี priority สูงสุดและรันทีหลัง
+    //
+    // Format A lines: key = value         → override slot 'valid'
+    //                 key.slot = value    → override specific slot (valid/invalid/atMin/atMax)
+    // These lines are filtered OUT of the PICT model — they only affect datasets here.
+    if (constraints != null && constraints.trim().isNotEmpty) {
+      final byKey = datasets['byKey'] as Map<String, dynamic>;
+
+      for (final rawLine in constraints.split('\n')) {
+        final line = rawLine.trim();
+        if (line.isEmpty || line.startsWith('#')) continue;
+        // Skip Format B lines (passed to PICT separately)
+        if (line.toUpperCase().contains('IF') && line.toUpperCase().contains('THEN')) continue;
+
+        // Parse: key[.slot] = value
+        final eqIdx = line.indexOf('=');
+        if (eqIdx <= 0) continue;
+
+        final lhs = line.substring(0, eqIdx).trim();
+        final rhs = line.substring(eqIdx + 1).trim();
+
+        final dotIdx = lhs.indexOf('.');
+        final key  = dotIdx > 0 ? lhs.substring(0, dotIdx) : lhs;
+        final slot = dotIdx > 0 ? lhs.substring(dotIdx + 1) : 'valid';
+
+        // Ensure entry exists as List<Map>
+        if (!byKey.containsKey(key)) {
+          byKey[key] = [<String, dynamic>{}];
+        }
+        final entry = byKey[key] as List;
+        if (entry.isEmpty) entry.add(<String, dynamic>{});
+        final map = Map<String, dynamic>.from(entry[0] as Map? ?? {});
+        map[slot] = rhs;
+        entry[0] = map;
+        byKey[key] = entry;
+
+        stderr.writeln('[DEBUG] Format A override: $key.$slot = "$rhs"');
+      }
     }
 
     // Write back corrected picker datasets to datasets.json so the file stays
@@ -843,6 +866,75 @@ class TestDataGenerator {
             }
           }
         }
+      }
+    }
+
+    // Map: groupValueBinding -> validation message for required Radio groups
+    final radioGroupValidation = <String, String>{};
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      if (!t.startsWith('Radio<')) continue;
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final groupBinding = meta['groupValueBinding']?.toString() ?? '';
+      if (groupBinding.isEmpty || radioGroupValidation.containsKey(groupBinding)) continue;
+      final rules = (meta['validatorRules'] as List?) ?? const [];
+      for (final rule in rules) {
+        if (rule is Map) {
+          final msg = rule['message']?.toString() ?? '';
+          if (msg.isNotEmpty) {
+            radioGroupValidation[groupBinding] = msg;
+            break;
+          }
+        }
+      }
+    }
+
+    // Map: switch key -> validation message for required Switch/SwitchListTile
+    final requiredSwitchValidation = <String, String>{};
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      if (t != 'Switch' && t != 'SwitchListTile') continue;
+      final k = (w['key'] ?? '').toString();
+      if (k.isEmpty) continue;
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules = (meta['validatorRules'] as List?) ?? const [];
+      for (final rule in rules) {
+        if (rule is Map) {
+          final msg = rule['message']?.toString() ?? '';
+          final condition = rule['condition']?.toString() ?? '';
+          final norm = condition.toLowerCase().replaceAll(' ', '');
+          if (msg.isNotEmpty &&
+              (norm.contains('!value') ||
+               norm.contains('value==false') ||
+               norm.contains('value==null') ||
+               norm.contains('value!=true'))) {
+            requiredSwitchValidation[k] = msg;
+            break;
+          }
+        }
+      }
+    }
+
+    // Map: slider key -> {message, minValue} for Slider with validatorRules
+    // "invalid" case = slider at minimum value (typical required-value pattern)
+    final requiredSliderValidation = <String, Map<String, dynamic>>{};
+    for (final w in widgets) {
+      final t = (w['widgetType'] ?? '').toString();
+      if (t != 'Slider') continue;
+      final k = (w['key'] ?? '').toString();
+      if (k.isEmpty) continue;
+      final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+      final rules = (meta['validatorRules'] as List?) ?? const [];
+      if (rules.isEmpty) continue;
+      final firstRule = rules.first;
+      final msg =
+          firstRule is Map ? (firstRule['message']?.toString() ?? '') : '';
+      if (msg.isNotEmpty) {
+        final minVal = (meta['min'] as num?)?.toDouble() ?? 0.0;
+        requiredSliderValidation[k] = {
+          'message': msg,
+          'minValue': minVal.round().toString(),
+        };
       }
     }
 
@@ -1051,11 +1143,11 @@ class TestDataGenerator {
 
     // Paths ของ PICT files
     final pageResultPath =
-        'output/model_pairwise/$pageBase.full.result.txt'; // Full pairwise result
+        'output/model_pairwise/$pageBase.invalid.result.txt'; // Full pairwise result
     final pageValidResultPath =
         'output/model_pairwise/$pageBase.valid.result.txt'; // Valid-only result
     final pageModelPath =
-        'output/model_pairwise/$pageBase.full.model.txt'; // PICT model definition
+        'output/model_pairwise/$pageBase.invalid.model.txt'; // PICT model definition
 
     // ตรวจสอบว่า PICT model มีอยู่หรือไม่
     final hasPictModel = File(pageModelPath).existsSync();
@@ -1090,7 +1182,15 @@ class TestDataGenerator {
           for (final entry in modelFactors!.entries) {
             final name = entry.key;
             final values = entry.value;
-            if (values.contains('valid') && values.contains('invalid')) {
+            // datepicker/timepicker must be checked before text because
+            // they now use ['valid','invalid'] tokens like TextFields
+            if (datePickerKeys.contains(name)) {
+              factorTypes[name] = 'datepicker';
+            } else if (timePickerKeys.contains(name)) {
+              factorTypes[name] = 'timepicker';
+            } else if (values.contains('invalid') || values.contains('valid')) {
+              // TEXT factor: bucket sentinel values — either full model ('valid','invalid'),
+              // invalid-only model ('invalid'), or valid-only model ('valid')
               factorTypes[name] = 'text';
             } else if (values.contains('checked') &&
                 values.contains('unchecked')) {
@@ -1100,10 +1200,8 @@ class TestDataGenerator {
             } else if (values.any((v) => v.endsWith('_radio')) ||
                 radioKeys.any((rk) => values.any((v) => rk.endsWith('_$v') || rk == v))) {
               factorTypes[name] = 'radio';
-            } else if (datePickerKeys.contains(name)) {
-              factorTypes[name] = 'datepicker';
-            } else if (timePickerKeys.contains(name)) {
-              factorTypes[name] = 'timepicker';
+            } else if (sliderKeys.contains(name)) {
+              factorTypes[name] = 'slider';
             } else {
               factorTypes[name] = 'dropdown';
             }
@@ -1156,6 +1254,7 @@ class TestDataGenerator {
         // Resolve combos
         List<Map<String, String>> combos;
         bool usingExternalCombos = false;
+        final radioGroupBindings = <String, String>{}; // 'Radio{n}' -> groupValueBinding
 
         if (extCombos != null && extCombos!.isNotEmpty) {
           combos = extCombos!;
@@ -1227,6 +1326,7 @@ class TestDataGenerator {
           for (final entry in radioGroups.entries) {
             if (entry.value.length > 1) {
               factors['Radio$radioIndex'] = entry.value;
+              radioGroupBindings['Radio$radioIndex'] = entry.key;
               radioIndex++;
             }
           }
@@ -1239,15 +1339,10 @@ class TestDataGenerator {
                 : 'Checkbox${i + 1}'] = ['checked', 'unchecked'];
           }
           for (final key in datePickerKeys) {
-            final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
-                orElse: () => <String, dynamic>{});
-            final pickerMeta =
-                (widget['pickerMetadata'] as Map?)?.cast<String, dynamic>() ??
-                    {};
-            factors[key] = _generateDateValues(pickerMeta);
+            factors[key] = ['valid', 'invalid'];
           }
           for (final key in timePickerKeys) {
-            factors[key] = ['09:00', '14:30', '18:00', 'null'];
+            factors[key] = ['valid', 'invalid'];
           }
           if (pairwiseUsePict) {
             try {
@@ -1269,6 +1364,9 @@ class TestDataGenerator {
           bool hasInvalidData = false;
           final invalidFields = <String>[];
           final uncheckedRequiredCheckboxes = <String>[];
+          final unselectedRadioGroups = <String>[];
+          final offRequiredSwitches = <String>[];
+          final invalidSliders = <String>[];
 
           if (usingExternalCombos) {
             final stepsByKey = <String, List<Map<String, dynamic>>>{};
@@ -1297,14 +1395,19 @@ class TestDataGenerator {
                   {'pump': true}
                 ];
               } else if (factorType == 'radio') {
-                final mk = radioKeyForSuffix(radioKeys, pick);
-                if (mk != null) {
-                  stepsByKey[mk] = [
-                    {
-                      'tap': {'byKey': mk}
-                    },
-                    {'pump': true}
-                  ];
+                if (pick == 'unselected') {
+                  hasInvalidData = true;
+                  unselectedRadioGroups.add(factorName);
+                } else {
+                  final mk = radioKeyForSuffix(radioKeys, pick);
+                  if (mk != null) {
+                    stepsByKey[mk] = [
+                      {
+                        'tap': {'byKey': mk}
+                      },
+                      {'pump': true}
+                    ];
+                  }
                 }
               } else if (factorType == 'dropdown') {
                 String textToTap = pick;
@@ -1345,23 +1448,67 @@ class TestDataGenerator {
                     },
                     {'pump': true}
                   ];
+                } else if (pick == 'off' &&
+                    requiredSwitchValidation.containsKey(factorName)) {
+                  hasInvalidData = true;
+                  offRequiredSwitches.add(factorName);
                 }
+              } else if (factorType == 'slider') {
+                final sliderData = requiredSliderValidation[factorName];
+                if (sliderData != null && pick == sliderData['minValue']) {
+                  hasInvalidData = true;
+                  invalidSliders.add(factorName);
+                }
+                stepsByKey[factorName] = [
+                  {
+                    'setSliderValue': {'byKey': factorName, 'value': pick}
+                  },
+                  {'pump': true}
+                ];
               } else if (datePickerKeys.contains(factorName)) {
+                // Resolve 'valid'/'invalid' tokens from datasets
+                // Format A override (e.g. key.invalid = 04/06/2026) is respected here
+                String resolvedDate = pick;
+                if (pick == 'valid' || pick == 'invalid') {
+                  final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final entry = ds[factorName];
+                  if (pick == 'invalid') {
+                    hasInvalidData = true;
+                    invalidFields.add(factorName);
+                  }
+                  final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                  final val = map0?[pick]?.toString() ?? '';
+                  resolvedDate = val.isNotEmpty ? val : 'null';
+                }
                 stepsByKey[factorName] = [
                   {
                     'tap': {'byKey': factorName}
                   },
                   {'pumpAndSettle': true},
-                  {'selectDate': pick},
+                  {'selectDate': resolvedDate},
                   {'pumpAndSettle': true}
                 ];
               } else if (timePickerKeys.contains(factorName)) {
+                // Resolve 'valid'/'invalid' tokens from datasets
+                // Format A override (e.g. key.invalid = 16:59) is respected here
+                String resolvedTime = pick;
+                if (pick == 'valid' || pick == 'invalid') {
+                  final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final entry = ds[factorName];
+                  if (pick == 'invalid') {
+                    hasInvalidData = true;
+                    invalidFields.add(factorName);
+                  }
+                  final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                  final val = map0?[pick]?.toString() ?? '';
+                  resolvedTime = val.isNotEmpty ? val : 'null';
+                }
                 stepsByKey[factorName] = [
                   {
                     'tap': {'byKey': factorName}
                   },
                   {'pumpAndSettle': true},
-                  {'selectTime': pick},
+                  {'selectTime': resolvedTime},
                   {'pumpAndSettle': true}
                 ];
               }
@@ -1423,7 +1570,11 @@ class TestDataGenerator {
                 final pick = rawPick.startsWith('"') && rawPick.endsWith('"')
                     ? rawPick.substring(1, rawPick.length - 1)
                     : rawPick;
-                if (pick.isNotEmpty) {
+                if (pick == 'unselected') {
+                  hasInvalidData = true;
+                  final groupBinding = radioGroupBindings[factorName] ?? factorName;
+                  unselectedRadioGroups.add(groupBinding);
+                } else if (pick.isNotEmpty) {
                   final mk = radioKeyForSuffix(radioKeys, pick);
                   if (mk != null) {
                     stepsByKey[mk] = [
@@ -1454,31 +1605,53 @@ class TestDataGenerator {
             }
             for (int idx = 0; idx < datePickerKeys.length; idx++) {
               final key = datePickerKeys[idx];
-              final pick = (c[key] ?? '').toString();
-              if (pick.isNotEmpty) {
-                stepsByKey[key] = [
-                  {
-                    'tap': {'byKey': key}
-                  },
-                  {'pumpAndSettle': true},
-                  {'selectDate': pick},
-                  {'pumpAndSettle': true}
-                ];
+              final raw = (c[key] ?? '').toString();
+              if (raw.isEmpty) continue;
+              String dateVal = raw;
+              if (raw == 'valid' || raw == 'invalid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[key];
+                if (raw == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(key);
+                }
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final v = map0?[raw]?.toString() ?? '';
+                dateVal = v.isNotEmpty ? v : 'null';
               }
+              stepsByKey[key] = [
+                {
+                  'tap': {'byKey': key}
+                },
+                {'pumpAndSettle': true},
+                {'selectDate': dateVal},
+                {'pumpAndSettle': true}
+              ];
             }
             for (int idx = 0; idx < timePickerKeys.length; idx++) {
               final key = timePickerKeys[idx];
-              final pick = (c[key] ?? '').toString();
-              if (pick.isNotEmpty) {
-                stepsByKey[key] = [
-                  {
-                    'tap': {'byKey': key}
-                  },
-                  {'pumpAndSettle': true},
-                  {'selectTime': pick},
-                  {'pumpAndSettle': true}
-                ];
+              final raw = (c[key] ?? '').toString();
+              if (raw.isEmpty) continue;
+              String timeVal = raw;
+              if (raw == 'valid' || raw == 'invalid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[key];
+                if (raw == 'invalid') {
+                  hasInvalidData = true;
+                  invalidFields.add(key);
+                }
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final v = map0?[raw]?.toString() ?? '';
+                timeVal = v.isNotEmpty ? v : 'null';
               }
+              stepsByKey[key] = [
+                {
+                  'tap': {'byKey': key}
+                },
+                {'pumpAndSettle': true},
+                {'selectTime': timeVal},
+                {'pumpAndSettle': true}
+              ];
             }
             final sorted = List<Map<String, dynamic>>.from(widgets)
               ..sort((a, b) => (a['key'] ?? '')
@@ -1499,82 +1672,94 @@ class TestDataGenerator {
             st.add({'pump': true});
           }
 
-          final caseKind = hasInvalidData ? 'failed' : 'success';
-          final id = 'pairwise_valid_invalid_cases_${i + 1}';
+          // Skip combos where no field is actually invalid — they don't belong
+          // in pairwise_invalid_cases. The inject-all-valid block below handles
+          // the single success case separately.
+          if (!hasInvalidData) continue;
+
+          final caseKind = 'failed';
+          final id = 'pairwise_invalid_cases_${i + 1}';
           final asserts = <Map<String, dynamic>>[];
 
-          if (hasInvalidData) {
-            final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
-                const {};
-            for (final fieldKey in invalidFields) {
-              final dataArray = ds[fieldKey];
+          final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
+              const {};
+          for (final fieldKey in invalidFields) {
+            final dataArray = ds[fieldKey];
 
-              // 1. ดึง invalidRuleMessages จาก datasets (ไม่กรอง กรุณา/required)
-              String msg = '';
-              if (dataArray is List && dataArray.isNotEmpty) {
-                final firstPair = dataArray[0];
-                if (firstPair is Map) {
-                  msg = firstPair['invalidRuleMessages']?.toString() ?? '';
-                }
+            String msg = '';
+            if (dataArray is List && dataArray.isNotEmpty) {
+              final firstPair = dataArray[0];
+              if (firstPair is Map) {
+                msg = firstPair['invalidRuleMessages']?.toString() ?? '';
               }
+            }
 
-              // 2. ถ้าไม่มี message จาก datasets → fallback หา isEmpty/null rule
-              //    จาก manifest เพื่อครอบคลุมทุก field type (ไม่เฉพาะ number)
-              if (msg.isEmpty || msg.toLowerCase() == 'general') {
-                final widget = widgets.firstWhere(
-                  (w) => (w['key'] ?? '').toString() == fieldKey,
-                  orElse: () => <String, dynamic>{},
-                );
-                if (widget.isNotEmpty) {
-                  final meta =
-                      (widget['meta'] as Map?)?.cast<String, dynamic>() ??
-                          const {};
-                  final rules =
-                      (meta['validatorRules'] as List?) ?? const [];
-                  for (final rule in rules) {
-                    if (rule is Map) {
-                      final condition =
-                          (rule['condition']?.toString() ?? '')
-                              .toLowerCase()
-                              .replaceAll(' ', '');
-                      if (condition.contains('null') ||
-                          condition.contains('isempty')) {
-                        final fallback = rule['message']?.toString() ?? '';
-                        if (fallback.isNotEmpty) msg = fallback;
-                        break;
-                      }
+            if (msg.isEmpty || msg.toLowerCase() == 'general') {
+              final widget = widgets.firstWhere(
+                (w) => (w['key'] ?? '').toString() == fieldKey,
+                orElse: () => <String, dynamic>{},
+              );
+              if (widget.isNotEmpty) {
+                final meta =
+                    (widget['meta'] as Map?)?.cast<String, dynamic>() ??
+                        const {};
+                final rules =
+                    (meta['validatorRules'] as List?) ?? const [];
+                for (final rule in rules) {
+                  if (rule is Map) {
+                    final condition =
+                        (rule['condition']?.toString() ?? '')
+                            .toLowerCase()
+                            .replaceAll(' ', '');
+                    if (condition.contains('null') ||
+                        condition.contains('isempty')) {
+                      final fallback = rule['message']?.toString() ?? '';
+                      if (fallback.isNotEmpty) msg = fallback;
+                      break;
                     }
                   }
                 }
               }
+            }
 
-              if (msg.isNotEmpty && msg.toLowerCase() != 'general') {
-                asserts.add({'text': msg, 'exists': true});
-              }
+            if (msg.isNotEmpty && msg.toLowerCase() != 'general') {
+              asserts.add({'text': msg, 'exists': true});
             }
-            for (final ck in uncheckedRequiredCheckboxes) {
-              final msg = requiredCheckboxValidation[ck];
-              if (msg != null && msg.isNotEmpty) {
-                asserts.add({'text': msg, 'exists': true});
-              }
+          }
+          for (final ck in uncheckedRequiredCheckboxes) {
+            final msg = requiredCheckboxValidation[ck];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg, 'exists': true});
             }
-            // Fallback: ถ้าไม่มี validation message เลย (field ไม่มี validatorRules)
-            // ให้ fallback ใช้ expectedFailKeys เช่น search_01_expected_fail
-            // เพราะ submit invalid data จะ trigger fail dialog แทน
-            if (asserts.isEmpty) {
-              for (final fk in expectedFailKeys) {
-                asserts.add(buildAssert(fk));
-              }
+          }
+          for (final groupKey in unselectedRadioGroups) {
+            // groupKey is groupValueBinding for both external and internal combos
+            final msg = radioGroupValidation[groupKey];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg, 'exists': true});
             }
-          } else {
-            asserts.addAll(buildSuccessAsserts());
+          }
+          for (final sk in offRequiredSwitches) {
+            final msg = requiredSwitchValidation[sk];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg, 'exists': true});
+            }
+          }
+          for (final slk in invalidSliders) {
+            final msg = requiredSliderValidation[slk]?['message'];
+            if (msg != null && msg.isNotEmpty) {
+              asserts.add({'text': msg as String, 'exists': true});
+            }
+          }
+          for (final fk in expectedFailKeys) {
+            asserts.add(buildAssert(fk));
           }
 
           final comboStr = c.map((k, v) => MapEntry(k, v.toString()));
           cases.add({
             'tc': id,
             'kind': caseKind,
-            'group': 'pairwise_valid_invalid_cases',
+            'group': 'pairwise_invalid_cases',
             'description': _buildDescription(comboStr, caseKind, invalidFields,
                 uncheckedRequiredCheckboxes, asserts),
             'steps': st,
@@ -1583,14 +1768,9 @@ class TestDataGenerator {
         }
 
         // ── Inject all-valid success case ──────────────────────────────────────
-        // PICT ไม่สร้าง all-valid combo ใน full model → inject เองให้ครบ
-        // rule: ถ้า group pairwise_valid_invalid_cases ไม่มี kind==success เลย
-        //       และมี expectedSuccessKeys → เพิ่ม 1 case ที่ valid ทุก field
-        final alreadyHasSuccess = cases.any((c) =>
-            c['group'] == 'pairwise_valid_invalid_cases' &&
-            c['kind'] == 'success');
-
-        if (!alreadyHasSuccess && expectedSuccessKeys.isNotEmpty) {
+        // Fallback เฉพาะเมื่อไม่มี extValidCombos เลย (valid model ไม่ถูกสร้าง)
+        // ถ้ามี extValidCombos → pairwise_valid_cases จะ handle success เอง
+        if (extValidCombos == null || extValidCombos!.isEmpty) {
           final st = <Map<String, dynamic>>[];
           final stepsByKey = <String, List<Map<String, dynamic>>>{};
 
@@ -1663,9 +1843,9 @@ class TestDataGenerator {
 
           final successAsserts = buildSuccessAsserts();
           cases.add({
-            'tc': 'pairwise_valid_invalid_cases_${combos.length + 1}',
+            'tc': 'pairwise_invalid_cases_${combos.length + 1}',
             'kind': 'success',
-            'group': 'pairwise_valid_invalid_cases',
+            'group': 'pairwise_invalid_cases',
             'description': 'All fields valid — expect success',
             'steps': st,
             'asserts': successAsserts,
@@ -1771,21 +1951,37 @@ class TestDataGenerator {
                 ];
               }
             } else if (datePickerKeys.contains(factorName)) {
+              String resolvedDate = pick;
+              if (pick == 'valid' || pick == 'invalid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[factorName];
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final val = map0?[pick]?.toString() ?? '';
+                resolvedDate = val.isNotEmpty ? val : 'null';
+              }
               stepsByKey[factorName] = [
                 {
                   'tap': {'byKey': factorName}
                 },
                 {'pumpAndSettle': true},
-                {'selectDate': pick},
+                {'selectDate': resolvedDate},
                 {'pumpAndSettle': true}
               ];
             } else if (timePickerKeys.contains(factorName)) {
+              String resolvedTime = pick;
+              if (pick == 'valid' || pick == 'invalid') {
+                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final entry = ds[factorName];
+                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final val = map0?[pick]?.toString() ?? '';
+                resolvedTime = val.isNotEmpty ? val : 'null';
+              }
               stepsByKey[factorName] = [
                 {
                   'tap': {'byKey': factorName}
                 },
                 {'pumpAndSettle': true},
-                {'selectTime': pick},
+                {'selectTime': resolvedTime},
                 {'pumpAndSettle': true}
               ];
             }
@@ -2220,7 +2416,7 @@ class TestDataGenerator {
     };
 
     final outPath =
-        'output/test_data/${utils.basenameWithoutExtension(uiFile)}.testdata.json';
+        'output/test_data/${utils.basenameWithoutExtension(uiFile)}.test_data.json';
 
     File(outPath).createSync(recursive: true);
     File(outPath).writeAsStringSync(
@@ -2246,8 +2442,8 @@ class TestDataGenerator {
   ///   [constraints] - PICT constraints string (optional)
   ///
   /// Output files:
-  ///   - output/model_pairwise/<page>.full.model.txt
-  ///   - output/model_pairwise/<page>.full.result.txt
+  ///   - output/model_pairwise/<page>.invalid.model.txt
+  ///   - output/model_pairwise/<page>.invalid.result.txt
   ///   - output/model_pairwise/<page>.valid.model.txt
   ///   - output/model_pairwise/<page>.valid.result.txt
   Future<void> _tryWritePictModelFromManifestForUi(String uiFile,
@@ -2321,6 +2517,7 @@ class TestDataGenerator {
       factors: factors,
       pageBaseName: base,
       requiredCheckboxes: requiredCheckboxes,
+      invalidOnlyValues: extractionResult.invalidOnlyValues,
       constraints: constraints,
     );
   }

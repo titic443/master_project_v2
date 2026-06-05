@@ -90,17 +90,14 @@ POST /api/demo/buttons
 ```
 
 **Request Body:**
-```json
-{
-  "username": "john123",
-  "password": "pass123",
-  "email": "john@example.com",
-  "option": "approve",
-  "radio3": "manu",
-  "platform": "android",
-  "dropdown": "Apple",
-  "forceCode": null
-}
+```txt
+customer_01_title_dropdown: "Mr.", "Mrs.", "Ms", "Dr"
+customer_02_firstname_textfield: invalid
+customer_03_phone_textfield: invalid
+customer_04_agree_terms_checkbox: checked, unchecked
+
+IF [customer_04_agree_terms_checkbox] = "checked" THEN customer_02_firstname_textfield = "invalid"
+
 ```
 
 **Validation Rules:**

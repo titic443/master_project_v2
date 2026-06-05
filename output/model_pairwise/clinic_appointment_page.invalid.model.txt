@@ -1,0 +1,9 @@
+state.appointmentType: "unselected", "type_radio_opd", "type_radio_tele"
+appt_01_patient_name_textfield: invalid
+appt_02_id_card_textfield: invalid
+appt_03_phone_textfield: invalid
+appt_04_department_dropdown: "internal_medicine", "surgery", "pediatrics", "obstetrics", "ophthalmology", "ent", "orthopedics"
+appt_06_date_textfield: invalid
+appt_07_time_textfield: invalid
+appt_08_insurance_switch: on, off
+appt_09_note_textfield: invalid

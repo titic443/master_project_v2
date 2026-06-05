@@ -30,6 +30,7 @@ class Database:
     jobs_collection = None
     properties_collection = None
     appointments_collection = None
+    enrollments_collection = None
 
 
 db = Database()
@@ -42,6 +43,7 @@ async def lifespan(app: FastAPI):
     db.jobs_collection = db.client.get_default_database()["jobs"]
     db.properties_collection = db.client.get_default_database()["properties"]
     db.appointments_collection = db.client.get_default_database()["clinic_appointments"]
+    db.enrollments_collection = db.client.get_default_database()["course_enrollments"]
     print(f"✅ Connected to MongoDB: {settings.mongo_uri}")
     yield
     # Shutdown
@@ -369,6 +371,114 @@ async def list_appointments():
         doc["id"] = str(doc.pop("_id"))
         items.append(doc)
     return {"appointments": items, "total": len(items)}
+
+
+# ─── Course Enrollment Schemas ────────────────────────────────────────────────
+
+class EnrollmentIn(BaseModel):
+    courseName: str = Field(..., min_length=3, max_length=100)
+    studentName: str = Field(..., min_length=2, max_length=100)
+    email: str = Field(..., min_length=5, max_length=120)
+    phone: str = Field(..., min_length=9, max_length=10)
+    studentLevel: Literal[
+        "High School", "Undergraduate", "Graduate", "Professional"
+    ]
+    courseCategory: Literal[
+        "Programming", "Design", "Business", "Languages", "Math & Science"
+    ]
+    paymentMethod: Literal[
+        "Credit Card", "Bank Transfer", "PromptPay", "Cash"
+    ]
+    duration: int = Field(..., ge=1, le=52)
+    price: int = Field(..., ge=0, le=1_000_000)
+    needCertificate: bool = False
+    agreeTerms: bool = True
+
+    @field_validator("email")
+    @classmethod
+    def email_must_be_valid(cls, v: str) -> str:
+        import re
+        pattern = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
+        if not re.match(pattern, v.strip()):
+            raise ValueError("Invalid email format")
+        return v.strip()
+
+    @field_validator("phone")
+    @classmethod
+    def phone_digits_only(cls, v: str) -> str:
+        if not v.isdigit():
+            raise ValueError("Phone must contain digits only")
+        return v
+
+    @field_validator("agreeTerms")
+    @classmethod
+    def must_agree_terms(cls, v: bool) -> bool:
+        if not v:
+            raise ValueError("You must agree to the terms and conditions")
+        return v
+
+
+# ─── Course Enrollment Routes ─────────────────────────────────────────────────
+
+@app.post("/api/demo/enrollments", response_model=ApiResponse)
+async def post_enrollment(enrollment: EnrollmentIn):
+    """Enroll a student in a course"""
+    doc = enrollment.model_dump()
+    result = await db.enrollments_collection.insert_one(doc)
+    print(f"📥 Enrollment saved: {result.inserted_id}")
+    return ApiResponse(message="Enrollment created successfully", code=200)
+
+
+@app.get("/api/demo/enrollments/search")
+async def search_enrollments(
+    keyword: Optional[str] = None,
+    course_category: Optional[str] = None,
+    student_level: Optional[str] = None,
+    payment_method: Optional[str] = None,
+    min_price: Optional[int] = None,
+    max_price: Optional[int] = None,
+    need_certificate: Optional[bool] = None,
+):
+    """Search course enrollments — all params optional, at least one required"""
+    conditions = []
+
+    if keyword:
+        conditions.append({
+            "$or": [
+                {"courseName": {"$regex": keyword, "$options": "i"}},
+                {"studentName": {"$regex": keyword, "$options": "i"}},
+                {"email": {"$regex": keyword, "$options": "i"}},
+            ]
+        })
+    if course_category:
+        conditions.append({"courseCategory": course_category})
+    if student_level:
+        conditions.append({"studentLevel": student_level})
+    if payment_method:
+        conditions.append({"paymentMethod": payment_method})
+    if min_price is not None:
+        conditions.append({"price": {"$gte": min_price}})
+    if max_price is not None:
+        conditions.append({"price": {"$lte": max_price}})
+    if need_certificate is not None:
+        conditions.append({"needCertificate": need_certificate})
+
+    query = {"$and": conditions} if len(conditions) > 1 else (conditions[0] if conditions else {})
+    items = []
+    async for doc in db.enrollments_collection.find(query).sort("_id", -1).limit(50):
+        doc["id"] = str(doc.pop("_id"))
+        items.append(doc)
+    return {"enrollments": items, "total": len(items)}
+
+
+@app.get("/api/demo/enrollments")
+async def list_enrollments():
+    """List all course enrollments"""
+    items = []
+    async for doc in db.enrollments_collection.find().sort("_id", -1):
+        doc["id"] = str(doc.pop("_id"))
+        items.append(doc)
+    return {"enrollments": items, "total": len(items)}
 
 
 # ─── Entrypoint ───────────────────────────────────────────────────────────────

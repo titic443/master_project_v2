@@ -79,7 +79,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
   Future<void> _selectTime(BuildContext context) async {
     final picked = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 9, minute: 0),
+      initialTime: const TimeOfDay(hour: 16, minute: 0),
       initialEntryMode: TimePickerEntryMode.input,
       // Force 24-hour format so hours 13-23 are valid in input mode
       builder: (context, child) => MediaQuery(
@@ -272,37 +272,59 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                 const SizedBox(height: 20),
 
                 // ── ประเภทการนัด (Radio) ─────────────────────────────────
-                Text(
-                  'ประเภทการนัดหมาย',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey[700],
+                FormField<String>(
+                  validator: (_) => state.appointmentType == null
+                      ? 'กรุณาเลือกประเภทการนัด'
+                      : null,
+                  builder: (field) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'ประเภทการนัดหมาย',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: field.hasError
+                              ? Theme.of(context).colorScheme.error
+                              : Colors.grey[700],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Radio<String>(
+                            key: const Key('appt_05_type_radio_opd'),
+                            value: 'OPD',
+                            groupValue: state.appointmentType,
+                            onChanged: (v) {
+                              if (v != null) cubit.onAppointmentTypeChanged(v);
+                            },
+                          ),
+                          const Text('มาด้วยตนเอง (OPD)'),
+                          const SizedBox(width: 24),
+                          Radio<String>(
+                            key: const Key('appt_05_type_radio_tele'),
+                            value: 'Telemedicine',
+                            groupValue: state.appointmentType,
+                            onChanged: (v) {
+                              if (v != null) cubit.onAppointmentTypeChanged(v);
+                            },
+                          ),
+                          const Text('พบแพทย์ออนไลน์'),
+                        ],
+                      ),
+                      if (field.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12, top: 2),
+                          child: Text(
+                            field.errorText!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Radio<String>(
-                      key: const Key('appt_05_type_radio_opd'),
-                      value: 'OPD',
-                      groupValue: state.appointmentType,
-                      onChanged: (v) {
-                        if (v != null) cubit.onAppointmentTypeChanged(v);
-                      },
-                    ),
-                    const Text('มาด้วยตนเอง (OPD)'),
-                    const SizedBox(width: 24),
-                    Radio<String>(
-                      key: const Key('appt_05_type_radio_tele'),
-                      value: 'Telemedicine',
-                      groupValue: state.appointmentType,
-                      onChanged: (v) {
-                        if (v != null) cubit.onAppointmentTypeChanged(v);
-                      },
-                    ),
-                    const Text('พบแพทย์ออนไลน์'),
-                  ],
                 ),
 
                 // ── Section 3: วันและเวลา ─────────────────────────────────

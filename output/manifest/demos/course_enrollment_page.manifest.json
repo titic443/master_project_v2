@@ -1,0 +1,256 @@
+{
+  "source": {
+    "file": "lib/demos/course_enrollment_page.dart",
+    "pageClass": "CourseEnrollmentPage",
+    "cubitClass": "CourseEnrollmentCubit",
+    "stateClass": "CourseEnrollmentState",
+    "fileCubit": "lib/cubit/course_enrollment_cubit.dart",
+    "fileState": "lib/cubit/course_enrollment_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "AlertDialog",
+      "key": "course_13_expected_fail"
+    },
+    {
+      "widgetType": "AlertDialog",
+      "key": "course_13_expected_success"
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "course_01_name_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกชื่อคอร์ส"
+          },
+          {
+            "condition": "v.trim().length < 3",
+            "message": "กรุณากรอกอย่างน้อย 3 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "course_05_category_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกหมวดหมู่คอร์ส"
+          }
+        ],
+        "options": [
+          {
+            "value": "Programming",
+            "text": "Programming"
+          },
+          {
+            "value": "Design",
+            "text": "Design"
+          },
+          {
+            "value": "Business",
+            "text": "Business"
+          },
+          {
+            "value": "Languages",
+            "text": "Languages"
+          },
+          {
+            "value": "Math & Science",
+            "text": "Math & Science"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "course_06_level_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกระดับผู้เรียน"
+          }
+        ],
+        "options": [
+          {
+            "value": "High School",
+            "text": "High School"
+          },
+          {
+            "value": "Undergraduate",
+            "text": "Undergraduate"
+          },
+          {
+            "value": "Graduate",
+            "text": "Graduate"
+          },
+          {
+            "value": "Professional",
+            "text": "Professional"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "course_02_student_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกชื่อ-นามสกุล"
+          },
+          {
+            "condition": "v.trim().length < 2",
+            "message": "กรุณากรอกอย่างน้อย 2 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "course_03_email_textfield",
+      "meta": {
+        "keyboardType": "emailAddress",
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกอีเมล"
+          },
+          {
+            "condition": "!pattern.hasMatch(v.trim())",
+            "message": "รูปแบบอีเมลไม่ถูกต้อง"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "course_04_phone_textfield",
+      "meta": {
+        "keyboardType": "phone",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          },
+          {
+            "type": "lengthLimit",
+            "max": 10
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกเบอร์โทรศัพท์"
+          },
+          {
+            "condition": "v.trim().length < 9",
+            "message": "เบอร์โทรต้องมี 9-10 หลัก"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "course_08_duration_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกระยะเวลา"
+          },
+          {
+            "condition": "n == null",
+            "message": "กรุณากรอกเป็นตัวเลข"
+          },
+          {
+            "condition": "n < 1 || n > 52",
+            "message": "ระยะเวลา 1-52 สัปดาห์"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "course_09_price_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกค่าเรียน"
+          },
+          {
+            "condition": "n == null",
+            "message": "กรุณากรอกเป็นตัวเลข"
+          },
+          {
+            "condition": "n < 0",
+            "message": "ค่าเรียนต้องไม่ติดลบ"
+          },
+          {
+            "condition": "n > 1000000",
+            "message": "ค่าเรียนต้องไม่เกิน 1,000,000 บาท"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "course_07_payment_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกวิธีการชำระเงิน"
+          }
+        ],
+        "options": [
+          {
+            "value": "Credit Card",
+            "text": "Credit Card"
+          },
+          {
+            "value": "Bank Transfer",
+            "text": "Bank Transfer"
+          },
+          {
+            "value": "PromptPay",
+            "text": "PromptPay"
+          },
+          {
+            "value": "Cash",
+            "text": "Cash"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Switch",
+      "key": "course_10_certificate_switch",
+      "meta": {
+        "valueBinding": "state.needCertificate"
+      }
+    },
+    {
+      "widgetType": "ElevatedButton",
+      "key": "course_12_end_button"
+    }
+  ]
+}

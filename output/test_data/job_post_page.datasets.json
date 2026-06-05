@@ -5,64 +5,69 @@
       "job_01_title_textfield": [
         {
           "valid": "วิศวกรซอฟต์แวร์อาวุโส",
-          "invalid": "QA",
+          "invalid": "วิศ",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 3 ตัวอักษร",
-          "atMin": "พส",
+          "atMin": "QA",
           "atMax": "วิศวกรซอฟต์แวร์อาวุโส"
         }
       ],
       "job_02_company_textfield": [
         {
-          "valid": "บริษัท นวัตกรรม จำกัด",
+          "valid": "บริษัท เทค จำกัด (มหาชน)",
           "invalid": "บ",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "อ",
-          "atMax": "บริษัท นวัตกรรม จำกัด"
+          "atMin": "บ",
+          "atMax": "บริษัท เทค จำกัด (มหาชน)"
         }
       ],
       "job_03_location_textfield": [
         {
           "valid": "กรุงเทพมหานคร",
-          "invalid": "ธ",
+          "invalid": "ต",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "ช",
+          "atMin": "กท",
           "atMax": "กรุงเทพมหานคร"
         }
       ],
       "job_07_salary_min_textfield": [
         {
-          "valid": "35000",
-          "invalid": "",
-          "invalidRuleMessages": "",
-          "atMin": "",
-          "atMax": "35000"
+          "valid": "30000",
+          "invalid": "1234567890123456789012345",
+          "invalidRuleMessages": "กรุณากรอกเป็นตัวเลข",
+          "atMin": "0",
+          "atMax": "30000"
         }
       ],
       "job_08_salary_max_textfield": [
         {
           "valid": "50000",
-          "invalid": "30000",
-          "invalidRuleMessages": "ต้องมากกว่าหรือเท่ากับเงินเดือนขั้นต่ำ",
-          "atMin": "",
-          "atMax": "50000"
+          "invalid": "1234567890123456789012345",
+          "invalidRuleMessages": "กรุณากรอกเป็นตัวเลข",
+          "atMin": "0",
+          "atMax": "60000"
+        },
+        {
+          "valid": "60000",
+          "invalid": "40000",
+          "invalidRuleMessages": "ต้องมากกว่าหรือเท่ากับเงินเดือนขั้นต่ำ"
         }
       ],
       "job_09_desc_textfield": [
         {
-          "valid": "รับผิดชอบในการพัฒนาและบำรุงรักษาซอฟต์แวร์ตามที่ได้",
-          "invalid": "รายละเอียดงานสั้นไป",
+          "valid": "บริษัทของเรากำลังมองหาวิศวกรซอฟต์แวร์ที่มีประสบการ",
+          "invalid": "ตำแหน่งงานนี้ต้องการผู้ที่มีความรู้ด้าน Flutter",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "atMin": "รายละเอียดงานไม่ถึง 20",
-          "atMax": "รับผิดชอบในการพัฒนาและบำรุงรักษาซอฟต์แวร์ตามที่ได้"
+          "atMin": "ต้องการนักพัฒนา Flutter 19 อักษร",
+          "atMax": "บริษัทของเรากำลังมองหาวิศวกรซอฟต์แวร์ที่มีประสบการ"
         }
       ],
       "job_10_skills_textfield": [
         {
-          "valid": "Python, SQL, AWS, Docker",
+          "valid": "Flutter, Dart, Firebase, REST API, Git",
           "invalid": "C",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "atMin": "J",
-          "atMax": "Python, SQL, AWS, Docker"
+          "atMin": "Py",
+          "atMax": "Flutter, Dart, Firebase, REST API, Git"
         }
       ]
     }

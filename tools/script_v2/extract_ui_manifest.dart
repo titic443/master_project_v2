@@ -538,10 +538,23 @@ class UiManifestExtractor {
       // Generic validation/meta for form widgets
       meta.addAll(_extractValidationMeta(type, argsSrc));
 
+      // FormField: re-extract validator from pre-builder section only
+      // (argsSrc ปกติจะมี builder: {...} ที่มี { ก่อน validator body ทำให้ extract ผิด)
+      if (type == 'FormField') {
+        final builderIdx = argsSrc.indexOf('builder');
+        final preBuilder =
+            builderIdx > 0 ? argsSrc.substring(0, builderIdx) : argsSrc;
+        final preMeta = _extractValidationMeta('FormField', preBuilder);
+        if (preMeta.containsKey('validatorRules')) {
+          meta['validatorRules'] = preMeta['validatorRules'];
+        }
+      }
+
       // ----- สร้าง Widget Object -----
       out.add({
         'widgetType': type + (generics != null ? generics : ''),
-        if (key != null) 'key': key,
+        // FormField ไม่ใส่ key — ป้องกันการขโมย key จาก widget ใน builder
+        if (key != null && type != 'FormField') 'key': key,
         if (binding != null) 'displayBinding': binding,
         if (type == 'Text') ..._maybeTextLiteral(argsSrc),
         if (meta.isNotEmpty) 'meta': meta,
@@ -554,6 +567,29 @@ class UiManifestExtractor {
       // เช่น Radio ภายใน FormField builder
       final nested = _scanWidgets(argsSrc, consts: consts, cubitType: cubitType);
       if (nested.isNotEmpty) {
+        // Propagate FormField validator → Radio / Checkbox / Switch / SwitchListTile / Slider
+        // เพราะ widget พวกนี้ไม่มี validator: ในตัวเอง ต้องรับมาจาก FormField ที่ครอบ
+        if (type == 'FormField') {
+          final rules = meta['validatorRules'];
+          if (rules != null) {
+            const wrapTargets = {
+              'Radio', 'Checkbox', 'Switch', 'SwitchListTile', 'Slider'
+            };
+            for (final n in nested) {
+              final raw = (n['widgetType'] as String? ?? '');
+              final base =
+                  raw.contains('<') ? raw.substring(0, raw.indexOf('<')) : raw;
+              if (wrapTargets.contains(base)) {
+                final nMeta = Map<String, dynamic>.from(
+                    (n['meta'] as Map<String, dynamic>?) ?? {});
+                if (!nMeta.containsKey('validatorRules')) {
+                  nMeta['validatorRules'] = rules;
+                  n['meta'] = nMeta;
+                }
+              }
+            }
+          }
+        }
         for (final n in nested) {
           if (!n.containsKey('sourceOrder')) {
             n['sourceOrder'] = sourceOrder++;

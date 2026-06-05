@@ -49,17 +49,28 @@ import 'utils.dart' as utils;
 // =============================================================================
 // API KEY CONFIGURATION
 // =============================================================================
-// คำเตือนด้านความปลอดภัย: ไม่ควร hardcode API key ใน source code
-// วิธีที่แนะนำ:
-//   1. สร้างไฟล์ .env และใส่: GEMINI_API_KEY=your_key
-//   2. Export environment variable: export GEMINI_API_KEY=your_key
-//   3. ใช้ flag: --api-key=your_key
-// รับ API key ได้จาก: https://aistudio.google.com/app/apikey
+// !!! SECURITY WARNING !!!
+// ค่าด้านล่างคือ Gemini API key ที่ hardcode ไว้สำหรับ demo / thesis defense
+// เท่านั้น เพราะ git history มี key รั่วอยู่หลายตัวอยู่แล้ว
+//
+// ก่อน publish หรือ open-source codebase นี้:
+//   1. ไปที่ Google Cloud Console → Credentials → ลบ key ทุกตัวที่อยู่ใน git log
+//   2. สร้าง key ใหม่และเก็บใน .env เท่านั้น (อย่า commit)
+//   3. ลบบรรทัด `const String hardcodedApiKey = ...` ด้านล่าง
+//
+// Priority chain ของการอ่าน key (สูง → ต่ำ):
+//   1. CLI flag --api-key=<key>
+//   2. .env file (key: GEMINI_API_KEY)
+//   3. Environment variable GEMINI_API_KEY
+//   4. ค่า hardcoded ด้านล่าง (DEMO ONLY — REMOVE BEFORE PUBLISHING)
+//
+// สมัคร key ได้ที่: https://aistudio.google.com/app/apikey
 // =============================================================================
 
-// ค่าคงที่สำหรับเก็บ API key แบบ hardcode (ใช้เป็น fallback)
-// SECURITY WARNING: ไม่ควรใช้ในโปรดักชัน ควรใช้ environment variable แทน
-const String hardcodedApiKey = 'AIzaSyDkUkEVQPV2oDTNY4mean6eOAajr8tNyhI';
+// DEMO-ONLY hardcoded fallback. REMOVE before publishing.
+// (ค่านี้รั่วใน git history แล้ว — rotate key หลัง defense ก่อน publish ทุกที่)
+const String hardcodedApiKey =
+    'YOUR_GEMINI_API_KEY_HERE';
 
 // =============================================================================
 // MAIN FUNCTION - Entry Point
@@ -295,10 +306,23 @@ class DatasetGenerator {
         final meta =
             (w['meta'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
 
-        // เตรียมข้อมูล field สำหรับส่งไป AI
+        // คำนวณ effectiveMaxLength เพื่อบอก AI ว่า boundary จริงคือเท่าไร
+        // Priority: inputFormatters.lengthLimit > maxLength > default 50
+        int? effectiveMax = meta['maxLength'] as int?;
+        final fmts =
+            (meta['inputFormatters'] as List? ?? const []).cast<Map>();
+        for (final fmt in fmts) {
+          if ((fmt['type'] ?? '') == 'lengthLimit' && fmt['max'] is int) {
+            effectiveMax = fmt['max'] as int;
+            break;
+          }
+        }
+        effectiveMax ??= 50;
+
+        // เตรียมข้อมูล field สำหรับส่งไป AI พร้อม effectiveMaxLength
         allTextFields.add({
           'key': key,
-          'meta': meta,
+          'meta': {...meta, 'effectiveMaxLength': effectiveMax},
         });
       }
     }
@@ -354,19 +378,8 @@ class DatasetGenerator {
 
       // AI return array of pairs: [{valid, invalid, invalidRuleMessages}, ...]
       if (aiEntry is List) {
-        // ดึง maxLength constraint จาก 2 sources:
-        //   1. inputFormatters.lengthLimit (มี priority สูงกว่า)
-        //   2. maxLength property โดยตรง
-        //   3. default = 50
-        int? maxLen = meta['maxLength'] as int?;
-        final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
-        for (final fmt in fmts) {
-          if ((fmt['type'] ?? '') == 'lengthLimit' && fmt['max'] is int) {
-            maxLen = fmt['max'] as int;
-            break;
-          }
-        }
-        maxLen ??= 50;
+        // ใช้ effectiveMaxLength ที่ inject ไปตอนส่ง field แล้ว
+        final maxLen = meta['effectiveMaxLength'] as int? ?? 50;
 
         // สร้าง list เก็บ pairs ที่ processed แล้ว
         final pairs = <Map<String, dynamic>>[];
@@ -545,44 +558,44 @@ class DatasetGenerator {
       '',
 
       // === EXECUTION: ขั้นตอนการทำงาน ===
-      '=== (EXECUTION) ===',
-      'For fields WITH validatorRules:',
-      '  1. List all rules. SKIP rules whose condition contains "isEmpty" or "== null" (those are Required checks).',
-      '  2. For each remaining rule, generate exactly 1 pair:',
-      '     - Read the rule\'s "condition" carefully (e.g., "v.trim().length < 5", "n == null || n < 100000")',
-      '     - invalid: a value that makes that condition evaluate to TRUE → validator returns the error message',
-      '     - valid:   a value that makes that condition evaluate to FALSE → validator returns null (passes)',
-      '     - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase',
-      '  3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)',
-      '',
-      'For fields with ONLY isEmpty/null rules (all non-empty rules are absent):',
-      '  1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule',
-      '  2. invalidRuleMessages = EXACT message from that isEmpty/null rule',
-      '  3. Generate 1 realistic valid value',
-      '',
-      'For fields WITHOUT validatorRules at all:',
-      '  1. Infer field type from key name (firstname→name, phone→phone number, email→email)',
-      '  2. Generate 1 pair with realistic valid value',
-      '  3. Generate common invalid value (e.g., too short, wrong format) that respects inputFormatters',
-      '  4. Set invalidRuleMessages to "" (empty string) — no UI-visible error message for this field',
-      '',
-      'For boundary values (add to FIRST pair only):',
-      '  atMin: value at the minimum boundary',
-      '    - Default: "" (empty string)',
-      '    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")',
-      '    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")',
-      '  atMax: value at the maximum length boundary',
-      '    - If field has maxLength (from inputFormatters.lengthLimit or maxLength property):',
-      '        generate a realistic value whose length == maxLength',
-      '    - If field has no maxLength: use same as valid value',
-      '    - MUST respect inputFormatters and be a realistic value (not just repeated chars)',
-      '    - For email fields at max length: pad local-part with chars to reach maxLength',
-      '    - For digit-only fields: use digits that reach maxLength',
-      '',
-      'Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}',
-      'Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}',
-      '(atMin and atMax are ONLY in the FIRST pair of each field)',
-      '',
+      '''=== (EXECUTION) ===
+For fields WITH validatorRules:
+  1. List all rules. SKIP rules whose condition contains "isEmpty" or "== null" (those are Required checks).
+  2. For each remaining rule, generate exactly 1 pair:
+     - Read the rule's "condition" carefully (e.g., "v.trim().length < 5", "n == null || n < 100000")
+     - invalid: a value that makes that condition evaluate to TRUE → validator returns the error message
+     - valid:   a value that makes that condition evaluate to FALSE → validator returns null (passes)
+     - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase
+  3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)
+
+For fields with ONLY isEmpty/null rules (all non-empty rules are absent):
+  1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule
+  2. invalidRuleMessages = EXACT message from that isEmpty/null rule
+  3. Generate 1 realistic valid value
+
+For fields WITHOUT validatorRules at all:
+  1. Infer field type from key name (firstname→name, phone→phone number, email→email)
+  2. Generate 1 pair with realistic valid value
+  3. Generate common invalid value (e.g., too short, wrong format) that respects inputFormatters
+  4. Set invalidRuleMessages to "" (empty string) — no UI-visible error message for this field
+
+For boundary values (add to FIRST pair only):
+  atMin: value at the minimum boundary
+    - Default: "" (empty string)
+    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")
+    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")
+  atMax: value at the maximum length boundary
+    - ALWAYS use meta.effectiveMaxLength as the max — it is already computed (explicit or default 50)
+    - Generate a realistic value whose character length == effectiveMaxLength exactly
+    - MUST respect inputFormatters and be a realistic value (not just repeated chars)
+    - For Thai name fields: use a realistic long Thai full name padded to reach the length
+    - For free-text note fields: use a realistic sentence padded to reach the length
+    - For email fields: pad local-part with chars to reach effectiveMaxLength
+    - For digit-only fields: use digits that reach effectiveMaxLength
+
+Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}
+Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}
+(atMin and atMax are ONLY in the FIRST pair of each field)''',
 
       // === EXAMPLE: ตัวอย่าง ===
       'Example 1 (field with 2 rules, maxLength=100):',
