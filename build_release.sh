@@ -21,16 +21,16 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PACKAGE_NAME="flutter_test_gen_v${VERSION}"
 OUT_DIR="$SCRIPT_DIR/$PACKAGE_NAME"
 ZIP_FILE="$SCRIPT_DIR/${PACKAGE_NAME}.zip"
-TOOL_BASE="$SCRIPT_DIR"   # source of Dockerfile / entrypoint
+TOOL_BASE="$SCRIPT_DIR/release"  # source of Dockerfile / entrypoint / run_tool.sh
 
 # ── Check source files exist ──────────────────────────────────────────────────
 for f in \
   "$TOOL_BASE/Dockerfile" \
   "$TOOL_BASE/docker-entrypoint.sh" \
-  "$TOOL_BASE/pubspec.yaml" \
-  "$TOOL_BASE/pubspec.lock" \
   "$TOOL_BASE/run_tool.sh" \
   "$TOOL_BASE/INSTALL.md" \
+  "$SCRIPT_DIR/pubspec.yaml" \
+  "$SCRIPT_DIR/pubspec.lock" \
   "$SCRIPT_DIR/tools/script_v2/generate_test_script.dart" \
   "$SCRIPT_DIR/webview/server.dart"; do
   if [ ! -f "$f" ]; then
@@ -46,12 +46,12 @@ rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR/tools/script_v2"
 mkdir -p "$OUT_DIR/webview"
 
-# ── Copy infrastructure files (from v1.0.0 base) ─────────────────────────────
+# ── Copy infrastructure files ─────────────────────────────────────────────────
 cp "$TOOL_BASE/Dockerfile"            "$OUT_DIR/"
 cp "$TOOL_BASE/docker-entrypoint.sh"  "$OUT_DIR/"
-cp "$TOOL_BASE/pubspec.yaml"          "$OUT_DIR/"
-cp "$TOOL_BASE/pubspec.lock"          "$OUT_DIR/"
 cp "$TOOL_BASE/run_tool.sh"           "$OUT_DIR/"
+cp "$SCRIPT_DIR/pubspec.yaml"         "$OUT_DIR/"
+cp "$SCRIPT_DIR/pubspec.lock"         "$OUT_DIR/"
 
 # ── Copy INSTALL.md with version replaced ─────────────────────────────────────
 sed "s/v1\.0\.0/v${VERSION}/g" "$TOOL_BASE/INSTALL.md" > "$OUT_DIR/INSTALL.md"
