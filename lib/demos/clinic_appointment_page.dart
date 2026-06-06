@@ -188,7 +188,11 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณากรอกชื่อ-นามสกุล';
-                    if (v.trim().length < 2) return 'อย่างน้อย 2 ตัวอักษร';
+                    final name = v.trim();
+                    if (!RegExp(r'^[฀-๿a-zA-Z\s]+$').hasMatch(name))
+                      return 'ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ';
+                    if (name.split(RegExp(r'\s+')).length < 2)
+                      return 'กรุณากรอกทั้งชื่อและนามสกุล';
                     return null;
                   },
                 ),
@@ -210,7 +214,16 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณากรอกเลขบัตรประชาชน';
-                    if (v.trim().length != 13) return 'ต้องมี 13 หลัก';
+                    final id = v.trim();
+                    if (id.length != 13) return 'ต้องมี 13 หลัก';
+                    if (id[0] == '0') return 'เลขบัตรไม่ถูกต้อง';
+                    // Thai national ID checksum: sum(d_i × (13-i)) mod 11, check = (11-rem) mod 10
+                    var sum = 0;
+                    for (var i = 0; i < 12; i++) {
+                      sum += int.parse(id[i]) * (13 - i);
+                    }
+                    if ((11 - sum % 11) % 10 != int.parse(id[12]))
+                      return 'เลขบัตรประชาชนไม่ถูกต้อง';
                     return null;
                   },
                 ),
@@ -232,7 +245,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณากรอกเบอร์โทรศัพท์';
-                    if (v.trim().length < 9) return 'เบอร์โทรไม่ถูกต้อง';
+                    if (!RegExp(r'^0\d{8,9}$').hasMatch(v.trim()))
+                      return 'เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)';
                     return null;
                   },
                 ),
@@ -347,6 +361,14 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณาเลือกวันที่นัดหมาย';
+                    if (state.appointmentDate != null) {
+                      final now = DateTime.now();
+                      final today = DateTime(now.year, now.month, now.day);
+                      final picked = state.appointmentDate!;
+                      if (DateTime(picked.year, picked.month, picked.day)
+                          .isBefore(today))
+                        return 'ไม่สามารถนัดหมายวันที่ผ่านมาแล้ว';
+                    }
                     return null;
                   },
                 ),
@@ -364,6 +386,12 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณาเลือกช่วงเวลา';
+                    if (state.appointmentTime != null) {
+                      final t = state.appointmentTime!;
+                      final mins = t.hour * 60 + t.minute;
+                      if (mins < 8 * 60 || mins > 20 * 60)
+                        return 'เวลาเปิดให้บริการ 08:00–20:00 น.';
+                    }
                     return null;
                   },
                 ),

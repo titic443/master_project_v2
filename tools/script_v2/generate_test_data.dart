@@ -19,7 +19,9 @@ class TestDataGenerator {
 
   TestDataGenerator({String? pictBin})
       : pictBin = pictBin ??
-            (File('/.dockerenv').existsSync() ? '/usr/local/bin/pict' : './pict');
+            (File('/.dockerenv').existsSync()
+                ? '/usr/local/bin/pict'
+                : './pict');
 
   Future<String> generateTestData(String manifestPath,
       {String? constraints}) async {
@@ -179,15 +181,18 @@ class TestDataGenerator {
     final hasEndButton = endKey != null;
 
     // Fallback: derive success key from endKey prefix when manifest has no _expected_success key.
-    final String? _fallbackSuccessKey = (expectedSuccessKeys.isEmpty && endKey != null)
-        ? '${endKey.split('_').first}_expected_success'
-        : null;
+    final String? _fallbackSuccessKey =
+        (expectedSuccessKeys.isEmpty && endKey != null)
+            ? '${endKey.split('_').first}_expected_success'
+            : null;
 
     List<Map<String, dynamic>> buildSuccessAsserts() {
       if (expectedSuccessKeys.isNotEmpty) {
         return [for (final sk in expectedSuccessKeys) buildAssert(sk)];
       } else if (_fallbackSuccessKey != null) {
-        return [{'byKey': _fallbackSuccessKey, 'exists': true}];
+        return [
+          {'byKey': _fallbackSuccessKey, 'exists': true}
+        ];
       }
       return [];
     }
@@ -195,8 +200,7 @@ class TestDataGenerator {
     for (final w in widgets) {
       final t = (w['widgetType'] ?? '').toString();
       final k = (w['key'] ?? '').toString();
-      final pickerMeta =
-          w['pickerMetadata'] as Map?;
+      final pickerMeta = w['pickerMetadata'] as Map?;
 
       if ((t.startsWith('TextField') || t.startsWith('TextFormField')) &&
           k.isNotEmpty &&
@@ -411,14 +415,12 @@ class TestDataGenerator {
       }
 
       // Preserve AI datasets for TimePicker valid value; only override invalidRuleMessages.
-      final existingTime =
-          (datasets['byKey'] as Map<String, dynamic>)[key];
+      final existingTime = (datasets['byKey'] as Map<String, dynamic>)[key];
       final existingTimeEntry =
           (existingTime is List && existingTime.isNotEmpty)
               ? (existingTime[0] as Map?)
               : null;
-      final aiValidTime =
-          existingTimeEntry?['valid']?.toString() ?? '';
+      final aiValidTime = existingTimeEntry?['valid']?.toString() ?? '';
       (datasets['byKey'] as Map<String, dynamic>)[key] = <dynamic>[
         <String, dynamic>{
           'valid': aiValidTime.isNotEmpty ? aiValidTime : '09:00',
@@ -439,7 +441,8 @@ class TestDataGenerator {
       for (final rawLine in constraints.split('\n')) {
         final line = rawLine.trim();
         if (line.isEmpty || line.startsWith('#')) continue;
-        if (line.toUpperCase().contains('IF') && line.toUpperCase().contains('THEN')) continue;
+        if (line.toUpperCase().contains('IF') &&
+            line.toUpperCase().contains('THEN')) continue;
 
         final eqIdx = line.indexOf('=');
         if (eqIdx <= 0) continue;
@@ -448,7 +451,7 @@ class TestDataGenerator {
         final rhs = line.substring(eqIdx + 1).trim();
 
         final dotIdx = lhs.indexOf('.');
-        final key  = dotIdx > 0 ? lhs.substring(0, dotIdx) : lhs;
+        final key = dotIdx > 0 ? lhs.substring(0, dotIdx) : lhs;
         final slot = dotIdx > 0 ? lhs.substring(dotIdx + 1) : 'valid';
 
         if (!byKey.containsKey(key)) {
@@ -505,8 +508,7 @@ class TestDataGenerator {
     }
 
     if (numberFieldKeys.isNotEmpty) {
-      final byKey =
-          (datasets['byKey'] as Map<String, dynamic>);
+      final byKey = (datasets['byKey'] as Map<String, dynamic>);
       for (final key in numberFieldKeys) {
         final arr = byKey[key];
         if (arr is List && arr.isNotEmpty && arr[0] is Map) {
@@ -584,7 +586,8 @@ class TestDataGenerator {
       if (!t.startsWith('Radio<')) continue;
       final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
       final groupBinding = meta['groupValueBinding']?.toString() ?? '';
-      if (groupBinding.isEmpty || radioGroupValidation.containsKey(groupBinding)) continue;
+      if (groupBinding.isEmpty ||
+          radioGroupValidation.containsKey(groupBinding)) continue;
       final rules = (meta['validatorRules'] as List?) ?? const [];
       for (final rule in rules) {
         if (rule is Map) {
@@ -612,9 +615,9 @@ class TestDataGenerator {
           final norm = condition.toLowerCase().replaceAll(' ', '');
           if (msg.isNotEmpty &&
               (norm.contains('!value') ||
-               norm.contains('value==false') ||
-               norm.contains('value==null') ||
-               norm.contains('value!=true'))) {
+                  norm.contains('value==false') ||
+                  norm.contains('value==null') ||
+                  norm.contains('value!=true'))) {
             requiredSwitchValidation[k] = msg;
             break;
           }
@@ -647,8 +650,7 @@ class TestDataGenerator {
     final dropdownValues = <String>[];
     final dropdownKeys = <String>[];
     final dropdownValuesList = <List<String>>[];
-    final dropdownValueToTextMaps =
-        <Map<String, String>>[];
+    final dropdownValueToTextMaps = <Map<String, String>>[];
 
     for (final w in widgets) {
       final t = (w['widgetType'] ?? '').toString();
@@ -751,7 +753,7 @@ class TestDataGenerator {
                       ? '${actual.substring(0, 28)}…'
                       : actual)
                   : '""');
-          value = '$raw§$display';
+          value = '$display';
         } else {
           value = _shortValue(raw);
         }
@@ -784,12 +786,10 @@ class TestDataGenerator {
 
     final pageBase = utils.basenameWithoutExtension(uiFile);
 
-    final pageResultPath =
-        'output/model_pairwise/$pageBase.invalid.result.txt';
+    final pageResultPath = 'output/model_pairwise/$pageBase.invalid.result.txt';
     final pageValidResultPath =
         'output/model_pairwise/$pageBase.valid.result.txt';
-    final pageModelPath =
-        'output/model_pairwise/$pageBase.invalid.model.txt';
+    final pageModelPath = 'output/model_pairwise/$pageBase.invalid.model.txt';
 
     final hasPictModel = File(pageModelPath).existsSync();
 
@@ -830,7 +830,8 @@ class TestDataGenerator {
             } else if (values.contains('on') && values.contains('off')) {
               factorTypes[name] = 'switch';
             } else if (values.any((v) => v.endsWith('_radio')) ||
-                radioKeys.any((rk) => values.any((v) => rk.endsWith('_$v') || rk == v))) {
+                radioKeys.any(
+                    (rk) => values.any((v) => rk.endsWith('_$v') || rk == v))) {
               factorTypes[name] = 'radio';
             } else if (sliderKeys.contains(name)) {
               factorTypes[name] = 'slider';
@@ -1096,13 +1097,17 @@ class TestDataGenerator {
                 // Format A override (e.g. key.invalid = 04/06/2026) is respected here.
                 String resolvedDate = pick;
                 if (pick == 'valid' || pick == 'invalid') {
-                  final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final ds =
+                      (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
+                          {};
                   final entry = ds[factorName];
                   if (pick == 'invalid') {
                     hasInvalidData = true;
                     invalidFields.add(factorName);
                   }
-                  final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                  final map0 = entry is List && entry.isNotEmpty
+                      ? entry[0] as Map?
+                      : null;
                   final val = map0?[pick]?.toString() ?? '';
                   resolvedDate = val.isNotEmpty ? val : 'null';
                 }
@@ -1119,13 +1124,17 @@ class TestDataGenerator {
                 // Format A override (e.g. key.invalid = 16:59) is respected here.
                 String resolvedTime = pick;
                 if (pick == 'valid' || pick == 'invalid') {
-                  final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                  final ds =
+                      (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
+                          {};
                   final entry = ds[factorName];
                   if (pick == 'invalid') {
                     hasInvalidData = true;
                     invalidFields.add(factorName);
                   }
-                  final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                  final map0 = entry is List && entry.isNotEmpty
+                      ? entry[0] as Map?
+                      : null;
                   final val = map0?[pick]?.toString() ?? '';
                   resolvedTime = val.isNotEmpty ? val : 'null';
                 }
@@ -1198,7 +1207,8 @@ class TestDataGenerator {
                     : rawPick;
                 if (pick == 'unselected') {
                   hasInvalidData = true;
-                  final groupBinding = radioGroupBindings[factorName] ?? factorName;
+                  final groupBinding =
+                      radioGroupBindings[factorName] ?? factorName;
                   unselectedRadioGroups.add(groupBinding);
                 } else if (pick.isNotEmpty) {
                   final mk = radioKeyForSuffix(radioKeys, pick);
@@ -1235,13 +1245,15 @@ class TestDataGenerator {
               if (raw.isEmpty) continue;
               String dateVal = raw;
               if (raw == 'valid' || raw == 'invalid') {
-                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final ds =
+                    (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                 final entry = ds[key];
                 if (raw == 'invalid') {
                   hasInvalidData = true;
                   invalidFields.add(key);
                 }
-                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final map0 =
+                    entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
                 final v = map0?[raw]?.toString() ?? '';
                 dateVal = v.isNotEmpty ? v : 'null';
               }
@@ -1260,13 +1272,15 @@ class TestDataGenerator {
               if (raw.isEmpty) continue;
               String timeVal = raw;
               if (raw == 'valid' || raw == 'invalid') {
-                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final ds =
+                    (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                 final entry = ds[key];
                 if (raw == 'invalid') {
                   hasInvalidData = true;
                   invalidFields.add(key);
                 }
-                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final map0 =
+                    entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
                 final v = map0?[raw]?.toString() ?? '';
                 timeVal = v.isNotEmpty ? v : 'null';
               }
@@ -1304,8 +1318,8 @@ class TestDataGenerator {
           final id = 'pairwise_invalid_cases_${i + 1}';
           final asserts = <Map<String, dynamic>>[];
 
-          final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ??
-              const {};
+          final ds =
+              (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
           for (final fieldKey in invalidFields) {
             final dataArray = ds[fieldKey];
 
@@ -1326,14 +1340,12 @@ class TestDataGenerator {
                 final meta =
                     (widget['meta'] as Map?)?.cast<String, dynamic>() ??
                         const {};
-                final rules =
-                    (meta['validatorRules'] as List?) ?? const [];
+                final rules = (meta['validatorRules'] as List?) ?? const [];
                 for (final rule in rules) {
                   if (rule is Map) {
-                    final condition =
-                        (rule['condition']?.toString() ?? '')
-                            .toLowerCase()
-                            .replaceAll(' ', '');
+                    final condition = (rule['condition']?.toString() ?? '')
+                        .toLowerCase()
+                        .replaceAll(' ', '');
                     if (condition.contains('null') ||
                         condition.contains('isempty')) {
                       final fallback = rule['message']?.toString() ?? '';
@@ -1398,10 +1410,7 @@ class TestDataGenerator {
           for (final key in textKeys) {
             stepsByKey[key] = [
               {
-                'enterText': {
-                  'byKey': key,
-                  'dataset': 'byKey.$key[0].valid'
-                }
+                'enterText': {'byKey': key, 'dataset': 'byKey.$key[0].valid'}
               },
               {'pump': true}
             ];
@@ -1426,7 +1435,9 @@ class TestDataGenerator {
                     firstOpt;
               }
               stepsByKey[key] = [
-                {'tap': {'byKey': key}},
+                {
+                  'tap': {'byKey': key}
+                },
                 {'pumpAndSettle': true},
                 {'scrollAndTapText': textToTap},
                 {'pumpAndSettle': true}
@@ -1436,7 +1447,9 @@ class TestDataGenerator {
 
           for (final ck in requiredCheckboxValidation.keys) {
             stepsByKey[ck] = [
-              {'tap': {'byKey': ck}},
+              {
+                'tap': {'byKey': ck}
+              },
               {'pump': true}
             ];
           }
@@ -1451,7 +1464,9 @@ class TestDataGenerator {
           }
 
           if (hasEndButton && endKey != null) {
-            st.add({'tap': {'byKey': endKey, 'isSubmit': true}});
+            st.add({
+              'tap': {'byKey': endKey, 'isSubmit': true}
+            });
             st.add({'pumpAndSettle': true});
           } else {
             st.add({'pump': true});
@@ -1568,9 +1583,11 @@ class TestDataGenerator {
               // Resolve 'valid'/'invalid' tokens from datasets for valid-only combinations.
               String resolvedDate = pick;
               if (pick == 'valid' || pick == 'invalid') {
-                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final ds =
+                    (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                 final entry = ds[factorName];
-                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final map0 =
+                    entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
                 final val = map0?[pick]?.toString() ?? '';
                 resolvedDate = val.isNotEmpty ? val : 'null';
               }
@@ -1586,9 +1603,11 @@ class TestDataGenerator {
               // Resolve 'valid'/'invalid' tokens from datasets for valid-only combinations.
               String resolvedTime = pick;
               if (pick == 'valid' || pick == 'invalid') {
-                final ds = (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
+                final ds =
+                    (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? {};
                 final entry = ds[factorName];
-                final map0 = entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
+                final map0 =
+                    entry is List && entry.isNotEmpty ? entry[0] as Map? : null;
                 final val = map0?[pick]?.toString() ?? '';
                 resolvedTime = val.isNotEmpty ? val : 'null';
               }
@@ -1812,7 +1831,8 @@ class TestDataGenerator {
       final emptyAsserts = <Map<String, dynamic>>[];
       if (expectedMsgsCount.isNotEmpty) {
         for (final entry in expectedMsgsCount.entries) {
-          emptyAsserts.add({'text': entry.key, 'exists': true, 'count': entry.value});
+          emptyAsserts
+              .add({'text': entry.key, 'exists': true, 'count': entry.value});
         }
       } else {
         for (final fk in expectedFailKeys) {
@@ -1962,8 +1982,7 @@ class TestDataGenerator {
         'tc': 'edge_cases_boundary_at_min_length',
         'kind': minKind,
         'group': 'edge_cases',
-        'description':
-            _buildDescription(minCombo, minKind, [], [], minAsserts),
+        'description': _buildDescription(minCombo, minKind, [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
       };
@@ -2010,8 +2029,7 @@ class TestDataGenerator {
       {String pictBin = './pict', String? constraints}) async {
     final base = utils.basenameWithoutExtension(uiFile);
 
-    final normalizedPath =
-        uiFile.replaceAll('\\', '/');
+    final normalizedPath = uiFile.replaceAll('\\', '/');
     String subfolderPath = '';
 
     if (normalizedPath.startsWith('lib/')) {

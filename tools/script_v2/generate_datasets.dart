@@ -116,8 +116,7 @@ class DatasetGenerator {
 
         // effectiveMaxLength: inputFormatters.lengthLimit takes priority over maxLength, then default 50
         int? effectiveMax = meta['maxLength'] as int?;
-        final fmts =
-            (meta['inputFormatters'] as List? ?? const []).cast<Map>();
+        final fmts = (meta['inputFormatters'] as List? ?? const []).cast<Map>();
         for (final fmt in fmts) {
           if ((fmt['type'] ?? '') == 'lengthLimit' && fmt['max'] is int) {
             effectiveMax = fmt['max'] as int;
@@ -252,11 +251,9 @@ class DatasetGenerator {
       '=== (CONTEXT) ===',
       'Test data generator for Flutter form validation.',
       '',
-
       '=== (TARGET) ===',
       'QA engineers need REALISTIC test data for happy path and errors.',
       '',
-
       '=== (OBJECTIVE) ===',
       '1. Analyze field key name to understand field purpose (e.g., "firstname" → person name)',
       '2. Analyze constraints (maxLength, inputFormatters, validatorRules)',
@@ -268,7 +265,6 @@ class DatasetGenerator {
       '8. Also generate boundary values: atMin and atMax for each field',
       '9. Output valid JSON',
       '',
-
       '''=== (EXECUTION) ===
 For fields WITH validatorRules:
   1. List all rules. SKIP rules whose condition contains "isEmpty" or "== null" (those are Required checks).
@@ -307,7 +303,6 @@ For boundary values (add to FIRST pair only):
 Output format: {"file":"<filename>","datasets":{"byKey":{"<key>":[...pairs...]}}}
 Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":"...","atMax":"..."}
 (atMin and atMax are ONLY in the FIRST pair of each field)''',
-
       'Example 1 (field with 2 rules, maxLength=100):',
       'Input: {"key":"firstname","meta":{"inputFormatters":[{"type":"lengthLimit","max":100}],"validatorRules":[',
       '  {"condition":"value.isEmpty","message":"Required"},',
@@ -333,7 +328,6 @@ Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":".
       'Reasoning: Only rule is isEmpty/null → skip it as a non-empty rule, BUT since it is the ONLY rule, invalid must be "" to trigger it. Message = exact "กรุณากรอกจังหวัด / เมือง".',
       'Output: {"prop_03_location_textfield":[{"valid":"กรุงเทพมหานคร","invalid":"","invalidRuleMessages":"กรุณากรอกจังหวัด / เมือง","atMin":"","atMax":"กรุงเทพมหานคร"}]}',
       '',
-
       '=== (STYLE) ===',
       '- JSON only (no markdown, no comments)',
       '- REALISTIC values based on field purpose (Thai names for Thai app, etc.)',
@@ -349,9 +343,7 @@ Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":".
           'role': 'user',
           'parts': [
             {'text': instructions},
-            {
-              'text': 'Input Data (JSON):\n${jsonEncode(context)}'
-            },
+            {'text': 'Input Data (JSON):\n${jsonEncode(context)}'},
           ]
         }
       ]
