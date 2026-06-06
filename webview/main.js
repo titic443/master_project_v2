@@ -743,7 +743,6 @@ class WebUI {
 
   #getChipClass(label) {
     if (label === 'invalid' || label === 'unchecked' || label === 'unselected') return 'val-error';
-    if (label === 'atMin' || label === 'atMax') return 'val-warning';
     return 'val-success';
   }
 
