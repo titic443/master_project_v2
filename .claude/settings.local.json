@@ -78,13 +78,25 @@
       "Read(//Users/titichangpoo/Desktop/**)",
       "Bash(find /Users/titichangpoo -maxdepth 5 -name \"flutter_gen_test*\" -type d 2>/dev/null)",
       "Read(//Users/titichangpoo/**)",
-      "Bash(zip -r flutter_test_gen_v1.0.0.zip flutter_test_gen_v1.0.0/)"
+      "Bash(zip -r flutter_test_gen_v1.0.0.zip flutter_test_gen_v1.0.0/)",
+      "Bash(xargs -I{} git show {}:flutter_test_gen_v2.0.0/tools/script_v2/generate_datasets.dart)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(git merge *)",
+      "Bash(git branch *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/)",
+      "Bash(docker exec *)",
+      "Bash(docker network *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://172.17.0.2:8080/)",
+      "Bash(dart run /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/flutter_test_gen_v1.0.0/webview/host_runner.dart /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 > /tmp/flutter_test_gen_host_runner.log 2>&1 & *)",
+      "Bash(curl -s -o /dev/null -w \"8080 → HTTP %{http_code}\" http://localhost:8080/)"
     ],
     "deny": [],
     "ask": [],
     "additionalDirectories": [
       "/Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/.git",
-      "/private/tmp"
+      "/private/tmp",
+      "/tmp"
     ]
   },
   "enableAllProjectMcpServers": true,

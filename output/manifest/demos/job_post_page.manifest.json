@@ -1,0 +1,261 @@
+{
+  "source": {
+    "file": "lib/demos/job_post_page.dart",
+    "pageClass": "JobPostPage",
+    "cubitClass": "JobPostCubit",
+    "stateClass": "JobPostState",
+    "fileCubit": "lib/cubit/job_post_cubit.dart",
+    "fileState": "lib/cubit/job_post_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "AlertDialog",
+      "key": "job_12_expected_fail"
+    },
+    {
+      "widgetType": "AlertDialog",
+      "key": "job_12_expected_success"
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_01_title_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกตำแหน่งงาน"
+          },
+          {
+            "condition": "v.trim().length < 3",
+            "message": "กรุณากรอกอย่างน้อย 3 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_02_company_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกชื่อบริษัท"
+          },
+          {
+            "condition": "v.trim().length < 2",
+            "message": "กรุณากรอกอย่างน้อย 2 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_03_location_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกสถานที่ทำงาน"
+          },
+          {
+            "condition": "v.trim().length < 2",
+            "message": "กรุณากรอกอย่างน้อย 2 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "job_04_category_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกหมวดหมู่งาน"
+          }
+        ],
+        "options": [
+          {
+            "value": "IT & Tech",
+            "text": "IT & Tech"
+          },
+          {
+            "value": "Finance",
+            "text": "Finance"
+          },
+          {
+            "value": "Marketing",
+            "text": "Marketing"
+          },
+          {
+            "value": "Engineering",
+            "text": "Engineering"
+          },
+          {
+            "value": "Healthcare",
+            "text": "Healthcare"
+          },
+          {
+            "value": "Education",
+            "text": "Education"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "job_05_type_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกประเภทการจ้างงาน"
+          }
+        ],
+        "options": [
+          {
+            "value": "Full-time",
+            "text": "Full-time"
+          },
+          {
+            "value": "Part-time",
+            "text": "Part-time"
+          },
+          {
+            "value": "Contract",
+            "text": "Contract"
+          },
+          {
+            "value": "Freelance",
+            "text": "Freelance"
+          },
+          {
+            "value": "Internship",
+            "text": "Internship"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "job_06_exp_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกระดับประสบการณ์"
+          }
+        ],
+        "options": [
+          {
+            "value": "Entry Level",
+            "text": "Entry Level"
+          },
+          {
+            "value": "Junior",
+            "text": "Junior"
+          },
+          {
+            "value": "Mid-Level",
+            "text": "Mid-Level"
+          },
+          {
+            "value": "Senior",
+            "text": "Senior"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_07_salary_min_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกเงินเดือนขั้นต่ำ"
+          },
+          {
+            "condition": "int.tryParse(v) == null",
+            "message": "กรุณากรอกเป็นตัวเลข"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_08_salary_max_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกเงินเดือนสูงสุด"
+          },
+          {
+            "condition": "max == null",
+            "message": "กรุณากรอกเป็นตัวเลข"
+          },
+          {
+            "condition": "min != null && max < min",
+            "message": "ต้องมากกว่าหรือเท่ากับเงินเดือนขั้นต่ำ"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Switch",
+      "key": "job_11_remote_switch",
+      "meta": {
+        "valueBinding": "state.isRemote"
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_09_desc_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกรายละเอียดงาน"
+          },
+          {
+            "condition": "v.trim().length < 20",
+            "message": "กรุณากรอกอย่างน้อย 20 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "job_10_skills_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกทักษะที่ต้องการ"
+          },
+          {
+            "condition": "v.trim().length < 2",
+            "message": "กรุณากรอกอย่างน้อย 2 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "ElevatedButton",
+      "key": "job_12_end_button"
+    }
+  ]
+}

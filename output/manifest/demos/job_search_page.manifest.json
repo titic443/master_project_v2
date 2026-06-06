@@ -1,0 +1,115 @@
+{
+  "source": {
+    "file": "lib/demos/job_search_page.dart",
+    "pageClass": "JobSearchPage",
+    "cubitClass": "JobSearchCubit",
+    "stateClass": "JobSearchState",
+    "fileCubit": "lib/cubit/job_search_cubit.dart",
+    "fileState": "lib/cubit/job_search_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "AlertDialog",
+      "key": "search_01_expected_success"
+    },
+    {
+      "widgetType": "AlertDialog",
+      "key": "search_01_expected_fail"
+    },
+    {
+      "widgetType": "TextField",
+      "key": "search_01_keyword_textfield"
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "search_02_category_dropdown",
+      "meta": {
+        "options": [
+          {
+            "value": "null",
+            "text": "ทั้งหมด"
+          },
+          {
+            "value": "IT & Tech",
+            "text": "IT & Tech"
+          },
+          {
+            "value": "Finance",
+            "text": "Finance"
+          },
+          {
+            "value": "Marketing",
+            "text": "Marketing"
+          },
+          {
+            "value": "Engineering",
+            "text": "Engineering"
+          },
+          {
+            "value": "Healthcare",
+            "text": "Healthcare"
+          },
+          {
+            "value": "Education",
+            "text": "Education"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "search_03_type_dropdown",
+      "meta": {
+        "options": [
+          {
+            "value": "null",
+            "text": "ทั้งหมด"
+          },
+          {
+            "value": "Full-time",
+            "text": "Full-time"
+          },
+          {
+            "value": "Part-time",
+            "text": "Part-time"
+          },
+          {
+            "value": "Contract",
+            "text": "Contract"
+          },
+          {
+            "value": "Freelance",
+            "text": "Freelance"
+          },
+          {
+            "value": "Internship",
+            "text": "Internship"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextField",
+      "key": "search_04_salary_min_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Switch",
+      "key": "search_05_remote_switch",
+      "meta": {
+        "valueBinding": "state.remoteOnly"
+      }
+    },
+    {
+      "widgetType": "ElevatedButton",
+      "key": "search_06_end_button"
+    }
+  ]
+}

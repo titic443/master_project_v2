@@ -1,0 +1,28 @@
+{
+  "source": {
+    "file": "lib/demos/clinic_search_page.dart",
+    "pageClass": "ClinicSearchPage",
+    "cubitClass": "ClinicSearchCubit",
+    "stateClass": "ClinicSearchState",
+    "fileCubit": "lib/cubit/clinic_search_cubit.dart",
+    "fileState": "lib/cubit/clinic_search_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "AlertDialog",
+      "key": "search_01_expected_success"
+    },
+    {
+      "widgetType": "AlertDialog",
+      "key": "search_01_expected_fail"
+    },
+    {
+      "widgetType": "TextField",
+      "key": "search_01_patient_name_textfield"
+    },
+    {
+      "widgetType": "ElevatedButton",
+      "key": "search_05_end_button"
+    }
+  ]
+}

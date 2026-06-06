@@ -17,7 +17,7 @@
 ## โครงสร้างไฟล์ใน Package
 
 ```
-flutter_test_gen_v2.0.0/
+flutter_test_gen_v1.0.0/
 ├── Dockerfile               ← ไฟล์สำหรับ build Docker image
 ├── docker-entrypoint.sh     ← script เริ่มต้นภายใน container
 ├── pubspec.yaml             ← dependencies ของเครื่องมือ
@@ -37,8 +37,8 @@ flutter_test_gen_v2.0.0/
 
 ```bash
 # 1. แตก zip ไปยัง directory ที่ต้องการเก็บเครื่องมือ
-unzip flutter_test_gen_v2.0.0.zip
-cd flutter_test_gen_v2.0.0
+unzip flutter_test_gen_v1.0.0.zip
+cd flutter_test_gen_v1.0.0
 
 # 2. Build Docker image (ใช้เวลาประมาณ 5-15 นาทีในครั้งแรก)
 docker build -t flutter_test_gen .
@@ -98,7 +98,7 @@ Copy `run_tool.sh` จาก package ไปวางที่ root ของ Flu
 # แก้ไขใน run_tool.sh บรรทัดนี้:
 # SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # เป็น:
-# SCRIPT_DIR="/path/to/flutter_test_gen_v2.0.0"
+# SCRIPT_DIR="/path/to/flutter_test_gen_v1.0.0"
 
 # จากนั้น copy ไปยัง Flutter project และรัน
 cp run_tool.sh /path/to/your_flutter_project/

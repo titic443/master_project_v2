@@ -7,12 +7,16 @@
 # key = value         → override slot 'valid'
 # key.slot = value    → override slot โดยตรง (valid / invalid / atMin / atMax)
 
-appt_01_patient_name_textfield.valid = ฐิติ ช่างภู่
-appt_01_patient_name_textfield.invalid = รชนิศ มงคลศิวะ
+appt_01_patient_name_textfield.valid = สมชาย ใจดี
+appt_01_patient_name_textfield.invalid = สมชาย
+appt_02_id_card_textfield.valid = 1234567890121
+appt_02_id_card_textfield.invalid = 1234567890120
+appt_03_phone_textfield.valid = 0812345678
+appt_03_phone_textfield.invalid = 1234567890
 appt_06_date_textfield.valid = 06/06/2026
 appt_06_date_textfield.invalid = 04/06/2026
 appt_07_time_textfield.valid = 12:00
-appt_07_time_textfield.invalid = 16:59
+appt_07_time_textfield.invalid = 22:00
 
 # ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────
 # ทุก constraint ต้องอยู่บรรทัดเดียว และลงท้ายด้วย ;

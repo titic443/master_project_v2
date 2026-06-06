@@ -1,0 +1,249 @@
+{
+  "source": {
+    "file": "lib/demos/property_post_page.dart",
+    "pageClass": "PropertyPostPage",
+    "cubitClass": "PropertyPostCubit",
+    "stateClass": "PropertyPostState",
+    "fileCubit": "lib/cubit/property_post_cubit.dart",
+    "fileState": "lib/cubit/property_post_state.dart"
+  },
+  "widgets": [
+    {
+      "widgetType": "AlertDialog",
+      "key": "prop_13_expected_fail"
+    },
+    {
+      "widgetType": "AlertDialog",
+      "key": "prop_13_expected_success"
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_01_title_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกหัวข้อประกาศ"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "prop_02_type_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกประเภท"
+          }
+        ],
+        "options": [
+          {
+            "value": "Condo",
+            "text": "คอนโด"
+          },
+          {
+            "value": "House",
+            "text": "บ้านเดี่ยว"
+          },
+          {
+            "value": "Townhouse",
+            "text": "ทาวน์เฮาส์"
+          },
+          {
+            "value": "Land",
+            "text": "ที่ดิน"
+          },
+          {
+            "value": "Commercial",
+            "text": "อาคารพาณิชย์"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_03_location_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกจังหวัด / เมือง"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_04_district_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกเขต / ย่าน"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_05_price_textfield",
+      "meta": {
+        "keyboardType": "number",
+        "inputFormatters": [
+          {
+            "type": "digitsOnly"
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกราคา"
+          },
+          {
+            "condition": "n == null || n < 100000",
+            "message": "ราคาขั้นต่ำ 100,000 บาท"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "prop_06_bedrooms_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกจำนวนห้องนอน"
+          }
+        ],
+        "options": [
+          {
+            "value": "Studio",
+            "text": "สตูดิโอ"
+          },
+          {
+            "value": "1",
+            "text": "1"
+          },
+          {
+            "value": "2",
+            "text": "2"
+          },
+          {
+            "value": "3",
+            "text": "3"
+          },
+          {
+            "value": "4+",
+            "text": "4+"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "DropdownButtonFormField<String>",
+      "key": "prop_07_bathrooms_dropdown",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null",
+            "message": "กรุณาเลือกจำนวนห้องน้ำ"
+          }
+        ],
+        "options": [
+          {
+            "value": "1",
+            "text": "1"
+          },
+          {
+            "value": "2",
+            "text": "2"
+          },
+          {
+            "value": "3",
+            "text": "3"
+          },
+          {
+            "value": "4+",
+            "text": "4+"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_08_area_textfield",
+      "meta": {
+        "inputFormatters": [
+          {
+            "type": "allow",
+            "pattern": "^\\d+\\.?\\d{0,2}"
+          }
+        ],
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกพื้นที่ใช้สอย"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_09_floor_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกชั้น"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "Switch",
+      "key": "prop_10_furnished_switch",
+      "meta": {
+        "valueBinding": "state.isFurnished"
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_11_desc_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกรายละเอียด"
+          },
+          {
+            "condition": "v.trim().length < 20",
+            "message": "กรุณากรอกอย่างน้อย 20 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "TextFormField",
+      "key": "prop_12_contact_textfield",
+      "meta": {
+        "validatorRules": [
+          {
+            "condition": "v == null || v.trim().isEmpty",
+            "message": "กรุณากรอกชื่อผู้ติดต่อ"
+          },
+          {
+            "condition": "v.trim().length < 2",
+            "message": "กรุณากรอกอย่างน้อย 2 ตัวอักษร"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "ElevatedButton",
+      "key": "prop_13_end_button"
+    }
+  ]
+}

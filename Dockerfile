@@ -3,11 +3,15 @@
 # =============================================================================
 # Multi-stage build:
 #   Stage 1 (pict-builder) : build Microsoft PICT binary from source
-#   Stage 2 (final)        : Dart + Flutter + tool files + PICT binary
+#   Stage 2 (final)        : Dart-only image + tool files + PICT binary
+#
+# NOTE: Flutter/Android SDK removed — test execution runs on the host machine
+# via host_runner.dart (port 8089).  This container only runs Dart pipeline
+# scripts: scan → datasets → PICT → test script generation.
 #
 # Usage:
 #   docker build -t flutter_test_gen .
-#   docker run -it --rm -p 8080:8080 -v $(pwd):/workspace flutter_test_gen
+#   docker run -d --rm -p 8080:8080 -v $(pwd):/workspace flutter_test_gen
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -22,33 +26,21 @@ RUN apt-get update && apt-get install -y \
 RUN git clone https://github.com/microsoft/pict.git /pict --depth 1 \
     && cd /pict \
     && cmake -DCMAKE_BUILD_TYPE=Release . \
-    && make -j$(nproc) \
+    && make -j1 \
     && PICT_BIN=$(find /pict -maxdepth 3 -type f \( -name "pict" -o -name "pict_cli" \) | head -1) \
     && echo "Found PICT binary at: $PICT_BIN" \
     && strip "$PICT_BIN" \
     && cp "$PICT_BIN" /pict_binary
 
 # -----------------------------------------------------------------------------
-# Stage 2: Final image — Dart + Flutter + tool
+# Stage 2: Final image — Dart only (no Flutter SDK needed)
 # -----------------------------------------------------------------------------
 FROM dart:stable
 
-# Install system dependencies for Flutter
+# Minimal system packages (no Flutter build deps)
 RUN apt-get update && apt-get install -y \
-    git curl unzip xz-utils zip \
-    libglu1-mesa clang cmake ninja-build pkg-config \
-    libgtk-3-dev liblzma-dev libstdc++-12-dev \
+    git curl lcov \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Flutter SDK
-ENV FLUTTER_HOME=/flutter
-RUN git clone https://github.com/flutter/flutter.git $FLUTTER_HOME \
-    --branch stable --depth 1 \
-    && $FLUTTER_HOME/bin/flutter precache \
-        --no-ios --no-android --no-fuchsia \
-    && $FLUTTER_HOME/bin/flutter --version
-
-ENV PATH="$FLUTTER_HOME/bin:${PATH}"
 
 # Copy PICT binary from build stage
 COPY --from=pict-builder /pict_binary /usr/local/bin/pict
@@ -57,15 +49,15 @@ RUN chmod +x /usr/local/bin/pict
 # Copy tool files into image
 WORKDIR /tool
 COPY tools/script_v2/ ./tools/script_v2/
-COPY webview/index.html  ./webview/index.html
-COPY webview/main.js     ./webview/main.js
-COPY webview/styles.css  ./webview/styles.css
-COPY webview/server.dart ./webview/server.dart
+COPY webview/index.html           ./webview/index.html
+COPY webview/main.js              ./webview/main.js
+COPY webview/styles.css           ./webview/styles.css
+COPY webview/server.dart          ./webview/server.dart
 COPY webview/coverage_runner.dart ./webview/coverage_runner.dart
 
-# Pre-fetch Dart dependencies using the project's pubspec
-COPY pubspec.yaml pubspec.lock ./
-RUN flutter pub get
+# Minimal pubspec for the tool — no Flutter deps (tool uses only dart: built-ins)
+RUN printf 'name: flutter_test_gen_tool\nenvironment:\n  sdk: ">=3.5.0 <4.0.0"\n' \
+    > pubspec.yaml && dart pub get
 
 # Entrypoint script
 COPY docker-entrypoint.sh /tool/entrypoint.sh

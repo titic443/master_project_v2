@@ -54,8 +54,16 @@
             "message": "กรุณากรอกชื่อ-นามสกุล"
           },
           {
-            "condition": "v.trim().length < 2",
-            "message": "อย่างน้อย 2 ตัวอักษร"
+            "condition": "!RegExp(r'^[฀-๿a-zA-Z\\s]+$').hasMatch(name)",
+            "message": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ"
+          },
+          {
+            "condition": "name.split(RegExp(r'\\s+')).length < 2",
+            "message": "กรุณากรอกทั้งชื่อและนามสกุล"
+          },
+          {
+            "condition": "!RegExp(r'^[฀-๿a-zA-Z\\s]+$').hasMatch(value)",
+            "message": "\\s+"
           }
         ]
       }
@@ -80,8 +88,16 @@
             "message": "กรุณากรอกเลขบัตรประชาชน"
           },
           {
-            "condition": "v.trim().length != 13",
+            "condition": "id.length != 13",
             "message": "ต้องมี 13 หลัก"
+          },
+          {
+            "condition": "id[0] == '0'",
+            "message": "เลขบัตรไม่ถูกต้อง"
+          },
+          {
+            "condition": "(11 - sum % 11) % 10 != int.parse(id[12])",
+            "message": "เลขบัตรประชาชนไม่ถูกต้อง"
           }
         ]
       }
@@ -106,8 +122,8 @@
             "message": "กรุณากรอกเบอร์โทรศัพท์"
           },
           {
-            "condition": "v.trim().length < 9",
-            "message": "เบอร์โทรไม่ถูกต้อง"
+            "condition": "!RegExp(r'^0\\d{8,9}$').hasMatch(v.trim())",
+            "message": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)"
           }
         ]
       }
@@ -162,6 +178,10 @@
           {
             "condition": "v == null || v.trim().isEmpty",
             "message": "กรุณาเลือกวันที่นัดหมาย"
+          },
+          {
+            "condition": "state.appointmentDate != null",
+            "message": "ไม่สามารถนัดหมายวันที่ผ่านมาแล้ว"
           }
         ]
       },
@@ -181,6 +201,10 @@
           {
             "condition": "v == null || v.trim().isEmpty",
             "message": "กรุณาเลือกช่วงเวลา"
+          },
+          {
+            "condition": "state.appointmentTime != null",
+            "message": "เวลาเปิดให้บริการ 08:00–20:00 น."
           }
         ]
       },
