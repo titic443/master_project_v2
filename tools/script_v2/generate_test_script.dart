@@ -328,8 +328,8 @@ class TestScriptGenerator {
             } else {
               final parts = action.split(':');
               if (parts.length == 2) {
-                final hour = parts[0];
-                final minute = parts[1];
+                final hour = parts[0].replaceAll(RegExp(r'\D'), '');
+                final minute = parts[1].replaceAll(RegExp(r'\D'), '');
 
                 b.writeln("      // Select time: $action");
                 // Switch to input mode if dial is showing
@@ -857,8 +857,8 @@ class TestScriptGenerator {
             } else {
               final parts = action.split(':');
               if (parts.length == 2) {
-                final hour = parts[0];
-                final minute = parts[1];
+                final hour = parts[0].replaceAll(RegExp(r'\D'), '');
+                final minute = parts[1].replaceAll(RegExp(r'\D'), '');
 
                 ib.writeln("        // Select time: $action");
                 // Switch to input mode if dial mode is showing (safety net)

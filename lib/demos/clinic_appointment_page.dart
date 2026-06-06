@@ -217,13 +217,6 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                     final id = v.trim();
                     if (id.length != 13) return 'ต้องมี 13 หลัก';
                     if (id[0] == '0') return 'เลขบัตรไม่ถูกต้อง';
-                    // Thai national ID checksum: sum(d_i × (13-i)) mod 11, check = (11-rem) mod 10
-                    var sum = 0;
-                    for (var i = 0; i < 12; i++) {
-                      sum += int.parse(id[i]) * (13 - i);
-                    }
-                    if ((11 - sum % 11) % 10 != int.parse(id[12]))
-                      return 'เลขบัตรประชาชนไม่ถูกต้อง';
                     return null;
                   },
                 ),
