@@ -733,7 +733,7 @@ class TestDataGenerator {
         final raw = e.value;
 
         String value;
-        if (raw == 'checked' || raw == 'unchecked') {
+        if (raw == 'checked' || raw == 'unchecked' || raw == 'unselected') {
           value = raw;
         } else if (raw == 'valid' ||
             raw == 'invalid' ||
@@ -753,7 +753,8 @@ class TestDataGenerator {
                       ? '${actual.substring(0, 28)}…'
                       : actual)
                   : '""');
-          value = '$display';
+          // label§display — label กำหนดสี chip, display แสดงค่าจริง
+          value = '$raw§$display';
         } else {
           value = _shortValue(raw);
         }
