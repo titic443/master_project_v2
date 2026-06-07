@@ -808,6 +808,7 @@ class TestDataGenerator {
         return hit.isEmpty ? null : hit;
       }
 
+      // อ่าน PICT model file แล้ว parse factors/types/constraints พร้อม load invalid+valid combinations
       void loadPictAnalysis() {
         if (File(pageModelPath).existsSync()) {
           modelFactors =
@@ -851,6 +852,7 @@ class TestDataGenerator {
         }
       }
 
+      // วนแต่ละ pairwise-invalid combination แล้วสร้าง test case พร้อม steps, asserts, และ description
       Future<void> _buildPairwiseCases() async {
         String textForBucket(String tfKey, String bucket) {
           final maxLen = _maxLenFromMeta(_widgetMetaByKey(tfKey));
@@ -1485,6 +1487,7 @@ class TestDataGenerator {
         }
       }
 
+      // วนแต่ละ pairwise-valid combination แล้วสร้าง test case ที่คาดหวัง success
       void _buildPairwiseValidCases() {
         if (extValidCombos == null || extValidCombos!.isEmpty) return;
         for (int i = 0; i < extValidCombos!.length; i++) {
@@ -1989,6 +1992,7 @@ class TestDataGenerator {
       };
     }
 
+    // รวม edge cases ทั้งหมด (empty fields, boundary max, boundary min) แล้วเพิ่มเข้า cases list
     void _buildAllEdgeCases() {
       final emptyCase = buildEdgeCaseEmptyFields();
       if (emptyCase != null) cases.add(emptyCase);
