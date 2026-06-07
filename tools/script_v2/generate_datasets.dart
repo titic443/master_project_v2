@@ -8,7 +8,7 @@ import 'utils.dart' as utils;
 // the hardcodedApiKey constant below.
 // Key priority (high → low): --api-key flag | .env file | GEMINI_API_KEY env var | hardcoded fallback
 const String hardcodedApiKey =
-    'YOUR_GEMINI_API_KEY_HERE';
+    '';
 
 void main(List<String> args) async {
   String manifestPath = '';

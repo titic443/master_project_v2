@@ -12,49 +12,44 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมชาย ใจดี",
-          "invalid": "สมชาย123",
+          "valid": "สมศรี มีสุข",
+          "invalid": "สมศรี123",
           "invalidRuleMessages": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
           "atMin": "",
-          "atMax": "ปัญญาพร วัฒนามานะชัยกุลสวัสดิ์เจริญสุขสำราญใจจริงย"
+          "atMax": "กมลวรรณ บุญมีศรีสุขสมบัติ ทรัพย์อุดมปรีชาชาญ วัฒนส"
         },
         {
-          "valid": "สมชาย ใจดี",
+          "valid": "จอห์น สมิธ",
           "invalid": "สมชาย",
           "invalidRuleMessages": "กรุณากรอกทั้งชื่อและนามสกุล"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1102030000004",
+          "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
           "atMin": "",
           "atMax": "1234567890123"
         },
         {
-          "valid": "1102030000004",
+          "valid": "1234567890123",
           "invalid": "0123456789012",
           "invalidRuleMessages": "เลขบัตรไม่ถูกต้อง"
-        },
-        {
-          "valid": "1102030000004",
-          "invalid": "1102030000005",
-          "invalidRuleMessages": "เลขบัตรประชาชนไม่ถูกต้อง"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "081234567",
+          "invalid": "01234567",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
           "atMin": "",
-          "atMax": "0812345678"
+          "atMax": "0123456789"
         }
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "06/06/2026",
+          "valid": "07/06/2026",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
           "atMin": "01/01/2000",
@@ -63,20 +58,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "10:00",
+          "valid": "14:00",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
           "atMin": "",
-          "atMax": "14:30 (เวลาที่สะดวกในช่วงบ่ายสำหรับคุณลูกค้าเสมอ)"
+          "atMax": "14:00 PM This is a very long time slot description"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีอาการไอเรื้อรังมา 2 สัปดาห์",
-          "invalid": "!",
+          "valid": "คนไข้มีอาการเวียนหัวเล็กน้อยและมีผื่นขึ้นตามตัว",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลิน ควรระวังในการใช"
+          "atMax": "อาการป่วยเล็กน้อย มีไข้และไอเล็กน้อย โปรดตรวจเบื้อ"
         }
       ]
     }
@@ -86,7 +81,7 @@
       "tc": "pairwise_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: medicine\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -125,136 +120,6 @@
         },
         {
           "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_2",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"orthopedics\", date: \"\", time: \"\", insurance_switch: on, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
         },
         {
           "pumpAndSettle": true
@@ -347,416 +212,10 @@
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_3",
+      "tc": "pairwise_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"surgery\", date: \"\", time: \"\", insurance_switch: on, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ศัลยกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_4",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"pediatrics\", date: \"\", time: \"\", insurance_switch: on, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_5",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"surgery\", date: \"\", time: \"\", insurance_switch: off, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ศัลยกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_6",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"ent\", date: \"\", time: \"\", insurance_switch: on, note: !",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -836,6 +295,392 @@
           "pumpAndSettle": true
         },
         {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_3",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อายุรกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สูติ-นรีเวช"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกประเภทการนัด",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_5",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "จักษุวิทยา"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
           "tap": {
             "byKey": "appt_08_insurance_switch"
           }
@@ -891,10 +736,140 @@
       ]
     },
     {
+      "tc": "pairwise_invalid_cases_6",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "จักษุวิทยา"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
       "tc": "pairwise_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: medicine\", date: \"\", time: \"\", insurance_switch: on, note: !",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -939,7 +914,7 @@
         },
         {
           "tap": {
-            "byKey": "appt_05_type_radio_tele"
+            "byKey": "appt_05_type_radio_opd"
           }
         },
         {
@@ -1032,7 +1007,7 @@
       "tc": "pairwise_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"ent\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1070,7 +1045,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "หู คอ จมูก"
+          "scrollAndTapText": "จักษุวิทยา"
         },
         {
           "pumpAndSettle": true
@@ -1158,7 +1133,7 @@
       "tc": "pairwise_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"pediatrics\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1196,263 +1171,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_10",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"ophthalmology\", date: \"\", time: \"\", insurance_switch: off, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "จักษุวิทยา"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกประเภทการนัด",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_11",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"ophthalmology\", date: \"\", time: \"\", insurance_switch: on, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "จักษุวิทยา"
+          "scrollAndTapText": "กระดูกและข้อ"
         },
         {
           "pumpAndSettle": true
@@ -1549,10 +1268,10 @@
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_12",
+      "tc": "pairwise_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"obstetrics\", date: \"\", time: \"\", insurance_switch: on, note: !",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1590,7 +1309,267 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สูติ-นรีเวช"
+          "scrollAndTapText": "กระดูกและข้อ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกประเภทการนัด",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_11",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ศัลยกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกประเภทการนัด",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_12",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "หู คอ จมูก"
         },
         {
           "pumpAndSettle": true
@@ -1686,7 +1665,7 @@
       "tc": "pairwise_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"pediatrics\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1724,10 +1703,18 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
+          "scrollAndTapText": "สูติ-นรีเวช"
         },
         {
           "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
         },
         {
           "tap": {
@@ -1756,6 +1743,14 @@
         },
         {
           "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
         },
         {
           "enterText": {
@@ -1798,10 +1793,6 @@
           "exists": true
         },
         {
-          "text": "กรุณาเลือกประเภทการนัด",
-          "exists": true
-        },
-        {
           "byKey": "appt_10_expected_fail",
           "exists": true,
           "dismiss": true
@@ -1812,7 +1803,7 @@
       "tc": "pairwise_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"obstetrics\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1942,7 +1933,7 @@
       "tc": "pairwise_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"obstetrics\", date: \"\", time: \"\", insurance_switch: on, note: !",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1980,14 +1971,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สูติ-นรีเวช"
+          "scrollAndTapText": "ศัลยกรรม"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "appt_05_type_radio_opd"
+            "byKey": "appt_05_type_radio_tele"
           }
         },
         {
@@ -2020,14 +2011,6 @@
         },
         {
           "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
         },
         {
           "enterText": {
@@ -2080,7 +2063,7 @@
       "tc": "pairwise_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"orthopedics\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2118,7 +2101,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "กระดูกและข้อ"
+          "scrollAndTapText": "กุมารเวชศาสตร์"
         },
         {
           "pumpAndSettle": true
@@ -2126,136 +2109,6 @@
         {
           "tap": {
             "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_17",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"orthopedics\", date: \"\", time: \"\", insurance_switch: on, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
           }
         },
         {
@@ -2345,10 +2198,10 @@
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_18",
+      "tc": "pairwise_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"ent\", date: \"\", time: \"\", insurance_switch: on, note: !",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2386,14 +2239,144 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "หู คอ จมูก"
+          "scrollAndTapText": "กุมารเวชศาสตร์"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "appt_05_type_radio_tele"
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_18",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กระดูกและข้อ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
           }
         },
         {
@@ -2486,7 +2469,263 @@
       "tc": "pairwise_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"surgery\", date: \"\", time: \"\", insurance_switch: off, note: !",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "หู คอ จมูก"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_20",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กุมารเวชศาสตร์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "null"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
+          "exists": true
+        },
+        {
+          "text": "ต้องมี 13 หลัก",
+          "exists": true
+        },
+        {
+          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกวันที่นัดหมาย",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกช่วงเวลา",
+          "exists": true
+        },
+        {
+          "text": "กรุณาเลือกประเภทการนัด",
+          "exists": true
+        },
+        {
+          "byKey": "appt_10_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_21",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2531,132 +2770,6 @@
         },
         {
           "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกประเภทการนัด",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_20",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: \"ophthalmology\", date: \"\", time: \"\", insurance_switch: off, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "จักษุวิทยา"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
             "byKey": "appt_05_type_radio_opd"
           }
         },
@@ -2739,144 +2852,10 @@
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_21",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: สมชาย123, id_card: 123456789012, phone: 081234567, department: medicine\", date: \"\", time: \"\", insurance_switch: on, note: !",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "null"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "exists": true
-        },
-        {
-          "text": "ต้องมี 13 หลัก",
-          "exists": true
-        },
-        {
-          "text": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกวันที่นัดหมาย",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกช่วงเวลา",
-          "exists": true
-        },
-        {
-          "text": "กรุณาเลือกประเภทการนัด",
-          "exists": true
-        },
-        {
-          "byKey": "appt_10_expected_fail",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"ophthalmology\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
       "steps": [
         {
           "enterText": {
@@ -2914,14 +2893,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "จักษุวิทยา"
+          "scrollAndTapText": "หู คอ จมูก"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "appt_05_type_radio_opd"
+            "byKey": "appt_05_type_radio_tele"
           }
         },
         {
@@ -2936,7 +2915,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -2950,7 +2929,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "10:00"
+          "selectTime": "14:00"
         },
         {
           "pumpAndSettle": true
@@ -2994,7 +2973,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"surgery\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
       "steps": [
         {
           "enterText": {
@@ -3032,14 +3011,14 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ศัลยกรรม"
+          "scrollAndTapText": "หู คอ จมูก"
         },
         {
           "pumpAndSettle": true
         },
         {
           "tap": {
-            "byKey": "appt_05_type_radio_tele"
+            "byKey": "appt_05_type_radio_opd"
           }
         },
         {
@@ -3054,7 +3033,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -3068,18 +3047,10 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "10:00"
+          "selectTime": "14:00"
         },
         {
           "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
         },
         {
           "enterText": {
@@ -3112,919 +3083,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"ent\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "หู คอ จมูก"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_4",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"pediatrics\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_5",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: medicine\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_6",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"surgery\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ศัลยกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_7",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"obstetrics\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "สูติ-นรีเวช"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_8",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"orthopedics\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "กระดูกและข้อ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_9",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"ent\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "หู คอ จมูก"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_opd"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_08_insurance_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_10",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: medicine\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "appt_01_patient_name_textfield",
-            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_02_id_card_textfield",
-            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_03_phone_textfield",
-            "dataset": "byKey.appt_03_phone_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_04_department_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อายุรกรรม"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_05_type_radio_tele"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_06_date_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectDate": "06/06/2026"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_07_time_textfield"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "selectTime": "10:00"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "appt_09_note_textfield",
-            "dataset": "byKey.appt_09_note_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "appt_10_confirm_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "appt_10_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_11",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"ophthalmology\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
       "steps": [
         {
           "enterText": {
@@ -4084,7 +3143,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -4098,7 +3157,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "10:00"
+          "selectTime": "14:00"
         },
         {
           "pumpAndSettle": true
@@ -4131,10 +3190,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_12",
+      "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"pediatrics\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
       "steps": [
         {
           "enterText": {
@@ -4172,7 +3231,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "กุมารเวชศาสตร์"
+          "scrollAndTapText": "ศัลยกรรม"
         },
         {
           "pumpAndSettle": true
@@ -4194,7 +3253,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -4208,7 +3267,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "10:00"
+          "selectTime": "14:00"
         },
         {
           "pumpAndSettle": true
@@ -4241,10 +3300,356 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_13",
+      "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"obstetrics\", date: 06/06/2026, time: 10:00, insurance_switch: on, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อายุรกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อายุรกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "จักษุวิทยา"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
       "steps": [
         {
           "enterText": {
@@ -4304,7 +3709,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -4318,7 +3723,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "10:00"
+          "selectTime": "14:00"
         },
         {
           "pumpAndSettle": true
@@ -4359,10 +3764,458 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_14",
+      "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: สมชาย ใจดี, id_card: 1102030000004, phone: 0812345678, department: \"orthopedics\", date: 06/06/2026, time: 10:00, insurance_switch: off, note: ผู้ป่วยมีอาการไอเรื้อรังมา 2…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กระดูกและข้อ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_10",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กุมารเวชศาสตร์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_opd"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_11",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สูติ-นรีเวช"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_12",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "กุมารเวชศาสตร์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_13",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
       "steps": [
         {
           "enterText": {
@@ -4422,7 +4275,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -4436,10 +4289,136 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "10:00"
+          "selectTime": "14:00"
         },
         {
           "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_09_note_textfield",
+            "dataset": "byKey.appt_09_note_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_10_confirm_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "appt_10_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_14",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "appt_01_patient_name_textfield",
+            "dataset": "byKey.appt_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_02_id_card_textfield",
+            "dataset": "byKey.appt_02_id_card_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "appt_03_phone_textfield",
+            "dataset": "byKey.appt_03_phone_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_04_department_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ศัลยกรรม"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_05_type_radio_tele"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_06_date_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectDate": "07/06/2026"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_07_time_textfield"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "selectTime": "14:00"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "appt_08_insurance_switch"
+          }
+        },
+        {
+          "pump": true
         },
         {
           "enterText": {
@@ -4472,7 +4451,7 @@
       "tc": "edge_cases_empty_all_fields",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "patient_name: \"\", id_card: \"\", phone: \"\", note: \"\", date: \"\", time: \"\", department: \"\", insurance_switch: off",
+      "description": "patient_name: empty§\"\", id_card: empty§\"\", phone: empty§\"\", note: empty§\"\", date: empty§\"\", time: empty§\"\", department: empty§\"\", insurance_switch: off",
       "steps": [
         {
           "tap": {
@@ -4521,7 +4500,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: ปัญญาพร วัฒนามานะชัยกุลสวัสด…, id_card: 1234567890123, phone: 0812345678, note: ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
+      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMax§กมลวรรณ บุญมีศรีสุขสมบัติ ทร…, id_card: atMax§1234567890123, phone: atMax§0123456789, note: atMax§อาการป่วยเล็กน้อย มีไข้และไอ…",
       "steps": [
         {
           "enterText": {
@@ -4581,7 +4560,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true
@@ -4631,7 +4610,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: \"\", id_card: \"\", phone: \"\", note: \"\"",
+      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMin§\"\", id_card: atMin§\"\", phone: atMin§\"\", note: atMin§\"\"",
       "steps": [
         {
           "enterText": {
@@ -4691,7 +4670,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectDate": "06/06/2026"
+          "selectDate": "07/06/2026"
         },
         {
           "pumpAndSettle": true

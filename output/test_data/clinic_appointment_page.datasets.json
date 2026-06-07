@@ -4,49 +4,44 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมชาย ใจดี",
-          "invalid": "สมชาย123",
+          "valid": "สมศรี มีสุข",
+          "invalid": "สมศรี123",
           "invalidRuleMessages": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
           "atMin": "",
-          "atMax": "ปัญญาพร วัฒนามานะชัยกุลสวัสดิ์เจริญสุขสำราญใจจริงย"
+          "atMax": "กมลวรรณ บุญมีศรีสุขสมบัติ ทรัพย์อุดมปรีชาชาญ วัฒนส"
         },
         {
-          "valid": "สมชาย ใจดี",
+          "valid": "จอห์น สมิธ",
           "invalid": "สมชาย",
           "invalidRuleMessages": "กรุณากรอกทั้งชื่อและนามสกุล"
         }
       ],
       "appt_02_id_card_textfield": [
         {
-          "valid": "1102030000004",
+          "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
           "atMin": "",
           "atMax": "1234567890123"
         },
         {
-          "valid": "1102030000004",
+          "valid": "1234567890123",
           "invalid": "0123456789012",
           "invalidRuleMessages": "เลขบัตรไม่ถูกต้อง"
-        },
-        {
-          "valid": "1102030000004",
-          "invalid": "1102030000005",
-          "invalidRuleMessages": "เลขบัตรประชาชนไม่ถูกต้อง"
         }
       ],
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "081234567",
+          "invalid": "01234567",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
           "atMin": "",
-          "atMax": "0812345678"
+          "atMax": "0123456789"
         }
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "06/06/2026",
+          "valid": "07/06/2026",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
           "atMin": "01/01/2000",
@@ -55,20 +50,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "10:00",
+          "valid": "14:00",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
           "atMin": "",
-          "atMax": "14:30 (เวลาที่สะดวกในช่วงบ่ายสำหรับคุณลูกค้าเสมอ)"
+          "atMax": "14:00 PM This is a very long time slot description"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยมีอาการไอเรื้อรังมา 2 สัปดาห์",
-          "invalid": "!",
+          "valid": "คนไข้มีอาการเวียนหัวเล็กน้อยและมีผื่นขึ้นตามตัว",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลิน ควรระวังในการใช"
+          "atMax": "อาการป่วยเล็กน้อย มีไข้และไอเล็กน้อย โปรดตรวจเบื้อ"
         }
       ]
     }
