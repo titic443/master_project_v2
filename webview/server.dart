@@ -23,7 +23,6 @@
 //   POST /generate-test-data - สร้าง test plan ด้วย PICT
 //   POST /generate-test-script - สร้าง Flutter test script
 //   POST /run-tests          - รัน Flutter tests
-//   POST /generate-all       - รัน full pipeline
 //   POST /open-coverage      - เปิด coverage report
 //   GET  /coverage/*         - serve coverage HTML files
 // =============================================================================
@@ -193,10 +192,6 @@ class PipelineController {
       case '/run-tests':
         // POST /run-tests - รัน tests
         await handleRunTests(request);
-        break;
-      case '/generate-all':
-        // POST /generate-all - รัน full pipeline
-        await handleGenerateAll(request);
         break;
       case '/open-coverage':
         // POST /open-coverage - เปิด coverage report
@@ -927,147 +922,6 @@ class PipelineController {
     await request.response.close();
   }
 
-  /// POST /generate-all - รัน full test generation pipeline
-  ///
-  /// Request body:
-  ///   { "skipDatasets": false }
-  ///
-  /// Response:
-  ///   { "success": true, "filesProcessed": 5, "testsGenerated": 5 }
-  Future<void> handleGenerateAll(HttpRequest request) async {
-    final body = await _readBody(request);
-    final skipDatasets = body['skipDatasets'] as bool? ?? false;
-
-    int filesProcessed = 0;
-    int testsGenerated = 0;
-
-    // ---------------------------------------------------------------------------
-    // Step 1: Extract all manifests (วนลูป specific file แทน batch mode)
-    // ---------------------------------------------------------------------------
-
-    // หา page files ทั้งหมดใน lib/
-    final libDir = Directory('lib');
-    final pageFiles = <String>[];
-    if (await libDir.exists()) {
-      await for (final entity in libDir.list(recursive: true)) {
-        if (entity is File &&
-            (entity.path.endsWith('_page.dart') ||
-                entity.path.endsWith('.page.dart'))) {
-          pageFiles.add(entity.path);
-        }
-      }
-    }
-
-    // วนลูป extract manifest ทีละไฟล์
-    for (final pageFile in pageFiles) {
-      try {
-        _extractor.extractManifest(pageFile);
-      } catch (e) {
-        request.response.write(jsonEncode({
-          'success': false,
-          'error': 'Failed to extract manifest for: $pageFile — $e',
-        }));
-        await request.response.close();
-        return;
-      }
-    }
-
-    // ---------------------------------------------------------------------------
-    // หา manifest files ทั้งหมด (ใช้ใน Step 2 และ Step 3)
-    // ---------------------------------------------------------------------------
-
-    final manifestDir = Directory('output/manifest');
-    final manifestFiles = <String>[];
-    if (await manifestDir.exists()) {
-      await for (final entity in manifestDir.list(recursive: true)) {
-        if (entity is File && entity.path.endsWith('.manifest.json')) {
-          manifestFiles.add(entity.path);
-        }
-      }
-    }
-
-    // ---------------------------------------------------------------------------
-    // Step 2: Generate datasets (วนลูป specific file แทน batch mode)
-    // ---------------------------------------------------------------------------
-
-    if (!skipDatasets) {
-      for (final manifestPath in manifestFiles) {
-        try {
-          await _datasetGenerator.generateDatasets(manifestPath);
-        } catch (e) {
-          // ไม่ fail pipeline เพราะ datasets เป็น optional
-          print('  ⚠ Datasets skipped for $manifestPath: $e');
-        }
-      }
-    }
-
-    // ---------------------------------------------------------------------------
-    // Step 3: Generate test data (วนลูป specific file แทน batch mode)
-    // ---------------------------------------------------------------------------
-
-    for (final manifestPath in manifestFiles) {
-      try {
-        await _testDataGenerator.generateTestData(manifestPath);
-      } catch (e) {
-        request.response.write(jsonEncode({
-          'success': false,
-          'error': 'Failed to generate test data for: $manifestPath — $e',
-        }));
-        await request.response.close();
-        return;
-      }
-    }
-
-    // ---------------------------------------------------------------------------
-    // Step 4: Generate test scripts (วนลูป specific file แทน batch mode)
-    // ---------------------------------------------------------------------------
-
-    // หา testdata files ทั้งหมด
-    final testDataDir = Directory('output/test_data');
-    final testDataFiles = <String>[];
-    if (await testDataDir.exists()) {
-      await for (final entity in testDataDir.list()) {
-        if (entity is File && entity.path.endsWith('.test_data.json')) {
-          testDataFiles.add(entity.path);
-        }
-      }
-    }
-
-    // วนลูป generate test script ทีละไฟล์
-    for (final testDataPath in testDataFiles) {
-      try {
-        _testScriptGenerator.generateTestScript(testDataPath);
-      } catch (e) {
-        // ไม่ fail pipeline เพราะบางไฟล์อาจไม่มี test cases
-        print('  ⚠ Test script skipped for $testDataPath: $e');
-      }
-    }
-
-    // ---------------------------------------------------------------------------
-    // นับจำนวนไฟล์ที่ประมวลผล
-    // ---------------------------------------------------------------------------
-
-    filesProcessed = manifestFiles.length;
-
-    // นับ test scripts ที่สร้าง
-    final testDir = Directory('test');
-    if (await testDir.exists()) {
-      await for (final entity in testDir.list()) {
-        if (entity is File && entity.path.endsWith('_test.dart')) {
-          testsGenerated++;
-        }
-      }
-    }
-
-    // ส่ง response
-    request.response.write(jsonEncode({
-      'success': true,
-      'filesProcessed': filesProcessed,
-      'testsGenerated': testsGenerated,
-    }));
-
-    await request.response.close();
-  }
 
 // =============================================================================
 // API HANDLERS - Coverage Operations
