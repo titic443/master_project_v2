@@ -15,6 +15,7 @@ class TestScriptGenerator {
     _outputPath = path.trim().isNotEmpty ? path.trim() : null;
   }
 
+  // รับ path ของ test_data.json แล้วกำหนด output path และเรียก _processOne
   String generateTestScript(String testDataPath, {String? outputPath}) {
     final String effectivePath;
     if (outputPath != null && outputPath.trim().isNotEmpty) {
@@ -33,6 +34,7 @@ class TestScriptGenerator {
     return effectivePath;
   }
 
+  // แปลง test_data.json เป็น .dart test file ทั้งไฟล์ — orchestrate ทุกขั้นตอนการ generate
   void _processOne(String planPath, {required String outputPath}) {
     final j = _parsePlanFile(planPath);
 
@@ -544,11 +546,13 @@ class TestScriptGenerator {
         outputPath);
   }
 
+  // อ่านและ parse test_data.json เป็น Map
   Map<String, dynamic> _parsePlanFile(String planPath) {
     final raw = File(planPath).readAsStringSync();
     return jsonDecode(raw) as Map<String, dynamic>;
   }
 
+  // ดึง uiFile, pageClass, cubitClass, stateClass จาก source field ใน plan
   ({String uiFile, String pageClass, String? cubitClass, String? stateClass})
       _extractSource(Map<String, dynamic> j) {
     final source = (j['source'] as Map<String, dynamic>?) ?? const {};
@@ -565,6 +569,7 @@ class TestScriptGenerator {
     );
   }
 
+  // โหลด datasets จาก .datasets.json (ถ้ามี) ไม่งั้นใช้จาก plan โดยตรง
   Map<String, dynamic> _loadDatasets(String uiFile, Map<String, dynamic> j) {
     try {
       final base = utils.basenameWithoutExtension(uiFile);
@@ -578,6 +583,7 @@ class TestScriptGenerator {
     return (j['datasets'] as Map? ?? const {}).cast<String, dynamic>();
   }
 
+  // แปลง path ของ uiFile เป็น Dart import statement ตาม package name
   String _resolveUiImport(String uiFile, String pkg) {
     String normalized = uiFile;
     if (uiFile.contains('/lib/')) {
@@ -586,6 +592,7 @@ class TestScriptGenerator {
     return utils.pkgImport(pkg, normalized);
   }
 
+  // หา cubit types และ file paths ที่ต้อง import ใน test
   ({List<String> providerTypes, List<String> providerFiles})
       _resolveProviderFiles(List<Map<String, dynamic>> providers, String pkg) {
     final providerTypes = <String>[];
@@ -604,6 +611,7 @@ class TestScriptGenerator {
     return (providerTypes: providerTypes, providerFiles: providerFiles);
   }
 
+  // สร้าง map key → valid value ตัวแรก สำหรับใช้เป็น sample ใน test
   Map<String, String> _buildSampleByKey(Map<String, dynamic> datasets) {
     final sampleByKey = <String, String>{};
     if (datasets.containsKey('byKey') && datasets['byKey'] is Map) {
@@ -992,6 +1000,7 @@ class TestScriptGenerator {
     return null;
   }
 
+  // แปลง cubitType เป็น path ของ state file เช่น ClinicAppointmentCubit → lib/cubit/clinic_appointment_state.dart
   String _getStateFilePathFromCubit(String cubitType) {
     final baseName = cubitType.replaceAll('Cubit', '').toLowerCase();
 
@@ -1006,6 +1015,7 @@ class TestScriptGenerator {
     return 'lib/cubit/${parts.join('')}_state.dart';
   }
 
+  // รวบรวม validation message → count จาก asserts ของทุก case (ใช้กับ empty fields edge case)
   Map<String, int> _extractValidationCountsFromPlan(
       List<Map<String, dynamic>> cases) {
     final counts = <String, int>{};
