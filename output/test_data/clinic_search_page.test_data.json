@@ -1,0 +1,182 @@
+{
+  "source": {
+    "file": "lib/demos/clinic_search_page.dart",
+    "pageClass": "ClinicSearchPage",
+    "cubitClass": "ClinicSearchCubit",
+    "stateClass": "ClinicSearchState",
+    "fileCubit": "lib/cubit/clinic_search_cubit.dart",
+    "fileState": "lib/cubit/clinic_search_state.dart"
+  },
+  "datasets": {
+    "defaults": {},
+    "byKey": {
+      "search_01_patient_name_textfield": [
+        {
+          "valid": "สมศรี ใจดี",
+          "invalid": "สมชาย ใจดี",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "Amelia Isabella Santiago Garcia Ramirez Hernandez "
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "tc": "pairwise_invalid_cases_1",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "patient_name: invalid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_patient_name_textfield",
+            "dataset": "byKey.search_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_05_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_1",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมศรี ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_patient_name_textfield",
+            "dataset": "byKey.search_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_05_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_empty_all_fields",
+      "kind": "failed",
+      "group": "edge_cases",
+      "description": "patient_name: empty§\"\"",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "search_05_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_boundary_at_max_length",
+      "kind": "success",
+      "group": "edge_cases",
+      "description": "patient_name: atMax§Amelia Isabella Santiago Gar…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_patient_name_textfield",
+            "dataset": "byKey.search_01_patient_name_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_05_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_boundary_at_min_length",
+      "kind": "success",
+      "group": "edge_cases",
+      "description": "patient_name: atMin§\"\"",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_patient_name_textfield",
+            "dataset": "byKey.search_01_patient_name_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_05_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    }
+  ]
+}

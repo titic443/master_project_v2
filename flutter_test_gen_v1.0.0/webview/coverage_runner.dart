@@ -234,7 +234,7 @@ class CoverageGenerator {
   ///   3. [_runGenHtml]           - ใช้ genhtml แปลง lcov → coverage/html/index.html
   ///
   /// Returns: path ของ HTML report ('coverage/html/index.html') หรือ null ถ้าล้มเหลว
-  Future<String?> generateCoverageTest() async {
+  Future<String?> generateCoverageReport() async {
     print('  > Waiting for coverage/lcov.info...');
 
     // Step 3a: รอให้ lcov.info ถูกสร้างและมี content
@@ -303,7 +303,8 @@ class CoverageGenerator {
         .replace(queryParameters: {'url': url});
     print('  > Opening browser via host agent: $url');
 
-    final client = HttpClient()..connectionTimeout = const Duration(seconds: 5);
+    final client = HttpClient()
+      ..connectionTimeout = const Duration(seconds: 5);
     try {
       final req = await client.getUrl(uri);
       await (await req.close()).drain<void>();

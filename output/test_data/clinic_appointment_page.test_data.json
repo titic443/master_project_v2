@@ -12,14 +12,14 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมศรี มีสุข",
-          "invalid": "สมศรี123",
+          "valid": "สมศักดิ์ ชัยชนะ",
+          "invalid": "สมศักดิ์ 123",
           "invalidRuleMessages": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "atMin": "",
-          "atMax": "กมลวรรณ บุญมีศรีสุขสมบัติ ทรัพย์อุดมปรีชาชาญ วัฒนส"
+          "atMin": "ก",
+          "atMax": "พงษ์พัฒน์ พัฒนาพงษ์ไพศาลสกุลชัยเจริญชัยกุลกุลสุวัฒ"
         },
         {
-          "valid": "จอห์น สมิธ",
+          "valid": "มานี มีสุข",
           "invalid": "สมชาย",
           "invalidRuleMessages": "กรุณากรอกทั้งชื่อและนามสกุล"
         }
@@ -29,7 +29,7 @@
           "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
+          "atMin": "1",
           "atMax": "1234567890123"
         },
         {
@@ -41,10 +41,10 @@
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "01234567",
+          "invalid": "1234567890",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "atMin": "",
-          "atMax": "0123456789"
+          "atMin": "012345678",
+          "atMax": "0812345678"
         }
       ],
       "appt_06_date_textfield": [
@@ -58,20 +58,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "14:00",
+          "valid": "10:30",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
-          "atMin": "",
-          "atMax": "14:00 PM This is a very long time slot description"
+          "atMin": "08:00",
+          "atMax": "20:00 (นัดหมายเวลาสุดท้ายของวัน) XXXXXXXXXXXXXXXXX"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการเวียนหัวเล็กน้อยและมีผื่นขึ้นตามตัว",
+          "valid": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลิน",
           "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "อาการป่วยเล็กน้อย มีไข้และไอเล็กน้อย โปรดตรวจเบื้อ"
+          "atMax": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลินมาก่อนหน้านี้"
         }
       ]
     }
@@ -81,7 +81,7 @@
       "tc": "pairwise_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -215,7 +215,7 @@
       "tc": "pairwise_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -345,7 +345,7 @@
       "tc": "pairwise_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -475,7 +475,7 @@
       "tc": "pairwise_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -601,7 +601,7 @@
       "tc": "pairwise_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -739,7 +739,7 @@
       "tc": "pairwise_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -869,7 +869,7 @@
       "tc": "pairwise_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: medicine\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1007,7 +1007,7 @@
       "tc": "pairwise_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"ophthalmology\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1133,7 +1133,7 @@
       "tc": "pairwise_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1271,7 +1271,7 @@
       "tc": "pairwise_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1397,7 +1397,7 @@
       "tc": "pairwise_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1531,7 +1531,7 @@
       "tc": "pairwise_invalid_cases_12",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1665,7 +1665,7 @@
       "tc": "pairwise_invalid_cases_13",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1803,7 +1803,7 @@
       "tc": "pairwise_invalid_cases_14",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"obstetrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -1933,7 +1933,7 @@
       "tc": "pairwise_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2063,7 +2063,7 @@
       "tc": "pairwise_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2201,7 +2201,7 @@
       "tc": "pairwise_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2331,7 +2331,7 @@
       "tc": "pairwise_invalid_cases_18",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"orthopedics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: on, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2469,7 +2469,7 @@
       "tc": "pairwise_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: tele\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: tele\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"ent\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2599,7 +2599,7 @@
       "tc": "pairwise_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: \"unselected\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"pediatrics\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2725,7 +2725,7 @@
       "tc": "pairwise_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "appointmentType: opd\", patient_name: invalid§สมศรี123, id_card: invalid§123456789012, phone: invalid§01234567, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
+      "description": "appointmentType: opd\", patient_name: invalid§สมศักดิ์ 123, id_card: invalid§123456789012, phone: invalid§1234567890, department: \"surgery\", date: invalid§\"\", time: invalid§\"\", insurance_switch: off, note: invalid§X",
       "steps": [
         {
           "enterText": {
@@ -2855,7 +2855,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -2929,7 +2929,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -2973,7 +2973,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ent\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3047,7 +3047,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3083,7 +3083,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3157,7 +3157,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3193,7 +3193,7 @@
       "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3267,7 +3267,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3303,7 +3303,7 @@
       "tc": "pairwise_valid_cases_5",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3377,7 +3377,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3421,7 +3421,7 @@
       "tc": "pairwise_valid_cases_6",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: medicine\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3495,7 +3495,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3531,7 +3531,7 @@
       "tc": "pairwise_valid_cases_7",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"ophthalmology\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3605,7 +3605,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3649,7 +3649,7 @@
       "tc": "pairwise_valid_cases_8",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3723,7 +3723,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3767,7 +3767,7 @@
       "tc": "pairwise_valid_cases_9",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3841,7 +3841,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3877,7 +3877,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: opd\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: opd\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -3951,7 +3951,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -3987,7 +3987,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: off, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"obstetrics\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: off, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -4061,7 +4061,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -4097,7 +4097,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"pediatrics\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -4171,7 +4171,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -4215,7 +4215,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"orthopedics\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -4289,7 +4289,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -4333,7 +4333,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "appointmentType: tele\", patient_name: valid§สมศรี มีสุข, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§07/06/2026, time: valid§14:00, insurance_switch: on, note: valid§คนไข้มีอาการเวียนหัวเล็กน้อย…",
+      "description": "appointmentType: tele\", patient_name: valid§สมศักดิ์ ชัยชนะ, id_card: valid§1234567890123, phone: valid§0812345678, department: \"surgery\", date: valid§07/06/2026, time: valid§10:30, insurance_switch: on, note: valid§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -4407,7 +4407,7 @@
           "pumpAndSettle": true
         },
         {
-          "selectTime": "14:00"
+          "selectTime": "10:30"
         },
         {
           "pumpAndSettle": true
@@ -4500,7 +4500,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMax§กมลวรรณ บุญมีศรีสุขสมบัติ ทร…, id_card: atMax§1234567890123, phone: atMax§0123456789, note: atMax§อาการป่วยเล็กน้อย มีไข้และไอ…",
+      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMax§พงษ์พัฒน์ พัฒนาพงษ์ไพศาลสกุล…, id_card: atMax§1234567890123, phone: atMax§0812345678, note: atMax§ผู้ป่วยเคยมีประวัติแพ้ยาเพนิ…",
       "steps": [
         {
           "enterText": {
@@ -4608,9 +4608,9 @@
     },
     {
       "tc": "edge_cases_boundary_at_min_length",
-      "kind": "failed",
+      "kind": "success",
       "group": "edge_cases",
-      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMin§\"\", id_card: atMin§\"\", phone: atMin§\"\", note: atMin§\"\"",
+      "description": "type_opd: opd, department: อายุรกรรม, insurance_switch: off, patient_name: atMin§ก, id_card: atMin§1, phone: atMin§012345678, note: atMin§\"\"",
       "steps": [
         {
           "enterText": {
@@ -4710,7 +4710,7 @@
       ],
       "asserts": [
         {
-          "byKey": "appt_10_expected_fail",
+          "byKey": "appt_10_expected_success",
           "exists": true,
           "dismiss": true
         }

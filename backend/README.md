@@ -291,10 +291,46 @@ All endpoints support a `forceCode` parameter for testing purposes:
 ```
 
 **Force Server Error:**
-```json
-{
-  "forceCode": 500
-}
+```txt
+(.venv) titichangpoo@AYMACMJ7CVH232W master_project_v2 % ./build_release.sh 1.0.0
+📦 Building flutter_test_gen_v1.0.0 ...
+✅ Done!
+   File    : /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/flutter_test_gen_v1.0.0.zip
+   Size    :  92K
+   Entries : 23 files
+
+วิธีใช้:
+   unzip flutter_test_gen_v1.0.0.zip
+   cd flutter_test_gen_v1.0.0
+   ./run_tool.sh /path/to/your_flutter_project
+(.venv) titichangpoo@AYMACMJ7CVH232W master_project_v2 % unzip flutter_test_gen_v1.0.0.zip
+Archive:  flutter_test_gen_v1.0.0.zip
+   creating: flutter_test_gen_v1.0.0
+   creating: flutter_test_gen_v1.0.0/tools
+   creating: flutter_test_gen_v1.0.0/tools/script_v2
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/extract_ui_manifest.dart  
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/generator_pict.dart  
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/generate_test_script.dart  
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/utils.dart  
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/generate_datasets.dart  
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/clear_manifest.dart  
+  inflating: flutter_test_gen_v1.0.0/tools/script_v2/generate_test_data.dart  
+  inflating: flutter_test_gen_v1.0.0/Dockerfile  
+  inflating: flutter_test_gen_v1.0.0/pubspec.lock  
+   creating: flutter_test_gen_v1.0.0/webview
+  inflating: flutter_test_gen_v1.0.0/webview/index.html  
+  inflating: flutter_test_gen_v1.0.0/webview/styles.css  
+  inflating: flutter_test_gen_v1.0.0/webview/host_runner.dart  
+  inflating: flutter_test_gen_v1.0.0/webview/main.js  
+  inflating: flutter_test_gen_v1.0.0/webview/coverage_runner.dart  
+  inflating: flutter_test_gen_v1.0.0/webview/server.dart  
+  inflating: flutter_test_gen_v1.0.0/INSTALL.md  
+  inflating: flutter_test_gen_v1.0.0/docker-entrypoint.sh  
+  inflating: flutter_test_gen_v1.0.0/pubspec.yaml  
+  inflating: flutter_test_gen_v1.0.0/run_tool.sh  
+(.venv) titichangpoo@AYMACMJ7CVH232W master_project_v2 % cd flutter_test_gen_v1.0.0 
+(.venv) titichangpoo@AYMACMJ7CVH232W flutter_test_gen_v1.0.0 % ./run_tool.sh --build ../../master_project_v2 
+Building Docker image (this may take a few minutes on first run)...
 ```
 
 When `forceCode` is provided, the server will return the specified status code **regardless of validation results**. This is useful for testing error handling in the Flutter app.

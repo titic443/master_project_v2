@@ -1,7 +1,7 @@
 
 
-search_01_patient_name_textfield.valid   = สมชาย valid
-search_01_patient_name_textfield.invalid = ทดสอบ invalid
+search_01_patient_name_textfield.valid   = สมศรี ใจดี
+search_01_patient_name_textfield.invalid = สมชาย ใจดี
 
-IF [search_01_patient_name_textfield] = "invalid" THEN [search_02_department_dropdown] = "valid";
+# IF [search_01_patient_name_textfield] = "invalid" THEN [search_02_department_dropdown] = "valid";
 

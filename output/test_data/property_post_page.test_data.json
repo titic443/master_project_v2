@@ -12,11 +12,11 @@
     "byKey": {
       "prop_01_title_textfield": [
         {
-          "valid": "คอนโดหรู ใจกลางเมือง สุขุมวิท 24 พร้อมเฟอร์นิเจอร์",
+          "valid": "กรุงเทพมหานคร",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกหัวข้อประกาศ",
           "atMin": "",
-          "atMax": "คอนโดหรู ใจกลางเมือง สุขุมวิท 24 พร้อมเฟอร์นิเจอร์"
+          "atMax": "ประกาศขายบ้านเดี่ยวหรูใจกลางเมืองสุขุมวิทพร้อมสระว"
         }
       ],
       "prop_03_location_textfield": [
@@ -25,61 +25,61 @@
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกจังหวัด / เมือง",
           "atMin": "",
-          "atMax": "กรุงเทพมหานคร"
+          "atMax": "กรุงเทพมหานครเป็นเมืองหลวงที่มีความเจริญรุ่งเรืองอ"
         }
       ],
       "prop_04_district_textfield": [
         {
-          "valid": "วัฒนา",
+          "valid": "เขตวัฒนา",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกเขต / ย่าน",
           "atMin": "",
-          "atMax": "วัฒนา"
+          "atMax": "เขตวัฒนาเป็นเขตที่มีความเจริญและมีผู้คนอาศัยอยู่หน"
         }
       ],
       "prop_05_price_textfield": [
         {
-          "valid": "150000",
+          "valid": "1500000",
           "invalid": "99999",
           "invalidRuleMessages": "ราคาขั้นต่ำ 100,000 บาท",
           "atMin": "",
-          "atMax": "9999999999"
+          "atMax": "10000000000000000000000000000000000000000000000000"
         }
       ],
       "prop_08_area_textfield": [
         {
-          "valid": "55.75",
+          "valid": "120.50",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกพื้นที่ใช้สอย",
           "atMin": "",
-          "atMax": "99999.99"
+          "atMax": "12345678901234567890123456789012345678901234567.12"
         }
       ],
       "prop_09_floor_textfield": [
         {
-          "valid": "25",
+          "valid": "15",
           "invalid": "",
           "invalidRuleMessages": "กรุณากรอกชั้น",
           "atMin": "",
-          "atMax": "25"
+          "atMax": "12345678901234567890123456789012345678901234567890"
         }
       ],
       "prop_11_desc_textfield": [
         {
-          "valid": "คอนโดมีเนียมใจกลางเมืองสุขุมวิท 24 ตกแต่งครบพร้อมเ",
-          "invalid": "รายละเอียดสั้นๆ",
+          "valid": "บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้า เหมาะสำหรับครอบครัวใ",
+          "invalid": "สั้นเกินไปแล้ว",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "atMin": "รายละเอียดสั้นๆแค่สิบเก้าคำ",
-          "atMax": "คอนโดมีเนียมใจกลางเมืองสุขุมวิท 24 ตกแต่งครบพร้อมเ"
+          "atMin": "สั้นเกินไปแล้วนะสั้นม",
+          "atMax": "คอนโดหรูใจกลางเมือง พร้อมเฟอร์นิเจอร์ครบครัน สิ่งอ"
         }
       ],
       "prop_12_contact_textfield": [
         {
-          "valid": "สมชาย",
+          "valid": "สมชาย ใจดี",
           "invalid": "ก",
           "invalidRuleMessages": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "atMin": "ก",
-          "atMax": "สมชาย ใจดี"
+          "atMax": "สมชาย ใจดีศรีสุขเจริญยิ่งมงคลชัยวัฒนาประเสริฐกิจศุ"
         }
       ]
     }
@@ -89,7 +89,7 @@
       "tc": "pairwise_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -109,7 +109,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "คอนโด"
+          "scrollAndTapText": "บ้านเดี่ยว"
         },
         {
           "pumpAndSettle": true
@@ -150,7 +150,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -164,7 +164,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -247,6 +247,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -254,7 +259,7 @@
       "tc": "pairwise_invalid_cases_2",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -274,7 +279,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ที่ดิน"
+          "scrollAndTapText": "อาคารพาณิชย์"
         },
         {
           "pumpAndSettle": true
@@ -315,7 +320,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "สตูดิโอ"
         },
         {
           "pumpAndSettle": true
@@ -329,7 +334,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -420,6 +425,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -427,7 +437,7 @@
       "tc": "pairwise_invalid_cases_3",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -447,7 +457,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ที่ดิน"
+          "scrollAndTapText": "ทาวน์เฮาส์"
         },
         {
           "pumpAndSettle": true
@@ -488,7 +498,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สตูดิโอ"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -502,7 +512,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -520,6 +530,14 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -585,6 +603,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -592,7 +615,7 @@
       "tc": "pairwise_invalid_cases_4",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -612,7 +635,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "อาคารพาณิชย์"
+          "scrollAndTapText": "ทาวน์เฮาส์"
         },
         {
           "pumpAndSettle": true
@@ -653,7 +676,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สตูดิโอ"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -667,7 +690,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -685,14 +708,6 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -758,6 +773,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -765,7 +785,7 @@
       "tc": "pairwise_invalid_cases_5",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -785,7 +805,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "คอนโด"
+          "scrollAndTapText": "ที่ดิน"
         },
         {
           "pumpAndSettle": true
@@ -864,6 +884,14 @@
           "pump": true
         },
         {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
           "enterText": {
             "byKey": "prop_11_desc_textfield",
             "dataset": "byKey.prop_11_desc_textfield[0].invalid"
@@ -923,6 +951,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -930,7 +963,7 @@
       "tc": "pairwise_invalid_cases_6",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -950,7 +983,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ที่ดิน"
+          "scrollAndTapText": "คอนโด"
         },
         {
           "pumpAndSettle": true
@@ -1005,7 +1038,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -1023,14 +1056,6 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -1096,6 +1121,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1103,7 +1133,7 @@
       "tc": "pairwise_invalid_cases_7",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1123,7 +1153,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ทาวน์เฮาส์"
+          "scrollAndTapText": "บ้านเดี่ยว"
         },
         {
           "pumpAndSettle": true
@@ -1164,7 +1194,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -1196,6 +1226,14 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -1261,6 +1299,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1268,7 +1311,7 @@
       "tc": "pairwise_invalid_cases_8",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1288,7 +1331,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "บ้านเดี่ยว"
+          "scrollAndTapText": "ทาวน์เฮาส์"
         },
         {
           "pumpAndSettle": true
@@ -1329,7 +1372,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -1343,7 +1386,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -1361,14 +1404,6 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -1434,6 +1469,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1441,7 +1481,7 @@
       "tc": "pairwise_invalid_cases_9",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1461,7 +1501,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "บ้านเดี่ยว"
+          "scrollAndTapText": "ที่ดิน"
         },
         {
           "pumpAndSettle": true
@@ -1502,7 +1542,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สตูดิโอ"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -1599,6 +1639,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1606,7 +1651,7 @@
       "tc": "pairwise_invalid_cases_10",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1667,7 +1712,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -1681,7 +1726,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -1772,6 +1817,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -1779,7 +1829,525 @@
       "tc": "pairwise_invalid_cases_11",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_12",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_13",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_14",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -1840,352 +2408,6 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_12",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "บ้านเดี่ยว"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "1"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "1"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_13",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อาคารพาณิชย์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
           "scrollAndTapText": "2"
         },
         {
@@ -2283,179 +2505,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_14",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
         },
         {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อาคารพาณิชย์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2463,7 +2517,7 @@
       "tc": "pairwise_invalid_cases_15",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2483,7 +2537,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "บ้านเดี่ยว"
+          "scrollAndTapText": "ทาวน์เฮาส์"
         },
         {
           "pumpAndSettle": true
@@ -2524,7 +2578,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "สตูดิโอ"
         },
         {
           "pumpAndSettle": true
@@ -2538,7 +2592,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -2629,6 +2683,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2636,7 +2695,7 @@
       "tc": "pairwise_invalid_cases_16",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Land\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2656,7 +2715,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ทาวน์เฮาส์"
+          "scrollAndTapText": "ที่ดิน"
         },
         {
           "pumpAndSettle": true
@@ -2697,7 +2756,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "สตูดิโอ"
         },
         {
           "pumpAndSettle": true
@@ -2711,7 +2770,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -2729,14 +2788,6 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -2802,6 +2853,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -2809,7 +2865,177 @@
       "tc": "pairwise_invalid_cases_17",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_18",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -2884,344 +3110,6 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_18",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "คอนโด"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_19",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "คอนโด"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "สตูดิโอ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
           "scrollAndTapText": "2"
         },
         {
@@ -3313,187 +3201,19 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_20",
+      "tc": "pairwise_invalid_cases_19",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ทาวน์เฮาส์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "สตูดิโอ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_21",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"Studio\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3548,6 +3268,20 @@
         {
           "tap": {
             "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
           }
         },
         {
@@ -3560,20 +3294,6 @@
           "pumpAndSettle": true
         },
         {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "2"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
           "enterText": {
             "byKey": "prop_08_area_textfield",
             "dataset": "byKey.prop_08_area_textfield[0].invalid"
@@ -3586,6 +3306,14 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -3651,14 +3379,19 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_22",
+      "tc": "pairwise_invalid_cases_20",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -3678,7 +3411,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ทาวน์เฮาส์"
+          "scrollAndTapText": "อาคารพาณิชย์"
         },
         {
           "pumpAndSettle": true
@@ -3727,157 +3460,6 @@
         {
           "tap": {
             "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "2"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "text": "กรุณากรอกหัวข้อประกาศ",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกจังหวัด / เมือง",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกเขต / ย่าน",
-          "exists": true
-        },
-        {
-          "text": "ราคาขั้นต่ำ 100,000 บาท",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกพื้นที่ใช้สอย",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกชั้น",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
-          "exists": true
-        },
-        {
-          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
-          "exists": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_invalid_cases_23",
-      "kind": "failed",
-      "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Townhouse\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ทาวน์เฮาส์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].invalid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
           }
         },
         {
@@ -3885,20 +3467,6 @@
         },
         {
           "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -3989,14 +3557,19 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_24",
+      "tc": "pairwise_invalid_cases_21",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"2\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -4057,7 +3630,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -4071,7 +3644,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -4154,14 +3727,359 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
     {
-      "tc": "pairwise_invalid_cases_25",
+      "tc": "pairwise_invalid_cases_22",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"3\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§รายละเอียดสั้นๆ, contact: invalid§ก",
+      "description": "title: invalid§\"\", type: \"House\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"1\", bathrooms: \"4+\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_23",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_24",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"Commercial\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"4+\", bathrooms: \"1\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: on, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
       "steps": [
         {
           "enterText": {
@@ -4222,7 +4140,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -4237,6 +4155,184 @@
         },
         {
           "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "text": "กรุณากรอกหัวข้อประกาศ",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกจังหวัด / เมือง",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกเขต / ย่าน",
+          "exists": true
+        },
+        {
+          "text": "ราคาขั้นต่ำ 100,000 บาท",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกพื้นที่ใช้สอย",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกชั้น",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 20 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
+          "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_25",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "title: invalid§\"\", type: \"Condo\", location: invalid§\"\", district: invalid§\"\", price: invalid§99999, bedrooms: \"2\", bathrooms: \"3\", area: invalid§\"\", floor: invalid§\"\", furnished_switch: off, desc: invalid§สั้นเกินไปแล้ว, contact: invalid§ก",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -4319,6 +4415,11 @@
         {
           "text": "กรุณากรอกอย่างน้อย 2 ตัวอักษร",
           "exists": true
+        },
+        {
+          "byKey": "prop_13_expected_fail",
+          "exists": true,
+          "dismiss": true
         }
       ]
     },
@@ -4326,7 +4427,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"3\", bathrooms: \"1\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -4346,7 +4447,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "คอนโด"
+          "scrollAndTapText": "บ้านเดี่ยว"
         },
         {
           "pumpAndSettle": true
@@ -4387,7 +4488,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -4401,7 +4502,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -4464,7 +4565,7 @@
       "tc": "pairwise_valid_cases_2",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -4484,7 +4585,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ที่ดิน"
+          "scrollAndTapText": "อาคารพาณิชย์"
         },
         {
           "pumpAndSettle": true
@@ -4525,7 +4626,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "สตูดิโอ"
         },
         {
           "pumpAndSettle": true
@@ -4539,7 +4640,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -4610,575 +4711,7 @@
       "tc": "pairwise_valid_cases_3",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ที่ดิน"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "สตูดิโอ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "2"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_4",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "อาคารพาณิชย์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "สตูดิโอ"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "1"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_5",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "คอนโด"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "1"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_6",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "ที่ดิน"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_7",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"3\", bathrooms: \"3\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -5239,7 +4772,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -5253,145 +4786,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_8",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "บ้านเดี่ยว"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -5459,10 +4854,432 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_9",
+      "tc": "pairwise_valid_cases_4",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"4+\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_5",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"4+\", bathrooms: \"1\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"3\", bathrooms: \"2\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"2\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -5523,7 +5340,291 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สตูดิโอ"
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"2\", bathrooms: \"1\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_9",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"1\", bathrooms: \"3\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -5600,7 +5701,7 @@
       "tc": "pairwise_valid_cases_10",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"3\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -5661,7 +5762,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -5675,7 +5776,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -5746,7 +5847,7 @@
       "tc": "pairwise_valid_cases_11",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -5766,7 +5867,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ที่ดิน"
+          "scrollAndTapText": "คอนโด"
         },
         {
           "pumpAndSettle": true
@@ -5821,7 +5922,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -5892,7 +5993,7 @@
       "tc": "pairwise_valid_cases_12",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"Studio\", bathrooms: \"3\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -5953,7 +6054,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "สตูดิโอ"
         },
         {
           "pumpAndSettle": true
@@ -5967,7 +6068,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -5985,14 +6086,6 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -6038,7 +6131,7 @@
       "tc": "pairwise_valid_cases_13",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"2\", bathrooms: \"3\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -6113,7 +6206,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -6176,7 +6269,7 @@
       "tc": "pairwise_valid_cases_14",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"2\", bathrooms: \"2\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -6196,153 +6289,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "อาคารพาณิชย์"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_15",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "บ้านเดี่ยว"
+          "scrollAndTapText": "ที่ดิน"
         },
         {
           "pumpAndSettle": true
@@ -6397,7 +6344,145 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_15",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -6468,7 +6553,145 @@
       "tc": "pairwise_valid_cases_16",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"2\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Land\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"Studio\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_17",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"1\", bathrooms: \"1\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -6529,7 +6752,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -6561,14 +6784,6 @@
           "enterText": {
             "byKey": "prop_09_floor_textfield",
             "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
           }
         },
         {
@@ -6611,10 +6826,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_17",
+      "tc": "pairwise_valid_cases_18",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"1\", bathrooms: \"2\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -6689,7 +6904,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "4+"
+          "scrollAndTapText": "2"
         },
         {
           "pumpAndSettle": true
@@ -6757,148 +6972,10 @@
       ]
     },
     {
-      "tc": "pairwise_valid_cases_18",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "คอนโด"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "4+"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
       "tc": "pairwise_valid_cases_19",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"Studio\", bathrooms: \"1\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -6973,7 +7050,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -7044,7 +7121,7 @@
       "tc": "pairwise_valid_cases_20",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"Studio\", bathrooms: \"4+\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"3\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -7064,7 +7141,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ทาวน์เฮาส์"
+          "scrollAndTapText": "อาคารพาณิชย์"
         },
         {
           "pumpAndSettle": true
@@ -7105,7 +7182,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "สตูดิโอ"
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -7190,7 +7267,7 @@
       "tc": "pairwise_valid_cases_21",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"1\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"4+\", bathrooms: \"2\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -7210,7 +7287,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "คอนโด"
+          "scrollAndTapText": "บ้านเดี่ยว"
         },
         {
           "pumpAndSettle": true
@@ -7251,7 +7328,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "1"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -7328,7 +7405,7 @@
       "tc": "pairwise_valid_cases_22",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"2\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"1\", bathrooms: \"4+\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -7348,7 +7425,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ทาวน์เฮาส์"
+          "scrollAndTapText": "บ้านเดี่ยว"
         },
         {
           "pumpAndSettle": true
@@ -7389,7 +7466,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "1"
         },
         {
           "pumpAndSettle": true
@@ -7403,7 +7480,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "2"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -7466,7 +7543,7 @@
       "tc": "pairwise_valid_cases_23",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Townhouse\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§55.75, floor: valid§25, furnished_switch: on, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"4+\", bathrooms: \"3\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -7486,7 +7563,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "ทาวน์เฮาส์"
+          "scrollAndTapText": "คอนโด"
         },
         {
           "pumpAndSettle": true
@@ -7565,14 +7642,6 @@
           "pump": true
         },
         {
-          "tap": {
-            "byKey": "prop_10_furnished_switch"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
           "enterText": {
             "byKey": "prop_11_desc_textfield",
             "dataset": "byKey.prop_11_desc_textfield[0].valid"
@@ -7612,145 +7681,7 @@
       "tc": "pairwise_valid_cases_24",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"House\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
-      "steps": [
-        {
-          "enterText": {
-            "byKey": "prop_01_title_textfield",
-            "dataset": "byKey.prop_01_title_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_02_type_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "บ้านเดี่ยว"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_03_location_textfield",
-            "dataset": "byKey.prop_03_location_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_04_district_textfield",
-            "dataset": "byKey.prop_04_district_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_05_price_textfield",
-            "dataset": "byKey.prop_05_price_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_06_bedrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "3"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_07_bathrooms_dropdown"
-          }
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "scrollAndTapText": "1"
-        },
-        {
-          "pumpAndSettle": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_08_area_textfield",
-            "dataset": "byKey.prop_08_area_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_09_floor_textfield",
-            "dataset": "byKey.prop_09_floor_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_11_desc_textfield",
-            "dataset": "byKey.prop_11_desc_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "enterText": {
-            "byKey": "prop_12_contact_textfield",
-            "dataset": "byKey.prop_12_contact_textfield[0].valid"
-          }
-        },
-        {
-          "pump": true
-        },
-        {
-          "tap": {
-            "byKey": "prop_13_end_button",
-            "isSubmit": true
-          }
-        },
-        {
-          "pumpAndSettle": true
-        }
-      ],
-      "asserts": [
-        {
-          "byKey": "prop_13_expected_success",
-          "exists": true,
-          "dismiss": true
-        }
-      ]
-    },
-    {
-      "tc": "pairwise_valid_cases_25",
-      "kind": "success",
-      "group": "pairwise_valid_cases",
-      "description": "title: valid§คอนโดหรู ใจกลางเมือง สุขุมวิ…, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§วัฒนา, price: valid§150000, bedrooms: \"3\", bathrooms: \"1\", area: valid§55.75, floor: valid§25, furnished_switch: off, desc: valid§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: valid§สมชาย",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Commercial\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"4+\", bathrooms: \"1\", area: valid§120.50, floor: valid§15, furnished_switch: on, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
       "steps": [
         {
           "enterText": {
@@ -7811,7 +7742,7 @@
           "pumpAndSettle": true
         },
         {
-          "scrollAndTapText": "3"
+          "scrollAndTapText": "4+"
         },
         {
           "pumpAndSettle": true
@@ -7826,6 +7757,152 @@
         },
         {
           "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_08_area_textfield",
+            "dataset": "byKey.prop_08_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_09_floor_textfield",
+            "dataset": "byKey.prop_09_floor_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_10_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_11_desc_textfield",
+            "dataset": "byKey.prop_11_desc_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_12_contact_textfield",
+            "dataset": "byKey.prop_12_contact_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_13_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "prop_13_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_25",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "title: valid§กรุงเทพมหานคร, type: \"Condo\", location: valid§กรุงเทพมหานคร, district: valid§เขตวัฒนา, price: valid§1500000, bedrooms: \"2\", bathrooms: \"3\", area: valid§120.50, floor: valid§15, furnished_switch: off, desc: valid§บ้านสวยมาก ทำเลดี ใกล้รถไฟฟ้…, contact: valid§สมชาย ใจดี",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "prop_01_title_textfield",
+            "dataset": "byKey.prop_01_title_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_03_location_textfield",
+            "dataset": "byKey.prop_03_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_04_district_textfield",
+            "dataset": "byKey.prop_04_district_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "prop_05_price_textfield",
+            "dataset": "byKey.prop_05_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_06_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "prop_07_bathrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
         },
         {
           "pumpAndSettle": true
@@ -7962,7 +8039,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMax§คอนโดหรู ใจกลางเมือง สุขุมวิ…, location: atMax§กรุงเทพมหานคร, district: atMax§วัฒนา, price: atMax§9999999999, area: atMax§99999.99, floor: atMax§25, desc: atMax§คอนโดมีเนียมใจกลางเมืองสุขุม…, contact: atMax§สมชาย ใจดี",
+      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMax§ประกาศขายบ้านเดี่ยวหรูใจกลาง…, location: atMax§กรุงเทพมหานครเป็นเมืองหลวงที…, district: atMax§เขตวัฒนาเป็นเขตที่มีความเจริ…, price: atMax§1000000000000000000000000000…, area: atMax§1234567890123456789012345678…, floor: atMax§1234567890123456789012345678…, desc: atMax§คอนโดหรูใจกลางเมือง พร้อมเฟอ…, contact: atMax§สมชาย ใจดีศรีสุขเจริญยิ่งมงค…",
       "steps": [
         {
           "enterText": {
@@ -8100,7 +8177,7 @@
       "tc": "edge_cases_boundary_at_min_length",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMin§\"\", location: atMin§\"\", district: atMin§\"\", price: atMin§\"\", area: atMin§\"\", floor: atMin§\"\", desc: atMin§รายละเอียดสั้นๆแค่สิบเก้าคำ, contact: atMin§ก",
+      "description": "type: คอนโด, bedrooms: สตูดิโอ, bathrooms: 1, furnished_switch: off, title: atMin§\"\", location: atMin§\"\", district: atMin§\"\", price: atMin§\"\", area: atMin§\"\", floor: atMin§\"\", desc: atMin§สั้นเกินไปแล้วนะสั้นม, contact: atMin§ก",
       "steps": [
         {
           "enterText": {

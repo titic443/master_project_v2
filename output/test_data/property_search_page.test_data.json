@@ -1,0 +1,4893 @@
+{
+  "source": {
+    "file": "lib/demos/property_search_page.dart",
+    "pageClass": "PropertySearchPage",
+    "cubitClass": "PropertySearchCubit",
+    "stateClass": "PropertySearchState",
+    "fileCubit": "lib/cubit/property_search_cubit.dart",
+    "fileState": "lib/cubit/property_search_state.dart"
+  },
+  "datasets": {
+    "defaults": {},
+    "byKey": {
+      "search_01_location_textfield": [
+        {
+          "valid": "กรุงเทพมหานคร",
+          "invalid": "กทม",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "กรุงเทพมหานคร เขตบางกะปิ ถนนรามคำแหง ซอย24 แยก26"
+        }
+      ],
+      "search_04_min_price_textfield": [
+        {
+          "valid": "1500000",
+          "invalid": "",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "12345678901234567890123456789012345678901234567890"
+        }
+      ],
+      "search_05_max_price_textfield": [
+        {
+          "valid": "10000000",
+          "invalid": "",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "98765432109876543210987654321098765432109876543210"
+        }
+      ],
+      "search_06_min_area_textfield": [
+        {
+          "valid": "45.75",
+          "invalid": "0.5",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "12345678901234567890123456789012345678901234567.89"
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "tc": "pairwise_invalid_cases_1",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"townhouse\", bedrooms: \"4plus\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_2",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"commercial\", bedrooms: \"2\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_3",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"commercial\", bedrooms: \"1\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_4",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"detached\", bedrooms: \"studio\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_5",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"condo\", bedrooms: \"1\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_6",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"townhouse\", bedrooms: \"studio\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_7",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"townhouse\", bedrooms: \"2\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_8",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"detached\", bedrooms: \"3\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_9",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"detached\", bedrooms: \"4plus\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_10",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"commercial\", bedrooms: \"studio\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_11",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"townhouse\", bedrooms: \"1\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_12",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"land\", bedrooms: \"1\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_13",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"condo\", bedrooms: \"studio\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_14",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"land\", bedrooms: \"studio\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_15",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"commercial\", bedrooms: \"3\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_16",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"commercial\", bedrooms: \"4plus\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_17",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"detached\", bedrooms: \"2\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_18",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"condo\", bedrooms: \"3\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_19",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"land\", bedrooms: \"2\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_20",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"land\", bedrooms: \"4plus\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_21",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"townhouse\", bedrooms: \"3\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_22",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"condo\", bedrooms: \"4plus\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_23",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"detached\", bedrooms: \"1\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_24",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"land\", bedrooms: \"3\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_25",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "location: invalid§กทม, type: \"condo\", bedrooms: \"2\", min_price: invalid§\"\", max_price: invalid§\"\", min_area: invalid§0.5, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_1",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"townhouse\", bedrooms: \"4plus\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"commercial\", bedrooms: \"2\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_3",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"commercial\", bedrooms: \"1\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_4",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"detached\", bedrooms: \"studio\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_5",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"condo\", bedrooms: \"1\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_6",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"townhouse\", bedrooms: \"studio\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_7",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"townhouse\", bedrooms: \"2\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_8",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"detached\", bedrooms: \"3\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_9",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"detached\", bedrooms: \"4plus\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_10",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"commercial\", bedrooms: \"studio\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_11",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"townhouse\", bedrooms: \"1\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_12",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"land\", bedrooms: \"1\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_13",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"condo\", bedrooms: \"studio\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_14",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"land\", bedrooms: \"studio\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_15",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"commercial\", bedrooms: \"3\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_16",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"commercial\", bedrooms: \"4plus\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "อาคารพาณิชย์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_17",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"detached\", bedrooms: \"2\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_18",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"condo\", bedrooms: \"3\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_19",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"land\", bedrooms: \"2\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_20",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"land\", bedrooms: \"4plus\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_21",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"townhouse\", bedrooms: \"3\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ทาวน์เฮาส์"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_22",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"condo\", bedrooms: \"4plus\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "4+"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_23",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"detached\", bedrooms: \"1\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "บ้านเดี่ยว"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "1"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_24",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"land\", bedrooms: \"3\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: on",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "ที่ดิน"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "3"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_07_furnished_switch"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_25",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "location: valid§กรุงเทพมหานคร, type: \"condo\", bedrooms: \"2\", min_price: valid§1500000, max_price: valid§10000000, min_area: valid§45.75, furnished_switch: off",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "2"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_empty_all_fields",
+      "kind": "failed",
+      "group": "edge_cases",
+      "description": "location: empty§\"\", min_price: empty§\"\", max_price: empty§\"\", min_area: empty§\"\", type: empty§\"\", bedrooms: empty§\"\", furnished_switch: off",
+      "steps": [
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_boundary_at_max_length",
+      "kind": "success",
+      "group": "edge_cases",
+      "description": "type: คอนโด, bedrooms: สตูดิโอ, furnished_switch: off, location: atMax§กรุงเทพมหานคร เขตบางกะปิ ถนน…, min_price: atMax§1234567890123456789012345678…, max_price: atMax§9876543210987654321098765432…, min_area: atMax§1234567890123456789012345678…",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].atMax"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "edge_cases_boundary_at_min_length",
+      "kind": "success",
+      "group": "edge_cases",
+      "description": "type: คอนโด, bedrooms: สตูดิโอ, furnished_switch: off, location: atMin§\"\", min_price: atMin§\"\", max_price: atMin§\"\", min_area: atMin§\"\"",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_location_textfield",
+            "dataset": "byKey.search_01_location_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_02_type_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "คอนโด"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "tap": {
+            "byKey": "search_03_bedrooms_dropdown"
+          }
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "scrollAndTapText": "สตูดิโอ"
+        },
+        {
+          "pumpAndSettle": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_04_min_price_textfield",
+            "dataset": "byKey.search_04_min_price_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_05_max_price_textfield",
+            "dataset": "byKey.search_05_max_price_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "enterText": {
+            "byKey": "search_06_min_area_textfield",
+            "dataset": "byKey.search_06_min_area_textfield[0].atMin"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_08_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    }
+  ]
+}

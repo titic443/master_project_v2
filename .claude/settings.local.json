@@ -89,7 +89,17 @@
       "Bash(docker network *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://172.17.0.2:8080/)",
       "Bash(dart run /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/flutter_test_gen_v1.0.0/webview/host_runner.dart /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2 > /tmp/flutter_test_gen_host_runner.log 2>&1 & *)",
-      "Bash(curl -s -o /dev/null -w \"8080 → HTTP %{http_code}\" http://localhost:8080/)"
+      "Bash(curl -s -o /dev/null -w \"8080 → HTTP %{http_code}\" http://localhost:8080/)",
+      "Bash(bash -n build_release.sh)",
+      "Bash(git filter-branch *)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter 'grep -v \"^Co-Authored-By:\" | sed \"/^[[:space:]]*$/d\"' d84fa7f..HEAD)",
+      "Bash(sed -i '' \"s/AQ\\\\.Ab8RN6LKIVPDotCnxiXp8tPPgkvsBXiMW2oLqoO2EMiuDk5XWA/YOUR_GEMINI_API_KEY_HERE/g\" /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/tools/script_v2/generate_datasets.dart)",
+      "Bash(sed -i '' \"s/AQ\\\\.Ab8RN6LKIVPDotCnxiXp8tPPgkvsBXiMW2oLqoO2EMiuDk5XWA/YOUR_GEMINI_API_KEY_HERE/g\" /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/flutter_test_gen_v1.0.0/tools/script_v2/generate_datasets.dart)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --tree-filter 'sed -i '\\\\'''\\\\'' '\\\\''s/AQ\\\\.Ab8RN6LKIVPDotCnxiXp8tPPgkvsBXiMW2oLqoO2EMiuDk5XWA/YOUR_GEMINI_API_KEY_HERE/g'\\\\'' tools/script_v2/generate_datasets.dart 2>/dev/null; sed -i '\\\\'''\\\\'' '\\\\''s/AQ\\\\.Ab8RN6LKIVPDotCnxiXp8tPPgkvsBXiMW2oLqoO2EMiuDk5XWA/YOUR_GEMINI_API_KEY_HERE/g'\\\\'' flutter_test_gen_v1.0.0/tools/script_v2/generate_datasets.dart 2>/dev/null; true' d84fa7f..HEAD)",
+      "Bash(git reset *)",
+      "Bash(grep -n \"validateConstraintsSyntax\\\\|Line \\\\$\\\\|\\\\\"Line \\\\\"\\\\|'Line '\" /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/tools/script_v2/generator_pict.dart)",
+      "Bash(awk '/search_02_category_dropdown/,/search_03_type_dropdown/' /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/lib/demos/job_search_page.dart)",
+      "Bash(awk '/search_03_type_dropdown/,/search_04_salary_min/' /Users/titichangpoo/Desktop/MASTER_FINAL/master_project_v2/lib/demos/job_search_page.dart)"
     ],
     "deny": [],
     "ask": [],

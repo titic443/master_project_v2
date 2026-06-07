@@ -4,14 +4,14 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมศรี มีสุข",
-          "invalid": "สมศรี123",
+          "valid": "สมศักดิ์ ชัยชนะ",
+          "invalid": "สมศักดิ์ 123",
           "invalidRuleMessages": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
-          "atMin": "",
-          "atMax": "กมลวรรณ บุญมีศรีสุขสมบัติ ทรัพย์อุดมปรีชาชาญ วัฒนส"
+          "atMin": "ก",
+          "atMax": "พงษ์พัฒน์ พัฒนาพงษ์ไพศาลสกุลชัยเจริญชัยกุลกุลสุวัฒ"
         },
         {
-          "valid": "จอห์น สมิธ",
+          "valid": "มานี มีสุข",
           "invalid": "สมชาย",
           "invalidRuleMessages": "กรุณากรอกทั้งชื่อและนามสกุล"
         }
@@ -21,7 +21,7 @@
           "valid": "1234567890123",
           "invalid": "123456789012",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "",
+          "atMin": "1",
           "atMax": "1234567890123"
         },
         {
@@ -33,10 +33,10 @@
       "appt_03_phone_textfield": [
         {
           "valid": "0812345678",
-          "invalid": "01234567",
+          "invalid": "1234567890",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "atMin": "",
-          "atMax": "0123456789"
+          "atMin": "012345678",
+          "atMax": "0812345678"
         }
       ],
       "appt_06_date_textfield": [
@@ -50,20 +50,20 @@
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "14:00",
+          "valid": "10:30",
           "invalid": "",
           "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
-          "atMin": "",
-          "atMax": "14:00 PM This is a very long time slot description"
+          "atMin": "08:00",
+          "atMax": "20:00 (นัดหมายเวลาสุดท้ายของวัน) XXXXXXXXXXXXXXXXX"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "คนไข้มีอาการเวียนหัวเล็กน้อยและมีผื่นขึ้นตามตัว",
+          "valid": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลิน",
           "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "อาการป่วยเล็กน้อย มีไข้และไอเล็กน้อย โปรดตรวจเบื้อ"
+          "atMax": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลินมาก่อนหน้านี้"
         }
       ]
     }

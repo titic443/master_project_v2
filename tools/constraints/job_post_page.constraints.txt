@@ -12,9 +12,9 @@
 #     ส่งเข้า PICT ตรง ๆ + Dart-side post-filter (กัน macOS PICT bug)
 
 # ─── Format A: Dataset Constraints ───────────────────────────────────────────
-search_01_keyword_textfield.valid   = วิศวกรซอฟต์แวร์อาวุโส
-search_01_keyword_textfield.invalid = QA
-search_04_salary_min_textfield.valid = 30000
+job_01_title_textfield.valid   = วิศวกรซอฟต์แวร์อาวุโส
+job_07_salary_min_textfield.valid = 30000
+job_08_salary_max_textfield.valid = 40000
 
 # ─── Format B: PICT IF/THEN Constraints ──────────────────────────────────────
 # ถ้า category = Engineering → employment type ต้อง = Freelance (ตรงกับ DB)

@@ -438,7 +438,8 @@ class PipelineController {
           // Don't fail the whole scan over a malformed manifest, but make
           // the failure visible — silent fall-through used to mask real
           // pipeline corruption (manifest written but unparseable).
-          stderr.writeln('[WARN] handleScan: failed to parse manifest at '
+          stderr.writeln(
+              '[WARN] handleScan: failed to parse manifest at '
               '$manifestPath ($e). Reporting widgetCount=0.');
         }
       }
@@ -802,7 +803,8 @@ class PipelineController {
       } catch (e) {
         // Summary is best-effort — don't fail the response, but make the
         // failure visible so a corrupted testdata.json gets noticed.
-        stderr.writeln('[WARN] generate-test-script: skipped summary, '
+        stderr.writeln(
+            '[WARN] generate-test-script: skipped summary, '
             'could not parse testdata.json ($e).');
       }
 
@@ -892,7 +894,7 @@ class PipelineController {
     String coverageOutput = '';
 
     if (withCoverage) {
-      coverageHtmlPath = await _coverageRunner.generateCoverageTest();
+      coverageHtmlPath = await _coverageRunner.generateCoverageReport();
       coverageOutput = coverageHtmlPath != null
           ? 'Coverage HTML generated: $coverageHtmlPath'
           : 'Coverage generation failed';
