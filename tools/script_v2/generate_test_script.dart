@@ -637,6 +637,7 @@ class TestScriptGenerator {
     return sampleByKey;
   }
 
+  // สร้าง integration_test/*.dart โดยวน orderedGroups แล้ว emit testWidgets() ทุก test case พร้อม import และ BlocProvider
   void _generateIntegrationTests(
       String uiFile,
       String pageClass,
