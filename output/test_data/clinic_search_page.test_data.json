@@ -12,11 +12,11 @@
     "byKey": {
       "search_01_patient_name_textfield": [
         {
-          "valid": "สมศรี ใจดี",
-          "invalid": "สมชาย ใจดี",
+          "valid": "สมศรี มีสุข",
+          "invalid": "X",
           "invalidRuleMessages": "",
           "atMin": "",
-          "atMax": "Amelia Isabella Santiago Garcia Ramirez Hernandez "
+          "atMax": "สมศรี มีสุข รุ่งเรืองยิ่ง ปรีชา ชัยวัฒน์ สุขสำราญ "
         }
       ]
     }
@@ -26,7 +26,7 @@
       "tc": "pairwise_invalid_cases_1",
       "kind": "failed",
       "group": "pairwise_invalid_cases",
-      "description": "patient_name: invalid§สมชาย ใจดี",
+      "description": "patient_name: invalid§X, insurance: checked",
       "steps": [
         {
           "enterText": {
@@ -39,7 +39,48 @@
         },
         {
           "tap": {
-            "byKey": "search_05_end_button",
+            "byKey": "search_05_insurance_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_fail",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_invalid_cases_2",
+      "kind": "failed",
+      "group": "pairwise_invalid_cases",
+      "description": "patient_name: invalid§X, insurance: unchecked",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_patient_name_textfield",
+            "dataset": "byKey.search_01_patient_name_textfield[0].invalid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
             "isSubmit": true
           }
         },
@@ -59,7 +100,7 @@
       "tc": "pairwise_valid_cases_1",
       "kind": "success",
       "group": "pairwise_valid_cases",
-      "description": "patient_name: valid§สมศรี ใจดี",
+      "description": "patient_name: valid§สมศรี มีสุข, insurance: checked",
       "steps": [
         {
           "enterText": {
@@ -72,7 +113,48 @@
         },
         {
           "tap": {
-            "byKey": "search_05_end_button",
+            "byKey": "search_05_insurance_checkbox"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
+            "isSubmit": true
+          }
+        },
+        {
+          "pumpAndSettle": true
+        }
+      ],
+      "asserts": [
+        {
+          "byKey": "search_01_expected_success",
+          "exists": true,
+          "dismiss": true
+        }
+      ]
+    },
+    {
+      "tc": "pairwise_valid_cases_2",
+      "kind": "success",
+      "group": "pairwise_valid_cases",
+      "description": "patient_name: valid§สมศรี มีสุข, insurance: unchecked",
+      "steps": [
+        {
+          "enterText": {
+            "byKey": "search_01_patient_name_textfield",
+            "dataset": "byKey.search_01_patient_name_textfield[0].valid"
+          }
+        },
+        {
+          "pump": true
+        },
+        {
+          "tap": {
+            "byKey": "search_06_end_button",
             "isSubmit": true
           }
         },
@@ -92,11 +174,11 @@
       "tc": "edge_cases_empty_all_fields",
       "kind": "failed",
       "group": "edge_cases",
-      "description": "patient_name: empty§\"\"",
+      "description": "patient_name: empty§\"\", insurance: unchecked",
       "steps": [
         {
           "tap": {
-            "byKey": "search_05_end_button",
+            "byKey": "search_06_end_button",
             "isSubmit": true
           }
         },
@@ -116,7 +198,7 @@
       "tc": "edge_cases_boundary_at_max_length",
       "kind": "success",
       "group": "edge_cases",
-      "description": "patient_name: atMax§Amelia Isabella Santiago Gar…",
+      "description": "patient_name: atMax§สมศรี มีสุข รุ่งเรืองยิ่ง ปร…",
       "steps": [
         {
           "enterText": {
@@ -129,7 +211,7 @@
         },
         {
           "tap": {
-            "byKey": "search_05_end_button",
+            "byKey": "search_06_end_button",
             "isSubmit": true
           }
         },
@@ -162,7 +244,7 @@
         },
         {
           "tap": {
-            "byKey": "search_05_end_button",
+            "byKey": "search_06_end_button",
             "isSubmit": true
           }
         },

@@ -14,8 +14,16 @@ class ClinicSearchPage extends StatelessWidget {
 
 // ─── Private View ─────────────────────────────────────────────────────────────
 
-class _ClinicSearchView extends StatelessWidget {
+class _ClinicSearchView extends StatefulWidget {
   const _ClinicSearchView();
+
+  @override
+  State<_ClinicSearchView> createState() => _ClinicSearchViewState();
+}
+
+class _ClinicSearchViewState extends State<_ClinicSearchView> {
+  final _formKey = GlobalKey<FormState>();
+  bool _insuranceOnly = false;
 
   @override
   Widget build(BuildContext context) {
@@ -71,74 +79,124 @@ class _ClinicSearchView extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<ClinicSearchCubit>();
           final isLoading = state.status == ClinicSearchStatus.loading;
-          return Column(
-            children: [
-              const Divider(height: 1),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        key: const Key('search_01_patient_name_textfield'),
-                        style: const TextStyle(fontSize: 14),
-                        decoration: const InputDecoration(
-                          labelText: 'ชื่อผู้ป่วย',
-                          labelStyle: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.w600),
-                          hintText: 'เช่น สมชาย',
-                          hintStyle:
-                              TextStyle(fontSize: 12, color: Colors.grey),
-                          prefixIcon:
-                              Icon(Icons.person_search_outlined, size: 18),
-                          border: OutlineInputBorder(),
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 10),
-                        ),
-                        onChanged: cubit.onPatientNameChanged,
-                        onSubmitted: (_) => cubit.search(),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      key: const Key('search_05_end_button'),
-                      onPressed: isLoading ? null : cubit.search,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 18),
-                        backgroundColor: Colors.teal,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: isLoading
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const Divider(height: 1),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              key: const Key('search_01_patient_name_textfield'),
+                              style: const TextStyle(fontSize: 14),
+                              decoration: const InputDecoration(
+                                labelText: 'ชื่อผู้ป่วย',
+                                labelStyle: TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.w600),
+                                hintText: 'เช่น สมชาย',
+                                hintStyle:
+                                    TextStyle(fontSize: 12, color: Colors.grey),
+                                prefixIcon:
+                                    Icon(Icons.person_search_outlined, size: 18),
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 10),
                               ),
-                            )
-                          : const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.search, size: 18),
-                                SizedBox(width: 4),
-                                Text('ค้นหา',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold)),
-                              ],
+                              onChanged: cubit.onPatientNameChanged,
+                              onSubmitted: (_) => cubit.search(),
                             ),
-                    ),
-                  ],
+                          ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            key: const Key('search_06_end_button'),
+                            onPressed: isLoading
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      cubit.search();
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 14, horizontal: 18),
+                              backgroundColor: Colors.teal,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: isLoading
+                                ? const SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.search, size: 18),
+                                      SizedBox(width: 4),
+                                      Text('ค้นหา',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      // FormField<bool>(
+                      //   initialValue: false,
+                      //   validator: (v) =>
+                      //       (v == null || !v) ? 'กรุณายืนยันว่ามีสิทธิ์เข้าค้นหา' : null,
+                      //   builder: (state) => Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      Row(
+                        children: [
+                          Checkbox(
+                            key: const Key('search_05_insurance_checkbox'),
+                            value: _insuranceOnly,
+                            onChanged: (val) {
+                              setState(() => _insuranceOnly = val ?? false);
+                              // state.didChange(val ?? false);
+                            },
+                          ),
+                          const Text(
+                            'ฉันมีสิทธิ์เข้าใช้งานระบบค้นหานัดหมาย',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      //     if (state.hasError)
+                      //       Padding(
+                      //         padding: const EdgeInsets.only(left: 12),
+                      //         child: Text(
+                      //           state.errorText!,
+                      //           style: const TextStyle(
+                      //               fontSize: 12, color: Colors.red),
+                      //         ),
+                      //       ),
+                      //   ],
+                      // ),
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(child: _ResultSection(state: state)),
-            ],
+                Expanded(child: _ResultSection(state: state)),
+              ],
+            ),
           );
         },
       ),

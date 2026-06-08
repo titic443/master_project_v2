@@ -1,0 +1,16 @@
+{
+  "file": "lib/demos/clinic_search_page.dart",
+  "datasets": {
+    "byKey": {
+      "search_01_patient_name_textfield": [
+        {
+          "valid": "สมศรี มีสุข",
+          "invalid": "X",
+          "invalidRuleMessages": "",
+          "atMin": "",
+          "atMax": "สมศรี มีสุข รุ่งเรืองยิ่ง ปรีชา ชัยวัฒน์ สุขสำราญ "
+        }
+      ]
+    }
+  }
+}

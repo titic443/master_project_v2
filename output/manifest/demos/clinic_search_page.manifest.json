@@ -22,7 +22,14 @@
     },
     {
       "widgetType": "ElevatedButton",
-      "key": "search_05_end_button"
+      "key": "search_06_end_button"
+    },
+    {
+      "widgetType": "Checkbox",
+      "key": "search_05_insurance_checkbox",
+      "meta": {
+        "valueBinding": "_insuranceOnly"
+      }
     }
   ]
 }

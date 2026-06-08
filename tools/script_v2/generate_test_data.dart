@@ -578,6 +578,36 @@ class TestDataGenerator {
           }
         }
       }
+
+      // Checkbox widget ที่มี validatorRules propagate มาจาก FormField<bool>
+      // (key อยู่บน Checkbox โดยตรง ไม่ใช่บน FormField)
+      // รองรับทั้ง "value" และ "v" เป็นชื่อ param ใน validator
+      if ((t == 'Checkbox' || t == 'CheckboxListTile') && k.isNotEmpty &&
+          !requiredCheckboxValidation.containsKey(k)) {
+        final meta = (w['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
+        final rules =
+            (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
+        for (final rule in rules) {
+          if (rule is Map) {
+            final condition = rule['condition']?.toString() ?? '';
+            final message = rule['message']?.toString() ?? '';
+            final normalized = condition
+                .toLowerCase()
+                .replaceAll(' ', '')
+                .replaceAll('\n', '');
+            if (message.isNotEmpty &&
+                (normalized.contains('!value') ||
+                    normalized.contains('value==false') ||
+                    normalized.contains('value==null') ||
+                    normalized.contains('||!v') ||
+                    normalized.contains('v==false') ||
+                    normalized.contains('v==null'))) {
+              requiredCheckboxValidation[k] = message;
+              break;
+            }
+          }
+        }
+      }
     }
 
     final radioGroupValidation = <String, String>{};

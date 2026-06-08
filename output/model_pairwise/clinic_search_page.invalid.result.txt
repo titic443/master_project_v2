@@ -1,0 +1,3 @@
+search_01_patient_name_textfield	search_05_insurance_checkbox
+invalid	checked
+invalid	unchecked
