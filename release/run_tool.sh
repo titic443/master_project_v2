@@ -4,10 +4,11 @@
 # =============================================================================
 # วิธีใช้: รันจาก directory ที่แตก zip ของเครื่องมือ
 #
-#   ./run_tool.sh /path/to/flutter_project   # ระบุ project path
-#   ./run_tool.sh                            # ใช้ current directory เป็น project
-#   ./run_tool.sh --build                    # build image ก่อนรัน
-#   ./run_tool.sh --stop                     # หยุด container และ host runner
+#   ./run_tool.sh /path/to/flutter_project                      # ระบุ project path
+#   ./run_tool.sh                                               # ใช้ current directory เป็น project
+#   ./run_tool.sh --build                                       # build image ก่อนรัน
+#   ./run_tool.sh --stop                                        # หยุด container และ host runner
+#   ./run_tool.sh /path/to/flutter_project --api-key=AIza...   # ระบุ Gemini API key
 #
 # =============================================================================
 
@@ -23,13 +24,15 @@ TOOL_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUILD=false
 STOP=false
 PROJECT_DIR=""
+API_KEY=""
 
 for arg in "$@"; do
   case $arg in
-    --build) BUILD=true ;;
-    --stop)  STOP=true  ;;
-    --*)     ;;                        # ignore unknown flags
-    *)       PROJECT_DIR="$arg" ;;    # positional = flutter project path
+    --build)     BUILD=true ;;
+    --stop)      STOP=true  ;;
+    --api-key=*) API_KEY="${arg#--api-key=}" ;;
+    --*)         ;;                        # ignore unknown flags
+    *)           PROJECT_DIR="$arg" ;;    # positional = flutter project path
   esac
 done
 
@@ -83,15 +86,20 @@ pkill -f "dart.*host_runner.dart" 2>/dev/null || true
 # ── Start Flutter Test Generator ──────────────────────────────────────────────
 echo "Starting Flutter Test Generator..."
 echo "   Project : $PROJECT_DIR"
+[ -n "$API_KEY" ] && echo "   API Key : (provided via --api-key)"
 echo "   URL     : $URL"
 echo ""
 
 # รัน Docker container แบบ detached (ไม่ตายเมื่อปิด terminal)
+_ENV_ARGS=()
+[ -n "$API_KEY" ] && _ENV_ARGS+=(-e "GEMINI_API_KEY=$API_KEY")
+
 docker run -d --rm \
   --platform linux/arm64 \
   --name $CONTAINER_NAME \
   -p $PORT:$PORT \
   -v "$PROJECT_DIR:/workspace" \
+  "${_ENV_ARGS[@]}" \
   $IMAGE_NAME
 
 # รัน host runner บน HOST แบบ background (รับ flutter test requests จาก Docker)
