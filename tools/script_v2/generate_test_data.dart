@@ -1956,11 +1956,6 @@ class TestDataGenerator {
         if (first == null) continue;
         final atMinVal = first['atMin']?.toString() ?? '';
         final invalidVal = first['invalid']?.toString() ?? '';
-        // atMin == invalidVal && atMinVal.isNotEmpty detects an invalid boundary value.
-        if (atMinVal == invalidVal && atMinVal.isNotEmpty) {
-          minHasInvalidFields = true;
-          break;
-        }
         if (atMinVal.isEmpty) {
           final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
               orElse: () => <String, dynamic>{});
@@ -1977,8 +1972,11 @@ class TestDataGenerator {
               }
             }
           }
-          if (minHasInvalidFields) break;
+        } else if (invalidVal.isNotEmpty &&
+            atMinVal.length == invalidVal.length) {
+          minHasInvalidFields = true;
         }
+        if (minHasInvalidFields) break;
       }
 
       final minStepsByKey = buildNonTextDefaultSteps();
