@@ -7,11 +7,13 @@ import 'utils.dart' as utils;
 // in Google Cloud Console, create a new one stored only in .env, and delete
 // the hardcodedApiKey constant below.
 // Key priority (high → low): --api-key flag | .env file | GEMINI_API_KEY env var | hardcoded fallback
-const String hardcodedApiKey = '';
+const String hardcodedApiKey =
+    '';
+// '';
 
 void main(List<String> args) async {
   String manifestPath = '';
-  String model = 'gemini-2.5-flash';
+  String model = 'gemini-flash-latest';
   String? apiKey;
 
   for (final a in args) {
@@ -273,6 +275,7 @@ For fields WITH validatorRules:
      - valid:   a value that makes that condition evaluate to FALSE → validator returns null (passes)
      - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase
   3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)
+  4. For conditions containing "DateTime": treat the value as a date string in "DD/MM/YYYY" format — use the condition semantics to decide whether invalid/valid should be a past or future date (e.g., "isBefore(today)" → invalid = past date, valid = future date)
 
 For fields with ONLY isEmpty/null rules (all non-empty rules are absent):
   1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule
@@ -286,10 +289,13 @@ For fields WITHOUT validatorRules at all:
   4. Set invalidRuleMessages to "" (empty string) — no UI-visible error message for this field
 
 For boundary values (add to FIRST pair only):
-  atMin: value at the minimum boundary
-    - Default: "" (empty string)
-    - If field has min-length rule (e.g., length < 2): use value just below min (e.g., 1 char like "A")
-    - MUST respect inputFormatters (e.g., digitsOnly → use "0" or "")
+  atMin: the absolute minimum value that can be physically typed into the field
+    - Check inputFormatters to determine allowed input type
+    - atMin = the smallest single-unit input: 1 digit for digitsOnly fields, 1 character for text fields
+    - Does NOT need to pass validation — just needs to be typeable
+    - For date fields (condition contains "DateTime"): use the earliest possible date in "DD/MM/YYYY" format
+    - digitsOnly → "0",  text/no-formatter → "ก" or "A"
+    - If truly nothing can be inferred: use "" (empty string)
   atMax: value at the maximum length boundary
     - ALWAYS use meta.effectiveMaxLength as the max — it is already computed (explicit or default 50)
     - Generate a realistic value whose character length == effectiveMaxLength exactly
