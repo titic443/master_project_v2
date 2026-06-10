@@ -7,9 +7,7 @@ import 'utils.dart' as utils;
 // in Google Cloud Console, create a new one stored only in .env, and delete
 // the hardcodedApiKey constant below.
 // Key priority (high → low): --api-key flag | .env file | GEMINI_API_KEY env var | hardcoded fallback
-const String hardcodedApiKey =
-    '';
-// '';
+const String hardcodedApiKey = 'GEMINI_API_KEY';
 
 void main(List<String> args) async {
   String manifestPath = '';
