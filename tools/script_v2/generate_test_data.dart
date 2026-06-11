@@ -385,11 +385,23 @@ class TestDataGenerator {
         }
       }
 
+      // Preserve AI-generated invalid/invalidRuleMessages if present
+      final existingDate =
+          (datasets['byKey'] as Map<String, dynamic>)[key];
+      final existingDateEntry =
+          (existingDate is List && existingDate.isNotEmpty)
+              ? (existingDate[0] as Map?)
+              : null;
+      final aiInvalidDate = existingDateEntry?['invalid']?.toString() ?? '';
+      final aiInvalidDateMsg =
+          existingDateEntry?['invalidRuleMessages']?.toString() ?? '';
+
       (datasets['byKey'] as Map<String, dynamic>)[key] = <dynamic>[
         <String, dynamic>{
           'valid': validDate,
-          'invalid': '',
-          'invalidRuleMessages': requiredMsg,
+          'invalid': aiInvalidDate,
+          'invalidRuleMessages':
+              aiInvalidDate.isNotEmpty ? aiInvalidDateMsg : requiredMsg,
           'atMin': atMinDate,
           'atMax': atMaxDate,
         }
@@ -414,18 +426,22 @@ class TestDataGenerator {
         }
       }
 
-      // Preserve AI datasets for TimePicker valid value; only override invalidRuleMessages.
+      // Preserve AI datasets for TimePicker valid/invalid/invalidRuleMessages.
       final existingTime = (datasets['byKey'] as Map<String, dynamic>)[key];
       final existingTimeEntry =
           (existingTime is List && existingTime.isNotEmpty)
               ? (existingTime[0] as Map?)
               : null;
       final aiValidTime = existingTimeEntry?['valid']?.toString() ?? '';
+      final aiInvalidTime = existingTimeEntry?['invalid']?.toString() ?? '';
+      final aiInvalidTimeMsg =
+          existingTimeEntry?['invalidRuleMessages']?.toString() ?? '';
       (datasets['byKey'] as Map<String, dynamic>)[key] = <dynamic>[
         <String, dynamic>{
           'valid': aiValidTime.isNotEmpty ? aiValidTime : '09:00',
-          'invalid': '',
-          'invalidRuleMessages': requiredMsg,
+          'invalid': aiInvalidTime,
+          'invalidRuleMessages':
+              aiInvalidTime.isNotEmpty ? aiInvalidTimeMsg : requiredMsg,
           'atMin': existingTimeEntry?['atMin']?.toString() ?? '00:00',
           'atMax': existingTimeEntry?['atMax']?.toString() ?? '23:59',
         }

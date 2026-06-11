@@ -273,7 +273,16 @@ For fields WITH validatorRules:
      - valid:   a value that makes that condition evaluate to FALSE → validator returns null (passes)
      - invalidRuleMessages: copy the EXACT "message" string from that rule — never paraphrase
   3. All values MUST still pass inputFormatters (e.g., digitsOnly field → invalid must be digits)
-  4. For conditions containing "DateTime": treat the value as a date string in "DD/MM/YYYY" format — use the condition semantics to decide whether invalid/valid should be a past or future date (e.g., "isBefore(today)" → invalid = past date, valid = future date)
+  4. For conditions referencing "DateTime" or a variable named "picked" (DatePicker state):
+     - The text field displays the picked date as a "DD/MM/YYYY" string — this IS the value to use
+     - "isBefore(today)" → invalid = a past date like "01/01/2020", valid = a future date like "31/12/2030"
+     - Use the condition logic to choose the correct direction (past/future)
+     - NEVER output "" for these fields — always a non-empty date string
+  5. For conditions referencing "mins" (computed as hour*60+minute from TimePicker state):
+     - The text field displays the picked time as "HH:MM" — this IS the value to use
+     - "mins < 8*60 || mins > 20*60" means valid range is 08:00–20:00 → invalid = "21:00", valid = "10:00"
+     - Read the numeric bounds from the condition and derive the correct HH:MM string
+     - NEVER output "" for these fields — always a non-empty time string
 
 For fields with ONLY isEmpty/null rules (all non-empty rules are absent):
   1. invalid MUST be "" (empty string) — the only way to trigger the isEmpty rule
@@ -330,6 +339,20 @@ Each pair: {"valid":"...","invalid":"...","invalidRuleMessages":"...","atMin":".
       '  {"condition":"v == null || v.trim().isEmpty","message":"กรุณากรอกจังหวัด / เมือง"}]}}',
       'Reasoning: Only rule is isEmpty/null → skip it as a non-empty rule, BUT since it is the ONLY rule, invalid must be "" to trigger it. Message = exact "กรุณากรอกจังหวัด / เมือง".',
       'Output: {"prop_03_location_textfield":[{"valid":"กรุงเทพมหานคร","invalid":"","invalidRuleMessages":"กรุณากรอกจังหวัด / เมือง","atMin":"","atMax":"กรุงเทพมหานคร"}]}',
+      '',
+      'Example 5 (DatePicker field — condition uses "picked" state variable, not v):',
+      'Input: {"key":"appt_06_date_textfield","meta":{"validatorRules":[',
+      '  {"condition":"v == null || v.trim().isEmpty","message":"กรุณาเลือกวันที่นัดหมาย"},',
+      '  {"condition":"DateTime(picked.year, picked.month, picked.day).isBefore(today)","message":"ไม่สามารถนัดหมายวันที่ผ่านมาแล้ว"}]}}',
+      'Reasoning: Skip isEmpty rule. Rule left: condition uses "picked" (DatePicker state) + isBefore(today). The field displays the picked date as DD/MM/YYYY. isBefore(today) → invalid must be a PAST date string → "01/01/2020". valid must be a FUTURE date string → "31/12/2030". NEVER use "" for this rule.',
+      'Output: {"appt_06_date_textfield":[{"valid":"31/12/2030","invalid":"01/01/2020","invalidRuleMessages":"ไม่สามารถนัดหมายวันที่ผ่านมาแล้ว","atMin":"01/01/2000","atMax":"31/12/2031"}]}',
+      '',
+      'Example 6 (TimePicker field — condition uses "mins" derived from TimeOfDay state, not v):',
+      'Input: {"key":"appt_07_time_textfield","meta":{"validatorRules":[',
+      '  {"condition":"v == null || v.trim().isEmpty","message":"กรุณาเลือกช่วงเวลา"},',
+      '  {"condition":"mins < 8 * 60 || mins > 20 * 60","message":"เวลาเปิดให้บริการ 08:00–20:00 น."}]}}',
+      'Reasoning: Skip isEmpty rule. Rule left: condition "mins < 8*60 || mins > 20*60" where mins = hour*60+minute. Valid range is 08:00–20:00. The field displays the picked time as HH:MM. invalid must make the condition TRUE → use a time OUTSIDE the range, e.g., "21:00" (hour=21, mins=1260 > 1200). valid must be inside range → "10:00". NEVER use "" for this rule.',
+      'Output: {"appt_07_time_textfield":[{"valid":"10:00","invalid":"21:00","invalidRuleMessages":"เวลาเปิดให้บริการ 08:00–20:00 น.","atMin":"00:00","atMax":"23:59"}]}',
       '',
       '=== (STYLE) ===',
       '- JSON only (no markdown, no comments)',
