@@ -55,6 +55,13 @@ class DatasetGenerator {
   final String? apiKey;
   const DatasetGenerator({this.model = 'gemini-2.5-flash', this.apiKey});
 
+  // Fallback chain — tried in order when primary model returns 503/429
+  static const List<String> _fallbackModels = [
+    'gemini-2.5-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-2.5-pro',
+  ];
+
   Future<String?> generateDatasets(String manifestPath) async {
     final success = await _processManifest(manifestPath, model, apiKey);
 
@@ -136,13 +143,35 @@ class DatasetGenerator {
       return false;
     }
 
-    Map<String, dynamic>? aiResult;
+    // Build model list: requested model first, then fallbacks (deduped)
+    final modelsToTry = [
+      model,
+      ..._fallbackModels.where((m) => m != model),
+    ];
 
-    try {
-      aiResult =
-          await _callGeminiForDatasets(apiKey, model, uiFile, allTextFields);
-    } catch (e) {
-      throw Exception('Gemini call failed: $e');
+    Map<String, dynamic>? aiResult;
+    Object? lastError;
+
+    for (final m in modelsToTry) {
+      try {
+        stdout.writeln('  → Calling Gemini (model=$m)');
+        aiResult =
+            await _callGeminiForDatasets(apiKey, m, uiFile, allTextFields);
+        break;
+      } catch (e) {
+        lastError = e;
+        final msg = e.toString();
+        final isRetryable = msg.contains('503') ||
+            msg.contains('UNAVAILABLE') ||
+            msg.contains('429') ||
+            msg.contains('RESOURCE_EXHAUSTED');
+        if (!isRetryable) throw Exception('Gemini call failed: $e');
+        stderr.writeln('  ⚠ Model $m unavailable ($msg), trying next model...');
+      }
+    }
+
+    if (aiResult == null) {
+      throw Exception('All Gemini models exhausted. Last error: $lastError');
     }
 
     final byKey = <String, dynamic>{};
