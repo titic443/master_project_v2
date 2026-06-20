@@ -1,0 +1,5 @@
+
+
+
+step run UI
+flutter_test_gen_v1.0.0 % ./run_tool.sh --build ../../master_project_v2 --api-key=$GEMINI_API_KEY

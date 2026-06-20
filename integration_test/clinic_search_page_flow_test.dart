@@ -19,9 +19,6 @@ void main() {
         // dataset: byKey.search_01_patient_name_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'X');
         await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('search_05_insurance_checkbox')));
-        await tester.tap(find.byKey(const Key('search_05_insurance_checkbox')));
-        await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
         await tester.ensureVisible(find.byKey(const Key('search_06_end_button')));
@@ -47,6 +44,9 @@ void main() {
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_patient_name_textfield[0].invalid
         await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'X');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('search_05_insurance_checkbox')));
+        await tester.tap(find.byKey(const Key('search_05_insurance_checkbox')));
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -74,10 +74,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมศรี มีสุข');
-        await tester.pump();
-        await tester.ensureVisible(find.byKey(const Key('search_05_insurance_checkbox')));
-        await tester.tap(find.byKey(const Key('search_05_insurance_checkbox')));
+        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมชาย ใจดี');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -103,7 +100,10 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_patient_name_textfield[0].valid
-        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมศรี มีสุข');
+        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมชาย ใจดี');
+        await tester.pump();
+        await tester.ensureVisible(find.byKey(const Key('search_05_insurance_checkbox')));
+        await tester.tap(find.byKey(const Key('search_05_insurance_checkbox')));
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -154,7 +154,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_patient_name_textfield[0].atMax
-        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมศรี มีสุข รุ่งเรืองยิ่ง ปรีชา ชัยวัฒน์ สุขสำราญ ');
+        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'สมศรี มีสุข สงวนศักดิ์ เจริญพร พัฒนาสุขศรี ชัยชนะ ');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();
@@ -180,7 +180,7 @@ void main() {
         final w = MaterialApp(home: MultiBlocProvider(providers: providers, child: ClinicSearchPage()));
         await tester.pumpWidget(w);
         // dataset: byKey.search_01_patient_name_textfield[0].atMin
-        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), '');
+        await tester.enterText(find.byKey(const Key('search_01_patient_name_textfield')), 'A');
         await tester.pump();
         FocusManager.instance.primaryFocus?.unfocus();
         await tester.pumpAndSettle();

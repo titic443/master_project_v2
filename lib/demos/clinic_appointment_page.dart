@@ -188,11 +188,8 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณากรอกชื่อ-นามสกุล';
-                    final name = v.trim();
-                    if (!RegExp(r'^[฀-๿a-zA-Z\s]+$').hasMatch(name))
+                    if (!RegExp(r'^[฀-๿a-zA-Z\s]+$').hasMatch(v.trim()))
                       return 'ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ';
-                    if (name.split(RegExp(r'\s+')).length < 2)
-                      return 'กรุณากรอกทั้งชื่อและนามสกุล';
                     return null;
                   },
                 ),
@@ -214,9 +211,7 @@ class _ClinicAppointmentViewState extends State<_ClinicAppointmentView> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return 'กรุณากรอกเลขบัตรประชาชน';
-                    final id = v.trim();
-                    if (id.length != 13) return 'ต้องมี 13 หลัก';
-                    if (id[0] == '0') return 'เลขบัตรไม่ถูกต้อง';
+                    if (v.trim().length != 13) return 'ต้องมี 13 หลัก';
                     return null;
                   },
                 ),

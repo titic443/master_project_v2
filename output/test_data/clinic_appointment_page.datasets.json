@@ -4,30 +4,20 @@
     "byKey": {
       "appt_01_patient_name_textfield": [
         {
-          "valid": "สมศักดิ์ ชัยชนะ",
-          "invalid": "สมศักดิ์ 123",
+          "valid": "สมชาย ใจดี",
+          "invalid": "John Doe123",
           "invalidRuleMessages": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ",
           "atMin": "ก",
-          "atMax": "พงษ์พัฒน์ พัฒนาพงษ์ไพศาลสกุลชัยเจริญชัยกุลกุลสุวัฒ"
-        },
-        {
-          "valid": "มานี มีสุข",
-          "invalid": "สมชาย",
-          "invalidRuleMessages": "กรุณากรอกทั้งชื่อและนามสกุล"
+          "atMax": "สุดารัตน์ เจริญสุขมงคลกุล กิตติพงษ์พาณิชย์สุขสวัสด"
         }
       ],
       "appt_02_id_card_textfield": [
         {
           "valid": "1234567890123",
-          "invalid": "123456789012",
+          "invalid": "12345",
           "invalidRuleMessages": "ต้องมี 13 หลัก",
-          "atMin": "1",
+          "atMin": "0",
           "atMax": "1234567890123"
-        },
-        {
-          "valid": "1234567890123",
-          "invalid": "0123456789012",
-          "invalidRuleMessages": "เลขบัตรไม่ถูกต้อง"
         }
       ],
       "appt_03_phone_textfield": [
@@ -35,35 +25,35 @@
           "valid": "0812345678",
           "invalid": "1234567890",
           "invalidRuleMessages": "เบอร์โทรไม่ถูกต้อง (ต้องขึ้นต้นด้วย 0 และมี 9-10 หลัก)",
-          "atMin": "012345678",
+          "atMin": "0",
           "atMax": "0812345678"
         }
       ],
       "appt_06_date_textfield": [
         {
-          "valid": "07/06/2026",
-          "invalid": "",
-          "invalidRuleMessages": "กรุณาเลือกวันที่นัดหมาย",
+          "valid": "12/06/2026",
+          "invalid": "01/01/2020",
+          "invalidRuleMessages": "ไม่สามารถนัดหมายวันที่ผ่านมาแล้ว",
           "atMin": "01/01/2000",
           "atMax": "01/01/2031"
         }
       ],
       "appt_07_time_textfield": [
         {
-          "valid": "10:30",
-          "invalid": "",
-          "invalidRuleMessages": "กรุณาเลือกช่วงเวลา",
-          "atMin": "08:00",
-          "atMax": "20:00 (นัดหมายเวลาสุดท้ายของวัน) XXXXXXXXXXXXXXXXX"
+          "valid": "10:00",
+          "invalid": "21:00",
+          "invalidRuleMessages": "เวลาเปิดให้บริการ 08:00–20:00 น.",
+          "atMin": "00:00",
+          "atMax": "23:59"
         }
       ],
       "appt_09_note_textfield": [
         {
-          "valid": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลิน",
+          "valid": "อาการปวดหัวเป็นมา 3 วัน",
           "invalid": "X",
           "invalidRuleMessages": "",
-          "atMin": "",
-          "atMax": "ผู้ป่วยเคยมีประวัติแพ้ยาเพนิซิลลินมาก่อนหน้านี้"
+          "atMin": "ก",
+          "atMax": "คนไข้มีอาการปวดหัวเรื้อรัง เป็นมานาน 3 วัน พบรอยฟก"
         }
       ]
     }

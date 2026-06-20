@@ -54,16 +54,8 @@
             "message": "กรุณากรอกชื่อ-นามสกุล"
           },
           {
-            "condition": "!RegExp(r'^[฀-๿a-zA-Z\\s]+$').hasMatch(name)",
+            "condition": "!RegExp(r'^[฀-๿a-zA-Z\\s]+$').hasMatch(v.trim())",
             "message": "ใช้ได้เฉพาะตัวอักษรไทยหรืออังกฤษ"
-          },
-          {
-            "condition": "name.split(RegExp(r'\\s+')).length < 2",
-            "message": "กรุณากรอกทั้งชื่อและนามสกุล"
-          },
-          {
-            "condition": "!RegExp(r'^[฀-๿a-zA-Z\\s]+$').hasMatch(value)",
-            "message": "\\s+"
           }
         ]
       }
@@ -88,12 +80,8 @@
             "message": "กรุณากรอกเลขบัตรประชาชน"
           },
           {
-            "condition": "id.length != 13",
+            "condition": "v.trim().length != 13",
             "message": "ต้องมี 13 หลัก"
-          },
-          {
-            "condition": "id[0] == '0'",
-            "message": "เลขบัตรไม่ถูกต้อง"
           }
         ]
       }

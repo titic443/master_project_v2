@@ -59,22 +59,32 @@ flutter run --dart-define=INITIAL_ROUTE=/date-picker-demo
 
 ### Add to main.dart Routes:
 
-```dart
-import 'package:master_project/widgets/switch_demo_page.dart';
-import 'package:master_project/widgets/slider_demo_page.dart';
-import 'package:master_project/widgets/segmented_button_demo_page.dart';
-import 'package:master_project/widgets/chip_demo_page.dart';
-import 'package:master_project/widgets/date_picker_demo_page.dart';
-
-MaterialApp(
-  routes: {
-    SwitchDemoPage.route: (context) => const SwitchDemoPage(),
-    SliderDemoPage.route: (context) => const SliderDemoPage(),
-    SegmentedButtonDemoPage.route: (context) => const SegmentedButtonDemoPage(),
-    ChipDemoPage.route: (context) => const ChipDemoPage(),
-    DatePickerDemoPage.route: (context) => const DatePickerDemoPage(),
-  },
-);
+```txt
+    {
+      "file": "lib/demos/clinic_appointment_page.dart",
+      "datasets": {
+        "byKey": {
+          "appt_01_patient_name_textfield": [
+            {
+              "valid": "สมชาย ใจดี",
+              "invalid": "อ",
+              "invalidRuleMessages": "อย่างน้อย 2 ตัวอักษร",
+              "atMin": "อ",
+              "atMax": "สมชาย ใจดี มีสุข สันต์ มั่งมีศรีสุข อิ่มเอม เปี่ยม"
+            }
+          ],
+          "appt_02_id_card_textfield": [
+            {
+              "valid": "1102900000001",
+              "invalid": "123456789012",
+              "invalidRuleMessages": "ต้องมี 13 หลัก",
+              "atMin": "0",
+              "atMax": "1102900000001"
+            }
+          ]
+        }
+      }
+    }
 ```
 
 ## Testing with flutter_test_generator

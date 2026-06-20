@@ -99,7 +99,7 @@ class WebUI {
       const [fileHandle] = await window.showOpenFilePicker({
         types: [{
           description: 'Dart Files',
-          accept: { 'text/plain': ['.dart'] }
+          accept: { 'text/plain': ['.dart', '.txt'] }
         }],
         multiple: false
       });
@@ -427,7 +427,7 @@ class WebUI {
       const file = await fileHandle.getFile();
 
       // Validate file type: only .txt and .pict are accepted
-      const validExtensions = ['.txt', '.pict'];
+      const validExtensions = ['.txt', '.pict', 'dart'];
       const hasValidExt = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
       if (!hasValidExt) {
         this.#showDialog('error', 'Import Failed', 'Invalid File Type', 'constraints');

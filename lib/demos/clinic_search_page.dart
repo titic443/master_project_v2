@@ -23,7 +23,6 @@ class _ClinicSearchView extends StatefulWidget {
 
 class _ClinicSearchViewState extends State<_ClinicSearchView> {
   final _formKey = GlobalKey<FormState>();
-  bool _insuranceOnly = false;
 
   @override
   Widget build(BuildContext context) {
@@ -167,11 +166,8 @@ class _ClinicSearchViewState extends State<_ClinicSearchView> {
                         children: [
                           Checkbox(
                             key: const Key('search_05_insurance_checkbox'),
-                            value: _insuranceOnly,
-                            onChanged: (val) {
-                              setState(() => _insuranceOnly = val ?? false);
-                              // state.didChange(val ?? false);
-                            },
+                            value: false,
+                            onChanged: (_) {},
                           ),
                           const Text(
                             'ฉันมีสิทธิ์เข้าใช้งานระบบค้นหานัดหมาย',

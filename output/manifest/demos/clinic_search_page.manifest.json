@@ -28,7 +28,7 @@
       "widgetType": "Checkbox",
       "key": "search_05_insurance_checkbox",
       "meta": {
-        "valueBinding": "_insuranceOnly"
+        "valueBinding": "false"
       }
     }
   ]

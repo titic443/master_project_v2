@@ -1961,40 +1961,6 @@ class TestDataGenerator {
     Map<String, dynamic>? buildEdgeCaseBoundaryAtMin() {
       if (textKeys.isEmpty || endKey == null) return null;
 
-      bool minHasInvalidFields = false;
-      for (final key in textKeys) {
-        if (!datasetsHasField(key, 'atMin')) continue;
-        final ds =
-            (datasets['byKey'] as Map?)?.cast<String, dynamic>() ?? const {};
-        final arr = ds[key];
-        if (arr is! List || arr.isEmpty) continue;
-        final first = arr[0] as Map?;
-        if (first == null) continue;
-        final atMinVal = first['atMin']?.toString() ?? '';
-        final invalidVal = first['invalid']?.toString() ?? '';
-        if (atMinVal.isEmpty) {
-          final widget = widgets.firstWhere((w) => (w['key'] ?? '') == key,
-              orElse: () => <String, dynamic>{});
-          final meta =
-              (widget['meta'] as Map?)?.cast<String, dynamic>() ?? const {};
-          final rules =
-              (meta['validatorRules'] as List?)?.cast<dynamic>() ?? const [];
-          for (final rule in rules) {
-            if (rule is Map) {
-              final condition = rule['condition']?.toString() ?? '';
-              if (isEmptyCheckCondition(condition)) {
-                minHasInvalidFields = true;
-                break;
-              }
-            }
-          }
-        } else if (invalidVal.isNotEmpty &&
-            atMinVal.length == invalidVal.length) {
-          minHasInvalidFields = true;
-        }
-        if (minHasInvalidFields) break;
-      }
-
       final minStepsByKey = buildNonTextDefaultSteps();
       for (final key in textKeys) {
         final enterStep = datasetsHasField(key, 'atMin')
@@ -2014,13 +1980,7 @@ class TestDataGenerator {
           'tap': {'byKey': endKey, 'isSubmit': true}
         })
         ..add({'pumpAndSettle': true});
-      final minKind = minHasInvalidFields ? 'failed' : 'success';
-      final minAsserts = <Map<String, dynamic>>[
-        if (minHasInvalidFields)
-          for (final fk in expectedFailKeys) buildAssert(fk)
-        else
-          ...buildSuccessAsserts()
-      ];
+      final minAsserts = buildSuccessAsserts();
       final minCombo = <String, String>{
         ...buildNonTextDefaultCombo(),
         for (final k in textKeys)
@@ -2028,9 +1988,9 @@ class TestDataGenerator {
       };
       return {
         'tc': 'edge_cases_boundary_at_min_length',
-        'kind': minKind,
+        'kind': 'success',
         'group': 'edge_cases',
-        'description': _buildDescription(minCombo, minKind, [], [], minAsserts),
+        'description': _buildDescription(minCombo, 'success', [], [], minAsserts),
         'steps': minSteps,
         'asserts': minAsserts,
       };

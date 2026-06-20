@@ -7,8 +7,8 @@
 # key = value         → override slot 'valid'
 # key.slot = value    → override slot โดยตรง (valid / invalid / atMin / atMax)
 
-appt_01_patient_name_textfield.valid = สมศรี ใจดี
-appt_01_patient_name_textfield.invalid = สมชาย
+appt_01_patient_name_textfield.valid = สมชาย
+appt_01_patient_name_textfield.invalid = สมหญิง
 
 
 # ─── PICT Constraints (Format B: single-line IF/THEN) ─────────────────────────
