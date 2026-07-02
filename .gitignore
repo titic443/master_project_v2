@@ -63,6 +63,9 @@ xx/
 # Code coverage reports
 coverage/
 
+# Documentation (generated/local notes)
+docs/
+
 # Generated integration tests (auto-generated, do not commit)
 integration_test/
 

@@ -1,9 +1,0 @@
-state.appointmentType: "type_radio_opd", "type_radio_tele"
-appt_01_patient_name_textfield: valid
-appt_02_id_card_textfield: valid
-appt_03_phone_textfield: valid
-appt_04_department_dropdown: "internal_medicine", "surgery", "pediatrics", "obstetrics", "ophthalmology", "ent", "orthopedics"
-appt_06_date_textfield: valid
-appt_07_time_textfield: valid
-appt_08_insurance_switch: on, off
-appt_09_note_textfield: valid

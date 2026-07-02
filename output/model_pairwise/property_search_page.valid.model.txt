@@ -1,7 +1,0 @@
-search_01_location_textfield: valid
-search_02_type_dropdown: "condo", "detached", "townhouse", "land", "commercial"
-search_03_bedrooms_dropdown: "studio", "1", "2", "3", "4plus"
-search_04_min_price_textfield: valid
-search_05_max_price_textfield: valid
-search_06_min_area_textfield: valid
-search_07_furnished_switch: on, off
